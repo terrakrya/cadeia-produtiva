@@ -17,25 +17,28 @@
           <table class="table b-table b-table-stacked-md table-striped">
             <thead>
               <tr>
-                <th>nome</th>
-                <th>Localidade</th>
+                <th>Nome</th>
                 <th>Perfil</th>
                 <th>Ação</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
+              <tr v-for="user in users" :key="user">
                 <td>
-                  <small>{{}}</small>
+                  <small>{{ user.name }}</small>
                 </td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>
+                  <small>{{ user.network }}</small>
+                </td>
+                <td>
+                  <a class="btn btn-danger" @click="remove(user._id)">
+                    <b-icon-trash />
+                  </a>
+                </td>
               </tr>
             </tbody>
             <tfoot>
               <tr>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -50,31 +53,27 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 export default {
+  components: {
+    Breadcrumb,
+  },
   data() {
     return {
-      filters: { search: null },
-      table_fields: [],
       users: null,
-      Breadcrumb,
+      element: null,
     }
   },
-  computed: {
-    carregarList() {
-      const list = {}
-      if (this.users) {
-        this.users.forEach((user) => {
-          console.log(user)
-        })
-      }
-      return Object.keys(list)
-    },
-  },
+
   async created() {
     await this.list()
   },
   methods: {
     async list() {
-      this.users = await this.$axios.$get('users')
+      this.users = await this.$axios.$get('users', {
+        params: {
+          populate: 'network',
+        },
+      })
+      console.log(this.users)
     },
   },
 }

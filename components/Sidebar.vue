@@ -8,9 +8,6 @@
       </b-list-group-item>
       <b-list-group-item class="bg-brown-2">
         <b-nav vertical>
-          <b-nav-item to="/estoque">
-            {{ 'alguma coisa' }}
-          </b-nav-item>
           <b-nav-item to="/usuarios">
             {{ 'Usuários' }}
           </b-nav-item>
