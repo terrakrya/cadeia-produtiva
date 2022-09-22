@@ -11,6 +11,9 @@
           <b-nav-item to="/estoque">
             {{ 'alguma coisa' }}
           </b-nav-item>
+          <b-nav-item to="/usuarios">
+            {{ 'Usuários' }}
+          </b-nav-item>
         </b-nav>
       </b-list-group-item>
       <b-list-group-item>
