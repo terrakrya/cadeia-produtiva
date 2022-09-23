@@ -14,7 +14,19 @@
           </div>
         </div>
         <div class="info-content">
-          <table class="table b-table b-table-stacked-md table-striped">
+          <div class="text-right">
+            <input
+              v-model="filters.search"
+              type="search"
+              :placeholder="'Buscar'"
+              class="form-control search-input"
+            />
+          </div>
+          <br />
+          <table
+            class="table b-table b-table-stacked-md table-striped"
+            :filter="filters.search"
+          >
             <thead>
               <tr>
                 <th>Nome</th>
@@ -28,7 +40,7 @@
                   <small>{{ user.name }}</small>
                 </td>
                 <td>
-                  <small>{{ user.network }}</small>
+                  <small>{{ user.role }}</small>
                 </td>
                 <td>
                   <a class="btn btn-danger" @click="remove(user._id)">
@@ -58,8 +70,8 @@ export default {
   },
   data() {
     return {
+      filters: { search: null },
       users: null,
-      element: null,
     }
   },
 
@@ -74,6 +86,21 @@ export default {
         },
       })
       console.log(this.users)
+    },
+
+    remove(id) {
+      this.$bvModal
+        .msgBoxConfirm('Tem certeza que deseja excluír?')
+        .then((confirmed) => {
+          if (confirmed) {
+            this.$axios
+              .$delete('users/' + id)
+              .then(() => {
+                this.list()
+              })
+              .catch(this.showError)
+          }
+        })
     },
   },
 }
