@@ -43,6 +43,14 @@
                   <small>{{ user.role }}</small>
                 </td>
                 <td>
+                  <n-link
+                    :to="
+                      '/usuarios/' + user._id + '/editar' + (user.role || '')
+                    "
+                    class="btn btn-secondary"
+                  >
+                    <b-icon-pencil />
+                  </n-link>
                   <a class="btn btn-danger" @click="remove(user._id)">
                     <b-icon-trash />
                   </a>
@@ -85,7 +93,6 @@ export default {
           populate: 'network',
         },
       })
-      console.log(this.users)
     },
 
     remove(id) {
