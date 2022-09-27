@@ -1,14 +1,14 @@
 <template>
   <div class="user_form">
-    <breadcrumb v-if="!userProfile" :active="'Cadastrar'" />
+    <breadcrumb :links="[['Cadastro', '/usuarios']]" active="Usuário" />
     <div class="panel">
       <div class="panel-body">
-        <form-headline />
+        <form-headline name="Usuário" />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
           <div class="row">
             <div class="col-sm-6">
-              <b-form-group v-if="!userProfile" :label="'Perfil' + ' *'">
+              <b-form-group label=" Perfil *">
                 <b-form-radio-group
                   v-model="form.role"
                   v-validate="'required'"
@@ -21,7 +21,7 @@
           </div>
           <div class="row">
             <div class="col-sm-6">
-              <b-form-group :label="'Nome' + ' *'">
+              <b-form-group label="Nome *">
                 <b-form-input
                   v-model="form.name"
                   v-validate="'required'"
@@ -31,54 +31,58 @@
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group :label="'E-mail' + ' *'">
+              <b-form-group label="E-mail *">
                 <b-form-input v-model="form.email" name="email" />
                 <field-error :msg="veeErrors" field="email" />
-                <div v-if="isEditing()" class="text-right">
-                  <a class="pointer" @click="changePassword">{{
-                    $t('change_password')
-                  }}</a>
-                </div>
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group :label="'Telefone'">
+              <b-form-group label="Celular *">
                 <b-form-input
-                  v-model="form.contact"
-                  v-mask="['(##) ####-####', '(##) #####-####']"
-                  name="contact"
+                  v-model="form.username"
+                  v-validate="'required'"
+                  v-mask="['(##) #####-####']"
+                  name="username"
                 />
+                <field-error :msg="veeErrors" field="username" />
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group :label="'CPF'">
+              <b-form-group label="CPF *">
                 <b-form-input
                   v-model="form.cpf"
+                  v-validate="'required'"
                   v-mask="['###.###.###-##']"
                   name="cpf"
                 />
+                <field-error :msg="veeErrors" field="cpf" />
               </b-form-group>
+            </div>
+            <div v-if="isEditing()" class="text-right">
+              <a class="pointer" @click="changePassword">{{
+                'Mude sua senha'
+              }}</a>
             </div>
           </div>
           <div v-if="showPasswordFields" class="row">
             <div class="col-sm-6">
-              <b-form-group :label="'Senha'">
+              <b-form-group label="Senha">
                 <b-form-input
                   v-model="form.password"
                   type="password"
-                  name="pass"
+                  name="password"
                 />
-                <field-error :msg="veeErrors" field="pass" />
+                <field-error :msg="veeErrors" field="password" />
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group :label="'Confirmar senha'">
+              <b-form-group label="Confirmar senha">
                 <b-form-input
                   v-model="form.password_confirmation"
                   type="password"
-                  name="pass_confirmation"
+                  name="password_confirmation"
                 />
-                <field-error :msg="veeErrors" field="pass_confirmation" />
+                <field-error :msg="veeErrors" field="password_confirmation" />
               </b-form-group>
             </div>
           </div>
@@ -95,20 +99,14 @@ export default {
   components: {
     Breadcrumb,
   },
-  props: {
-    userProfile: {
-      type: Boolean,
-      default: false,
-    },
-  },
   data() {
     return {
       show_password: false,
       tiposDeUsuarioPermitidos: [],
       form: {
+        username: '',
         name: '',
         email: '',
-        contact: '',
         cpf: '',
         password: '',
         password_confirmation: '',
@@ -125,8 +123,6 @@ export default {
     this.tiposDeUsuarioPermitidos = tiposDeUsuario
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
-    } else if (this.$route.query.role) {
-      this.form.role = this.$route.query.role
     }
   },
   methods: {
@@ -173,10 +169,38 @@ export default {
             })
             isValid = false
           }
-        } else {
-          this.veeErrors.items = this.veeErrors.items.filter(
-            (error) => error.id !== 102 && error.id !== 103
-          )
+          // unicidade do cpf
+          else if (await this.isNotUniqueCpf(id, this.form.cpf)) {
+            this.veeErrors.items.push({
+              id: 104,
+              vmId: this.veeErrors.vmId,
+              field: 'cpf',
+              msg: 'Este CPF já existe.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+          }
+          // unicidade do celular
+          else if (await this.isNotUniqueUsername(id, this.form.username)) {
+            this.veeErrors.items.push({
+              id: 105,
+              vmId: this.veeErrors.vmId,
+              field: 'username',
+              msg: 'Este celular já existe.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+          } else {
+            this.veeErrors.items = this.veeErrors.items.filter(
+              (error) =>
+                error.id !== 102 &&
+                error.id !== 103 &&
+                error.id !== 104 &&
+                error.id !== 105
+            )
+          }
         }
 
         if (isValid) {
@@ -194,11 +218,8 @@ export default {
                   this.$auth.setUser(user)
                 }
 
-                if (this.userProfile) {
-                  this.notify('update_success')
-                } else {
-                  this.$router.replace('/usuarios/' + user._id)
-                }
+                this.notify('Usuário salvo com sucesso')
+                this.$router.replace('/usuarios')
               }
               this.is_sending = false
             })
@@ -211,6 +232,15 @@ export default {
     },
     async isNotUniqueEmail(id, email) {
       return !(await this.$axios.$post('users/unique-email', { id, email }))
+    },
+    async isNotUniqueCpf(id, cpf) {
+      return !(await this.$axios.$post('users/unique-cpf', { id, cpf }))
+    },
+    async isNotUniqueUsername(id, username) {
+      return !(await this.$axios.$post('users/unique-username', {
+        id,
+        username,
+      }))
     },
   },
 }

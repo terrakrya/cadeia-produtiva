@@ -6,15 +6,19 @@ const secret = process.env.SECRET || 'cadeia-produtiva'
 
 const UserSchema = new mongoose.Schema(
   {
-    role: {
-      type: String,
-    },
+    role: String,
     username: {
       type: String,
       lowercase: true,
       unique: true,
       required: true,
       index: true,
+    },
+    name: String,
+    cpf: {
+      type: String,
+      required: true,
+      uniqui: true,
     },
     email: {
       type: String,
@@ -27,8 +31,6 @@ const UserSchema = new mongoose.Schema(
     },
     hash: String,
     salt: String,
-    name: String,
-    nickname: String,
   },
   {
     timestamps: true,

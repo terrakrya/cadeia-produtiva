@@ -1,8 +1,5 @@
 <template>
   <div>
-    <div v-if="$nuxt.isOffline" class="bg-secondary text-center text-white p-2">
-      Trabalhando em modo offline
-    </div>
     <ol class="breadcrumb">
       <li v-if="currentUser">
         <n-link
@@ -11,9 +8,6 @@
           exact-active-class="breadcrumb-exact-active"
         >
           <b-icon-house-door-fill />
-          <span v-if="currentUser.role !== 'collector' && currentUser.network">
-            &nbsp;{{ currentUser.network.name }}
-          </span>
         </n-link>
       </li>
       <li v-for="(link, index) in links" :key="index">

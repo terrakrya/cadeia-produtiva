@@ -1,6 +1,6 @@
 <template>
   <div class="user">
-    <breadcrumb :active="'Usuários'" />
+    <breadcrumb active="Cadastro de usuários" />
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
@@ -23,48 +23,32 @@
             />
           </div>
           <br />
-          <table
+          <no-item :list="users" />
+          <b-table
             class="table b-table b-table-stacked-md table-striped"
+            :fields="table_fields"
+            :items="users"
+            :sort-by="'name'"
             :filter="filters.search"
           >
-            <thead>
-              <tr>
-                <th>Nome</th>
-                <th>Perfil</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="user in users" :key="user">
-                <td>
-                  <small>{{ user.name }}</small>
-                </td>
-                <td>
-                  <small>{{ user.role }}</small>
-                </td>
-                <td>
-                  <n-link
-                    :to="
-                      '/usuarios/' + user._id + '/editar' + (user.role || '')
-                    "
-                    class="btn btn-secondary"
-                  >
-                    <b-icon-pencil />
-                  </n-link>
-                  <a class="btn btn-danger" @click="remove(user._id)">
-                    <b-icon-trash />
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-            <tfoot>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-              </tr>
-            </tfoot>
-          </table>
+            <template #cell(name)="data">
+              {{ data.item.name }}
+            </template>
+            <template #cell(role)="data">
+              {{ data.item.role }}
+            </template>
+            <template #cell(actions)="data">
+              <n-link
+                :to="'/usuarios/' + data.item._id + '/editar'"
+                class="btn btn-secondary"
+              >
+                <b-icon-pencil />
+              </n-link>
+              <a class="btn btn-danger" @click="remove(data.item._id)">
+                <b-icon-trash />
+              </a>
+            </template>
+          </b-table>
         </div>
       </div>
     </div>
@@ -79,6 +63,23 @@ export default {
   data() {
     return {
       filters: { search: null },
+      table_fields: [
+        {
+          key: 'name',
+          label: 'name',
+          sortable: true,
+        },
+        {
+          key: 'role',
+          label: 'role',
+          sortable: true,
+        },
+        {
+          key: 'actions',
+          label: 'actions',
+          class: 'actions',
+        },
+      ],
       users: null,
     }
   },

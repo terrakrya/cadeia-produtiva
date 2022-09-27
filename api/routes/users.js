@@ -26,7 +26,9 @@ router.get('/', auth.authenticated, async (req, res) => {
 
     res.json(users)
   } catch (err) {
-    res.status(422).send('Ocorreu um erro ao carregar a lista: ' + err.message)
+    res
+      .status(422)
+      .send('Ocorreu um erro ao carregar a lista de usuários: ' + err.message)
   }
 })
 
@@ -37,7 +39,7 @@ router.get('/:id', auth.authenticated, async (req, res) => {
     const user = await User.findOne(query).populate(populate(req))
     return res.json(user)
   } catch (err) {
-    res.sendStatus(401)
+    res.sendStatus(422)
   }
 })
 
@@ -52,7 +54,36 @@ router.post('/unique-email', auth.authenticated, async (req, res) => {
     const found = await User.exists(query)
     return res.json(!found)
   } catch (err) {
-    res.sendStatus(401)
+    res.sendStatus(422)
+  }
+})
+
+router.post('/unique-cpf', auth.authenticated, async (req, res) => {
+  const query = { cpf: req.body.cpf }
+
+  if (req.body.id) {
+    query._id = { $ne: req.body.id }
+  }
+
+  try {
+    const found = await User.exists(query)
+    return res.json(!found)
+  } catch (err) {
+    res.sendStatus(422)
+  }
+})
+router.post('/unique-username', auth.authenticated, async (req, res) => {
+  const query = { username: req.body.username }
+
+  if (req.body.id) {
+    query._id = { $ne: req.body.id }
+  }
+
+  try {
+    const found = await User.exists(query)
+    return res.json(!found)
+  } catch (err) {
+    res.sendStatus(422)
   }
 })
 
@@ -63,8 +94,8 @@ router.post('/', auth.authenticated, async (req, res) => {
     user.username = req.body.username
     user.email = req.body.email
     user.name = req.body.name
-    user.nickname = req.body.nickname
     user.role = req.body.role
+    user.cpf = req.body.cpf
 
     if (req.body.password) {
       user.setPassword(req.body.password)
@@ -76,7 +107,7 @@ router.post('/', auth.authenticated, async (req, res) => {
 
     return res.send(user)
   } catch (err) {
-    res.sendStatus(401)
+    res.status(422).send('Ocorreu um erro ao incluir o usuário: ' + err.message)
   }
 })
 
@@ -90,8 +121,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.username = req.body.username
       user.email = req.body.email
       user.name = req.body.name
-      user.nickname = req.body.nickname
       user.role = req.body.role
+      user.cpf = req.body.cpf
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -101,10 +132,12 @@ router.put('/:id', auth.authenticated, async (req, res) => {
 
       return res.send(user)
     } else {
-      res.sendStatus(401)
+      res.status(422).send('Usuário não encontrado')
     }
   } catch (err) {
-    res.sendStatus(401)
+    res
+      .status(422)
+      .send('Ocorreu um erro ao atualizar o usuário: ' + err.message)
   }
 })
 
@@ -113,9 +146,11 @@ router.delete('/:id', auth.authenticated, (req, res) => {
 
   User.findOne(query).exec(function (err, user) {
     if (err) {
-      res.status(422).send('Ocorreu um erro ao carregar o item: ' + err.message)
+      res
+        .status(422)
+        .send('Ocorreu um erro ao excluir o usuário: ' + err.message)
     } else if (req.user.id === req.params.id) {
-      res.status(422).send('Não é possível excluír você mesmo!')
+      res.status(422).send('Não é possível excluir você mesmo')
     } else {
       user.remove()
       res.send(user)
