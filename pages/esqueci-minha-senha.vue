@@ -1,5 +1,5 @@
 <template>
-  <div class="login bg-brown-3 text-white text-center">
+  <div class="bg-brown-3 text-white text-center">
     <b-container>
       <b-row v-if="show_login" align-v="center" style="padding-top: 5em">
         <b-col md="6" offset-md="3">
@@ -11,8 +11,8 @@
                   Cadeia Produtiva
                 </a>
               </h2>
-              <p>Seja bem vindo</p>
-              <form class="form-auth-small" @submit.prevent="login">
+              <p>Esqueci minha senha</p>
+              <form class="form-auth-small" @submit.prevent="send">
                 <div class="form-group">
                   <label for="signin-email" class="control-label sr-only">
                     Login ou celular
@@ -24,30 +24,20 @@
                     placeholder="Login ou celular"
                   />
                 </div>
-                <div class="form-group">
-                  <label for="signin-password" class="control-label sr-only">
-                    Senha
-                  </label>
-                  <input
-                    v-model="form.password"
-                    type="password"
-                    class="form-control"
-                    placeholder="Senha"
-                  />
-                </div>
-                <div v-if="is_loading" class="alert alert-info">
-                  <b-spinner small /> Fazendo login...
+                <div v-if="is_sending" class="alert alert-info">
+                  <b-spinner small /> Enviando...
                 </div>
                 <div v-if="error" class="alert alert-danger">
                   {{ error }}
                 </div>
+                <div v-if="info" class="alert alert-info">
+                  {{ info }}
+                </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">
-                  Entrar
+                  Enviar
                 </button>
                 <br />
-                <a href="/esqueci-minha-senha" class="text-red">
-                  Esqueci minha senha
-                </a>
+                <a href="/login" class="text-red">Voltar para o login</a>
               </form>
             </b-card-body>
           </b-card>
@@ -65,9 +55,9 @@ export default {
     return {
       show_login: false,
       error: null,
+      info: null,
       form: {
         username: '',
-        password: '',
       },
     }
   },
@@ -81,24 +71,30 @@ export default {
   },
 
   methods: {
-    async login() {
+    async send() {
+      this.is_sending = true
       this.error = null
-      this.is_loading = true
+      this.info = null
 
-      const resp = await this.$auth
-        .loginWith('local', { data: this.form })
-        .catch((error) => {
-          if (error.response && error.response.data) {
-            this.error = error.response.data
-          } else {
-            this.showError(error)
-          }
+      try {
+        const resp = await this.$axios({
+          method: 'POST',
+          url: 'users/forgot-password',
+          data: this.form,
         })
 
-      if (resp) {
-        this.$router.push(this.$route.query.redirect || '/painel')
+        const messageSent = resp.data
+
+        if (messageSent) {
+          this.info = 'Foi enviada a redefinição de senha para seu e-mail'
+        } else {
+          this.error = 'Não foi possível enviar a redefinição de senha'
+        }
+      } catch (err) {
+        this.error = err.response.data
       }
-      this.is_loading = false
+
+      this.is_sending = false
     },
   },
 }

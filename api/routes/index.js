@@ -7,12 +7,12 @@ const User = mongoose.model('User')
 router.use('/users', require('./users'))
 
 router.post('/login', function (req, res, next) {
-  if (!req.body.email) {
-    return res.status(422).json('Insira um nome de usuário ou email 111')
+  if (!req.body.username) {
+    return res.status(422).json('Preencha o login ou celular')
   }
 
   if (!req.body.password) {
-    return res.status(422).json('Insira sua senha')
+    return res.status(422).json('Preencha sua senha')
   }
 
   passport.authenticate(

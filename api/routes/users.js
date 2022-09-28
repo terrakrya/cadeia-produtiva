@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const router = require('express').Router()
 const auth = require('../config/auth')
+const sendMail = require('../config/mail').sendMail
 const populate = require('../config/utils').populate
 const User = mongoose.model('User')
 
@@ -188,6 +189,31 @@ router.delete('/:id', auth.authenticated, (req, res) => {
       res.send(user)
     }
   })
+})
+
+router.post('/forgot-password', async (req, res) => {
+  try {
+    const query = { username: req.body.username }
+
+    const user = await User.findOne(query)
+
+    if (user) {
+      const link = 'test' // TODO: montar a URL para a página
+      const text =
+        '<p>Olá,</p>' +
+        `<p>Segue o link para redefinição da sua senha: ${link}</p>`
+
+      sendMail(user.email, 'Redefinição de senha', text)
+
+      return res.send(true)
+    } else {
+      res.status(422).send('Usuário não encontrado')
+    }
+  } catch (err) {
+    res
+      .status(422)
+      .send('Ocorreu um erro ao redefinir a senha do usuário: ' + err.message)
+  }
 })
 
 module.exports = router
