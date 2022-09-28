@@ -10,6 +10,9 @@
         <b-nav vertical>
           <b-nav-item to="/usuarios">Usuários</b-nav-item>
         </b-nav>
+        <b-nav vertical>
+          <b-nav-item to="/cadastro_produto">Cadastro de produtos</b-nav-item>
+        </b-nav>
       </b-list-group-item>
       <b-list-group-item>
         <b-icon-person /> {{ currentUser.nickname || currentUser.name }}

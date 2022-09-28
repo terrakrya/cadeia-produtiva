@@ -67,17 +67,17 @@ export default {
       table_fields: [
         {
           key: 'name',
-          label: 'name',
+          label: 'Nome',
           sortable: true,
         },
         {
           key: 'role',
-          label: 'role',
+          label: 'Perfil',
           sortable: true,
         },
         {
           key: 'actions',
-          label: 'actions',
+          label: 'Ação',
           class: 'actions',
         },
       ],
