@@ -50,8 +50,6 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
     '@nuxtjs/auth-next',
@@ -67,29 +65,12 @@ export default {
     baseURL: (process.env.BASE_URL || '') + '/api/',
   },
 
-  // PWA module configuration: https://go.nuxtjs.dev/pwa
-  pwa: {
-    manifest: {
-      lang: 'pt-BR',
-      name: 'Cadeia Produtiva',
-      short_name: 'Cadeia Produtiva',
-    },
-    meta: {
-      ogHost: process.env.BASE_URL,
-      ogImage: '/icon.png',
-    },
-    workbox: {
-      offlineStrategy: 'NetworkFirst',
-      offlineAnalytics: true,
-      config: {
-        debug: true,
-      },
-    },
-  },
   localforage: {
     name: process.env.npm_package_name || 'NuxtJS',
   },
+
   content: {},
+
   auth: {
     strategies: {
       local: {

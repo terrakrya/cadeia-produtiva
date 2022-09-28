@@ -3,14 +3,12 @@
     <b-list-group class="sidebar color-white">
       <b-list-group-item>
         <i class="fas fa-tools" />
-        {{ 'Operacional' }}
+        Cadastros
         <b-icon-chevron-down />
       </b-list-group-item>
       <b-list-group-item class="bg-brown-2">
         <b-nav vertical>
-          <b-nav-item to="/usuarios">
-            {{ 'Usuários' }}
-          </b-nav-item>
+          <b-nav-item to="/usuarios">Usuários</b-nav-item>
         </b-nav>
       </b-list-group-item>
       <b-list-group-item>

@@ -13,6 +13,8 @@ router.get('/', auth.authenticated, async (req, res) => {
 
   if (filters.id) {
     query._id = filters.id
+  } else {
+    query.username = { $ne: 'admin' }
   }
 
   if (filters.role) {
@@ -72,6 +74,7 @@ router.post('/unique-cpf', auth.authenticated, async (req, res) => {
     res.sendStatus(422)
   }
 })
+
 router.post('/unique-username', auth.authenticated, async (req, res) => {
   const query = { username: req.body.username }
 
@@ -123,6 +126,35 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.name = req.body.name
       user.role = req.body.role
       user.cpf = req.body.cpf
+
+      if (req.body.password) {
+        user.setPassword(req.body.password)
+      }
+
+      await user.save()
+
+      return res.send(user)
+    } else {
+      res.status(422).send('Usuário não encontrado')
+    }
+  } catch (err) {
+    res
+      .status(422)
+      .send('Ocorreu um erro ao atualizar o usuário: ' + err.message)
+  }
+})
+
+router.put('/:id/profile', auth.authenticated, async (req, res) => {
+  try {
+    const query = { _id: req.params.id }
+
+    const user = await User.findOne(query)
+
+    if (user) {
+      user.name = req.body.name || user.name
+      user.email = req.body.email || user.email
+      user.username = req.body.username || user.username
+      user.cpf = req.body.cpf || user.cpf
 
       if (req.body.password) {
         user.setPassword(req.body.password)
