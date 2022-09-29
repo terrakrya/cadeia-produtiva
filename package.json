@@ -48,6 +48,7 @@
     "jspdf": "^2.3.0",
     "leaflet": "^1.7.1",
     "migrate-mongoose": "^4.0.0",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.32",
     "mongoose": "^5.11.12",
     "mongoose-unique-validator": "^2.0.3",
