@@ -28,7 +28,7 @@ router.get('/', auth.authenticated, async (req, res) => {
 
     const product = await Product.find(query)
       .populate(populate(req))
-      .sort('name')
+      .sort('code')
 
     res.json(product)
   } catch (err) {
@@ -49,7 +49,7 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   }
 })
 
-router.post('/unique-codigo', auth.authenticated, async (req, res) => {
+router.post('/unique-code', auth.authenticated, async (req, res) => {
   const query = { code: req.body.code }
 
   if (req.body.id) {
@@ -76,6 +76,29 @@ router.post('/', auth.authenticated, async (req, res) => {
     return res.send(product)
   } catch (err) {
     res.status(422).send('Ocorreu um erro ao incluir o produto: ' + err.message)
+  }
+})
+// altera um produto
+router.put('/:id', auth.authenticated, async (req, res) => {
+  try {
+    const query = { _id: req.params.id }
+
+    const product = await Product.findOne(query)
+
+    if (product) {
+      product.code = req.body.code
+      product.description = req.body.description
+
+      await product.save()
+
+      return res.send(product)
+    } else {
+      res.status(422).send('Usuário não encontrado')
+    }
+  } catch (err) {
+    res
+      .status(422)
+      .send('Ocorreu um erro ao atualizar o usuário: ' + err.message)
   }
 })
 

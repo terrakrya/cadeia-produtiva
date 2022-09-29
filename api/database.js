@@ -1,4 +1,5 @@
 require('./models/User')
+require('./models/Product')
 require('./config/passport')
 
 const mongoose = require('mongoose')
