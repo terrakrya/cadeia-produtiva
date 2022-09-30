@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const router = require('express').Router()
 const auth = require('../config/auth')
 const populate = require('../config/utils').populate
-const Product = mongoose.model('Product')
+const Category = mongoose.model('Category')
 
 router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
@@ -26,15 +26,15 @@ router.get('/', auth.authenticated, async (req, res) => {
   try {
     // ***** executa a query *****
 
-    const product = await Product.find(query)
+    const category = await Category.find(query)
       .populate(populate(req))
       .sort('code')
 
-    res.json(product)
+    res.json(category)
   } catch (err) {
     res
       .status(422)
-      .send('Ocorreu um erro ao carregar a lista de produto: ' + err.message)
+      .send('Ocorreu um erro ao carregar a lista de categorias: ' + err.message)
   }
 })
 
@@ -42,8 +42,8 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
-    const product = await Product.findOne(query).populate(populate(req))
-    return res.json(product)
+    const category = await Category.findOne(query).populate(populate(req))
+    return res.json(category)
   } catch (err) {
     res.sendStatus(422)
   }
@@ -57,7 +57,7 @@ router.post('/unique-code', auth.authenticated, async (req, res) => {
   }
 
   try {
-    const found = await Product.exists(query)
+    const found = await Category.exists(query)
     return res.json(!found)
   } catch (err) {
     res.sendStatus(422)
@@ -66,16 +66,18 @@ router.post('/unique-code', auth.authenticated, async (req, res) => {
 
 router.post('/', auth.authenticated, async (req, res) => {
   try {
-    const product = new Product()
+    const category = new Category()
 
-    product.code = req.body.code
-    product.description = req.body.description
+    category.code = req.body.code
+    category.description = req.body.description
 
-    await product.save()
+    await category.save()
 
-    return res.send(product)
+    return res.send(category)
   } catch (err) {
-    res.status(422).send('Ocorreu um erro ao incluir o produto: ' + err.message)
+    res
+      .status(422)
+      .send('Ocorreu um erro ao incluir a categoria: ' + err.message)
   }
 })
 // altera um produto
@@ -83,36 +85,36 @@ router.put('/:id', auth.authenticated, async (req, res) => {
   try {
     const query = { _id: req.params.id }
 
-    const product = await Product.findOne(query)
+    const category = await Category.findOne(query)
 
-    if (product) {
-      product.code = req.body.code
-      product.description = req.body.description
+    if (category) {
+      category.code = req.body.code
+      category.description = req.body.description
 
-      await product.save()
+      await category.save()
 
-      return res.send(product)
+      return res.send(category)
     } else {
-      res.status(422).send('Produto não encontrado')
+      res.status(422).send('categoria não encontrado')
     }
   } catch (err) {
     res
       .status(422)
-      .send('Ocorreu um erro ao atualizar o produto: ' + err.message)
+      .send('Ocorreu um erro ao atualizar o categoria: ' + err.message)
   }
 })
 
 router.delete('/:id', auth.authenticated, (req, res) => {
   const query = { _id: req.params.id }
 
-  Product.findOne(query).exec(function (err, product) {
+  Category.findOne(query).exec(function (err, category) {
     if (err) {
       res
         .status(422)
-        .send('Ocorreu um erro ao excluir o produto: ' + err.message)
+        .send('Ocorreu um erro ao excluir a categoria: ' + err.message)
     } else {
-      product.remove()
-      res.send(product)
+      category.remove()
+      res.send(category)
     }
   })
 })

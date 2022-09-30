@@ -6,6 +6,7 @@ const User = mongoose.model('User')
 
 router.use('/users', require('./users'))
 router.use('/products', require('./products'))
+router.use('/categories', require('./categories'))
 
 router.post('/login', function (req, res, next) {
   if (!req.body.username) {
