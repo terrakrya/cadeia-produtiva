@@ -16,6 +16,11 @@
         <b-nav vertical>
           <b-nav-item to="/categorias">Categorias</b-nav-item>
         </b-nav>
+        <b-nav vertical>
+          <b-nav-item to="/tipos">
+            Tipos de boas práticas e certificação
+          </b-nav-item>
+        </b-nav>
       </b-list-group-item>
       <b-list-group-item>
         <b-icon-person /> {{ currentUser.nickname || currentUser.name }}
