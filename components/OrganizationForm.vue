@@ -24,7 +24,7 @@
                   v-validate="'required'"
                   class="form-control"
                   name="type"
-                  :options="Tipo"
+                  :options="tipoOrganizacao"
                 />
                 <field-error :msg="veeErrors" field="type" />
               </b-form-group>
@@ -49,7 +49,7 @@
                   v-model="form.OccupationArea"
                   class="form-control"
                   name="OccupationArea"
-                  :options="área"
+                  :options="areaAtuacao"
                 />
               </b-form-group>
             </b-col>
@@ -66,7 +66,7 @@
                   v-model="form.EloProdutiva"
                   class="form-control"
                   name="EloProdutiva"
-                  :options="Elo"
+                  :options="elo"
                 />
               </b-form-group>
             </b-col>
@@ -77,7 +77,7 @@
                   class="form-control"
                   name="region"
                   :placeholder="'Selecione a região'"
-                  :options="region"
+                  :options="regiao"
                 />
               </b-form-group>
             </b-col>
@@ -107,7 +107,7 @@
               <b-form-group label="Produtos">
                 <b-form-checkbox-group
                   v-model="form.product"
-                  :options="produtos"
+                  :options="elemento"
                 />
               </b-form-group>
             </div>
@@ -120,13 +120,21 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import tipos from '@/data/tipos.json'
+import elo from '@/data/elo-cadeia-produtiva.json'
+import regiao from '@/data/regiao.json'
+import areaAtuacao from '@/data/area-atuacao.json'
+import tipoOrganizacao from '@/data/tipos.json'
 export default {
   components: {
     Breadcrumb,
   },
   data() {
     return {
+      elo: [],
+      regiao: [],
+      areaAtuacao: [],
+      elemento: null,
+      tipoOrganizacao: [],
       form: {
         name: '',
         type: '',
@@ -139,17 +147,31 @@ export default {
         ProtectedArea: '',
         territory: '',
         members: '',
+        product: '',
+        BoaPratica: '',
+        certification: '',
       },
+      produtos: null,
+      tipos: null,
     }
   },
-  created() {
-    this.tiposPermitidos = tipos
+  async created() {
+    await this.list()
+    this.elo = elo
+    this.regiao = regiao
+    this.areaAtuacao = areaAtuacao
+    this.elemento = this.produtos
+    this.tipoOrganizacao = tipoOrganizacao
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
   },
   methods: {
-    list() {},
+    async list() {
+      this.produtos = await this.$axios.$get('products')
+      console.log(this.produtos.code)
+      this.tipos = await this.$axios.$get('types')
+    },
     edit(id) {
       this.is_loading = true
       this.$axios
