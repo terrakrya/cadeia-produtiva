@@ -1,6 +1,7 @@
 require('./models/User')
 require('./models/Category')
 require('./models/Type')
+require('./models/Organization')
 require('./models/Product')
 require('./config/passport')
 

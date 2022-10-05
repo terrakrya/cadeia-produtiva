@@ -89,7 +89,7 @@ export default {
           class: 'actions',
         },
       ],
-      organizations: null,
+      organizations: [],
     }
   },
 

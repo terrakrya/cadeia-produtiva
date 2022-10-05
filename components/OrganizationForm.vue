@@ -24,14 +24,14 @@
                   v-validate="'required'"
                   class="form-control"
                   name="type"
-                  :options="tipoOrganizacao"
+                  :options="tiposOrganizacao"
                 />
                 <field-error :msg="veeErrors" field="type" />
               </b-form-group>
             </b-col>
             <div class="col-sm-3">
               <b-form-group label="CNPJ ">
-                <b-form-input v-model="form.cnpj" :mask="['###.###.###-##']" />
+                <b-form-input v-model="form.cnpj" v-mask="['###.###.###-##']" />
               </b-form-group>
             </div>
           </div>
@@ -46,9 +46,9 @@
             <b-col sm="6">
               <b-form-group label="Área de atuação">
                 <b-form-select
-                  v-model="form.OccupationArea"
+                  v-model="form.occupationArea"
                   class="form-control"
-                  name="OccupationArea"
+                  name="occupationArea"
                   :options="areaAtuacao"
                 />
               </b-form-group>
@@ -63,9 +63,9 @@
             <b-col sm="6">
               <b-form-group label="Elo na cadeia produtiva">
                 <b-form-select
-                  v-model="form.EloProdutiva"
+                  v-model="form.chainLink"
                   class="form-control"
-                  name="EloProdutiva"
+                  name="chainLink"
                   :options="elo"
                 />
               </b-form-group>
@@ -86,19 +86,24 @@
             <div class="col-sm-4">
               <b-form-group label="Área protegida">
                 <b-form-input
-                  v-model="form.ProtectedArea"
-                  name="ProtectedArea"
+                  v-model="form.protectedArea"
+                  name="protectedArea"
                 />
               </b-form-group>
             </div>
             <div class="col-sm-4">
               <b-form-group label="Território castanhal">
-                <b-form-input v-model="form.territory" name="territory" />
+                <b-form-input v-model="form.territories" name="territory" />
               </b-form-group>
             </div>
             <div class="col-sm-3">
               <b-form-group label="Cooperados (quantidade)">
-                <b-form-input v-model="form.members" name="members" />
+                <b-form-input
+                  v-model="form.members"
+                  type="number"
+                  name="members"
+                />
+                <field-error :msg="veeErrors" field="members" />
               </b-form-group>
             </div>
           </div>
@@ -106,8 +111,32 @@
             <div class="col-sm-12">
               <b-form-group label="Produtos">
                 <b-form-checkbox-group
-                  v-model="form.product"
-                  :options="elemento"
+                  v-model="form.products"
+                  :options="products"
+                  value-field="id"
+                  text-field="description"
+                />
+              </b-form-group>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-12">
+              <b-form-group label="Boas práticas">
+                <b-form-checkbox-group
+                  v-model="form.bestPractices"
+                  :options="bestPractices"
+                  value-field="id"
+                  text-field="description"
+                />
+              </b-form-group>
+            </div>
+            <div class="col-sm-12">
+              <b-form-group label="Certificação">
+                <b-form-checkbox-group
+                  v-model="form.certifications"
+                  :options="certificationTypes"
+                  value-field="id"
+                  text-field="description"
                 />
               </b-form-group>
             </div>
@@ -123,54 +152,54 @@ import Breadcrumb from '@/components/Breadcrumb'
 import elo from '@/data/elo-cadeia-produtiva.json'
 import regiao from '@/data/regiao.json'
 import areaAtuacao from '@/data/area-atuacao.json'
-import tipoOrganizacao from '@/data/tipos.json'
+import tiposOrganizacao from '@/data/tipos-organizacao.json'
 export default {
   components: {
     Breadcrumb,
   },
   data() {
     return {
-      elo: [],
-      regiao: [],
-      areaAtuacao: [],
-      elemento: null,
-      tipoOrganizacao: [],
+      elo,
+      regiao,
+      areaAtuacao,
+      tiposOrganizacao,
       form: {
         name: '',
         type: '',
         cnpj: '',
         address: '',
-        OccupationArea: '',
+        occupationArea: '',
         contact: '',
-        EloProdutiva: '',
+        chainLink: '',
         region: '',
-        ProtectedArea: '',
-        territory: '',
-        members: '',
-        product: '',
-        BoaPratica: '',
-        certification: '',
+        territories: '',
+        protectedArea: '',
+        members: 0,
+        products: [],
+        bestPractices: [],
+        certifications: [],
       },
-      produtos: null,
-      tipos: null,
+      products: [],
+      bestPractices: [],
+      certificationTypes: [],
     }
   },
   async created() {
     await this.list()
-    this.elo = elo
-    this.regiao = regiao
-    this.areaAtuacao = areaAtuacao
-    this.elemento = this.produtos
-    this.tipoOrganizacao = tipoOrganizacao
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
   },
   methods: {
     async list() {
-      this.produtos = await this.$axios.$get('products')
-      console.log(this.produtos.code)
-      this.tipos = await this.$axios.$get('types')
+      this.products = await this.$axios.$get('products')
+      const tipos = await this.$axios.$get('types')
+      this.bestPractices = tipos.filter((i) => {
+        return i.type === 'boas práticas'
+      })
+      this.certificationTypes = tipos.filter((i) => {
+        return i.type === 'certificação'
+      })
     },
     edit(id) {
       this.is_loading = true

@@ -15,27 +15,27 @@ router.get('/', auth.authenticated, async (req, res) => {
     query._id = filters.id
   }
 
-  if (filters.organization) {
-    query.organization = filters.organization
+  if (filters.organizations) {
+    query.organizations = filters.organizations
   }
 
-  if (filters.type) {
-    query.type = filters.type
+  if (filters.types) {
+    query.types = filters.types
   }
 
   try {
     // ***** executa a query *****
 
-    const organization = await Organization.find(query)
+    const organizations = await Organization.find(query)
       .populate(populate(req))
       .sort('name')
 
-    res.json(organization)
+    res.json(organizations)
   } catch (err) {
     res
       .status(422)
       .send(
-        'Ocorreu um erro ao carregar a lista de organização: ' + err.message
+        'Ocorreu um erro ao carregar a lista de organizações: ' + err.message
       )
   }
 })
@@ -44,10 +44,10 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
-    const organization = await Organization.findOne(query).populate(
+    const organizations = await Organization.findOne(query).populate(
       populate(req)
     )
-    return res.json(organization)
+    return res.json(organizations)
   } catch (err) {
     res.sendStatus(422)
   }
@@ -55,26 +55,26 @@ router.get('/:id', auth.authenticated, async (req, res) => {
 
 router.post('/', auth.authenticated, async (req, res) => {
   try {
-    const organization = new Organization()
+    const organizations = new Organization()
 
-    organization.name = req.body.name
-    organization.cnpj = req.body.cnpj
-    organization.type = req.body.type
-    organization.address = req.body.address
-    organization.OccupationArea = req.body.OccupationArea
-    organization.contact = req.body.contact
-    organization.EloProdutiva = req.body.EloProdutiva
-    organization.region = req.body.region
-    organization.ProtectedArea = req.body.ProtectedArea
-    organization.territory = req.body.territory
-    organization.members = req.body.members
-    organization.product = req.body.product
-    organization.certification = req.body.certification
-    organization.BoaPratica = req.body.BoaPratica
+    organizations.name = req.body.name
+    organizations.type = req.body.type
+    organizations.cnpj = req.body.cnpj
+    organizations.address = req.body.address
+    organizations.occupationArea = req.body.occupationArea
+    organizations.contact = req.body.contact
+    organizations.chainLink = req.body.chainLink
+    organizations.region = req.body.region
+    organizations.territories = req.body.territories
+    organizations.protectedArea = req.body.protectedArea
+    organizations.members = req.body.members
+    organizations.products = req.body.products
+    organizations.bestPractices = req.body.bestPractices
+    organizations.certifications = req.body.certifications
 
-    await organization.save()
+    await organizations.save()
 
-    return res.send(organization)
+    return res.send(organizations)
   } catch (err) {
     res
       .status(422)
@@ -86,26 +86,26 @@ router.put('/:id', auth.authenticated, async (req, res) => {
   try {
     const query = { _id: req.params.id }
 
-    const organization = await Organization.findOne(query)
+    const organizations = await Organization.findOne(query)
 
-    if (organization) {
-      organization.name = req.body.name
-      organization.cnpj = req.body.cnpj
-      organization.type = req.body.type
-      organization.address = req.body.address
-      organization.OccupationArea = req.body.OccupationArea
-      organization.contact = req.body.contact
-      organization.EloProdutiva = req.body.EloProdutiva
-      organization.region = req.body.region
-      organization.ProtectedArea = req.body.ProtectedArea
-      organization.territory = req.body.territory
-      organization.members = req.body.members
-      organization.product = req.body.product
-      organization.certification = req.body.certification
-      organization.BoaPratica = req.body.BoaPratica
-      await organization.save()
+    if (organizations) {
+      organizations.name = req.body.name
+      organizations.type = req.body.type
+      organizations.cnpj = req.body.cnpj
+      organizations.address = req.body.address
+      organizations.occupationArea = req.body.occupationArea
+      organizations.contact = req.body.contact
+      organizations.chainLink = req.body.chainLink
+      organizations.region = req.body.region
+      organizations.territories = req.body.territories
+      organizations.protectedArea = req.body.protectedArea
+      organizations.members = req.body.members
+      organizations.products = req.body.products
+      organizations.bestPractices = req.body.bestPractices
+      organizations.certifications = req.body.certifications
+      await organizations.save()
 
-      return res.send(organization)
+      return res.send(organizations)
     } else {
       res.status(422).send('organização não encontrado')
     }
@@ -119,14 +119,14 @@ router.put('/:id', auth.authenticated, async (req, res) => {
 router.delete('/:id', auth.authenticated, (req, res) => {
   const query = { _id: req.params.id }
 
-  Organization.findOne(query).exec(function (err, organization) {
+  Organization.findOne(query).exec(function (err, organizations) {
     if (err) {
       res
         .status(422)
         .send('Ocorreu um erro ao excluir a organização: ' + err.message)
     } else {
-      organization.remove()
-      res.send(organization)
+      organizations.remove()
+      res.send(organizations)
     }
   })
 })

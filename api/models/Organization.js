@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 const secret = process.env.SECRET || 'cadeia-produtiva'
 
@@ -15,16 +16,31 @@ const OrganizationSchema = new mongoose.Schema(
     },
     cnpj: String,
     address: String,
-    OccupationArea: String,
+    occupationArea: String,
     contact: String,
-    EloProdutiva: String,
+    chainLink: String,
     region: String,
-    ProtectedArea: String,
-    territory: String,
-    members: String,
-    product: String,
-    BoaPratica: String,
-    certification: String,
+    territories: String,
+    protectedArea: String,
+    members: Number,
+    products: [
+      {
+        type: ObjectId,
+        ref: 'Product',
+      },
+    ],
+    bestPractices: [
+      {
+        type: ObjectId,
+        ref: 'Type',
+      },
+    ],
+    certifications: [
+      {
+        type: ObjectId,
+        ref: 'Type',
+      },
+    ],
   },
   {
     timestamps: true,
@@ -40,16 +56,16 @@ OrganizationSchema.methods.data = function () {
     cnpj: this.cnpj,
     type: this.type,
     address: this.address,
-    OccupationArea: this.OccupationArea,
+    occupationArea: this.occupationArea,
     contact: this.contact,
-    EloProdutiva: this.EloProdutiva,
+    chainLink: this.chainLink,
     region: this.region,
-    ProtectedArea: this.ProtectedArea,
-    territory: this.territory,
+    protectedArea: this.protectedArea,
+    territories: this.territories,
     members: this.members,
-    product: this.product,
-    BoaPratica: this.BoaPratica,
-    certification: this.certification,
+    products: this.products,
+    bestPractices: this.bestPractices,
+    certifications: this.certifications,
   }
 }
 OrganizationSchema.methods.generateJWT = function () {
