@@ -9,6 +9,7 @@ router.use('/products', require('./products'))
 router.use('/categories', require('./categories'))
 router.use('/types', require('./types'))
 router.use('/organizations', require('./organizations'))
+router.use('/species', require('./species'))
 
 router.post('/login', function (req, res, next) {
   if (!req.body.username) {
