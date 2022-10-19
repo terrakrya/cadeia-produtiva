@@ -27,6 +27,11 @@
         <b-nav vertical>
           <b-nav-item to="/especies">Espécies</b-nav-item>
         </b-nav>
+        <b-nav vertical>
+          <b-nav-item to="/especies_produtos">
+            Classificação da Espécie/Produto
+          </b-nav-item>
+        </b-nav>
       </b-list-group-item>
       <b-list-group-item>
         <b-icon-person /> {{ currentUser.nickname || currentUser.name }}

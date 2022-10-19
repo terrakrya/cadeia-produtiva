@@ -127,13 +127,13 @@ export default {
         case 'species':
           this.list = (
             await this.loadList('species', {
-              select: 'scientific_name local_name pictures',
+              select: 'scientificName local_name pictures',
               include_pending: true,
             })
           )
             .map((specie) => ({
               id: specie._id,
-              title: specie.scientific_name,
+              title: specie.scientificName,
               description: specie.local_name.join(', '),
               picture:
                 specie.images && specie.images.length
