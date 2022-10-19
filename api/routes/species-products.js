@@ -19,8 +19,8 @@ router.get('/', auth.authenticated, async (req, res) => {
     query.name = filters.name
   }
 
-  if (filters.species) {
-    query.species = filters.species
+  if (filters.specie) {
+    query.specie = filters.specie
   }
 
   try {
@@ -28,7 +28,7 @@ router.get('/', auth.authenticated, async (req, res) => {
 
     const speciesProducts = await SpeciesProduct.find(query)
       .populate(populate(req))
-      .sort('code')
+      .sort('name')
 
     res.json(speciesProducts)
   } catch (err) {
@@ -77,7 +77,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     speciesProducts.subgroup = req.body.subgroup
     speciesProducts.class = req.body.class
     speciesProducts.group = req.body.group
-    speciesProducts.species = req.body.species
+    speciesProducts.specie = req.body.specie
     speciesProducts.description = req.body.description
     speciesProducts.type = req.body.type
 
@@ -102,7 +102,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       speciesProducts.subgroup = req.body.subgroup
       speciesProducts.class = req.body.class
       speciesProducts.group = req.body.group
-      speciesProducts.species = req.body.species
+      speciesProducts.specie = req.body.specie
       speciesProducts.description = req.body.description
       speciesProducts.type = req.body.type
 

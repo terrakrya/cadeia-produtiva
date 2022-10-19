@@ -1,7 +1,7 @@
 <template>
   <div class="SpeciesProduct">
     <Breadcrumb
-      :links="[['Cadastro', '/especies_produtos']]"
+      :links="[['Cadastro', '/especies-produtos']]"
       active="Espécie/produto"
     />
     <div class="panel">
@@ -25,9 +25,7 @@
                 <form-entity-select
                   v-model="form.specie"
                   v-validate="'required'"
-                  :placeholder="'Selecione a espécie'"
                   type="species"
-                  @selected="(specie) => specieSelected(specie)"
                 />
               </b-form-group>
             </div>
@@ -38,8 +36,7 @@
                 <b-form-select
                   v-model="form.group"
                   class="form-control"
-                  name="group"
-                  :placeholder="'Selecione o grupo'"
+                  placeholder="Selecione o grupo"
                   :options="grupo"
                 />
               </b-form-group>
@@ -49,8 +46,7 @@
                 <b-form-select
                   v-model="form.subgroup"
                   class="form-control"
-                  name="subgroup"
-                  :placeholder="'Selecione o subgrupo'"
+                  placeholder="Selecione o subgrupo"
                   :options="subgrupo"
                 />
               </b-form-group>
@@ -62,8 +58,7 @@
                 <b-form-select
                   v-model="form.class"
                   class="form-control"
-                  name="class"
-                  :placeholder="'Selecione a classe'"
+                  placeholder="Selecione a classe"
                   :options="classe"
                 />
               </b-form-group>
@@ -73,8 +68,7 @@
                 <b-form-select
                   v-model="form.type"
                   class="form-control"
-                  name="type"
-                  :placeholder="'Selecione o Tipo'"
+                  placeholder="Selecione o Tipo"
                   :options="tipo"
                 />
               </b-form-group>
@@ -83,7 +77,7 @@
           <div class="row">
             <div class="col-sm-6">
               <b-form-group label="Descrição ">
-                <b-form-input v-model="form.description" name="description" />
+                <b-form-input v-model="form.description" />
               </b-form-group>
             </div>
           </div>
@@ -114,30 +108,24 @@ export default {
       form: {
         name: '',
         description: '',
-        type: null,
+        type: '',
         subgroup: '',
         class: '',
         group: '',
         specie: '',
       },
-      species: [],
     }
   },
-  async created() {
-    await this.list()
+  created() {
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
   },
   methods: {
-    async list() {
-      this.species = await this.$axios.$get('species')
-      console.log(this.species)
-    },
     edit(id) {
       this.is_loading = true
       this.$axios
-        .get('speciesProducts/' + id)
+        .get('species-products/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
           if (response.data.image) {
@@ -149,25 +137,22 @@ export default {
     },
     save() {
       this.$validator.validate().then(async (isValid) => {
-        // valida a name
-        if (this.form.name) {
-          const id = this.isEditing() ? this.$route.params.id : null
-          // unicidade do name
-          if (await this.isNotUniqueCode(id, this.form.code)) {
-            this.veeErrors.items.push({
-              id: 102,
-              vmId: this.veeErrors.vmId,
-              field: 'name',
-              msg: 'Este código já existe.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-          } else {
-            this.veeErrors.items = this.veeErrors.items.filter(
-              (error) => error.id !== 102
-            )
-          }
+        const id = this.isEditing() ? this.$route.params.id : null
+        // unicidade do name
+        if (await this.isNotUniqueName(id, this.form.name)) {
+          this.veeErrors.items.push({
+            id: 102,
+            vmId: this.veeErrors.vmId,
+            field: 'name',
+            msg: 'Este nome já existe.',
+            rule: 'required',
+            scope: null,
+          })
+          isValid = false
+        } else {
+          this.veeErrors.items = this.veeErrors.items.filter(
+            (error) => error.id !== 102
+          )
         }
 
         if (isValid) {
@@ -176,15 +161,15 @@ export default {
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
             url: this.isEditing()
-              ? 'speciesProducts/' + this.$route.params.id
-              : 'speciesProducts',
+              ? 'species-products/' + this.$route.params.id
+              : 'species-products',
             data: this.form,
           })
             .then((resp) => {
               const category = resp.data
               if (category && category._id) {
                 this.notify('Tipo salvo com sucesso')
-                this.$router.replace('/especies_produtos')
+                this.$router.replace('/especies-produtos')
               }
               this.is_sending = false
             })
@@ -192,21 +177,11 @@ export default {
         }
       })
     },
-    async isNotUniqueCode(id, code) {
-      return !(await this.$axios.$post('speciesProducts/unique-name', {
+    async isNotUniqueName(id, name) {
+      return !(await this.$axios.$post('species-products/unique-name', {
         id,
-        code,
+        name,
       }))
-    },
-    specieSelected(specie) {
-      if (specie) {
-        this.setSpecie(specie.data)
-      }
-    },
-    setSpecie(specie) {
-      if (specie) {
-        this.form.specie = specie.scientificName[0]
-      }
     },
   },
 }

@@ -6,7 +6,7 @@
       :options="list"
       label="title"
       name="formEntitySelect"
-      :placeholder="placeholder || 'cidade'"
+      :placeholder="placeholder || 'Busque pelo nome e clique para selecionar'"
       @input="selected"
     >
       <template #option="option">
@@ -104,136 +104,21 @@ export default {
       const filterItem = this.filter ? { filters: this.filter } : null
 
       switch (this.type) {
-        case 'networks':
-          this.list = (await this.loadList('networks'))
-            .map((network) => ({
-              id: network._id,
-              title: network.name,
-              description: network.description,
-            }))
-            .sort(function (a, b) {
-              return a.title.localeCompare(b.title)
-            })
-          break
-        case 'authors':
-          this.list = (
-            await this.loadList('authors', { select: 'name description' })
-          ).map((specie) => ({
-            id: specie._id,
-            title: specie.name,
-            description: specie.description,
-          }))
-          break
         case 'species':
-          this.list = (
-            await this.loadList('species', {
-              select: 'scientificName local_name pictures',
-              include_pending: true,
-            })
-          )
+          this.list = (await this.$axios.$get('species', filterItem))
             .map((specie) => ({
               id: specie._id,
               title: specie.scientificName,
-              description: specie.local_name.join(', '),
+              description: specie.localNames,
               picture:
                 specie.images && specie.images.length
                   ? specie.images[0].thumb
                   : '',
-              images: specie.images,
-              data: specie,
             }))
             .sort(function (a, b) {
               return a.title.localeCompare(b.title)
             })
-          break
-        case 'seeds':
-          this.list = this.getList('seeds')
-            .map((seed) => ({
-              id: seed._id,
-              title: seed.name,
-              description: seed.scientific_name,
-              picture:
-                seed.images && seed.images.length ? seed.images[0].thumb : '',
-              compensation_collect: seed.compensation_collect,
-              wholesale_price: seed.wholesale_price,
-              price: seed.price,
-              specie: seed.specie,
-            }))
-            .sort(function (a, b) {
-              return a.title.localeCompare(b.title)
-            })
-          break
-        case 'users':
-          this.list = (await this.loadList('users', filterItem))
-            .map((user) => ({
-              id: user._id,
-              title: user.name,
-              email: user.email,
-              description: user.nickname,
-              picture: user.image ? user.image.thumb : '',
-            }))
-            .sort(function (a, b) {
-              return a.title.localeCompare(b.title)
-            })
-          break
-        case 'groups':
-          this.list = this.getList('groups')
-            .map((group) => ({
-              id: group._id,
-              title: group.name,
-              description: this.formatCity(group.address),
-            }))
-            .sort(function (a, b) {
-              return a.title.localeCompare(b.title)
-            })
-          break
-        case 'collectors':
-          this.list = this.getList('collectors')
-            .map((collector) => ({
-              id: collector._id,
-              title: collector.name,
-              description: collector.nickname,
-              picture: collector.image ? collector.image.thumb : '',
-            }))
-            .sort(function (a, b) {
-              return a.title.localeCompare(b.title)
-            })
-          break
-        case 'clients':
-          this.list = (await this.loadList('clients', filterItem))
-            .map((client) => ({
-              id: client._id,
-              title: client.name,
-              description: client.nickname,
-              picture: client.image ? client.image.thumb : '',
-            }))
-            .sort(function (a, b) {
-              return a.title.localeCompare(b.title)
-            })
-          break
-        case 'seeds_houses':
-          this.list = (await this.loadList('seeds_houses', filterItem))
-            .map((seedsHouse) => ({
-              id: seedsHouse._id,
-              title: seedsHouse.name,
-              description: seedsHouse.code,
-            }))
-            .sort(function (a, b) {
-              return a.title.localeCompare(b.title)
-            })
-          break
-        case 'orders':
-          this.list = (await this.loadList('orders', filterItem))
-            .map((order) => ({
-              id: order._id,
-              title: 'Encomenda ' + order.code,
-              description: order.date_receiving
-                ? this.$moment(order.date_receiving).format('DD/MM/YYYY')
-                : '',
-            }))
-            .sort(function (a, b) {
-              return a.title.localeCompare(b.title)
-            })
+
           break
       }
     }

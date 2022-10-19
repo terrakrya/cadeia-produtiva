@@ -8,7 +8,7 @@
             <h1>Espécie/Produto</h1>
           </div>
           <div class="col-sm-6 main-actions">
-            <n-link to="/especies_produtos/cadastrar" class="btn btn-primary">
+            <n-link to="/especies-produtos/cadastrar" class="btn btn-primary">
               <b-icon-plus /> {{ 'Cadastrar' }}
             </n-link>
           </div>
@@ -34,12 +34,12 @@
             <template #cell(name)="data">
               {{ data.item.name }}
             </template>
-            <template #cell(species)="data">
-              {{ data.item.species }}
+            <template #cell(specie)="data">
+              {{ data.item.specie }}
             </template>
             <template #cell(actions)="data">
               <n-link
-                :to="'/especies_produtos/' + data.item._id + '/editar'"
+                :to="'/especies-produtos/' + data.item._id + '/editar'"
                 class="btn btn-secondary"
               >
                 <b-icon-pencil />
@@ -71,8 +71,8 @@ export default {
           sortable: true,
         },
         {
-          key: 'species',
-          label: 'Espécies',
+          key: 'specie',
+          label: 'Espécie',
           sortable: true,
         },
         {
@@ -81,7 +81,7 @@ export default {
           class: 'actions',
         },
       ],
-      speciesProducts: null,
+      speciesProducts: [],
     }
   },
 
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     async list() {
-      this.speciesProducts = await this.$axios.$get('speciesProducts')
+      this.speciesProducts = await this.$axios.$get('species-products')
     },
 
     remove(id) {
@@ -99,7 +99,7 @@ export default {
         .then((confirmed) => {
           if (confirmed) {
             this.$axios
-              .$delete('speciesProducts/' + id)
+              .$delete('species-products/' + id)
               .then(() => {
                 this.list()
               })

@@ -30,12 +30,11 @@
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Nomes locais">
+              <b-form-group label="Nome local">
                 <b-form-select
-                  v-model="form.localNames"
+                  v-model="form.localName"
                   class="form-control"
-                  name="localNames"
-                  :options="elo"
+                  name="localName"
                 />
               </b-form-group>
             </b-col>
@@ -43,11 +42,6 @@
               <b-form-group label="Descrição">
                 <b-form-input v-model="form.description" name="description" />
               </b-form-group>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <Upload v-model="form.images" type="images" label="Imagens" />
             </div>
           </div>
           <form-submit :sending="is_sending" />
@@ -68,7 +62,7 @@ export default {
         code: '',
         description: '',
         scientificName: '',
-        localNames: '',
+        localName: '',
         images: [],
       },
     }

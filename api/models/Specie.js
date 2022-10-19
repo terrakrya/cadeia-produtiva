@@ -15,7 +15,7 @@ const SpecieSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    localNames: String,
+    localName: String,
     description: String,
     images: [Object],
   },
@@ -31,7 +31,7 @@ SpecieSchema.methods.data = function () {
     id: this.id,
     code: this.code,
     scientificName: this.scientificName,
-    localNames: this.localNames,
+    localName: this.localName,
     description: this.description,
     images: this.images,
   }
