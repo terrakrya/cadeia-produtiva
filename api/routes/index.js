@@ -11,6 +11,7 @@ router.use('/types', require('./types'))
 router.use('/organizations', require('./organizations'))
 router.use('/species', require('./species'))
 router.use('/species-products', require('./species-products'))
+router.use('/uploads', require('./uploads'))
 
 router.post('/login', function (req, res, next) {
   if (!req.body.username) {

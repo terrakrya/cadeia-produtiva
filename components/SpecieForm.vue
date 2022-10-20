@@ -44,6 +44,16 @@
               </b-form-group>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-6">
+              <Upload
+                v-model="form.images"
+                multiple
+                type="images"
+                label="Fotos da semente"
+              />
+            </div>
+          </div>
           <form-submit :sending="is_sending" />
         </b-form>
       </div>
@@ -52,9 +62,11 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
+import Upload from '@/components/Upload'
 export default {
   components: {
     Breadcrumb,
+    Upload,
   },
   data() {
     return {

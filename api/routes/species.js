@@ -72,6 +72,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     species.scientificName = req.body.scientificName
     species.description = req.body.description
     species.localName = req.body.localName
+    species.images = req.body.images
 
     await species.save()
 
@@ -92,6 +93,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       species.scientificName = req.body.scientificName
       species.description = req.body.description
       species.localName = req.body.localName
+      species.images = req.body.images
 
       await species.save()
 

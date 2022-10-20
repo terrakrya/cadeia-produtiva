@@ -1,5 +1,6 @@
 import './database'
 
+import path from 'path'
 import express from 'express'
 import session from 'express-session'
 import cors from 'cors'
@@ -22,6 +23,7 @@ app.use(
 
 app.use(express.urlencoded({ extended: false, limit: '100mb' }))
 app.use(express.json({ limit: '100mb' }))
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 app.set('etag', false) // turn off
 
 router.use(routes)
