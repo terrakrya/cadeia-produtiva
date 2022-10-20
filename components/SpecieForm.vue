@@ -31,11 +31,7 @@
           <div class="row">
             <b-col sm="6">
               <b-form-group label="Nome local">
-                <b-form-select
-                  v-model="form.localName"
-                  class="form-control"
-                  name="localName"
-                />
+                <b-form-input v-model="localName" />
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
@@ -91,6 +87,9 @@ export default {
         .get('species/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
+
+          this.form.localName = this.form.localName.join(',')
+
           if (response.data.image) {
             this.images_preview = [response.data.image]
           }
@@ -135,6 +134,8 @@ export default {
 
         if (isValid) {
           this.is_sending = true
+
+          this.form.localName = this.form.localName.split(',')
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',

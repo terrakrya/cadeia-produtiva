@@ -15,7 +15,11 @@ const SpecieSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    localName: String,
+    localName: {
+      type: [String],
+      index: true,
+    },
+
     description: String,
     images: [Object],
   },
