@@ -35,7 +35,7 @@
               {{ data.item.name }}
             </template>
             <template #cell(specie)="data">
-              {{ data.item.specie }}
+              {{ data.item.specie.scientificName }}
             </template>
             <template #cell(actions)="data">
               <n-link

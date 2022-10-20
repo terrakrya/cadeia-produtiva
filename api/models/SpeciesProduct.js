@@ -16,12 +16,11 @@ const SpeciesProductSchema = new mongoose.Schema(
     subgroup: String,
     class: String,
     group: String,
-    specie: [
-      {
-        type: ObjectId,
-        ref: 'scientificName',
-      },
-    ],
+    specie: {
+      type: ObjectId,
+      ref: 'Specie',
+      required: true,
+    },
   },
   {
     timestamps: true,

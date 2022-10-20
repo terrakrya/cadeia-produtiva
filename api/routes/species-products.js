@@ -27,7 +27,7 @@ router.get('/', auth.authenticated, async (req, res) => {
     // ***** executa a query *****
 
     const speciesProducts = await SpeciesProduct.find(query)
-      .populate(populate(req))
+      .populate('specie')
       .sort('name')
 
     res.json(speciesProducts)
