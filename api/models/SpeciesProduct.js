@@ -21,6 +21,7 @@ const SpeciesProductSchema = new mongoose.Schema(
       ref: 'Specie',
       required: true,
     },
+    image: [Object],
   },
   {
     timestamps: true,
@@ -39,6 +40,7 @@ SpeciesProductSchema.methods.data = function () {
     subgroup: this.subgroup,
     class: this.class,
     group: this.group,
+    image: this.image,
   }
 }
 SpeciesProductSchema.methods.generateJWT = function () {

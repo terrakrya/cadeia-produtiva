@@ -80,6 +80,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     speciesProducts.specie = req.body.specie
     speciesProducts.description = req.body.description
     speciesProducts.type = req.body.type
+    speciesProducts.image = req.body.image
 
     await speciesProducts.save()
 
@@ -105,6 +106,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       speciesProducts.specie = req.body.specie
       speciesProducts.description = req.body.description
       speciesProducts.type = req.body.type
+      speciesProducts.image = req.body.image
 
       await speciesProducts.save()
 

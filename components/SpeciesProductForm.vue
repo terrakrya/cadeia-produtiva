@@ -80,6 +80,13 @@
                 <b-form-input v-model="form.description" />
               </b-form-group>
             </div>
+            <div class="col-md-6">
+              <Upload
+                v-model="form.image"
+                type="images"
+                label="Foto da castanha"
+              />
+            </div>
           </div>
           <form-submit :sending="is_sending" />
         </b-form>
@@ -89,6 +96,7 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
+import Upload from '@/components/Upload'
 import tipo from '@/data/tipos-especie_produto.json'
 import grupo from '@/data/grupo.json'
 import subgrupo from '@/data/subgrupo.json'
@@ -98,6 +106,7 @@ export default {
   components: {
     Breadcrumb,
     FormEntitySelect,
+    Upload,
   },
   data() {
     return {
@@ -113,6 +122,7 @@ export default {
         class: '',
         group: '',
         specie: '',
+        image: [],
       },
     }
   },
