@@ -26,7 +26,9 @@
                   v-model="form.specie"
                   v-validate="'required'"
                   type="species"
+                  name="specie"
                 />
+                <field-error :msg="veeErrors" field="specie" />
               </b-form-group>
             </div>
           </div>

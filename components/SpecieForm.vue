@@ -30,8 +30,8 @@
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Nome local">
-                <b-form-input v-model="localName" />
+              <b-form-group label="Nome popular">
+                <b-form-input v-model="form.popularName" name="popularName" />
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
@@ -70,7 +70,7 @@ export default {
         code: '',
         description: '',
         scientificName: '',
-        localName: '',
+        popularName: '',
         images: [],
       },
     }
@@ -86,9 +86,9 @@ export default {
       this.$axios
         .get('species/' + id)
         .then((response) => {
-          this.apiDataToForm(this.form, response.data)
+          response.data.popularName = response.data.popularName.join(',')
 
-          this.form.localName = this.form.localName.join(',')
+          this.apiDataToForm(this.form, response.data)
 
           if (response.data.image) {
             this.images_preview = [response.data.image]
@@ -135,14 +135,15 @@ export default {
         if (isValid) {
           this.is_sending = true
 
-          this.form.localName = this.form.localName.split(',')
+          const formData = Object.assign({}, this.form)
+          formData.popularName = formData.popularName.split(',')
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
             url: this.isEditing()
               ? 'species/' + this.$route.params.id
               : 'species',
-            data: this.form,
+            data: formData,
           })
             .then((resp) => {
               const category = resp.data

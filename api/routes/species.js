@@ -22,6 +22,9 @@ router.get('/', auth.authenticated, async (req, res) => {
   if (filters.scientificName) {
     query.scientificName = filters.scientificName
   }
+  if (filters.popularName) {
+    query.popularName = filters.popularName
+  }
 
   try {
     // ***** executa a query *****
@@ -71,7 +74,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     species.code = req.body.code
     species.scientificName = req.body.scientificName
     species.description = req.body.description
-    species.localName = req.body.localName
+    species.popularName = req.body.popularName
     species.images = req.body.images
 
     await species.save()
@@ -92,7 +95,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       species.code = req.body.code
       species.scientificName = req.body.scientificName
       species.description = req.body.description
-      species.localName = req.body.localName
+      species.popularName = req.body.popularName
       species.images = req.body.images
 
       await species.save()
