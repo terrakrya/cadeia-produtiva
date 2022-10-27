@@ -120,6 +120,22 @@ export default {
             })
 
           break
+        case 'speciesProducts':
+          this.list = (await this.$axios.$get('species-products', filterItem))
+            .map((specie) => ({
+              id: specie._id,
+              title: specie.name,
+              description: specie.description,
+              picture:
+                specie.images && specie.images.length
+                  ? specie.images[0].thumb
+                  : '',
+            }))
+            .sort(function (a, b) {
+              return a.title.localeCompare(b.title)
+            })
+
+          break
       }
     }
 

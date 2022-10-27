@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 const secret = process.env.SECRET || 'cadeia-produtiva'
 
@@ -11,6 +12,12 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
     description: String,
+
+    specieProduct: {
+      type: ObjectId,
+      ref: 'SpeciesProduct',
+      required: true,
+    },
   },
   {
     timestamps: true,
@@ -24,6 +31,7 @@ ProductSchema.methods.data = function () {
     id: this.id,
     code: this.code,
     description: this.description,
+    specieProduct: this.specieProduct,
   }
 }
 ProductSchema.methods.generateJWT = function () {

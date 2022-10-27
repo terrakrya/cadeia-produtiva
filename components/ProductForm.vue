@@ -27,6 +27,19 @@
               </b-form-group>
             </div>
           </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <b-form-group label="Selecionar uma classe de espécie/produto *">
+                <form-entity-select
+                  v-model="form.specieProduct"
+                  v-validate="'required'"
+                  type="speciesProducts"
+                  name="specieProduct"
+                />
+                <field-error :msg="veeErrors" field="specieProduct" />
+              </b-form-group>
+            </div>
+          </div>
           <form-submit :sending="is_sending" />
         </b-form>
       </div>
@@ -35,15 +48,18 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
+import FormEntitySelect from '@/components/FormEntitySelect'
 export default {
   components: {
     Breadcrumb,
+    FormEntitySelect,
   },
   data() {
     return {
       form: {
         code: '',
         description: '',
+        specieProduct: '',
       },
     }
   },

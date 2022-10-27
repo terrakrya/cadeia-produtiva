@@ -27,7 +27,7 @@ router.get('/', auth.authenticated, async (req, res) => {
     // ***** executa a query *****
 
     const product = await Product.find(query)
-      .populate(populate(req))
+      .populate('specieProduct')
       .sort('code')
 
     res.json(product)
@@ -70,6 +70,7 @@ router.post('/', auth.authenticated, async (req, res) => {
 
     product.code = req.body.code
     product.description = req.body.description
+    product.specieProduct = req.body.specieProduct
 
     await product.save()
 
@@ -88,6 +89,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
     if (product) {
       product.code = req.body.code
       product.description = req.body.description
+      product.specieProduct = req.body.specieProduct
 
       await product.save()
 
