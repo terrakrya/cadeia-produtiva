@@ -108,6 +108,8 @@ router.post('/', auth.authenticated, async (req, res) => {
     user.name = req.body.name
     user.role = req.body.role
     user.cpf = req.body.cpf
+    user.unitOfMeasurement = req.body.unitOfMeasurement
+    user.buyerPosition = req.body.buyerPosition
 
     if (req.body.password) {
       user.setPassword(req.body.password)
@@ -136,6 +138,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.name = req.body.name
       user.role = req.body.role
       user.cpf = req.body.cpf
+      user.unitOfMeasurement = req.body.unitOfMeasurement
+      user.buyerPosition = req.body.buyerPosition
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -166,6 +170,8 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.email = req.body.email || user.email
       user.username = req.body.username || user.username
       user.cpf = req.body.cpf || user.cpf
+      user.unitOfMeasurement = req.body.unitOfMeasurement
+      user.buyerPosition = req.body.buyerPosition
 
       if (req.body.password) {
         user.setPassword(req.body.password)

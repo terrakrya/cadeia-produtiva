@@ -6,6 +6,28 @@
         <form-headline name="Minha conta" />
         <loading :loading="is_loading" />
         <b-form v-if="!is_loading" @submit.prevent="save">
+          <div class="row">
+            <b-col sm="6">
+              <b-form-group label="Unidade de medida">
+                <b-form-select
+                  v-model="form.unitOfMeasurement"
+                  class="form-control"
+                  name="unitOfMeasurement"
+                  :options="tipoDeUnidade"
+                />
+              </b-form-group>
+            </b-col>
+            <b-col sm="6">
+              <b-form-group label="Posição na cadeia produtiva do comprador">
+                <b-form-select
+                  v-model="form.buyerPosition"
+                  class="form-control"
+                  name="buyerPosition"
+                  :options="buyerPositions"
+                />
+              </b-form-group>
+            </b-col>
+          </div>
           <b-row>
             <b-col>
               <b-form-group label="Nome *">
@@ -77,6 +99,8 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
+import tipoDeUnidade from '@/data/tipo-de-unidade'
+import buyerPositions from '@/data/posicao-do-comprador'
 
 export default {
   components: {
@@ -84,13 +108,17 @@ export default {
   },
   data() {
     return {
+      tipoDeUnidade,
+      buyerPositions,
       form: {
+        unitOfMeasurement: '',
         name: '',
         email: '',
         username: '',
         cpf: '',
         password: '',
         password_confirmation: '',
+        buyerPosition: '',
       },
     }
   },

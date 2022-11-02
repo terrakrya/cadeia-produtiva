@@ -7,6 +7,8 @@ const secret = process.env.SECRET || 'cadeia-produtiva'
 const UserSchema = new mongoose.Schema(
   {
     role: String,
+    unitOfMeasurement: String,
+    buyerPosition: String,
     username: {
       type: String,
       lowercase: true,
@@ -61,6 +63,8 @@ UserSchema.methods.data = function () {
     email: this.email,
     name: this.name,
     nickname: this.nickname,
+    unitOfMeasurement: this.unitOfMeasurement,
+    buyerPosition: this.buyerPosition,
   }
 }
 UserSchema.methods.generateJWT = function () {
