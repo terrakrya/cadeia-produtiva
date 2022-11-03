@@ -43,6 +43,41 @@
             </div>
           </div>
           <div class="row">
+            <b-col sm="4">
+              <b-form-group label="Estado">
+                <b-form-select
+                  v-model="form.uf"
+                  v-validate="'required'"
+                  class="form-control"
+                  :options="estados"
+                  name="uf"
+                  @input="loadCities()"
+                />
+                <field-error :msg="veeErrors" field="uf" />
+              </b-form-group>
+            </b-col>
+            <b-col sm="4">
+              <b-form-group label="Cidade">
+                <b-form-select
+                  v-model="form.city"
+                  class="form-control"
+                  :options="cidades"
+                />
+              </b-form-group>
+            </b-col>
+            <b-col sm="4">
+              <b-form-group label="Região">
+                <b-form-select
+                  v-model="form.region"
+                  class="form-control"
+                  name="region"
+                  :placeholder="'Selecione a região'"
+                  :options="regiao"
+                />
+              </b-form-group>
+            </b-col>
+          </div>
+          <div class="row">
             <b-col sm="6">
               <b-form-group label="Área de atuação">
                 <b-form-select
@@ -55,7 +90,11 @@
             </b-col>
             <div class="col-sm-6">
               <b-form-group label="Contato pessoal ">
-                <b-form-input v-model="form.contact" name="contact" />
+                <b-form-input
+                  v-model="form.contact"
+                  v-mask="['(##) #####-####']"
+                  name="contact"
+                />
               </b-form-group>
             </div>
           </div>
@@ -70,32 +109,6 @@
                 />
               </b-form-group>
             </b-col>
-            <b-col sm="6">
-              <b-form-group label="Região">
-                <b-form-select
-                  v-model="form.region"
-                  class="form-control"
-                  name="region"
-                  :placeholder="'Selecione a região'"
-                  :options="regiao"
-                />
-              </b-form-group>
-            </b-col>
-          </div>
-          <div class="row">
-            <div class="col-sm-4">
-              <b-form-group label="Área protegida">
-                <b-form-input
-                  v-model="form.protectedArea"
-                  name="protectedArea"
-                />
-              </b-form-group>
-            </div>
-            <div class="col-sm-4">
-              <b-form-group label="Território castanhal">
-                <b-form-input v-model="form.territories" name="territory" />
-              </b-form-group>
-            </div>
             <div class="col-sm-3">
               <b-form-group label="Cooperados (quantidade)">
                 <b-form-input
@@ -152,7 +165,9 @@ import Breadcrumb from '@/components/Breadcrumb'
 import elo from '@/data/elo-cadeia-produtiva.json'
 import regiao from '@/data/regiao.json'
 import areaAtuacao from '@/data/area-atuacao.json'
-import tiposOrganizacao from '@/data/tipos-organizacao.json'
+import tiposOrganizacao from '@/data/posicao-do-comprador.json'
+import estados from '@/data/estados.json'
+import cidades from '@/data/cidades.json'
 export default {
   components: {
     Breadcrumb,
@@ -163,6 +178,8 @@ export default {
       regiao,
       areaAtuacao,
       tiposOrganizacao,
+      estados,
+      cidades,
       form: {
         name: '',
         type: '',
@@ -178,6 +195,8 @@ export default {
         products: [],
         bestPractices: [],
         certifications: [],
+        uf: '',
+        city: '',
       },
       products: [],
       bestPractices: [],
@@ -189,6 +208,8 @@ export default {
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
+
+    this.loadCities()
   },
   methods: {
     async list() {
@@ -200,6 +221,22 @@ export default {
       this.certificationTypes = tipos.filter((i) => {
         return i.type === 'certificação'
       })
+    },
+    loadCities() {
+      // lista de cidades com somente o item "selecione a cidade"
+      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
+
+      // filtra as cidades conforme a UF selecionada
+      if (this.form.uf) {
+        this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
+      }
+
+      // limpa a cidade digitada, caso não exista na lista
+      if (this.form.city && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.city)) {
+          this.form.city = ''
+        }
+      }
     },
     edit(id) {
       this.is_loading = true

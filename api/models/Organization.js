@@ -20,8 +20,8 @@ const OrganizationSchema = new mongoose.Schema(
     contact: String,
     chainLink: String,
     region: String,
-    territories: String,
-    protectedArea: String,
+    uf: String,
+    city: String,
     members: Number,
     products: [
       {
@@ -60,8 +60,8 @@ OrganizationSchema.methods.data = function () {
     contact: this.contact,
     chainLink: this.chainLink,
     region: this.region,
-    protectedArea: this.protectedArea,
-    territories: this.territories,
+    uf: this.uf,
+    city: this.city,
     members: this.members,
     products: this.products,
     bestPractices: this.bestPractices,
