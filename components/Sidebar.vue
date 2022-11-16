@@ -32,6 +32,11 @@
             Classificação da Espécie/Produto
           </b-nav-item>
         </b-nav>
+        <b-nav vertical>
+          <b-nav-item to="/informacao-preco">
+            Dinâmica de coleta de informação de preços
+          </b-nav-item>
+        </b-nav>
       </b-list-group-item>
       <b-list-group-item>
         <b-icon-person /> {{ currentUser.nickname || currentUser.name }}
