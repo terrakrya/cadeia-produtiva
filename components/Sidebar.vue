@@ -8,33 +8,37 @@
       </b-list-group-item>
       <b-list-group-item class="bg-brown-2">
         <b-nav vertical>
-          <b-nav-item to="/usuarios">Usuários</b-nav-item>
+          <b-nav-item to="/cadastros/especies">Espécies</b-nav-item>
         </b-nav>
         <b-nav vertical>
-          <b-nav-item to="/produtos">Produtos</b-nav-item>
-        </b-nav>
-        <b-nav vertical>
-          <b-nav-item to="/categorias">Categorias</b-nav-item>
-        </b-nav>
-        <b-nav vertical>
-          <b-nav-item to="/tipos">
-            Tipos de boas práticas e certificação
-          </b-nav-item>
-        </b-nav>
-        <b-nav vertical>
-          <b-nav-item to="/organizacoes">Organizações</b-nav-item>
-        </b-nav>
-        <b-nav vertical>
-          <b-nav-item to="/especies">Espécies</b-nav-item>
-        </b-nav>
-        <b-nav vertical>
-          <b-nav-item to="/especies-produtos">
+          <b-nav-item to="/cadastros/especies-produtos">
             Classificação da Espécie/Produto
           </b-nav-item>
         </b-nav>
         <b-nav vertical>
-          <b-nav-item to="/informacao-preco">
-            Dinâmica de coleta de informação de preços
+          <b-nav-item to="/cadastros/tipos">
+            Tipos de boas práticas e certificação
+          </b-nav-item>
+        </b-nav>
+        <b-nav vertical>
+          <b-nav-item to="/cadastros/produtos">Produtos</b-nav-item>
+        </b-nav>
+        <b-nav vertical>
+          <b-nav-item to="/cadastros/organizacoes">Organizações</b-nav-item>
+        </b-nav>
+        <b-nav vertical>
+          <b-nav-item to="/cadastros/usuarios">Usuários</b-nav-item>
+        </b-nav>
+      </b-list-group-item>
+      <b-list-group-item>
+        <i class="fas fa-tools" />
+        Operacional
+        <b-icon-chevron-down />
+      </b-list-group-item>
+      <b-list-group-item class="bg-brown-2">
+        <b-nav vertical>
+          <b-nav-item to="/operacional/informacao-preco">
+            Coleta de preços
           </b-nav-item>
         </b-nav>
       </b-list-group-item>

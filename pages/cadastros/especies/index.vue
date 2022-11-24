@@ -1,14 +1,14 @@
 <template>
-  <div class="priceInformation">
-    <breadcrumb active="Informações de Preço" />
+  <div class="species">
+    <Breadcrumb active="Cadastro de espécies" />
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
           <div class="col-sm-6">
-            <h1>Dinâmica de coleta de informação de preços</h1>
+            <h1>Espécies</h1>
           </div>
           <div class="col-sm-6 main-actions">
-            <n-link to="/informacao-preco/cadastrar" class="btn btn-primary">
+            <n-link to="/cadastros/especies/cadastrar" class="btn btn-primary">
               <b-icon-plus /> {{ 'Cadastrar' }}
             </n-link>
           </div>
@@ -23,32 +23,26 @@
             />
           </div>
           <br />
-          <no-item :list="priceInformations" />
+          <no-item :list="species" />
           <b-table
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
-            :items="priceInformations"
-            :sort-by="'product'"
+            :items="species"
+            :sort-by="'code'"
             :filter="filters.search"
           >
-            <template #cell(createdAt)="data">
-              {{ data.item.createdAt | moment('DD/MM/YYYY') }}
+            <template #cell(scientificName)="data">
+              {{ data.item.scientificName }}
             </template>
-            <template #cell(messenger)="data">
-              {{ data.item.messenger.name }}
+            <template #cell(code)="data">
+              {{ data.item.code }}
             </template>
-            <template #cell(country)="data">
-              {{ data.item.country }}
-            </template>
-            <template #cell(product)="data">
-              {{ data.item.product.description }}
-            </template>
-            <template #cell(price)="data">
-              {{ data.item.price | moeda }}
+            <template #cell(description)="data">
+              {{ data.item.description }}
             </template>
             <template #cell(actions)="data">
               <n-link
-                :to="'/informacao-preco/' + data.item._id + '/editar'"
+                :to="'/cadastros/especies/' + data.item._id + '/editar'"
                 class="btn btn-secondary"
               >
                 <b-icon-pencil />
@@ -75,28 +69,18 @@ export default {
       filters: { search: null },
       table_fields: [
         {
-          key: 'createdAt',
-          label: 'Data',
+          key: 'scientificName',
+          label: 'Name científico',
           sortable: true,
         },
         {
-          key: 'messenger',
-          label: 'Mensageiro',
+          key: 'code',
+          label: 'Código',
           sortable: true,
         },
         {
-          key: 'country',
-          label: 'País',
-          sortable: true,
-        },
-        {
-          key: 'product',
-          label: 'produto',
-          sortable: true,
-        },
-        {
-          key: 'price',
-          label: 'Preço',
+          key: 'description',
+          label: 'Descrição',
           sortable: true,
         },
         {
@@ -105,7 +89,7 @@ export default {
           class: 'actions',
         },
       ],
-      priceInformations: [],
+      species: null,
     }
   },
 
@@ -114,7 +98,7 @@ export default {
   },
   methods: {
     async list() {
-      this.priceInformations = await this.$axios.$get('priceInformations')
+      this.species = await this.$axios.$get('species')
     },
 
     remove(id) {
@@ -123,7 +107,7 @@ export default {
         .then((confirmed) => {
           if (confirmed) {
             this.$axios
-              .$delete('priceInformations/' + id)
+              .$delete('species/' + id)
               .then(() => {
                 this.list()
               })

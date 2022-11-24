@@ -1,14 +1,17 @@
 <template>
-  <div class="organization">
-    <breadcrumb active="Cadastro de organizações" />
+  <div class="SpeciesProduct">
+    <breadcrumb active="Cadastro de Classificação da Espécie/Produto" />
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
           <div class="col-sm-6">
-            <h1>Organizações</h1>
+            <h1>Espécie/Produto</h1>
           </div>
           <div class="col-sm-6 main-actions">
-            <n-link to="/organizacoes/cadastrar" class="btn btn-primary">
+            <n-link
+              to="/cadastros/especies-produtos/cadastrar"
+              class="btn btn-primary"
+            >
               <b-icon-plus /> {{ 'Cadastrar' }}
             </n-link>
           </div>
@@ -23,26 +26,25 @@
             />
           </div>
           <br />
-          <no-item :list="organizations" />
+          <no-item :list="speciesProducts" />
           <b-table
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
-            :items="organizations"
+            :items="speciesProducts"
             :sort-by="'name'"
             :filter="filters.search"
           >
             <template #cell(name)="data">
               {{ data.item.name }}
             </template>
-            <template #cell(type)="data">
-              {{ data.item.type }}
-            </template>
-            <template #cell(cnpj)="data">
-              {{ data.item.cnpj }}
+            <template #cell(specie)="data">
+              {{ data.item.specie.scientificName }}
             </template>
             <template #cell(actions)="data">
               <n-link
-                :to="'/organizacoes/' + data.item._id + '/editar'"
+                :to="
+                  '/cadastros/especies-produtos/' + data.item._id + '/editar'
+                "
                 class="btn btn-secondary"
               >
                 <b-icon-pencil />
@@ -74,13 +76,8 @@ export default {
           sortable: true,
         },
         {
-          key: 'type',
-          label: 'Tipo',
-          sortable: true,
-        },
-        {
-          key: 'cnpj',
-          label: 'CNPJ',
+          key: 'specie',
+          label: 'Espécie',
           sortable: true,
         },
         {
@@ -89,7 +86,7 @@ export default {
           class: 'actions',
         },
       ],
-      organizations: [],
+      speciesProducts: [],
     }
   },
 
@@ -98,7 +95,7 @@ export default {
   },
   methods: {
     async list() {
-      this.organizations = await this.$axios.$get('organizations')
+      this.speciesProducts = await this.$axios.$get('species-products')
     },
 
     remove(id) {
@@ -107,7 +104,7 @@ export default {
         .then((confirmed) => {
           if (confirmed) {
             this.$axios
-              .$delete('organizations/' + id)
+              .$delete('species-products/' + id)
               .then(() => {
                 this.list()
               })

@@ -1,14 +1,17 @@
 <template>
-  <div class="type">
-    <breadcrumb active="Cadastro de tipos" />
+  <div class="priceInformation">
+    <breadcrumb active="Informações de Preço" />
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
           <div class="col-sm-6">
-            <h1>Tipos de boas práticas e certificação</h1>
+            <h1>Coleta de preços</h1>
           </div>
           <div class="col-sm-6 main-actions">
-            <n-link to="/tipos/cadastrar" class="btn btn-primary">
+            <n-link
+              to="/operacional/informacao-preco/cadastrar"
+              class="btn btn-primary"
+            >
               <b-icon-plus /> {{ 'Cadastrar' }}
             </n-link>
           </div>
@@ -23,26 +26,34 @@
             />
           </div>
           <br />
-          <no-item :list="types" />
+          <no-item :list="priceInformations" />
           <b-table
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
-            :items="types"
-            :sort-by="'code'"
+            :items="priceInformations"
+            :sort-by="'product'"
             :filter="filters.search"
           >
-            <template #cell(code)="data">
-              {{ data.item.code }}
+            <template #cell(createdAt)="data">
+              {{ data.item.createdAt | moment('DD/MM/YYYY') }}
             </template>
-            <template #cell(description)="data">
-              {{ data.item.description }}
+            <template #cell(messenger)="data">
+              {{ data.item.messenger.name }}
             </template>
-            <template #cell(type)="data">
-              {{ data.item.type }}
+            <template #cell(country)="data">
+              {{ data.item.country }}
+            </template>
+            <template #cell(product)="data">
+              {{ data.item.product.description }}
+            </template>
+            <template #cell(price)="data">
+              {{ data.item.price | moeda }}
             </template>
             <template #cell(actions)="data">
               <n-link
-                :to="'/tipos/' + data.item._id + '/editar'"
+                :to="
+                  '/operacional/informacao-preco/' + data.item._id + '/editar'
+                "
                 class="btn btn-secondary"
               >
                 <b-icon-pencil />
@@ -69,18 +80,28 @@ export default {
       filters: { search: null },
       table_fields: [
         {
-          key: 'code',
-          label: 'Código',
+          key: 'createdAt',
+          label: 'Data',
           sortable: true,
         },
         {
-          key: 'description',
-          label: 'Descrição',
+          key: 'messenger',
+          label: 'Mensageiro',
           sortable: true,
         },
         {
-          key: 'type',
-          label: 'Tipo',
+          key: 'country',
+          label: 'País',
+          sortable: true,
+        },
+        {
+          key: 'product',
+          label: 'produto',
+          sortable: true,
+        },
+        {
+          key: 'price',
+          label: 'Preço',
           sortable: true,
         },
         {
@@ -89,7 +110,7 @@ export default {
           class: 'actions',
         },
       ],
-      types: null,
+      priceInformations: [],
     }
   },
 
@@ -98,7 +119,7 @@ export default {
   },
   methods: {
     async list() {
-      this.types = await this.$axios.$get('types')
+      this.priceInformations = await this.$axios.$get('priceInformations')
     },
 
     remove(id) {
@@ -107,7 +128,7 @@ export default {
         .then((confirmed) => {
           if (confirmed) {
             this.$axios
-              .$delete('types/' + id)
+              .$delete('priceInformations/' + id)
               .then(() => {
                 this.list()
               })

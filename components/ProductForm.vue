@@ -1,6 +1,9 @@
 <template>
   <div class="product">
-    <Breadcrumb :links="[['Cadastro', '/produtos']]" active="Produto" />
+    <Breadcrumb
+      :links="[['Cadastro', '/cadastros/produtos']]"
+      active="Produto"
+    />
     <div class="panel">
       <div class="panel-body">
         <form-headline name="Produto" />
@@ -119,7 +122,7 @@ export default {
               const product = resp.data
               if (product && product._id) {
                 this.notify('Produto salvo com sucesso')
-                this.$router.replace('/produtos')
+                this.$router.replace('/cadastros/produtos')
               }
               this.is_sending = false
             })

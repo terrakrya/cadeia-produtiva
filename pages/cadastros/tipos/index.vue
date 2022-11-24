@@ -1,14 +1,14 @@
 <template>
-  <div class="SpeciesProduct">
-    <breadcrumb active="Cadastro de Classificação da Espécie/Produto" />
+  <div class="type">
+    <breadcrumb active="Cadastro de tipos" />
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
           <div class="col-sm-6">
-            <h1>Espécie/Produto</h1>
+            <h1>Tipos de boas práticas e certificação</h1>
           </div>
           <div class="col-sm-6 main-actions">
-            <n-link to="/especies-produtos/cadastrar" class="btn btn-primary">
+            <n-link to="/cadastros/tipos/cadastrar" class="btn btn-primary">
               <b-icon-plus /> {{ 'Cadastrar' }}
             </n-link>
           </div>
@@ -23,23 +23,26 @@
             />
           </div>
           <br />
-          <no-item :list="speciesProducts" />
+          <no-item :list="types" />
           <b-table
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
-            :items="speciesProducts"
-            :sort-by="'name'"
+            :items="types"
+            :sort-by="'code'"
             :filter="filters.search"
           >
-            <template #cell(name)="data">
-              {{ data.item.name }}
+            <template #cell(code)="data">
+              {{ data.item.code }}
             </template>
-            <template #cell(specie)="data">
-              {{ data.item.specie.scientificName }}
+            <template #cell(description)="data">
+              {{ data.item.description }}
+            </template>
+            <template #cell(type)="data">
+              {{ data.item.type }}
             </template>
             <template #cell(actions)="data">
               <n-link
-                :to="'/especies-produtos/' + data.item._id + '/editar'"
+                :to="'/cadastros/tipos/' + data.item._id + '/editar'"
                 class="btn btn-secondary"
               >
                 <b-icon-pencil />
@@ -66,13 +69,18 @@ export default {
       filters: { search: null },
       table_fields: [
         {
-          key: 'name',
-          label: 'Nome',
+          key: 'code',
+          label: 'Código',
           sortable: true,
         },
         {
-          key: 'specie',
-          label: 'Espécie',
+          key: 'description',
+          label: 'Descrição',
+          sortable: true,
+        },
+        {
+          key: 'type',
+          label: 'Tipo',
           sortable: true,
         },
         {
@@ -81,7 +89,7 @@ export default {
           class: 'actions',
         },
       ],
-      speciesProducts: [],
+      types: null,
     }
   },
 
@@ -90,7 +98,7 @@ export default {
   },
   methods: {
     async list() {
-      this.speciesProducts = await this.$axios.$get('species-products')
+      this.types = await this.$axios.$get('types')
     },
 
     remove(id) {
@@ -99,7 +107,7 @@ export default {
         .then((confirmed) => {
           if (confirmed) {
             this.$axios
-              .$delete('species-products/' + id)
+              .$delete('types/' + id)
               .then(() => {
                 this.list()
               })

@@ -1,14 +1,17 @@
 <template>
-  <div class="species">
-    <Breadcrumb active="Cadastro de espécies" />
+  <div class="organization">
+    <breadcrumb active="Cadastro de organizações" />
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
           <div class="col-sm-6">
-            <h1>Espécies</h1>
+            <h1>Organizações</h1>
           </div>
           <div class="col-sm-6 main-actions">
-            <n-link to="/especies/cadastrar" class="btn btn-primary">
+            <n-link
+              to="/cadastros/organizacoes/cadastrar"
+              class="btn btn-primary"
+            >
               <b-icon-plus /> {{ 'Cadastrar' }}
             </n-link>
           </div>
@@ -23,26 +26,26 @@
             />
           </div>
           <br />
-          <no-item :list="species" />
+          <no-item :list="organizations" />
           <b-table
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
-            :items="species"
-            :sort-by="'code'"
+            :items="organizations"
+            :sort-by="'name'"
             :filter="filters.search"
           >
-            <template #cell(scientificName)="data">
-              {{ data.item.scientificName }}
+            <template #cell(name)="data">
+              {{ data.item.name }}
             </template>
-            <template #cell(code)="data">
-              {{ data.item.code }}
+            <template #cell(type)="data">
+              {{ data.item.type }}
             </template>
-            <template #cell(description)="data">
-              {{ data.item.description }}
+            <template #cell(cnpj)="data">
+              {{ data.item.cnpj }}
             </template>
             <template #cell(actions)="data">
               <n-link
-                :to="'/especies/' + data.item._id + '/editar'"
+                :to="'/cadastros/organizacoes/' + data.item._id + '/editar'"
                 class="btn btn-secondary"
               >
                 <b-icon-pencil />
@@ -69,18 +72,18 @@ export default {
       filters: { search: null },
       table_fields: [
         {
-          key: 'scientificName',
-          label: 'Name científico',
+          key: 'name',
+          label: 'Nome',
           sortable: true,
         },
         {
-          key: 'code',
-          label: 'Código',
+          key: 'type',
+          label: 'Tipo',
           sortable: true,
         },
         {
-          key: 'description',
-          label: 'Descrição',
+          key: 'cnpj',
+          label: 'CNPJ',
           sortable: true,
         },
         {
@@ -89,7 +92,7 @@ export default {
           class: 'actions',
         },
       ],
-      species: null,
+      organizations: [],
     }
   },
 
@@ -98,7 +101,7 @@ export default {
   },
   methods: {
     async list() {
-      this.species = await this.$axios.$get('species')
+      this.organizations = await this.$axios.$get('organizations')
     },
 
     remove(id) {
@@ -107,7 +110,7 @@ export default {
         .then((confirmed) => {
           if (confirmed) {
             this.$axios
-              .$delete('species/' + id)
+              .$delete('organizations/' + id)
               .then(() => {
                 this.list()
               })

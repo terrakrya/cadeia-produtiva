@@ -1,6 +1,6 @@
 <template>
   <div class="type">
-    <Breadcrumb :links="[['Cadastro', '/tipos']]" active="Tipo" />
+    <Breadcrumb :links="[['Cadastro', '/cadastros/tipos']]" active="Tipo" />
     <div class="panel">
       <div class="panel-body">
         <form-headline name="Tipos de boas práticas e certificação" />
@@ -117,7 +117,7 @@ export default {
               const category = resp.data
               if (category && category._id) {
                 this.notify('Tipo salvo com sucesso')
-                this.$router.replace('/tipos')
+                this.$router.replace('/cadastros/tipos')
               }
               this.is_sending = false
             })

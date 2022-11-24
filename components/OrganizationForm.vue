@@ -1,6 +1,9 @@
 <template>
   <div class="organization-form">
-    <Breadcrumb :links="[['Cadastro', '/organizações']]" active="Organização" />
+    <Breadcrumb
+      :links="[['Cadastro', '/cadastros/organizações']]"
+      active="Organização"
+    />
     <div class="panel">
       <div class="panel-body">
         <form-headline name="Organização" />
@@ -267,7 +270,7 @@ export default {
               const category = resp.data
               if (category && category._id) {
                 this.notify('Organização salvo com sucesso')
-                this.$router.replace('/organizacoes')
+                this.$router.replace('/cadastros/organizacoes')
               }
               this.is_sending = false
             })

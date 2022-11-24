@@ -1,6 +1,9 @@
 <template>
   <div class="user_form">
-    <breadcrumb :links="[['Cadastro', '/usuarios']]" active="Usuário" />
+    <breadcrumb
+      :links="[['Cadastro', '/cadastros/usuarios']]"
+      active="Usuário"
+    />
     <div class="panel">
       <div class="panel-body">
         <form-headline name="Usuário" />
@@ -219,7 +222,7 @@ export default {
                 }
 
                 this.notify('Usuário salvo com sucesso')
-                this.$router.replace('/usuarios')
+                this.$router.replace('/cadastros/usuarios')
               }
               this.is_sending = false
             })

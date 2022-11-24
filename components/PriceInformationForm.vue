@@ -1,9 +1,12 @@
 <template>
   <div class="type">
-    <Breadcrumb :links="[['Cadastro', '/informacao-preco']]" active="preço" />
+    <Breadcrumb
+      :links="[['Cadastro', '/operacional/informacao-preco']]"
+      active="preço"
+    />
     <div class="panel">
       <div class="panel-body">
-        <form-headline name="Dinâmica de coleta de informação de preços" />
+        <form-headline name="Coleta de preços" />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
           <div class="row">
@@ -182,7 +185,7 @@ export default {
               const category = resp.data
               if (category && category._id) {
                 this.notify('informações de preço salvo com sucesso')
-                this.$router.replace('/informacao-preco')
+                this.$router.replace('/operacional/informacao-preco')
               }
               this.is_sending = false
             })

@@ -1,14 +1,14 @@
 <template>
-  <div class="user">
-    <breadcrumb active="Cadastro de usuários" />
+  <div class="product">
+    <breadcrumb active="Cadastro de produtos" />
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
           <div class="col-sm-6">
-            <h1>Usuários</h1>
+            <h1>Produtos</h1>
           </div>
           <div class="col-sm-6 main-actions">
-            <n-link to="/usuarios/cadastrar" class="btn btn-primary">
+            <n-link to="/cadastros/produtos/cadastrar" class="btn btn-primary">
               <b-icon-plus /> {{ 'Cadastrar' }}
             </n-link>
           </div>
@@ -23,23 +23,23 @@
             />
           </div>
           <br />
-          <no-item :list="users" />
+          <no-item :list="products" />
           <b-table
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
-            :items="users"
-            :sort-by="'name'"
+            :items="products"
+            :sort-by="'code'"
             :filter="filters.search"
           >
-            <template #cell(name)="data">
-              {{ data.item.name }}
+            <template #cell(code)="data">
+              {{ data.item.code }}
             </template>
-            <template #cell(role)="data">
-              {{ data.item.role }}
+            <template #cell(description)="data">
+              {{ data.item.description }}
             </template>
             <template #cell(actions)="data">
               <n-link
-                :to="'/usuarios/' + data.item._id + '/editar'"
+                :to="'/cadastros/produtos/' + data.item._id + '/editar'"
                 class="btn btn-secondary"
               >
                 <b-icon-pencil />
@@ -66,13 +66,13 @@ export default {
       filters: { search: null },
       table_fields: [
         {
-          key: 'name',
-          label: 'Nome',
+          key: 'code',
+          label: 'Código',
           sortable: true,
         },
         {
-          key: 'role',
-          label: 'Perfil',
+          key: 'description',
+          label: 'Descrição',
           sortable: true,
         },
         {
@@ -81,7 +81,7 @@ export default {
           class: 'actions',
         },
       ],
-      users: null,
+      products: null,
     }
   },
 
@@ -90,11 +90,7 @@ export default {
   },
   methods: {
     async list() {
-      this.users = await this.$axios.$get('users', {
-        params: {
-          populate: 'network',
-        },
-      })
+      this.products = await this.$axios.$get('products')
     },
 
     remove(id) {
@@ -103,7 +99,7 @@ export default {
         .then((confirmed) => {
           if (confirmed) {
             this.$axios
-              .$delete('users/' + id)
+              .$delete('products/' + id)
               .then(() => {
                 this.list()
               })
