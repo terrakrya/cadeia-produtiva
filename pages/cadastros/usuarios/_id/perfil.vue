@@ -18,7 +18,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="6">
-              <b-form-group label="Posição na cadeia produtiva do comprador">
+              <b-form-group label="Posição na cadeia de valor">
                 <b-form-select
                   v-model="form.buyerPosition"
                   class="form-control"
@@ -39,6 +39,11 @@
                 <field-error :msg="veeErrors" field="name" />
               </b-form-group>
             </b-col>
+            <div class="col-sm-4">
+              <b-form-group label="Apelido ">
+                <b-form-input v-model="form.nickname" />
+              </b-form-group>
+            </div>
             <b-col>
               <b-form-group label="E-mail *">
                 <b-form-input v-model="form.email" name="email" />
@@ -68,6 +73,26 @@
               </b-form-group>
             </b-col>
           </b-row>
+          <div class="row">
+            <div class="col-sm-4">
+              <b-form-group label="Moeda">
+                <b-form-select
+                  v-model="form.coin"
+                  class="form-control"
+                  :options="moeda"
+                />
+              </b-form-group>
+            </div>
+            <div class="col-sm-4">
+              <b-form-group label="País">
+                <b-form-select
+                  v-model="form.country"
+                  class="form-control"
+                  :options="pais"
+                />
+              </b-form-group>
+            </div>
+          </div>
           <b-row>
             <b-col>
               <b-form-group label="Senha">
@@ -101,6 +126,8 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import tipoDeUnidade from '@/data/tipo-de-unidade'
 import buyerPositions from '@/data/posicao-do-comprador'
+import pais from '@/data/pais.json'
+import moeda from '@/data/moeda.json'
 
 export default {
   components: {
@@ -110,6 +137,8 @@ export default {
     return {
       tipoDeUnidade,
       buyerPositions,
+      pais,
+      moeda,
       form: {
         unitOfMeasurement: '',
         name: '',
@@ -119,6 +148,9 @@ export default {
         password: '',
         password_confirmation: '',
         buyerPosition: '',
+        coin: '',
+        country: '',
+        nickname: '',
       },
     }
   },

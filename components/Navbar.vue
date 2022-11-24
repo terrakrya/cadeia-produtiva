@@ -11,7 +11,9 @@
     </b-collapse>
     <b-navbar-nav class="ml-auto d-none d-md-flex">
       <b-nav-item-dropdown :text="currentUser.name" right>
-        <b-dropdown-item :to="'/usuarios/' + currentUser._id + '/perfil'">
+        <b-dropdown-item
+          :to="'/cadastros/usuarios/' + currentUser._id + '/perfil'"
+        >
           {{ 'Minha conta' }}
         </b-dropdown-item>
         <b-dropdown-item @click="$auth.logout()">Sair</b-dropdown-item>
