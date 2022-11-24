@@ -78,6 +78,7 @@
               <b-form-group label="Moeda">
                 <b-form-select
                   v-model="form.coin"
+                  false-value="Real"
                   class="form-control"
                   :options="moeda"
                 />
@@ -148,8 +149,8 @@ export default {
         password: '',
         password_confirmation: '',
         buyerPosition: '',
-        coin: '',
-        country: '',
+        coin: 'real',
+        country: 'BR',
         nickname: '',
       },
     }
