@@ -51,6 +51,30 @@
             </div>
           </div>
           <div class="row">
+            <b-col sm="4">
+              <b-form-group label="Estado">
+                <b-form-select
+                  v-model="form.uf"
+                  v-validate="'required'"
+                  class="form-control"
+                  :options="estados"
+                  name="uf"
+                  @input="loadCities()"
+                />
+                <field-error :msg="veeErrors" field="uf" />
+              </b-form-group>
+            </b-col>
+            <b-col sm="4">
+              <b-form-group label="Cidade">
+                <b-form-select
+                  v-model="form.city"
+                  class="form-control"
+                  :options="cidades"
+                />
+              </b-form-group>
+            </b-col>
+          </div>
+          <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Preço *">
                 <money
@@ -116,6 +140,8 @@ import posicaoComprador from '@/data/posicao-do-comprador.json'
 import moeda from '@/data/moeda.json'
 import medida from '@/data/tipo-de-unidade.json'
 import pais from '@/data/pais.json'
+import estados from '@/data/estados.json'
+import cidades from '@/data/cidades.json'
 export default {
   components: {
     Breadcrumb,
@@ -126,6 +152,8 @@ export default {
       moeda,
       posicaoComprador,
       pais,
+      estados,
+      cidades,
       form: {
         messenger: '',
         createdAt: this.$moment(new Date())
@@ -137,6 +165,8 @@ export default {
         country: '',
         measure: '',
         product: '',
+        uf: '',
+        city: '',
       },
       products: [],
       messengers: [],
@@ -147,6 +177,8 @@ export default {
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
+
+    this.loadCities()
   },
   methods: {
     async list() {
@@ -155,6 +187,22 @@ export default {
       this.messengers = users.filter((i) => {
         return i.role === 'mensageiro'
       })
+    },
+    loadCities() {
+      // lista de cidades com somente o item "selecione a cidade"
+      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
+
+      // filtra as cidades conforme a UF selecionada
+      if (this.form.uf) {
+        this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
+      }
+
+      // limpa a cidade digitada, caso não exista na lista
+      if (this.form.city && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.city)) {
+          this.form.city = ''
+        }
+      }
     },
     edit(id) {
       this.is_loading = true

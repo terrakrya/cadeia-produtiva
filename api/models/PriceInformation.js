@@ -35,6 +35,8 @@ const PriceSchema = new mongoose.Schema(
         required: true,
       },
     ],
+    uf: String,
+    city: String,
   },
   {
     timestamps: true,
@@ -54,6 +56,8 @@ PriceSchema.methods.data = function () {
     measure: this.measure,
     product: this.product,
     messenger: this.messenger,
+    uf: this.uf,
+    city: this.city,
   }
 }
 PriceSchema.methods.generateJWT = function () {

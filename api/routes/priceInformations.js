@@ -58,6 +58,8 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.measure = req.body.measure
     price.product = req.body.product
     price.messenger = req.body.messenger
+    price.uf = req.body.uf
+    price.city = req.body.city
 
     await price.save()
 
@@ -82,6 +84,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       price.measure = req.body.measure
       price.product = req.body.product
       price.messenger = req.body.messenger
+      price.uf = req.body.uf
+      price.city = req.body.city
 
       await price.save()
 
