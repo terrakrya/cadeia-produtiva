@@ -61,7 +61,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     organizations.type = req.body.type
     organizations.cnpj = req.body.cnpj
     organizations.address = req.body.address
-    organizations.occupationArea = req.body.occupationArea
+    organizations.territory = req.body.territory
     organizations.contact = req.body.contact
     organizations.chainLink = req.body.chainLink
     organizations.region = req.body.region
@@ -71,6 +71,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     organizations.products = req.body.products
     organizations.bestPractices = req.body.bestPractices
     organizations.certifications = req.body.certifications
+    organizations.comments = req.body.comments
 
     await organizations.save()
 
@@ -93,7 +94,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       organizations.type = req.body.type
       organizations.cnpj = req.body.cnpj
       organizations.address = req.body.address
-      organizations.occupationArea = req.body.occupationArea
+      organizations.territory = req.body.territory
       organizations.contact = req.body.contact
       organizations.chainLink = req.body.chainLink
       organizations.region = req.body.region
@@ -103,6 +104,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       organizations.products = req.body.products
       organizations.bestPractices = req.body.bestPractices
       organizations.certifications = req.body.certifications
+      organizations.comments = req.body.comments
       await organizations.save()
 
       return res.send(organizations)

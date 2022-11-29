@@ -82,12 +82,12 @@
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Área de atuação">
+              <b-form-group label="Territorio">
                 <b-form-select
-                  v-model="form.occupationArea"
+                  v-model="form.territory"
                   class="form-control"
-                  name="occupationArea"
-                  :options="areaAtuacao"
+                  name="territory"
+                  :options="territorio"
                 />
               </b-form-group>
             </b-col>
@@ -156,6 +156,11 @@
                 />
               </b-form-group>
             </div>
+            <div class="col-sm-12">
+              <b-form-group label="Comentarios">
+                <b-form-textarea v-model="form.comments" />
+              </b-form-group>
+            </div>
           </div>
           <form-submit :sending="is_sending" />
         </b-form>
@@ -167,7 +172,7 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import elo from '@/data/elo-cadeia-produtiva.json'
 import regiao from '@/data/regiao.json'
-import areaAtuacao from '@/data/area-atuacao.json'
+import territorio from '@/data/area-atuacao.json'
 import tiposOrganizacao from '@/data/posicao-do-comprador.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
@@ -179,7 +184,7 @@ export default {
     return {
       elo,
       regiao,
-      areaAtuacao,
+      territorio,
       tiposOrganizacao,
       estados,
       cidades,
@@ -188,7 +193,7 @@ export default {
         type: '',
         cnpj: '',
         address: '',
-        occupationArea: '',
+        territory: '',
         contact: '',
         chainLink: '',
         region: '',
@@ -200,6 +205,7 @@ export default {
         certifications: [],
         uf: '',
         city: '',
+        comments: '',
       },
       products: [],
       bestPractices: [],

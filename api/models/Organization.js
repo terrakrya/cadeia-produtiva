@@ -16,13 +16,14 @@ const OrganizationSchema = new mongoose.Schema(
     },
     cnpj: String,
     address: String,
-    occupationArea: String,
+    territory: String,
     contact: String,
     chainLink: String,
     region: String,
     uf: String,
     city: String,
     members: Number,
+    comments: String,
     products: [
       {
         type: ObjectId,
@@ -56,7 +57,7 @@ OrganizationSchema.methods.data = function () {
     cnpj: this.cnpj,
     type: this.type,
     address: this.address,
-    occupationArea: this.occupationArea,
+    territory: this.territory,
     contact: this.contact,
     chainLink: this.chainLink,
     region: this.region,
@@ -66,6 +67,7 @@ OrganizationSchema.methods.data = function () {
     products: this.products,
     bestPractices: this.bestPractices,
     certifications: this.certifications,
+    comments: this.comments,
   }
 }
 OrganizationSchema.methods.generateJWT = function () {
