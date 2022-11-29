@@ -24,6 +24,16 @@
           </div>
           <div class="row">
             <div class="col-sm-6">
+              <b-form-group label="Selecionar uma organização ">
+                <form-entity-select
+                  v-model="form.organization"
+                  type="organizations"
+                />
+              </b-form-group>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
               <b-form-group label="Nome *">
                 <b-form-input
                   v-model="form.name"
@@ -114,6 +124,7 @@ export default {
         password: '',
         password_confirmation: '',
         role: null,
+        organization: '',
       },
     }
   },

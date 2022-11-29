@@ -136,6 +136,18 @@ export default {
             })
 
           break
+        case 'organizations':
+          this.list = (await this.$axios.$get('organizations', filterItem))
+            .map((organization) => ({
+              id: organization._id,
+              title: organization.name,
+              description: organization.cnpj,
+            }))
+            .sort(function (a, b) {
+              return a.title.localeCompare(b.title)
+            })
+
+          break
       }
     }
 

@@ -1,6 +1,7 @@
 const crypto = require('crypto')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 const secret = process.env.SECRET || 'cadeia-produtiva'
 
@@ -36,6 +37,10 @@ const UserSchema = new mongoose.Schema(
     },
     hash: String,
     salt: String,
+    organization: {
+      type: ObjectId,
+      ref: 'Organization',
+    },
   },
   {
     timestamps: true,
@@ -70,6 +75,7 @@ UserSchema.methods.data = function () {
     buyerPosition: this.buyerPosition,
     coin: this.coin,
     country: this.country,
+    organization: this.organization,
   }
 }
 UserSchema.methods.generateJWT = function () {

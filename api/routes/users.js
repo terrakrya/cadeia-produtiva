@@ -28,7 +28,7 @@ router.get('/', auth.authenticated, async (req, res) => {
   try {
     // ***** executa a query *****
 
-    const users = await User.find(query).populate(populate(req)).sort('name')
+    const users = await User.find(query).populate('organizations').sort('name')
 
     res.json(users)
   } catch (err) {
@@ -110,6 +110,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     user.cpf = req.body.cpf
     user.unitOfMeasurement = req.body.unitOfMeasurement
     user.buyerPosition = req.body.buyerPosition
+    user.organization = req.body.organization
 
     if (req.body.password) {
       user.setPassword(req.body.password)
@@ -143,6 +144,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.coin = req.body.coin
       user.country = req.body.country
       user.nickname = req.body.nickname
+      user.organization = req.body.organization
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -178,6 +180,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.coin = req.body.coin
       user.country = req.body.country
       user.nickname = req.body.nickname
+      user.organization = req.body.organization
 
       if (req.body.password) {
         user.setPassword(req.body.password)
