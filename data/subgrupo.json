@@ -1,11 +1,11 @@
 [
 	{
-		"text": "Natural",
-		"value": "Natural"
+		"text": "in natura ( natural )",
+		"value": "in natura ( natural )"
 	},
 	{
-		"text": "Desidratada",
-		"value": "Desidratada"
+		"text": "Desidratada ( dry ) ",
+		"value": "Desidratada ( dry ) "
 	},
 	{
 		"text": "Desidratada Polida",
@@ -18,5 +18,25 @@
 	{
 		"text": "Amêndoa sem película (Brancheada)",
 		"value": "Amêndoa sem película (Brancheada)"
+	},
+	{
+		"text": "Castanha de 2a linha",
+		"value": "Castanha de 2a linha"
+	},
+	{
+		"text": "Farinha",
+		"value": "Farinha"
+	},
+	{
+		"text": "Óleo comestível",
+		"value": "Óleo comestível "
+	},
+	{
+		"text": "Óleo cosmético",
+		"value": "Óleo cosmético"
+	},
+	{
+		"text": "Óleo saneantes",
+		"value": "Óleo saneantes"
 	}
 ]

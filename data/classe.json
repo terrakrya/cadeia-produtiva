@@ -12,19 +12,23 @@
 		"value": "Média"
 	},
 	{
-		"text": "Pequena",
-		"value": "Pequena"
+		"text": "Pequena (miúda)",
+		"value": "Pequena (miúda)"
 	},
 	{
-		"text": "Miudinha",
-		"value": "Miudinha"
+		"text": "Tyne (Miudinha)",
+		"value": "Tyne (Miudinha)"
 	},
 	{
-		"text": "Ferida",
-		"value": "Ferida"
+		"text": "Ferida ou ponta quebrada (chipped)",
+		"value": "Ferida ou ponta quebrada (chipped)"
 	},
 	{
-		"text": "Quebrada",
-		"value": "Quebrada"
+		"text": "Quebrada (broked)",
+		"value": "Quebrada (broked)"
+	},
+	{
+		"text": "Granulada",
+		"value": "Granulada"
 	}
 ]

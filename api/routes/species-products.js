@@ -36,7 +36,7 @@ router.get('/', auth.authenticated, async (req, res) => {
       .status(422)
       .send(
         'Ocorreu um erro ao carregar a lista de espécies/produtos: ' +
-          err.message
+        err.message
       )
   }
 })
@@ -74,7 +74,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     const speciesProducts = new SpeciesProduct()
 
     speciesProducts.name = req.body.name
-    speciesProducts.subgroup = req.body.subgroup
+    speciesProducts.industrialized = req.body.industrialized
     speciesProducts.class = req.body.class
     speciesProducts.group = req.body.group
     speciesProducts.specie = req.body.specie
@@ -100,7 +100,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
 
     if (speciesProducts) {
       speciesProducts.name = req.body.name
-      speciesProducts.subgroup = req.body.subgroup
+      speciesProducts.industrialized = req.body.industrialized
       speciesProducts.class = req.body.class
       speciesProducts.group = req.body.group
       speciesProducts.specie = req.body.specie

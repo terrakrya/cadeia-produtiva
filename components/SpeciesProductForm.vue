@@ -44,19 +44,19 @@
               </b-form-group>
             </b-col>
             <b-col sm="6">
-              <b-form-group label="Subgrupo">
+              <b-form-group label="Industrializada">
                 <b-form-select
-                  v-model="form.subgroup"
+                  v-model="form.industrialized"
                   class="form-control"
                   placeholder="Selecione o subgrupo"
-                  :options="subgrupo"
+                  :options="industrialized"
                 />
               </b-form-group>
             </b-col>
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Classe">
+              <b-form-group label="Tamanho (classe)">
                 <b-form-select
                   v-model="form.class"
                   class="form-control"
@@ -101,7 +101,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Upload from '@/components/Upload'
 import tipo from '@/data/tipos-especie_produto.json'
 import grupo from '@/data/grupo.json'
-import subgrupo from '@/data/subgrupo.json'
+import industrialized from '@/data/subgrupo.json'
 import classe from '@/data/classe.json'
 import FormEntitySelect from '@/components/FormEntitySelect'
 export default {
@@ -114,13 +114,13 @@ export default {
     return {
       tipo,
       grupo,
-      subgrupo,
+      industrialized,
       classe,
       form: {
         name: '',
         description: '',
         type: '',
-        subgroup: '',
+        industrialized: '',
         class: '',
         group: '',
         specie: '',

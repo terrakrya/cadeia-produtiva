@@ -13,7 +13,7 @@ const SpeciesProductSchema = new mongoose.Schema(
       required: true,
     },
     description: String,
-    subgroup: String,
+    industrialized: String,
     class: String,
     group: String,
     specie: {
@@ -37,7 +37,7 @@ SpeciesProductSchema.methods.data = function () {
     description: this.description,
     type: this.type,
     specie: this.specie,
-    subgroup: this.subgroup,
+    industrialized: this.industrialized,
     class: this.class,
     group: this.group,
     image: this.image,
