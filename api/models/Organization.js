@@ -22,6 +22,7 @@ const OrganizationSchema = new mongoose.Schema(
     region: String,
     uf: String,
     city: String,
+    email: String,
     members: Number,
     comments: String,
     products: [
@@ -68,6 +69,7 @@ OrganizationSchema.methods.data = function () {
     bestPractices: this.bestPractices,
     certifications: this.certifications,
     comments: this.comments,
+    email: this.email,
   }
 }
 OrganizationSchema.methods.generateJWT = function () {

@@ -92,12 +92,16 @@
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
-              <b-form-group label="Contato pessoal ">
+              <b-form-group label="Telefone ">
                 <b-form-input
                   v-model="form.contact"
                   v-mask="['(##) #####-####']"
                   name="contact"
                 />
+              </b-form-group>
+              <b-form-group label="E-mail *">
+                <b-form-input v-model="form.email" name="email" />
+                <field-error :msg="veeErrors" field="email" />
               </b-form-group>
             </div>
           </div>
@@ -206,6 +210,7 @@ export default {
         uf: '',
         city: '',
         comments: '',
+        email: '',
       },
       products: [],
       bestPractices: [],
@@ -265,6 +270,18 @@ export default {
         if (isValid) {
           this.is_sending = true
 
+          // formato do email
+          if (!/\S+@\S+\.\S+/.test(this.form.email)) {
+            this.veeErrors.items.push({
+              id: 102,
+              vmId: this.veeErrors.vmId,
+              field: 'email',
+              msg: 'Email com formato inválido.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+          }
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
             url: this.isEditing()

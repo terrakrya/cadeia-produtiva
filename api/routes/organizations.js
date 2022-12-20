@@ -72,6 +72,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     organizations.bestPractices = req.body.bestPractices
     organizations.certifications = req.body.certifications
     organizations.comments = req.body.comments
+    organizations.email = req.body.email
 
     await organizations.save()
 
@@ -105,6 +106,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       organizations.bestPractices = req.body.bestPractices
       organizations.certifications = req.body.certifications
       organizations.comments = req.body.comments
+      organizations.email = req.body.email
       await organizations.save()
 
       return res.send(organizations)
