@@ -22,6 +22,9 @@ if (!Vue.__my_mixin__) {
       isAdmin() {
         return this.hasRole('admin')
       },
+      isManager() {
+        return this.hasRole('gestor')
+      },
       baseUrl() {
         return this.$axios.defaults.baseURL.replace('/api', '')
       },

@@ -1,0 +1,2049 @@
+[
+	{
+		"id": "1",
+		"Nome": "Brasiléia",
+		"Micro-regiao": "Brasiléia",
+		"Estado": "Acre",
+		"Cidade": "Assis Brasil"
+	},
+	{
+		"Nome": "Brasiléia",
+		"Micro-regiao": "Brasiléia",
+		"Estado": "Acre",
+		"Cidade": "Brasiléia"
+	},
+	{
+		"Nome": "Brasiléia",
+		"Micro-regiao": "Brasiléia",
+		"Estado": "Acre",
+		"Cidade": "Epitaciolândia"
+	},
+	{
+		"Nome": "Rio Branco",
+		"Micro-regiao": "Rio Branco",
+		"Estado": "Acre",
+		"Cidade": "Acrelândia"
+	},
+	{
+		"Nome": "Rio Branco",
+		"Micro-regiao": "Rio Branco",
+		"Estado": "Acre",
+		"Cidade": "Bujari"
+	},
+	{
+		"Nome": "Rio Branco",
+		"Micro-regiao": "Rio Branco",
+		"Estado": "Acre",
+		"Cidade": "Capixaba"
+	},
+	{
+		"Nome": "Rio Branco",
+		"Micro-regiao": "Rio Branco",
+		"Estado": "Acre",
+		"Cidade": "Plácido de Castro"
+	},
+	{
+		"Nome": "Rio Branco",
+		"Micro-regiao": "Rio Branco",
+		"Estado": "Acre",
+		"Cidade": "Porto Acre"
+	},
+	{
+		"Nome": "Rio Branco",
+		"Micro-regiao": "Rio Branco",
+		"Estado": "Acre",
+		"Cidade": "Rio Branco"
+	},
+	{
+		"Nome": "Rio Branco",
+		"Micro-regiao": "Rio Branco",
+		"Estado": "Acre",
+		"Cidade": "Senador Guiomard"
+	},
+	{
+		"Nome": "Sena Madureira",
+		"Micro-regiao": "Sena Madureira",
+		"Estado": "Acre",
+		"Cidade": "Manoel Urbano"
+	},
+	{
+		"Nome": "Sena Madureira",
+		"Micro-regiao": "Sena Madureira",
+		"Estado": "Acre",
+		"Cidade": "Santa Rosa do Purus"
+	},
+	{
+		"Nome": "Sena Madureira",
+		"Micro-regiao": "Sena Madureira",
+		"Estado": "Acre",
+		"Cidade": "Sena Madureira"
+	},
+	{
+		"Nome": "Oiapoque",
+		"Micro-regiao": "Oiapoque",
+		"Estado": "Amapá",
+		"Cidade": "Oiapoque"
+	},
+	{
+		"Nome": "Porto Grande",
+		"Micro-regiao": "Macapá",
+		"Estado": "Amapá",
+		"Cidade": "Pedra Branca do Amapari"
+	},
+	{
+		"Nome": "Porto Grande",
+		"Micro-regiao": "Macapá",
+		"Estado": "Amapá",
+		"Cidade": "Porto Grande"
+	},
+	{
+		"Nome": "Porto Grande",
+		"Micro-regiao": "Macapá",
+		"Estado": "Amapá",
+		"Cidade": "Serra do Navio"
+	},
+	{
+		"Nome": "Laranjal do Jari",
+		"Micro-regiao": "Mazagão",
+		"Estado": "Amapá",
+		"Cidade": "Laranjal do Jari"
+	},
+	{
+		"Nome": "Mazagão",
+		"Micro-regiao": "Mazagão",
+		"Estado": "Amapá",
+		"Cidade": "Mazagão"
+	},
+	{
+		"Nome": "Laranjal do Jari",
+		"Micro-regiao": "Mazagão",
+		"Estado": "Amapá",
+		"Cidade": "Vitória do Jari"
+	},
+	{
+		"Nome": "Macapá",
+		"Micro-regiao": "Macapá",
+		"Estado": "Amapá",
+		"Cidade": "Macapá"
+	},
+	{
+		"Nome": "Manacapuru",
+		"Micro-regiao": "Coari",
+		"Estado": "Amazonas",
+		"Cidade": "Anamã"
+	},
+	{
+		"Nome": "Coari",
+		"Micro-regiao": "Coari",
+		"Estado": "Amazonas",
+		"Cidade": "Anori"
+	},
+	{
+		"Nome": "Coari",
+		"Micro-regiao": "Coari",
+		"Estado": "Amazonas",
+		"Cidade": "Beruri"
+	},
+	{
+		"Nome": "Manacapuru",
+		"Micro-regiao": "Coari",
+		"Estado": "Amazonas",
+		"Cidade": "Caapiranga"
+	},
+	{
+		"Nome": "Coari",
+		"Micro-regiao": "Coari",
+		"Estado": "Amazonas",
+		"Cidade": "Coari"
+	},
+	{
+		"Nome": "Coari",
+		"Micro-regiao": "Coari",
+		"Estado": "Amazonas",
+		"Cidade": "Codajás"
+	},
+	{
+		"Nome": "Itacoatiara",
+		"Micro-regiao": "Itacoatiara",
+		"Estado": "Amazonas",
+		"Cidade": "Itacoatiara"
+	},
+	{
+		"Nome": "Itacoatiara",
+		"Micro-regiao": "Itacoatiara",
+		"Estado": "Amazonas",
+		"Cidade": "Itapiranga"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Itacoatiara",
+		"Estado": "Amazonas",
+		"Cidade": "Nova Olinda do Norte"
+	},
+	{
+		"Nome": "Itacoatiara",
+		"Micro-regiao": "Itacoatiara",
+		"Estado": "Amazonas",
+		"Cidade": "Silves"
+	},
+	{
+		"Nome": "Itacoatiara",
+		"Micro-regiao": "Itacoatiara",
+		"Estado": "Amazonas",
+		"Cidade": "Urucurituba"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Manaus",
+		"Estado": "Amazonas",
+		"Cidade": "Autazes"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Manaus",
+		"Estado": "Amazonas",
+		"Cidade": "Careiro"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Manaus",
+		"Estado": "Amazonas",
+		"Cidade": "Careiro da Várzea"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Manaus",
+		"Estado": "Amazonas",
+		"Cidade": "Iranduba"
+	},
+	{
+		"Nome": "Manacapuru",
+		"Micro-regiao": "Manaus",
+		"Estado": "Amazonas",
+		"Cidade": "Manacapuru"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Manaus",
+		"Estado": "Amazonas",
+		"Cidade": "Manaquiri"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Manaus",
+		"Estado": "Amazonas",
+		"Cidade": "Manaus"
+	},
+	{
+		"Nome": "Parintins",
+		"Micro-regiao": "Parintins",
+		"Estado": "Amazonas",
+		"Cidade": "Barreirinha"
+	},
+	{
+		"Nome": "Parintins",
+		"Micro-regiao": "Parintins",
+		"Estado": "Amazonas",
+		"Cidade": "Boa Vista do Ramos"
+	},
+	{
+		"Nome": "Parintins",
+		"Micro-regiao": "Parintins",
+		"Estado": "Amazonas",
+		"Cidade": "Maués"
+	},
+	{
+		"Nome": "Parintins",
+		"Micro-regiao": "Parintins",
+		"Estado": "Amazonas",
+		"Cidade": "Nhamundá"
+	},
+	{
+		"Nome": "Parintins",
+		"Micro-regiao": "Parintins",
+		"Estado": "Amazonas",
+		"Cidade": "Parintins"
+	},
+	{
+		"Nome": "Itacoatiara",
+		"Micro-regiao": "Parintins",
+		"Estado": "Amazonas",
+		"Cidade": "São Sebastião do Uatumã"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Rio Preto da Eva",
+		"Estado": "Amazonas",
+		"Cidade": "Presidente Figueiredo"
+	},
+	{
+		"Nome": "Manaus",
+		"Micro-regiao": "Rio Preto da Eva",
+		"Estado": "Amazonas",
+		"Cidade": "Rio Preto da Eva"
+	},
+	{
+		"Nome": "Tefé",
+		"Micro-regiao": "Tefé",
+		"Estado": "Amazonas",
+		"Cidade": "Alvarães"
+	},
+	{
+		"Nome": "Tefé",
+		"Micro-regiao": "Tefé",
+		"Estado": "Amazonas",
+		"Cidade": "Tefé"
+	},
+	{
+		"Nome": "Tefé",
+		"Micro-regiao": "Tefé",
+		"Estado": "Amazonas",
+		"Cidade": "Uarini"
+	},
+	{
+		"Nome": "Tefé",
+		"Micro-regiao": "Japurá",
+		"Estado": "Amazonas",
+		"Cidade": "Japurá"
+	},
+	{
+		"Nome": "Tefé",
+		"Micro-regiao": "Japurá",
+		"Estado": "Amazonas",
+		"Cidade": "Maraã"
+	},
+	{
+		"Nome": "São Gabriel da Cachoeira",
+		"Micro-regiao": "Rio Negro",
+		"Estado": "Amazonas",
+		"Cidade": "Barcelos"
+	},
+	{
+		"Nome": "Manacapuru",
+		"Micro-regiao": "Rio Negro",
+		"Estado": "Amazonas",
+		"Cidade": "Novo Airão"
+	},
+	{
+		"Nome": "São Gabriel da Cachoeira",
+		"Micro-regiao": "Rio Negro",
+		"Estado": "Amazonas",
+		"Cidade": "Santa Isabel do Rio Negro"
+	},
+	{
+		"Nome": "São Gabriel da Cachoeira",
+		"Micro-regiao": "Rio Negro",
+		"Estado": "Amazonas",
+		"Cidade": "São Gabriel da Cachoeira"
+	},
+	{
+		"Nome": "Tabatinga",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "Amaturá"
+	},
+	{
+		"Nome": "Tabatinga",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "Atalaia do Norte"
+	},
+	{
+		"Nome": "Tabatinga",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "Benjamin Constant"
+	},
+	{
+		"Nome": "Tefé",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "Fonte Boa"
+	},
+	{
+		"Nome": "Tefé",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "Jutaí"
+	},
+	{
+		"Nome": "Tabatinga",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "Santo Antônio do Içá"
+	},
+	{
+		"Nome": "Tabatinga",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "São Paulo de Olivença"
+	},
+	{
+		"Nome": "Tabatinga",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "Tabatinga"
+	},
+	{
+		"Nome": "Tabatinga",
+		"Micro-regiao": "Alto Solimões",
+		"Estado": "Amazonas",
+		"Cidade": "Tonantins"
+	},
+	{
+		"Nome": "Tefé",
+		"Micro-regiao": "Juruá",
+		"Estado": "Amazonas",
+		"Cidade": "Carauari"
+	},
+	{
+		"Nome": "Eirunepé",
+		"Micro-regiao": "Juruá",
+		"Estado": "Amazonas",
+		"Cidade": "Eirunepé"
+	},
+	{
+		"Nome": "Eirunepé",
+		"Micro-regiao": "Juruá",
+		"Estado": "Amazonas",
+		"Cidade": "Envira"
+	},
+	{
+		"Nome": "Eirunepé",
+		"Micro-regiao": "Juruá",
+		"Estado": "Amazonas",
+		"Cidade": "Guajará"
+	},
+	{
+		"Nome": "Eirunepé",
+		"Micro-regiao": "Juruá",
+		"Estado": "Amazonas",
+		"Cidade": "Ipixuna"
+	},
+	{
+		"Nome": "Eirunepé",
+		"Micro-regiao": "Juruá",
+		"Estado": "Amazonas",
+		"Cidade": "Itamarati"
+	},
+	{
+		"Nome": "Tefé ",
+		"Micro-regiao": "Juruá",
+		"Estado": "Amazonas",
+		"Cidade": "Juruá"
+	},
+	{
+		"Nome": "Lábrea ",
+		"Micro-regiao": "Boca do Acre",
+		"Estado": "Amazonas",
+		"Cidade": "Boca do Acre"
+	},
+	{
+		"Nome": "Lábrea ",
+		"Micro-regiao": "Boca do Acre",
+		"Estado": "Amazonas",
+		"Cidade": "Pauini"
+	},
+	{
+		"Nome": "Manicoré ",
+		"Micro-regiao": "Madeira",
+		"Estado": "Amazonas",
+		"Cidade": "Apuí"
+	},
+	{
+		"Nome": "Manaus ",
+		"Micro-regiao": "Madeira",
+		"Estado": "Amazonas",
+		"Cidade": "Borba"
+	},
+	{
+		"Nome": "Manicoré ",
+		"Micro-regiao": "Madeira",
+		"Estado": "Amazonas",
+		"Cidade": "Humaitá"
+	},
+	{
+		"Nome": "Manicoré ",
+		"Micro-regiao": "Madeira",
+		"Estado": "Amazonas",
+		"Cidade": "Manicoré"
+	},
+	{
+		"Nome": "Manicoré ",
+		"Micro-regiao": "Madeira",
+		"Estado": "Amazonas",
+		"Cidade": "Novo Aripuanã"
+	},
+	{
+		"Nome": "Lábrea ",
+		"Micro-regiao": "Purus",
+		"Estado": "Amazonas",
+		"Cidade": "Canutama"
+	},
+	{
+		"Nome": "Lábrea ",
+		"Micro-regiao": "Purus",
+		"Estado": "Amazonas",
+		"Cidade": "Lábrea"
+	},
+	{
+		"Nome": "Lábrea ",
+		"Micro-regiao": "Purus",
+		"Estado": "Amazonas",
+		"Cidade": "Tapauá"
+	},
+	{
+		"Nome": "Alta Floresta ",
+		"Micro-regiao": "Alta Floresta",
+		"Estado": "Mato Grosso",
+		"Cidade": "Alta Floresta"
+	},
+	{
+		"Nome": "Alta Floresta ",
+		"Micro-regiao": "Alta Floresta",
+		"Estado": "Mato Grosso",
+		"Cidade": "Apiacás"
+	},
+	{
+		"Nome": "Alta Floresta ",
+		"Micro-regiao": "Alta Floresta",
+		"Estado": "Mato Grosso",
+		"Cidade": "Carlinda"
+	},
+	{
+		"Nome": "Alta Floresta ",
+		"Micro-regiao": "Alta Floresta",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Bandeirantes"
+	},
+	{
+		"Nome": "Alta Floresta ",
+		"Micro-regiao": "Alta Floresta",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Monte Verde"
+	},
+	{
+		"Nome": "Alta Floresta ",
+		"Micro-regiao": "Alta Floresta",
+		"Estado": "Mato Grosso",
+		"Cidade": "Paranaíta"
+	},
+	{
+		"Nome": "Sorriso ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Ipiranga do Norte"
+	},
+	{
+		"Nome": "Sorriso ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Itanhangá"
+	},
+	{
+		"Nome": "Sorriso ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Lucas do Rio Verde"
+	},
+	{
+		"Nome": "Cuiabá ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nobres"
+	},
+	{
+		"Nome": "Sorriso ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Mutum"
+	},
+	{
+		"Nome": "Sorriso ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Ubiratã"
+	},
+	{
+		"Nome": "Sorriso ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Santa Rita do Trivelato"
+	},
+	{
+		"Nome": "Sorriso ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Sorriso"
+	},
+	{
+		"Nome": "Sorriso ",
+		"Micro-regiao": "Alto Teles Pires",
+		"Estado": "Mato Grosso",
+		"Cidade": "Tapurah"
+	},
+	{
+		"Nome": "Juara ",
+		"Micro-regiao": "Arinos",
+		"Estado": "Mato Grosso",
+		"Cidade": "Juara"
+	},
+	{
+		"Nome": "Diamantino ",
+		"Micro-regiao": "Arinos",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Maringá"
+	},
+	{
+		"Nome": "Juara ",
+		"Micro-regiao": "Arinos",
+		"Estado": "Mato Grosso",
+		"Cidade": "Novo Horizonte do Norte"
+	},
+	{
+		"Nome": "Juara ",
+		"Micro-regiao": "Arinos",
+		"Estado": "Mato Grosso",
+		"Cidade": "Porto dos Gaúchos"
+	},
+	{
+		"Nome": "Diamantino ",
+		"Micro-regiao": "Arinos",
+		"Estado": "Mato Grosso",
+		"Cidade": "São José do Rio Claro"
+	},
+	{
+		"Nome": "Juara ",
+		"Micro-regiao": "Arinos",
+		"Estado": "Mato Grosso",
+		"Cidade": "Tabaporã"
+	},
+	{
+		"Nome": "Juína ",
+		"Micro-regiao": "Aripuanã",
+		"Estado": "Mato Grosso",
+		"Cidade": "Aripuanã"
+	},
+	{
+		"Nome": "Juína ",
+		"Micro-regiao": "Tangará da Serra",
+		"Estado": "Mato Grosso",
+		"Cidade": "Brasnorte"
+	},
+	{
+		"Nome": "Juína ",
+		"Micro-regiao": "Aripuanã",
+		"Estado": "Mato Grosso",
+		"Cidade": "Castanheira"
+	},
+	{
+		"Nome": "Juína ",
+		"Micro-regiao": "Aripuanã",
+		"Estado": "Mato Grosso",
+		"Cidade": "Colniza"
+	},
+	{
+		"Nome": "Juína ",
+		"Micro-regiao": "Aripuanã",
+		"Estado": "Mato Grosso",
+		"Cidade": "Cotriguaçu"
+	},
+	{
+		"Nome": "Juína ",
+		"Micro-regiao": "Aripuanã",
+		"Estado": "Mato Grosso",
+		"Cidade": "Juína"
+	},
+	{
+		"Nome": "Juína ",
+		"Micro-regiao": "Aripuanã",
+		"Estado": "Mato Grosso",
+		"Cidade": "Juruena"
+	},
+	{
+		"Nome": "Juína ",
+		"Micro-regiao": "Aripuanã",
+		"Estado": "Mato Grosso",
+		"Cidade": "Rondolândia"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Colíder",
+		"Estado": "Mato Grosso",
+		"Cidade": "Colíder"
+	},
+	{
+		"Nome": "Peixoto de Azevedo - Guarantã do Norte ",
+		"Micro-regiao": "Colíder",
+		"Estado": "Mato Grosso",
+		"Cidade": "Guarantã do Norte"
+	},
+	{
+		"Nome": "Peixoto de Azevedo - Guarantã do Norte ",
+		"Micro-regiao": "Colíder",
+		"Estado": "Mato Grosso",
+		"Cidade": "Matupá"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Colíder",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Canaã do Norte"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Colíder",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Guarita"
+	},
+	{
+		"Nome": "Peixoto de Azevedo - Guarantã do Norte ",
+		"Micro-regiao": "Colíder",
+		"Estado": "Mato Grosso",
+		"Cidade": "Novo Mundo"
+	},
+	{
+		"Nome": "Peixoto de Azevedo - Guarantã do Norte ",
+		"Micro-regiao": "Colíder",
+		"Estado": "Mato Grosso",
+		"Cidade": "Peixoto de Azevedo"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Colíder",
+		"Estado": "Mato Grosso",
+		"Cidade": "Terra Nova do Norte"
+	},
+	{
+		"Nome": "Água Boa ",
+		"Micro-regiao": "Paranatinga",
+		"Estado": "Mato Grosso",
+		"Cidade": "Gaúcha do Norte"
+	},
+	{
+		"Nome": "Cuiabá ",
+		"Micro-regiao": "Paranatinga",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Brasilândia"
+	},
+	{
+		"Nome": "Primavera do Leste ",
+		"Micro-regiao": "Paranatinga",
+		"Estado": "Mato Grosso",
+		"Cidade": "Paranatinga"
+	},
+	{
+		"Nome": "Cuiabá ",
+		"Micro-regiao": "Paranatinga",
+		"Estado": "Mato Grosso",
+		"Cidade": "Planalto da Serra"
+	},
+	{
+		"Nome": "Tangará da Serra ",
+		"Micro-regiao": "Parecis",
+		"Estado": "Mato Grosso",
+		"Cidade": "Campo Novo do Parecis"
+	},
+	{
+		"Nome": "Pontes e Lacerda - Comodoro ",
+		"Micro-regiao": "Parecis",
+		"Estado": "Mato Grosso",
+		"Cidade": "Campos de Júlio"
+	},
+	{
+		"Nome": "Pontes e Lacerda - Comodoro ",
+		"Micro-regiao": "Parecis",
+		"Estado": "Mato Grosso",
+		"Cidade": "Comodoro"
+	},
+	{
+		"Nome": "Diamantino ",
+		"Micro-regiao": "Parecis",
+		"Estado": "Mato Grosso",
+		"Cidade": "Diamantino"
+	},
+	{
+		"Nome": "Tangará da Serra ",
+		"Micro-regiao": "Parecis",
+		"Estado": "Mato Grosso",
+		"Cidade": "Sapezal"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "Cláudia"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "Feliz Natal"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "Itaúba"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "Marcelândia"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "Nova Santa Helena"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "Santa Carmem"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "Sinop"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "União do Sul"
+	},
+	{
+		"Nome": "Sinop ",
+		"Micro-regiao": "Sinop",
+		"Estado": "Mato Grosso",
+		"Cidade": "Vera"
+	},
+	{
+		"Nome": "Almeirim - Porto de Moz ",
+		"Micro-regiao": "Almeirim",
+		"Estado": "Pará",
+		"Cidade": "Almeirim"
+	},
+	{
+		"Nome": "Almeirim - Porto de Moz ",
+		"Micro-regiao": "Almeirim",
+		"Estado": "Pará",
+		"Cidade": "Porto de Moz"
+	},
+	{
+		"Nome": "Oriximiná",
+		"Micro-regiao": "Óbidos",
+		"Estado": "Pará",
+		"Cidade": "Faro"
+	},
+	{
+		"Nome": "Oriximiná",
+		"Micro-regiao": "Óbidos",
+		"Estado": "Pará",
+		"Cidade": "Juruti"
+	},
+	{
+		"Nome": "Oriximiná",
+		"Micro-regiao": "Óbidos",
+		"Estado": "Pará",
+		"Cidade": "Óbidos"
+	},
+	{
+		"Nome": "Oriximiná",
+		"Micro-regiao": "Óbidos",
+		"Estado": "Pará",
+		"Cidade": "Oriximiná"
+	},
+	{
+		"Nome": "Oriximiná",
+		"Micro-regiao": "Óbidos",
+		"Estado": "Pará",
+		"Cidade": "Terra Santa"
+	},
+	{
+		"Nome": "Santarém",
+		"Micro-regiao": "Santarém",
+		"Estado": "Pará",
+		"Cidade": "Alenquer"
+	},
+	{
+		"Nome": "Santarém",
+		"Micro-regiao": "Santarém",
+		"Estado": "Pará",
+		"Cidade": "Belterra"
+	},
+	{
+		"Nome": "Oriximiná",
+		"Micro-regiao": "Santarém",
+		"Estado": "Pará",
+		"Cidade": "Curuá"
+	},
+	{
+		"Nome": "Santarém",
+		"Micro-regiao": "Santarém",
+		"Estado": "Pará",
+		"Cidade": "Mojuí dos Campos"
+	},
+	{
+		"Nome": "Santarém",
+		"Micro-regiao": "Santarém",
+		"Estado": "Pará",
+		"Cidade": "Monte Alegre"
+	},
+	{
+		"Nome": "Itaituba",
+		"Micro-regiao": "Santarém",
+		"Estado": "Pará",
+		"Cidade": "Placas"
+	},
+	{
+		"Nome": "Santarém",
+		"Micro-regiao": "Santarém",
+		"Estado": "Pará",
+		"Cidade": "Prainha"
+	},
+	{
+		"Nome": "Santarém",
+		"Micro-regiao": "Santarém",
+		"Estado": "Pará",
+		"Cidade": "Santarém"
+	},
+	{
+		"Nome": "Soure-Salvaterra",
+		"Micro-regiao": "Arari",
+		"Estado": "Pará",
+		"Cidade": "Cachoeira do Arari"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Arari",
+		"Estado": "Pará",
+		"Cidade": "Chaves"
+	},
+	{
+		"Nome": "Soure-Salvaterra",
+		"Micro-regiao": "Arari",
+		"Estado": "Pará",
+		"Cidade": "Muaná"
+	},
+	{
+		"Nome": "Soure-Salvaterra",
+		"Micro-regiao": "Arari",
+		"Estado": "Pará",
+		"Cidade": "Ponta de Pedras"
+	},
+	{
+		"Nome": "Soure-Salvaterra",
+		"Micro-regiao": "Arari",
+		"Estado": "Pará",
+		"Cidade": "Salvaterra"
+	},
+	{
+		"Nome": "Soure-Salvaterra",
+		"Micro-regiao": "Arari",
+		"Estado": "Pará",
+		"Cidade": "Santa Cruz do Arari"
+	},
+	{
+		"Nome": "Soure-Salvaterra",
+		"Micro-regiao": "Arari",
+		"Estado": "Pará",
+		"Cidade": "Soure"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Furos de Breves",
+		"Estado": "Pará",
+		"Cidade": "Afuá"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Furos de Breves",
+		"Estado": "Pará",
+		"Cidade": "Anajás"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Furos de Breves",
+		"Estado": "Pará",
+		"Cidade": "Breves"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Furos de Breves",
+		"Estado": "Pará",
+		"Cidade": "Curralinho"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Furos de Breves",
+		"Estado": "Pará",
+		"Cidade": "São Sebastião da Boa Vista"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Portel",
+		"Estado": "Pará",
+		"Cidade": "Bagre"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Portel",
+		"Estado": "Pará",
+		"Cidade": "Gurupá"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Portel",
+		"Estado": "Pará",
+		"Cidade": "Melgaço"
+	},
+	{
+		"Nome": "Breves",
+		"Micro-regiao": "Portel",
+		"Estado": "Pará",
+		"Cidade": "Portel"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Belém",
+		"Estado": "Pará",
+		"Cidade": "Ananindeua"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Belém",
+		"Estado": "Pará",
+		"Cidade": "Barcarena"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Belém",
+		"Estado": "Pará",
+		"Cidade": "Belém"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Belém",
+		"Estado": "Pará",
+		"Cidade": "Benevides"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Belém",
+		"Estado": "Pará",
+		"Cidade": "Marituba"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Belém",
+		"Estado": "Pará",
+		"Cidade": "Santa Bárbara do Pará"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Castanhal",
+		"Estado": "Pará",
+		"Cidade": "Bujaru"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Castanhal",
+		"Estado": "Pará",
+		"Cidade": "Castanhal"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Castanhal",
+		"Estado": "Pará",
+		"Cidade": "Inhangapi"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Castanhal",
+		"Estado": "Pará",
+		"Cidade": "Santa Izabel do Pará"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Castanhal",
+		"Estado": "Pará",
+		"Cidade": "Santo Antônio do Tauá"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Bonito"
+	},
+	{
+		"Nome": "Bragança",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Bragança"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Capanema"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Igarapé-Açu"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Nova Timboteua"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Peixe-Boi"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Primavera"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Quatipuru"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Santa Maria do Pará"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Santarém Novo"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "São Francisco do Pará"
+	},
+	{
+		"Nome": "Bragança",
+		"Micro-regiao": "Bragantina",
+		"Estado": "Pará",
+		"Cidade": "Tracuateua"
+	},
+	{
+		"Nome": "Abaetetuba",
+		"Micro-regiao": "Cametá",
+		"Estado": "Pará",
+		"Cidade": "Abaetetuba"
+	},
+	{
+		"Nome": "Tucuruí",
+		"Micro-regiao": "Cametá",
+		"Estado": "Pará",
+		"Cidade": "Baião"
+	},
+	{
+		"Nome": "Cametá",
+		"Micro-regiao": "Cametá",
+		"Estado": "Pará",
+		"Cidade": "Cametá"
+	},
+	{
+		"Nome": "Abaetetuba",
+		"Micro-regiao": "Cametá",
+		"Estado": "Pará",
+		"Cidade": "Igarapé-Miri"
+	},
+	{
+		"Nome": "Cametá",
+		"Micro-regiao": "Cametá",
+		"Estado": "Pará",
+		"Cidade": "Limoeiro do Ajuru"
+	},
+	{
+		"Nome": "Cametá",
+		"Micro-regiao": "Cametá",
+		"Estado": "Pará",
+		"Cidade": "Mocajuba"
+	},
+	{
+		"Nome": "Cametá",
+		"Micro-regiao": "Cametá",
+		"Estado": "Pará",
+		"Cidade": "Oeiras do Pará"
+	},
+	{
+		"Nome": "Paragominas",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Aurora do Pará"
+	},
+	{
+		"Nome": "Bragança",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Cachoeira do Piriá"
+	},
+	{
+		"Nome": "Capitão Poço",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Capitão Poço"
+	},
+	{
+		"Nome": "Capitão Poço",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Garrafão do Norte"
+	},
+	{
+		"Nome": "Paragominas",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Ipixuna do Pará"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Irituia"
+	},
+	{
+		"Nome": "Paragominas",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Mãe do Rio"
+	},
+	{
+		"Nome": "Capitão Poço",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Nova Esperança do Piriá"
+	},
+	{
+		"Nome": "Capitão Poço",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Ourém"
+	},
+	{
+		"Nome": "Bragança",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Santa Luzia do Pará"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "São Domingos do Capim"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "São Miguel do Guamá"
+	},
+	{
+		"Nome": "Bragança",
+		"Micro-regiao": "Guamá",
+		"Estado": "Pará",
+		"Cidade": "Viseu"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "Colares"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "Curuçá"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "Magalhães Barata"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "Maracanã"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "Marapanim"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "Salinópolis"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "São Caetano de Odivelas"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "São João da Ponta"
+	},
+	{
+		"Nome": "Capanema",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "São João de Pirabas"
+	},
+	{
+		"Nome": "Castanhal",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "Terra Alta"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Salgado",
+		"Estado": "Pará",
+		"Cidade": "Vigia"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Tomé-Açu",
+		"Estado": "Pará",
+		"Cidade": "Acará"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Tomé-Açu",
+		"Estado": "Pará",
+		"Cidade": "Concórdia do Pará"
+	},
+	{
+		"Nome": "Abaetetuba",
+		"Micro-regiao": "Tomé-Açu",
+		"Estado": "Pará",
+		"Cidade": "Moju"
+	},
+	{
+		"Nome": "Abaetetuba",
+		"Micro-regiao": "Tomé-Açu",
+		"Estado": "Pará",
+		"Cidade": "Tailândia"
+	},
+	{
+		"Nome": "Belém",
+		"Micro-regiao": "Tomé-Açu",
+		"Estado": "Pará",
+		"Cidade": "Tomé-Açu"
+	},
+	{
+		"Nome": "Redenção",
+		"Micro-regiao": "Conceição do Araguaia",
+		"Estado": "Pará",
+		"Cidade": "Conceição do Araguaia"
+	},
+	{
+		"Nome": "Redenção",
+		"Micro-regiao": "Conceição do Araguaia",
+		"Estado": "Pará",
+		"Cidade": "Floresta do Araguaia"
+	},
+	{
+		"Nome": "Redenção",
+		"Micro-regiao": "Conceição do Araguaia",
+		"Estado": "Pará",
+		"Cidade": "Santa Maria das Barreiras"
+	},
+	{
+		"Nome": "Redenção",
+		"Micro-regiao": "Conceição do Araguaia",
+		"Estado": "Pará",
+		"Cidade": "Santana do Araguaia"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Marabá",
+		"Estado": "Pará",
+		"Cidade": "Brejo Grande do Araguaia"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Marabá",
+		"Estado": "Pará",
+		"Cidade": "Marabá"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Marabá",
+		"Estado": "Pará",
+		"Cidade": "Palestina do Pará"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Marabá",
+		"Estado": "Pará",
+		"Cidade": "São Domingos do Araguaia"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Marabá",
+		"Estado": "Pará",
+		"Cidade": "São João do Araguaia"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Abel Figueiredo"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Bom Jesus do Tocantins"
+	},
+	{
+		"Nome": "Paragominas",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Dom Eliseu"
+	},
+	{
+		"Nome": "Tucuruí",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Goianésia do Pará"
+	},
+	{
+		"Nome": "Paragominas",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Paragominas"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Rondon do Pará"
+	},
+	{
+		"Nome": "Paragominas",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Ulianópolis"
+	},
+	{
+		"Nome": "Xinguara",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Água Azul do Norte"
+	},
+	{
+		"Nome": "Parauapebas",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Canaã dos Carajás"
+	},
+	{
+		"Nome": "Parauapebas",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Curionópolis"
+	},
+	{
+		"Nome": "Parauapebas",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Eldorado do Carajás"
+	},
+	{
+		"Nome": "Parauapebas",
+		"Micro-regiao": "Paragominas",
+		"Estado": "Pará",
+		"Cidade": "Parauapebas"
+	},
+	{
+		"Nome": "Redenção",
+		"Micro-regiao": "Redenção",
+		"Estado": "Pará",
+		"Cidade": "Pau D'Arco"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Redenção",
+		"Estado": "Pará",
+		"Cidade": "Piçarra"
+	},
+	{
+		"Nome": "Redenção",
+		"Micro-regiao": "Redenção",
+		"Estado": "Pará",
+		"Cidade": "Redenção"
+	},
+	{
+		"Nome": "Xinguara",
+		"Micro-regiao": "Redenção",
+		"Estado": "Pará",
+		"Cidade": "Rio Maria"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Redenção",
+		"Estado": "Pará",
+		"Cidade": "São Geraldo do Araguaia"
+	},
+	{
+		"Nome": "Xinguara",
+		"Micro-regiao": "Redenção",
+		"Estado": "Pará",
+		"Cidade": "Sapucaia"
+	},
+	{
+		"Nome": "Xinguara",
+		"Micro-regiao": "Redenção",
+		"Estado": "Pará",
+		"Cidade": "Xinguara"
+	},
+	{
+		"Nome": "Redenção",
+		"Micro-regiao": "São Félix do Xingu",
+		"Estado": "Pará",
+		"Cidade": "Bannach"
+	},
+	{
+		"Nome": "Redenção",
+		"Micro-regiao": "São Félix do Xingu",
+		"Estado": "Pará",
+		"Cidade": "Cumaru do Norte"
+	},
+	{
+		"Nome": "Tucumã - São Félix do Xingu",
+		"Micro-regiao": "São Félix do Xingu",
+		"Estado": "Pará",
+		"Cidade": "Ourilândia do Norte"
+	},
+	{
+		"Nome": "Tucumã - São Félix do Xingu",
+		"Micro-regiao": "São Félix do Xingu",
+		"Estado": "Pará",
+		"Cidade": "São Félix do Xingu"
+	},
+	{
+		"Nome": "Tucumã - São Félix do Xingu",
+		"Micro-regiao": "São Félix do Xingu",
+		"Estado": "Pará",
+		"Cidade": "Tucumã"
+	},
+	{
+		"Nome": "Tucuruí",
+		"Micro-regiao": "Tucuruí",
+		"Estado": "Pará",
+		"Cidade": "Breu Branco"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Tucuruí",
+		"Estado": "Pará",
+		"Cidade": "Itupiranga"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Tucuruí",
+		"Estado": "Pará",
+		"Cidade": "Jacundá"
+	},
+	{
+		"Nome": "Marabá",
+		"Micro-regiao": "Tucuruí",
+		"Estado": "Pará",
+		"Cidade": "Nova Ipixuna"
+	},
+	{
+		"Nome": "Tucuruí",
+		"Micro-regiao": "Tucuruí",
+		"Estado": "Pará",
+		"Cidade": "Novo Repartimento"
+	},
+	{
+		"Nome": "Tucuruí",
+		"Micro-regiao": "Tucuruí",
+		"Estado": "Pará",
+		"Cidade": "Tucuruí"
+	},
+	{
+		"Nome": "Altamira",
+		"Micro-regiao": "Altamira",
+		"Estado": "Pará",
+		"Cidade": "Altamira"
+	},
+	{
+		"Nome": "Altamira",
+		"Micro-regiao": "Altamira",
+		"Estado": "Pará",
+		"Cidade": "Anapu"
+	},
+	{
+		"Nome": "Altamira",
+		"Micro-regiao": "Altamira",
+		"Estado": "Pará",
+		"Cidade": "Brasil Novo"
+	},
+	{
+		"Nome": "Altamira",
+		"Micro-regiao": "Altamira",
+		"Estado": "Pará",
+		"Cidade": "Medicilândia"
+	},
+	{
+		"Nome": "Tucuruí",
+		"Micro-regiao": "Altamira",
+		"Estado": "Pará",
+		"Cidade": "Pacajá"
+	},
+	{
+		"Nome": "Altamira",
+		"Micro-regiao": "Altamira",
+		"Estado": "Pará",
+		"Cidade": "Senador José Porfírio"
+	},
+	{
+		"Nome": "Altamira",
+		"Micro-regiao": "Altamira",
+		"Estado": "Pará",
+		"Cidade": "Uruará"
+	},
+	{
+		"Nome": "Altamira",
+		"Micro-regiao": "Altamira",
+		"Estado": "Pará",
+		"Cidade": "Vitória do Xingu"
+	},
+	{
+		"Nome": "Itaituba",
+		"Micro-regiao": "Itaituba",
+		"Estado": "Pará",
+		"Cidade": "Aveiro"
+	},
+	{
+		"Nome": "Itaituba",
+		"Micro-regiao": "Itaituba",
+		"Estado": "Pará",
+		"Cidade": "Itaituba"
+	},
+	{
+		"Nome": "Itaituba",
+		"Micro-regiao": "Itaituba",
+		"Estado": "Pará",
+		"Cidade": "Jacareacanga"
+	},
+	{
+		"Nome": "Itaituba",
+		"Micro-regiao": "Itaituba",
+		"Estado": "Pará",
+		"Cidade": "Novo Progresso"
+	},
+	{
+		"Nome": "Itaituba",
+		"Micro-regiao": "Itaituba",
+		"Estado": "Pará",
+		"Cidade": "Rurópolis"
+	},
+	{
+		"Nome": "Itaituba",
+		"Micro-regiao": "Itaituba",
+		"Estado": "Pará",
+		"Cidade": "Trairão"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Alvorada D'Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "Alvorada D'Oeste"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Alvorada D'Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "Nova Brasilândia D'Oeste"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Alvorada D'Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "São Miguel do Guaporé"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Alvorada D'Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "Seringueiras"
+	},
+	{
+		"Nome": "Ariquemes",
+		"Micro-regiao": "Ariquemes",
+		"Estado": "Rondônia",
+		"Cidade": "Alto Paraíso"
+	},
+	{
+		"Nome": "Ariquemes",
+		"Micro-regiao": "Ariquemes",
+		"Estado": "Rondônia",
+		"Cidade": "Ariquemes"
+	},
+	{
+		"Nome": "Ariquemes",
+		"Micro-regiao": "Ariquemes",
+		"Estado": "Rondônia",
+		"Cidade": "Cacaulândia"
+	},
+	{
+		"Nome": "Jaru",
+		"Micro-regiao": "Ariquemes",
+		"Estado": "Rondônia",
+		"Cidade": "Machadinho D'Oeste"
+	},
+	{
+		"Nome": "Ariquemes",
+		"Micro-regiao": "Ariquemes",
+		"Estado": "Rondônia",
+		"Cidade": "Monte Negro"
+	},
+	{
+		"Nome": "Ariquemes",
+		"Micro-regiao": "Ariquemes",
+		"Estado": "Rondônia",
+		"Cidade": "Rio Crespo"
+	},
+	{
+		"Nome": "Jaru",
+		"Micro-regiao": "Ariquemes",
+		"Estado": "Rondônia",
+		"Cidade": "Vale do Anari"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Alta Floresta D'Oeste"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Alto Alegre dos Parecis"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Cacoal"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Castanheiras"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Espigão D'Oeste"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Ministro Andreazza"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Novo Horizonte do Oeste"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Rolim de Moura"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Cacoal",
+		"Estado": "Rondônia",
+		"Cidade": "Santa Luzia D'Oeste"
+	},
+	{
+		"Nome": "Vilhena",
+		"Micro-regiao": "Colorado do Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "Cabixi"
+	},
+	{
+		"Nome": "Vilhena",
+		"Micro-regiao": "Colorado do Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "Cerejeiras"
+	},
+	{
+		"Nome": "Vilhena",
+		"Micro-regiao": "Colorado do Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "Colorado do Oeste"
+	},
+	{
+		"Nome": "Vilhena",
+		"Micro-regiao": "Colorado do Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "Corumbiara"
+	},
+	{
+		"Nome": "Vilhena",
+		"Micro-regiao": "Colorado do Oeste",
+		"Estado": "Rondônia",
+		"Cidade": "Pimenteiras do Oeste"
+	},
+	{
+		"Nome": "Jaru",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Governador Jorge Teixeira"
+	},
+	{
+		"Nome": "Jaru",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Jaru"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Ji-Paraná"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Mirante da Serra"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Nova União"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Ouro Preto do Oeste"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Presidente Médici"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Teixeirópolis"
+	},
+	{
+		"Nome": "Jaru",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Theobroma"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Urupá"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Vale do Paraíso"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Ji-Paraná",
+		"Estado": "Rondônia",
+		"Cidade": "Vale do Paraíso"
+	},
+	{
+		"Nome": "Vilhena",
+		"Micro-regiao": "Vilhena",
+		"Estado": "Rondônia",
+		"Cidade": "Chupinguaia"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Vilhena",
+		"Estado": "Rondônia",
+		"Cidade": "Parecis"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Vilhena",
+		"Estado": "Rondônia",
+		"Cidade": "Pimenta Bueno"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Vilhena",
+		"Estado": "Rondônia",
+		"Cidade": "Primavera de Rondônia"
+	},
+	{
+		"Nome": "Cacoal",
+		"Micro-regiao": "Vilhena",
+		"Estado": "Rondônia",
+		"Cidade": "São Felipe D'Oeste"
+	},
+	{
+		"Nome": "Vilhena",
+		"Micro-regiao": "Vilhena",
+		"Estado": "Rondônia",
+		"Cidade": "Vilhena"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Guajará-Mirim",
+		"Estado": "Rondônia",
+		"Cidade": "Costa Marques"
+	},
+	{
+		"Nome": "Guajará-Mirim ou Porto Velho",
+		"Micro-regiao": "Guajará-Mirim",
+		"Estado": "Rondônia",
+		"Cidade": "Guajará-Mirim"
+	},
+	{
+		"Nome": "Ji-Paraná",
+		"Micro-regiao": "Guajará-Mirim",
+		"Estado": "Rondônia",
+		"Cidade": "São Francisco do Guaporé"
+	},
+	{
+		"Nome": "Ariquemes",
+		"Micro-regiao": "Porto Velho",
+		"Estado": "Rondônia",
+		"Cidade": "Buritis"
+	},
+	{
+		"Nome": "Ariquemes",
+		"Micro-regiao": "Porto Velho",
+		"Estado": "Rondônia",
+		"Cidade": "Campo Novo de Rondônia"
+	},
+	{
+		"Nome": "Porto Velho",
+		"Micro-regiao": "Porto Velho",
+		"Estado": "Rondônia",
+		"Cidade": "Candeias do Jamari"
+	},
+	{
+		"Nome": "Ariquemes",
+		"Micro-regiao": "Porto Velho",
+		"Estado": "Rondônia",
+		"Cidade": "Cujubim"
+	},
+	{
+		"Nome": "Porto Velho",
+		"Micro-regiao": "Porto Velho",
+		"Estado": "Rondônia",
+		"Cidade": "Itapuã do Oeste"
+	},
+	{
+		"Nome": "Porto Velho",
+		"Micro-regiao": "Porto Velho",
+		"Estado": "Rondônia",
+		"Cidade": "Nova Mamoré"
+	},
+	{
+		"Nome": "Porto Velho",
+		"Micro-regiao": "Porto Velho",
+		"Estado": "Rondônia",
+		"Cidade": "Porto Velho"
+	},
+	{
+		"Nome": "Boa Vista",
+		"Micro-regiao": "Nordeste de Roraima",
+		"Estado": "Roraima",
+		"Cidade": "Bonfim"
+	},
+	{
+		"Nome": "Sul de Roraima",
+		"Micro-regiao": "Caracaraí",
+		"Estado": "Roraima",
+		"Cidade": "Caracaraí"
+	},
+	{
+		"Nome": "Sul de Roraima",
+		"Micro-regiao": "Caracaraí",
+		"Estado": "Roraima",
+		"Cidade": "Iracema"
+	},
+	{
+		"Nome": "Boa Vista",
+		"Micro-regiao": "Caracaraí",
+		"Estado": "Roraima",
+		"Cidade": "Mucajaí"
+	},
+	{
+		"Nome": "Sul de Roraima",
+		"Micro-regiao": "Sudeste de Roraima",
+		"Estado": "Roraima",
+		"Cidade": "Caroebe"
+	},
+	{
+		"Nome": "Sul de Roraima",
+		"Micro-regiao": "Sudeste de Roraima",
+		"Estado": "Roraima",
+		"Cidade": "Rorainópolis"
+	},
+	{
+		"Nome": "Sul de Roraima",
+		"Micro-regiao": "Sudeste de Roraima",
+		"Estado": "Roraima",
+		"Cidade": "São João da Baliza"
+	},
+	{
+		"Nome": "Sul de Roraima",
+		"Micro-regiao": "Sudeste de Roraima",
+		"Estado": "Roraima",
+		"Cidade": "São Luiz"
+	}
+]

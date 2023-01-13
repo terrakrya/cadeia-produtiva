@@ -69,28 +69,36 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Região">
+              <b-form-group label="Praça">
                 <b-form-select
-                  v-model="form.region"
+                  v-model="form.square"
                   class="form-control"
-                  name="region"
-                  :placeholder="'Selecione a região'"
-                  :options="regiao"
+                  name="square"
+                  :sort-by="'name'"
+                  :placeholder="'Selecione a Praça'"
+                  :options="praca"
+                  value-field="id"
+                  text-field="Nome"
                 />
               </b-form-group>
             </b-col>
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Territorio">
+              <b-form-group label="Território">
                 <b-form-select
                   v-model="form.territory"
                   class="form-control"
                   name="territory"
-                  :options="territorio"
+                  :placeholder="'Selecione o território'"
+                  :sort-by="'name'"
+                  :options="territorios"
+                  text-field="nome"
                 />
               </b-form-group>
             </b-col>
+          </div>
+          <div class="row">
             <div class="col-sm-6">
               <b-form-group label="Telefone ">
                 <b-form-input
@@ -99,6 +107,8 @@
                   name="contact"
                 />
               </b-form-group>
+            </div>
+            <div class="col-sm-6">
               <b-form-group label="E-mail *">
                 <b-form-input v-model="form.email" name="email" />
                 <field-error :msg="veeErrors" field="email" />
@@ -112,7 +122,7 @@
                   v-model="form.chainLink"
                   class="form-control"
                   name="chainLink"
-                  :options="elo"
+                  :options="tiposOrganizacao"
                 />
               </b-form-group>
             </b-col>
@@ -174,9 +184,8 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import elo from '@/data/elo-cadeia-produtiva.json'
-import regiao from '@/data/regiao.json'
-import territorio from '@/data/area-atuacao.json'
+import praca from '@/data/praca.json'
+import territorios from '@/data/territorio.json'
 import tiposOrganizacao from '@/data/posicao-do-comprador.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
@@ -186,9 +195,8 @@ export default {
   },
   data() {
     return {
-      elo,
-      regiao,
-      territorio,
+      praca,
+      territorios,
       tiposOrganizacao,
       estados,
       cidades,
@@ -200,7 +208,7 @@ export default {
         territory: '',
         contact: '',
         chainLink: '',
-        region: '',
+        square: '',
         territories: '',
         protectedArea: '',
         members: 0,

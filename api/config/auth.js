@@ -18,6 +18,10 @@ function isAdmin(req) {
   return hasRole(req, 'admin')
 }
 
+function isManager(req) {
+  return hasRole(req, 'gestor')
+}
+
 function hasRole(req, role) {
   return req.user && req.user.role === role
 }
@@ -52,6 +56,7 @@ const auth = {
     getToken: getTokenFromHeader,
   }),
   isAdmin,
+  isManager,
   hasRole,
 }
 
