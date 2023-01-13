@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema(
     coin: String,
     country: String,
     nickname: String,
+    comments: String,
     username: {
       type: String,
       lowercase: true,

@@ -9,7 +9,7 @@
         <form-headline name="Usuário" />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
-          <div class="row">
+          <div v-if="isAdmin" class="row">
             <div class="col-sm-6">
               <b-form-group label=" Perfil *">
                 <b-form-radio-group
@@ -22,7 +22,7 @@
               </b-form-group>
             </div>
           </div>
-          <div class="row">
+          <div v-if="isAdmin" class="row">
             <div class="col-sm-6">
               <b-form-group label="Selecionar uma organização ">
                 <form-entity-select
@@ -69,6 +69,11 @@
                   name="cpf"
                 />
                 <field-error :msg="veeErrors" field="cpf" />
+              </b-form-group>
+            </div>
+            <div class="col-sm-12">
+              <b-form-group label="Comentarios">
+                <b-form-textarea v-model="form.comments" />
               </b-form-group>
             </div>
             <div v-if="isEditing()" class="text-right">
@@ -121,6 +126,7 @@ export default {
         name: '',
         email: '',
         cpf: '',
+        comments: '',
         password: '',
         password_confirmation: '',
         role: null,
@@ -219,6 +225,11 @@ export default {
 
         if (isValid) {
           this.is_sending = true
+
+          if (this.isManager) {
+            this.form.role = 'mensageiro'
+            this.form.organization = this.currentUser.organization
+          }
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
