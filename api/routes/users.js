@@ -13,16 +13,31 @@ router.get('/', auth.authenticated, async (req, res) => {
 
   // ***** monta os filtros *****
 
-  const filters = req.query
+  if (req.query.filters) {
+    const filters = JSON.parse(req.query.filters || '{}')  
 
-  if (filters.id) {
-    query._id = filters.id
-  } else {
-    query.username = { $ne: 'admin' }
-  }
+    if (filters.id) {
+      query._id = filters.id
+    } else {
+      query.username = { $ne: 'admin' }
+    }
 
-  if (filters.role) {
-    query.role = filters.role
+    if (filters.organization) {
+      if (filters.organization === '!organization') {
+        query.$or = [
+          { organization: null },
+          { role: 'gestor' },
+        ]
+      }
+      else {
+        query.organization = filters.organization
+        query.role = { $ne: 'gestor' }
+      }
+    }
+
+    if (filters.role) {
+      query.role = filters.role
+    }
   }
 
   try {

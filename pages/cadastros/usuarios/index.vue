@@ -90,8 +90,18 @@ export default {
   },
   methods: {
     async list() {
+      let filters = {}
+
+      if (this.isManager) {
+        filters.organization = this.currentUser.organization
+      }
+      else if (this.isAdmin) {
+        filters.organization = '!organization'
+      } 
+
       this.users = await this.$axios.$get('users', {
         params: {
+          filters,
           populate: 'network',
         },
       })
