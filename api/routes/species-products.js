@@ -36,7 +36,7 @@ router.get('/', auth.authenticated, async (req, res) => {
       .status(422)
       .send(
         'Ocorreu um erro ao carregar a lista de espécies/produtos: ' +
-        err.message
+          err.message
       )
   }
 })

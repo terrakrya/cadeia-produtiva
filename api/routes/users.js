@@ -14,7 +14,7 @@ router.get('/', auth.authenticated, async (req, res) => {
   // ***** monta os filtros *****
 
   if (req.query.filters) {
-    const filters = JSON.parse(req.query.filters || '{}')  
+    const filters = JSON.parse(req.query.filters || '{}')
 
     if (filters.id) {
       query._id = filters.id
@@ -24,12 +24,8 @@ router.get('/', auth.authenticated, async (req, res) => {
 
     if (filters.organization) {
       if (filters.organization === '!organization') {
-        query.$or = [
-          { organization: null },
-          { role: 'gestor' },
-        ]
-      }
-      else {
+        query.$or = [{ organization: null }, { role: 'gestor' }]
+      } else {
         query.organization = filters.organization
         query.role = { $ne: 'gestor' }
       }
