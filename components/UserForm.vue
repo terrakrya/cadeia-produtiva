@@ -152,6 +152,7 @@ export default {
         .get('users/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
+          this.form.username = this.formatValue(this.form.username, '(##) #####-####')
           if (response.data.image) {
             this.images_preview = [response.data.image]
           }
@@ -230,6 +231,9 @@ export default {
             this.form.role = 'mensageiro'
             this.form.organization = this.currentUser.organization
           }
+
+          // deixa somente os dígitos do telefone
+          this.form.username = this.form.username.replace(/\D/g, "")
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',

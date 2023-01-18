@@ -222,6 +222,12 @@ if (!Vue.__my_mixin__) {
         this.is_sending = false
       },
 
+      formatValue(value, pattern) {
+        let i = 0;
+        const v = value.toString();
+        return pattern.replace(/#/g, _ => v[i++]);
+      },
+
       // formata o nome da cidade no padrão: Cidade - UF
       formatCity(address) {
         return address
