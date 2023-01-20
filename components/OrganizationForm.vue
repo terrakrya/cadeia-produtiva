@@ -65,20 +65,18 @@
                   v-model="form.city"
                   class="form-control"
                   :options="cidades"
+                  @input="loadPracas()"
                 />
               </b-form-group>
             </b-col>
             <b-col sm="4">
               <b-form-group label="Praça">
-                <b-form-select
+                <input
                   v-model="form.square"
+                  type="text"
+                  readonly
                   class="form-control"
-                  name="square"
-                  :sort-by="'name'"
-                  :placeholder="'Selecione a Praça'"
-                  :options="praca"
-                  value-field="id"
-                  text-field="Nome"
+                  text-field="nome"
                 />
               </b-form-group>
             </b-col>
@@ -184,7 +182,7 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import praca from '@/data/praca.json'
+import pracas from '@/data/praca.json'
 import territorios from '@/data/territorio.json'
 import tiposOrganizacao from '@/data/posicao-do-comprador.json'
 import estados from '@/data/estados.json'
@@ -195,7 +193,7 @@ export default {
   },
   data() {
     return {
-      praca,
+      pracas,
       territorios,
       tiposOrganizacao,
       estados,
@@ -209,6 +207,7 @@ export default {
         contact: '',
         chainLink: '',
         square: '',
+        squareid: '',
         territories: '',
         protectedArea: '',
         members: 0,
@@ -232,6 +231,7 @@ export default {
     }
 
     this.loadCities()
+    this.loadPracas()
   },
   methods: {
     async list() {
@@ -257,6 +257,20 @@ export default {
       if (this.form.city && this.cidades) {
         if (!this.cidades.find((c) => c === this.form.city)) {
           this.form.city = ''
+        }
+      }
+    },
+
+    // filtra as praça conforme a cidade selecionada
+    loadPracas() {
+      if (this.form.city) {
+        const teste = this.form.city
+        const pracas = this.pracas.filter(function (item) {
+          return item.cidade === teste
+        })
+        if (pracas && pracas.length > 0) {
+          this.form.square = pracas[0].nome
+          this.form.squareid = pracas[0].id
         }
       }
     },
