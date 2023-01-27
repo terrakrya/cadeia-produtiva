@@ -52,8 +52,9 @@ router.post('/', auth.authenticated, async (req, res) => {
 
     price.createdAt = req.body.createdAt
     price.buyerPosition = req.body.buyerPosition
-    price.price = req.body.price
-    price.coin = req.body.coin
+    price.MinimumPrice = req.body.MinimumPrice
+    price.MaximumPrice = req.body.MaximumPrice
+    price.currency = req.body.currency
     price.country = req.body.country
     price.measure = req.body.measure
     price.product = req.body.product
@@ -78,8 +79,9 @@ router.put('/:id', auth.authenticated, async (req, res) => {
     if (price) {
       price.createdAt = req.body.createdAt
       price.buyerPosition = req.body.buyerPosition
-      price.price = req.body.price
-      price.coin = req.body.coin
+      price.MinimumPrice = req.body.MinimumPrice
+      price.MaximumPrice = req.body.MaximumPrice
+      price.currency = req.body.currency
       price.country = req.body.country
       price.measure = req.body.measure
       price.product = req.body.product

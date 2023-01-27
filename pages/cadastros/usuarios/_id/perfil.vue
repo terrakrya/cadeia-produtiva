@@ -77,7 +77,7 @@
             <div class="col-sm-4">
               <b-form-group label="Moeda">
                 <b-form-select
-                  v-model="form.coin"
+                  v-model="form.currency"
                   false-value="Real"
                   class="form-control"
                   :options="moeda"
@@ -94,6 +94,32 @@
               </b-form-group>
             </div>
           </div>
+          <b-row>
+            <b-col sm="4">
+              <b-form-group label="Estado">
+                <b-form-select
+                  v-model="form.uf"
+                  v-validate="'required'"
+                  class="form-control"
+                  :options="estados"
+                  name="uf"
+                  @input="loadCities()"
+                />
+                <field-error :msg="veeErrors" field="uf" />
+              </b-form-group>
+            </b-col>
+            <b-col sm="4">
+              <b-form-group label="Cidade">
+                <b-form-select
+                  v-model="form.city"
+                  class="form-control"
+                  :options="cidades"
+                  name="city"
+                />
+                <field-error :msg="veeErrors" field="city" />
+              </b-form-group>
+            </b-col>
+          </b-row>
           <b-row>
             <b-col>
               <b-form-group label="Senha">
@@ -129,6 +155,8 @@ import tipoDeUnidade from '@/data/tipo-de-unidade'
 import buyerPositions from '@/data/posicao-do-comprador'
 import pais from '@/data/pais.json'
 import moeda from '@/data/moeda.json'
+import estados from '@/data/estados.json'
+import cidades from '@/data/cidades.json'
 
 export default {
   components: {
@@ -140,6 +168,8 @@ export default {
       buyerPositions,
       pais,
       moeda,
+      estados,
+      cidades,
       form: {
         unitOfMeasurement: '',
         name: '',
@@ -149,16 +179,35 @@ export default {
         password: '',
         password_confirmation: '',
         buyerPosition: '',
-        coin: 'real',
+        currency: 'real',
         country: 'BR',
         nickname: '',
+        uf: '',
+        city: '',
       },
     }
   },
   created() {
     this.edit(this.$route.params.id)
+    this.loadCities()
   },
   methods: {
+    loadCities() {
+      // lista de cidades com somente o item "selecione a cidade"
+      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
+
+      // filtra as cidades conforme a UF selecionada
+      if (this.form.uf) {
+        this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
+      }
+
+      // limpa a cidade digitada, caso não exista na lista
+      if (this.form.city && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.city)) {
+          this.form.city = ''
+        }
+      }
+    },
     edit(id) {
       this.is_loading = true
       this.$axios

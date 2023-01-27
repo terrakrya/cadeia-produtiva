@@ -11,12 +11,16 @@ const PriceSchema = new mongoose.Schema(
       required: true,
     },
     buyerPosition: String,
-    price: {
+    MinimumPrice: {
       type: Number,
       required: true,
     },
-    coin: String,
+    MaximumPrice: {
+      type: Number,
+      required: true,
+    },
     country: String,
+    currency: String,
     measure: {
       type: String,
       required: true,
@@ -50,8 +54,9 @@ PriceSchema.methods.data = function () {
     id: this.id,
     createdAt: this.createdAt,
     buyerPosition: this.buyerPosition,
-    price: this.price,
-    coin: this.coin,
+    MinimumPrice: this.MinimumPrice,
+    MaximumPrice: this.MaximumPrice,
+    currency: this.currency,
     country: this.country,
     measure: this.measure,
     product: this.product,

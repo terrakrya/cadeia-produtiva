@@ -10,10 +10,12 @@ const UserSchema = new mongoose.Schema(
     role: String,
     unitOfMeasurement: String,
     buyerPosition: String,
-    coin: String,
+    currency: String,
     country: String,
     nickname: String,
     comments: String,
+    uf: String,
+    city: String,
     username: {
       type: String,
       lowercase: true,
@@ -74,9 +76,11 @@ UserSchema.methods.data = function () {
     nickname: this.nickname,
     unitOfMeasurement: this.unitOfMeasurement,
     buyerPosition: this.buyerPosition,
-    coin: this.coin,
+    currency: this.currency,
     country: this.country,
     organization: this.organization,
+    uf: this.uf,
+    city: this.city,
   }
 }
 UserSchema.methods.generateJWT = function () {

@@ -46,8 +46,11 @@
             <template #cell(product)="data">
               {{ data.item.product.description }}
             </template>
-            <template #cell(price)="data">
-              {{ data.item.price | moeda }}
+            <template #cell(MinimumPrice)="data">
+              {{ data.item.MinimumPrice | moeda }}
+            </template>
+            <template #cell(MaximumPrice)="data">
+              {{ data.item.MaximumPrice | moeda }}
             </template>
             <template #cell(actions)="data">
               <n-link
@@ -100,8 +103,13 @@ export default {
           sortable: true,
         },
         {
-          key: 'price',
-          label: 'Preço',
+          key: 'MinimumPrice',
+          label: 'preço mínimo',
+          sortable: true,
+        },
+        {
+          key: 'MaximumPrice',
+          label: 'preço máximo',
           sortable: true,
         },
         {

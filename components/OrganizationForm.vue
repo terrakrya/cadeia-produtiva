@@ -264,9 +264,9 @@ export default {
     // filtra as praça conforme a cidade selecionada
     loadPracas() {
       if (this.form.city) {
-        const teste = this.form.city
+        const cidade = this.form.city
         const pracas = this.pracas.filter(function (item) {
-          return item.cidade === teste
+          return item.cidade === cidade
         })
         if (pracas && pracas.length > 0) {
           this.form.square = pracas[0].nome

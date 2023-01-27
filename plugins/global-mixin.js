@@ -25,6 +25,9 @@ if (!Vue.__my_mixin__) {
       isManager() {
         return this.hasRole('gestor')
       },
+      isMessenger() {
+        return this.hasRole('mensageiro')
+      },
       baseUrl() {
         return this.$axios.defaults.baseURL.replace('/api', '')
       },
