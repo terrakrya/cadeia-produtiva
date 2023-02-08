@@ -1,8 +1,7 @@
 <template>
   <div>
     <b-list-group class="sidebar color-white">
-      <b-list-group-item>
-        <i class="fas fa-tools" />
+      <b-list-group-item class="color-white">
         Cadastros
         <b-icon-chevron-down />
       </b-list-group-item>

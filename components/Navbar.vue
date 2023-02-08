@@ -2,7 +2,7 @@
   <b-navbar v-if="currentUser" toggleable="md" type="dark" class="p-3">
     <b-navbar-brand to="/painel">
       <img src="~/assets/img/logo.png" class="logo" />
-      <small class="text-uppercase">{{ 'Cadeia Produtiva' }}</small>
+      <small>{{ 'Inteligência em economia ecológica' }}</small>
     </b-navbar-brand>
     <b-collapse id="sidebar" is-nav>
       <div class="d-md-none">

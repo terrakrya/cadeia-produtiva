@@ -50,7 +50,7 @@
               >
                 <b-icon-pencil />
               </n-link>
-              <a class="btn btn-danger" @click="remove(data.item._id)">
+              <a class="btn btn-secondary" @click="remove(data.item._id)">
                 <b-icon-trash />
               </a>
             </template>

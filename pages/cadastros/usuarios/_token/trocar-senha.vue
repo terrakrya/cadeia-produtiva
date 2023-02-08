@@ -11,7 +11,7 @@
               <img src="~/assets/img/logo.png" />
               <h2 class="mb-4 mt-4">
                 <a href="/" class="text-white text-uppercase">
-                  Cadeia Produtiva
+                  Inteligência em economia ecológica
                 </a>
               </h2>
               <p>Trocar Senha</p>
