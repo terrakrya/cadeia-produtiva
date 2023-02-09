@@ -30,23 +30,23 @@
             <div class="col-sm-4">
               <b-form-group label="Preço Mínimo*">
                 <money
-                  v-model="form.MinimumPrice"
+                  v-model="form.minimumPrice"
                   v-validate="'required'"
                   prefix=""
                   class="form-control"
-                  name="MinimumPrice"
+                  name="minimumPrice"
                 ></money>
-                <field-error :msg="veeErrors" field="MinimumPrice" />
+                <field-error :msg="veeErrors" field="minimumPrice" />
               </b-form-group>
             </div>
             <div class="col-sm-4">
               <b-form-group label="Preço Máximo*">
                 <money
-                  v-model="form.MaximumPrice"
+                  v-model="form.maximumPrice"
                   prefix=""
                   class="form-control"
                 ></money>
-                <field-error :msg="veeErrors" field="MaximumPrice" />
+                <field-error :msg="veeErrors" field="maximumPrice" />
               </b-form-group>
             </div>
           </div>
@@ -180,8 +180,8 @@ export default {
           .tz('America/Sao_Paulo')
           .format('YYYY-MM-DD'),
         buyerPosition: '',
-        MinimumPrice: '',
-        MaximumPrice: '',
+        minimumPrice: '',
+        maximumPrice: '',
         currency: '',
         country: '',
         measure: '',
@@ -247,7 +247,7 @@ export default {
     edit(id) {
       this.is_loading = true
       this.$axios
-        .get('priceInformations/' + id)
+        .get('price-informations/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
           if (response.data.image) {
@@ -260,23 +260,23 @@ export default {
     save() {
       this.$validator.validate().then((isValid) => {
         // validação do preço
-        if (!this.form.MinimumPrice || this.form.MinimumPrice === 0) {
+        if (!this.form.minimumPrice || this.form.minimumPrice === 0) {
           this.veeErrors.items.push({
             id: 103,
             vmId: this.veeErrors.vmId,
-            field: 'MinimumPrice',
+            field: 'minimumPrice',
             msg: 'Este campo é obrigatório.',
             rule: 'required',
             scope: null,
           })
           isValid = false
-        } else if (this.form.MaximumPrice === 0) {
-          this.form.MaximumPrice = this.form.MinimumPrice
-        } else if (this.form.MaximumPrice < this.form.MinimumPrice) {
+        } else if (this.form.maximumPrice === 0) {
+          this.form.maximumPrice = this.form.minimumPrice
+        } else if (this.form.maximumPrice < this.form.minimumPrice) {
           this.veeErrors.items.push({
             id: 102,
             vmId: this.veeErrors.vmId,
-            field: 'MaximumPrice',
+            field: 'maximumPrice',
             msg: 'o preço máximo tem que ser maior ou igual ao preço mínimo .',
             rule: 'required',
             scope: null,
@@ -298,8 +298,8 @@ export default {
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
             url: this.isEditing()
-              ? 'priceInformations/' + this.$route.params.id
-              : 'priceInformations',
+              ? 'price-informations/' + this.$route.params.id
+              : 'price-informations',
             data: this.form,
           })
             .then((resp) => {

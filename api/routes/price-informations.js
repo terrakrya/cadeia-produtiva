@@ -9,14 +9,33 @@ router.get('/', auth.authenticated, async (req, res) => {
 
   // ***** monta os filtros *****
 
-  const filters = req.query
+  if (req.query.filters) {
+    const filters = JSON.parse(req.query.filters || '{}')
 
-  if (filters.id) {
-    query._id = filters.id
-  }
+    if (filters.uf) {
+      query.uf = filters.uf
+    }
 
-  if (filters.id) {
-    query.product = filters.product
+    if (filters.city) {
+      query.city = filters.city
+    }
+
+    if (filters.from && !filters.to) {
+      query.createdAt = {
+        $gte: new Date(filters.from),
+      }
+    }
+    else if (filters.to && !filters.from) {
+      query.createdAt = {
+        $lte: new Date(filters.to),
+      }
+    }
+    else if (filters.from && filters.to) {
+      query.createdAt = {
+        $gte: new Date(filters.from),
+        $lte: new Date(filters.to),
+      }
+    }
   }
 
   try {
@@ -52,8 +71,8 @@ router.post('/', auth.authenticated, async (req, res) => {
 
     price.createdAt = req.body.createdAt
     price.buyerPosition = req.body.buyerPosition
-    price.MinimumPrice = req.body.MinimumPrice
-    price.MaximumPrice = req.body.MaximumPrice
+    price.minimumPrice = req.body.minimumPrice
+    price.maximumPrice = req.body.maximumPrice
     price.currency = req.body.currency
     price.country = req.body.country
     price.measure = req.body.measure
@@ -69,6 +88,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     res.status(422).send('Ocorreu um erro ao incluir o preço: ' + err.message)
   }
 })
+
 // altera um produto
 router.put('/:id', auth.authenticated, async (req, res) => {
   try {
@@ -79,8 +99,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
     if (price) {
       price.createdAt = req.body.createdAt
       price.buyerPosition = req.body.buyerPosition
-      price.MinimumPrice = req.body.MinimumPrice
-      price.MaximumPrice = req.body.MaximumPrice
+      price.minimumPrice = req.body.minimumPrice
+      price.maximumPrice = req.body.maximumPrice
       price.currency = req.body.currency
       price.country = req.body.country
       price.measure = req.body.measure

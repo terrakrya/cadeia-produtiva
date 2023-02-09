@@ -46,11 +46,11 @@
             <template #cell(product)="data">
               {{ data.item.product.description }}
             </template>
-            <template #cell(MinimumPrice)="data">
-              {{ data.item.MinimumPrice | moeda }}
+            <template #cell(minimumPrice)="data">
+              {{ data.item.minimumPrice | moeda }}
             </template>
-            <template #cell(MaximumPrice)="data">
-              {{ data.item.MaximumPrice | moeda }}
+            <template #cell(maximumPrice)="data">
+              {{ data.item.maximumPrice | moeda }}
             </template>
             <template #cell(actions)="data">
               <n-link
@@ -88,7 +88,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'messenger',
+          key: 'messenger.name',
           label: 'Mensageiro',
           sortable: true,
         },
@@ -98,17 +98,17 @@ export default {
           sortable: true,
         },
         {
-          key: 'product',
+          key: 'product.description',
           label: 'produto',
           sortable: true,
         },
         {
-          key: 'MinimumPrice',
+          key: 'minimumPrice',
           label: 'preço mínimo',
           sortable: true,
         },
         {
-          key: 'MaximumPrice',
+          key: 'maximumPrice',
           label: 'preço máximo',
           sortable: true,
         },
@@ -127,7 +127,7 @@ export default {
   },
   methods: {
     async list() {
-      this.priceInformations = await this.$axios.$get('priceInformations')
+      this.priceInformations = await this.$axios.$get('price-informations')
     },
 
     remove(id) {
@@ -136,7 +136,7 @@ export default {
         .then((confirmed) => {
           if (confirmed) {
             this.$axios
-              .$delete('priceInformations/' + id)
+              .$delete('price-informations/' + id)
               .then(() => {
                 this.list()
               })

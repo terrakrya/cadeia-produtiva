@@ -11,11 +11,11 @@ const PriceSchema = new mongoose.Schema(
       required: true,
     },
     buyerPosition: String,
-    MinimumPrice: {
+    minimumPrice: {
       type: Number,
       required: true,
     },
-    MaximumPrice: {
+    maximumPrice: {
       type: Number,
       required: true,
     },
@@ -25,20 +25,16 @@ const PriceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    product: [
-      {
-        type: ObjectId,
-        ref: 'Product',
-        required: true,
-      },
-    ],
-    messenger: [
-      {
-        type: ObjectId,
-        ref: 'User',
-        required: true,
-      },
-    ],
+    product: {
+      type: ObjectId,
+      ref: 'Product',
+      required: true,
+    },
+    messenger: {
+      type: ObjectId,
+      ref: 'User',
+      required: true,
+    },
     uf: String,
     city: String,
   },
@@ -54,8 +50,8 @@ PriceSchema.methods.data = function () {
     id: this.id,
     createdAt: this.createdAt,
     buyerPosition: this.buyerPosition,
-    MinimumPrice: this.MinimumPrice,
-    MaximumPrice: this.MaximumPrice,
+    minimumPrice: this.minimumPrice,
+    maximumPrice: this.maximumPrice,
     currency: this.currency,
     country: this.country,
     measure: this.measure,
