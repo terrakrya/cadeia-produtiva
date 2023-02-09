@@ -1,17 +1,20 @@
 <template>
   <div class="type">
     <Breadcrumb
-      :links="[['Cadastro', '/operacional/informacao-preco']]"
-      active="preço"
+      :links="[['Operacional', '/operacional/informacao-preco']]"
+      active="coleta de preço"
     />
     <div class="panel">
       <div class="panel-body">
-        <form-headline name="Coleta de preços" />
+        <div class="col-sm-6">
+          <h1>Coleta de preços</h1>
+        </div>
+        <br />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
           <div v-if="isAdmin || isManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="busca do cadastro de informantes *">
+              <b-form-group label="Busca do cadastro de informantes *">
                 <b-form-select
                   v-model="form.messenger"
                   v-validate="'required'"
@@ -52,7 +55,7 @@
           </div>
           <div class="row">
             <div class="col-sm-6">
-              <b-form-group label="produto *">
+              <b-form-group label="Produto *">
                 <b-form-select
                   v-model="form.product"
                   v-validate="'required'"
