@@ -24,13 +24,11 @@ router.get('/', auth.authenticated, async (req, res) => {
       query.createdAt = {
         $gte: new Date(filters.from),
       }
-    }
-    else if (filters.to && !filters.from) {
+    } else if (filters.to && !filters.from) {
       query.createdAt = {
         $lte: new Date(filters.to),
       }
-    }
-    else if (filters.from && filters.to) {
+    } else if (filters.from && filters.to) {
       query.createdAt = {
         $gte: new Date(filters.from),
         $lte: new Date(filters.to),

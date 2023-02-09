@@ -11,7 +11,8 @@
                   v-model="filters.uf"
                   class="form-control"
                   :options="estados"
-                  @input="loadCities"
+                  name="uf"
+                  @input="loadCities()"
                 />
               </b-form-group>
             </b-col>
@@ -21,7 +22,7 @@
                   v-model="filters.city"
                   class="form-control"
                   :options="cidades"
-                  @input="loadPracas"
+                  @input="loadPracas()"
                 />
               </b-form-group>
             </b-col>
@@ -157,10 +158,12 @@ export default {
 
   async created() {
     await this.applyFilters()
+    this.loadCities()
+    this.loadPracas()
   },
   methods: {
     async applyFilters() {
-      let filters = {}
+      const filters = {}
 
       if (this.filters.uf) {
         filters.uf = this.filters.uf
@@ -213,6 +216,9 @@ export default {
         })
         if (pracas && pracas.length > 0) {
           this.filters.square = pracas[0].nome
+        }
+        if (this.filters.city === 'Selecione a cidade') {
+          this.filters.square = ''
         }
       }
 
