@@ -34,6 +34,9 @@ router.get('/', auth.authenticated, async (req, res) => {
         $lte: new Date(filters.to),
       }
     }
+    if (filters.product) {
+      query.product = filters.product
+    }
   }
 
   try {

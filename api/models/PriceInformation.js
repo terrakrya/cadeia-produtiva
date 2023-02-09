@@ -10,7 +10,10 @@ const PriceSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    buyerPosition: String,
+    buyerPosition: {
+      type: String,
+      required: true,
+    },
     minimumPrice: {
       type: Number,
       required: true,

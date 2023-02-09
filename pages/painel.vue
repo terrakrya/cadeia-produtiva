@@ -1,6 +1,6 @@
 <template>
   <div class="SpeciesProduct">
-    <breadcrumb />
+    <breadcrumb active="Dados publicados" />
     <div class="panel">
       <div class="panel-body">
         <div class="info-content">
@@ -73,6 +73,18 @@
                 />
               </b-form-group>
             </b-col>
+            <div class="col-sm-4">
+              <b-form-group label="Produto">
+                <b-form-select
+                  v-model="filters.product"
+                  class="form-control"
+                  placeholder="selecione um prduto"
+                  :options="products"
+                  text-field="description"
+                  name="product"
+                />
+              </b-form-group>
+            </div>
           </div>
           <br />
           <no-item :list="priceInformations" />
@@ -126,6 +138,7 @@ export default {
         square: null,
         from: null,
         to: null,
+        product: null,
       },
       estados,
       cidades,
@@ -133,7 +146,7 @@ export default {
       table_fields: [
         {
           key: 'local',
-          label: 'cidade/estado',
+          label: 'Cidade/estado',
           sortable: true,
         },
         {
@@ -153,6 +166,7 @@ export default {
         },
       ],
       priceInformations: [],
+      products: [],
     }
   },
 
@@ -160,6 +174,7 @@ export default {
     await this.applyFilters()
     this.loadCities()
     this.loadPracas()
+    this.products = await this.$axios.$get('products')
   },
   methods: {
     async applyFilters() {
@@ -179,6 +194,9 @@ export default {
 
       if (this.filters.to) {
         filters.to = this.filters.to
+      }
+      if (this.filters.product) {
+        filters.product = this.filters.product
       }
 
       this.priceInformations = await this.$axios.$get('price-informations', {

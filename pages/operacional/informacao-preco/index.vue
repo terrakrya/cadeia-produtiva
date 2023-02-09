@@ -99,17 +99,17 @@ export default {
         },
         {
           key: 'product.description',
-          label: 'produto',
+          label: 'Produto',
           sortable: true,
         },
         {
           key: 'minimumPrice',
-          label: 'preço mínimo',
+          label: 'Preço mínimo',
           sortable: true,
         },
         {
           key: 'maximumPrice',
-          label: 'preço máximo',
+          label: 'Preço máximo',
           sortable: true,
         },
         {

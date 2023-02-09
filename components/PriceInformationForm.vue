@@ -2,7 +2,7 @@
   <div class="type">
     <Breadcrumb
       :links="[['Operacional', '/operacional/informacao-preco']]"
-      active="coleta de preço"
+      active="coleta de preços"
     />
     <div class="panel">
       <div class="panel-body">
@@ -14,7 +14,7 @@
         <b-form @submit.prevent="save">
           <div v-if="isAdmin || isManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="Busca do cadastro de informantes *">
+              <b-form-group label="Informante *">
                 <b-form-select
                   v-model="form.messenger"
                   v-validate="'required'"
@@ -31,7 +31,7 @@
           </div>
           <div class="row">
             <div class="col-sm-4">
-              <b-form-group label="Preço Mínimo*">
+              <b-form-group label="Preço mínimo *">
                 <money
                   v-model="form.minimumPrice"
                   v-validate="'required'"
@@ -43,7 +43,7 @@
               </b-form-group>
             </div>
             <div class="col-sm-4">
-              <b-form-group label="Preço Máximo*">
+              <b-form-group label="Preço máximo *">
                 <money
                   v-model="form.maximumPrice"
                   prefix=""
@@ -69,12 +69,15 @@
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group label="Posição na cadeia produtiva do comprador">
+              <b-form-group label="Posição na cadeia de valor *">
                 <b-form-select
                   v-model="form.buyerPosition"
+                  v-validate="'required'"
                   class="form-control"
                   :options="posicaoComprador"
+                  nome="buyerPosition"
                 />
+                <field-error :msg="veeErrors" field="buyerPosition" />
               </b-form-group>
             </div>
           </div>
@@ -97,7 +100,7 @@
               </b-form-group>
             </div>
             <b-col sm="4">
-              <b-form-group label="Estado">
+              <b-form-group label="Estado *">
                 <b-form-select
                   v-model="form.uf"
                   v-validate="'required'"
@@ -110,7 +113,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Cidade">
+              <b-form-group label="Cidade *">
                 <b-form-select
                   v-model="form.city"
                   class="form-control"
