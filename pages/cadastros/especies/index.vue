@@ -70,7 +70,7 @@ export default {
       table_fields: [
         {
           key: 'scientificName',
-          label: 'Name científico',
+          label: 'Nome científico',
           sortable: true,
         },
         {
