@@ -307,6 +307,34 @@ export default {
           if (this.isMessenger) {
             this.form.messenger = this.currentUser._id
           }
+          if (this.form.measure === 'Kg') {
+            this.form.minimumPrice = this.form.originalMinimumPrice
+            this.form.maximumPrice = this.form.originalMaximumPrice
+          }
+          if (this.form.measure === 'Tonelada') {
+            this.form.minimumPrice = this.form.originalMinimumPrice * 1000
+            this.form.maximumPrice = this.form.originalMaximumPrice * 1000
+          }
+          if (this.form.measure === 'Latão') {
+            this.form.minimumPrice = this.form.originalMinimumPrice * 12
+            this.form.maximumPrice = this.form.originalMaximumPrice * 12
+          }
+          if (this.form.measure === 'Caixa') {
+            this.form.minimumPrice = this.form.originalMinimumPrice * 24
+            this.form.maximumPrice = this.form.originalMaximumPrice * 24
+          }
+          if (this.form.measure === 'Hectolitro') {
+            this.form.minimumPrice = this.form.originalMinimumPrice * 60
+            this.form.maximumPrice = this.form.originalMaximumPrice * 60
+          }
+          if (this.form.measure === 'Saca') {
+            this.form.minimumPrice = this.form.originalMinimumPrice * 60
+            this.form.maximumPrice = this.form.originalMaximumPrice * 60
+          }
+          if (this.form.measure === 'Barrica') {
+            this.form.minimumPrice = this.form.originalMinimumPrice * 72
+            this.form.maximumPrice = this.form.originalMaximumPrice * 72
+          }
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',

@@ -1,11 +1,11 @@
 <template>
   <div class="SpeciesProduct">
-    <breadcrumb active="Cadastro de Classificação da Espécie/Produto" />
+    <breadcrumb active="Cadastro de classificação da espécie/produto" />
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
           <div class="col-sm-6">
-            <h1>Espécie/Produto</h1>
+            <h1>Classificação da espécie/produto</h1>
           </div>
           <div class="col-sm-6 main-actions">
             <n-link

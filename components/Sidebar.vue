@@ -11,7 +11,7 @@
         </b-nav>
         <b-nav vertical>
           <b-nav-item to="/cadastros/especies-produtos">
-            Classificação da Espécie/Produto
+            Classificações de espécies/produtos
           </b-nav-item>
         </b-nav>
         <b-nav vertical>

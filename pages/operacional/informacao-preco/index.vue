@@ -46,6 +46,9 @@
             <template #cell(product)="data">
               {{ data.item.product.description }}
             </template>
+            <template #cell(measure)="data">
+              {{ data.item.measure }}
+            </template>
             <template #cell(minimumPrice)="data">
               {{ data.item.originalMinimumPrice | moeda }}
             </template>
@@ -100,6 +103,11 @@ export default {
         {
           key: 'product.description',
           label: 'Produto',
+          sortable: true,
+        },
+        {
+          key: 'measure',
+          label: 'Unidade de medida',
           sortable: true,
         },
         {
