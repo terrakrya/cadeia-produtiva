@@ -12,7 +12,7 @@
               to="/operacional/informacao-preco/cadastrar"
               class="btn btn-primary"
             >
-              <b-icon-plus /> {{ 'Cadastrar' }}
+              <b-icon-plus /> {{ 'Registrar' }}
             </n-link>
           </div>
         </div>
@@ -47,10 +47,10 @@
               {{ data.item.product.description }}
             </template>
             <template #cell(minimumPrice)="data">
-              {{ data.item.minimumPrice | moeda }}
+              {{ data.item.originalMinimumPrice | moeda }}
             </template>
             <template #cell(maximumPrice)="data">
-              {{ data.item.maximumPrice | moeda }}
+              {{ data.item.originalMaximumPrice | moeda }}
             </template>
             <template #cell(actions)="data">
               <n-link
@@ -103,12 +103,12 @@ export default {
           sortable: true,
         },
         {
-          key: 'minimumPrice',
+          key: 'originalMinimumPrice',
           label: 'Preço mínimo',
           sortable: true,
         },
         {
-          key: 'maximumPrice',
+          key: 'originalMaximumPrice',
           label: 'Preço máximo',
           sortable: true,
         },

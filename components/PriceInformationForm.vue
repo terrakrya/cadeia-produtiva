@@ -2,12 +2,12 @@
   <div class="type">
     <Breadcrumb
       :links="[['Operacional', '/operacional/informacao-preco']]"
-      active="coleta de preços"
+      active="Registro de coleta de preços"
     />
     <div class="panel">
       <div class="panel-body">
         <div class="col-sm-6">
-          <h1>Coleta de preços</h1>
+          <h1>Registro de coleta de preços</h1>
         </div>
         <br />
         <loading :loading="is_loading" />
@@ -33,23 +33,23 @@
             <div class="col-sm-4">
               <b-form-group label="Preço mínimo *">
                 <money
-                  v-model="form.minimumPrice"
+                  v-model="form.originalMinimumPrice"
                   v-validate="'required'"
                   prefix=""
                   class="form-control"
-                  name="minimumPrice"
+                  name="originalMinimumPrice"
                 ></money>
-                <field-error :msg="veeErrors" field="minimumPrice" />
+                <field-error :msg="veeErrors" field="originalMinimumPrice" />
               </b-form-group>
             </div>
             <div class="col-sm-4">
               <b-form-group label="Preço máximo *">
                 <money
-                  v-model="form.maximumPrice"
+                  v-model="form.originalMaximumPrice"
                   prefix=""
                   class="form-control"
                 ></money>
-                <field-error :msg="veeErrors" field="maximumPrice" />
+                <field-error :msg="veeErrors" field="originalMaximumPrice" />
               </b-form-group>
             </div>
           </div>
@@ -69,7 +69,7 @@
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group label="Posição na cadeia de valor *">
+              <b-form-group label="Posição na cadeia de valor do comprador *">
                 <b-form-select
                   v-model="form.buyerPosition"
                   v-validate="'required'"
@@ -188,6 +188,8 @@ export default {
         buyerPosition: '',
         minimumPrice: '',
         maximumPrice: '',
+        originalMinimumPrice: '',
+        originalMaximumPrice: '',
         currency: '',
         country: '',
         measure: '',
@@ -266,23 +268,28 @@ export default {
     save() {
       this.$validator.validate().then((isValid) => {
         // validação do preço
-        if (!this.form.minimumPrice || this.form.minimumPrice === 0) {
+        if (
+          !this.form.originalMinimumPrice ||
+          this.form.originalMinimumPrice === 0
+        ) {
           this.veeErrors.items.push({
             id: 103,
             vmId: this.veeErrors.vmId,
-            field: 'minimumPrice',
+            field: 'originalMinimumPrice',
             msg: 'Este campo é obrigatório.',
             rule: 'required',
             scope: null,
           })
           isValid = false
-        } else if (this.form.maximumPrice === 0) {
-          this.form.maximumPrice = this.form.minimumPrice
-        } else if (this.form.maximumPrice < this.form.minimumPrice) {
+        } else if (this.form.originalMaximumPrice === 0) {
+          this.form.originalMaximumPrice = this.form.originalMinimumPrice
+        } else if (
+          this.form.originalMaximumPrice < this.form.originalMinimumPrice
+        ) {
           this.veeErrors.items.push({
             id: 102,
             vmId: this.veeErrors.vmId,
-            field: 'maximumPrice',
+            field: 'originalMaximumPrice',
             msg: 'o preço máximo tem que ser maior ou igual ao preço mínimo .',
             rule: 'required',
             scope: null,

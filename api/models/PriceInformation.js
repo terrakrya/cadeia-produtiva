@@ -14,13 +14,19 @@ const PriceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    minimumPrice: {
+    originalMinimumPrice: {
       type: Number,
       required: true,
     },
-    maximumPrice: {
+    originalMaximumPrice: {
       type: Number,
       required: true,
+    },
+    minimumPrice: {
+      type: Number,
+    },
+    maximumPrice: {
+      type: Number,
     },
     country: String,
     currency: String,
