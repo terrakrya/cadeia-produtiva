@@ -8,7 +8,7 @@ router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****
-  // TODO: filtrar pela organização do usuário (req.user.organization)
+  query.organization = req.user.organization
 
   try {
     // ***** executa a query *****
@@ -115,7 +115,6 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.uf = req.body.uf
     price.city = req.body.city
     price.organization = req.user.organization
-    // TODO: salvar a organização do usuário logado (req.user.organization)
 
     await price.save()
 
