@@ -252,7 +252,7 @@ export default {
         filters.product = this.filters.product
       }
 
-      this.priceInformations = await this.$axios.$get('price-informations', {
+      this.priceInformations = await this.$axios.$get('price-informations/data-published', {
         params: {
           filters,
         },

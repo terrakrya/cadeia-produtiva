@@ -8,6 +8,30 @@ router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****
+  // TODO: filtrar pela organização do usuário (req.user.organization)
+
+  try {
+    // ***** executa a query *****
+
+    const price = await Price.find(query)
+      .populate('product')
+      .populate('messenger')
+      .sort('price')
+
+    res.json(price)
+  } catch (err) {
+    res
+      .status(422)
+      .send('Ocorreu um erro ao carregar a lista de preço: ' + err.message)
+  }
+})
+
+router.get('/data-published', auth.authenticated, async (req, res) => {
+  const query = {}
+
+  // ***** monta os filtros *****
+
+  // TODO: filtrar pelo usuário logado (quando está logado no sistema) ou sem usuário (quando está fora)
 
   if (req.query.filters) {
     const filters = JSON.parse(req.query.filters || '{}')
@@ -43,12 +67,18 @@ router.get('/', auth.authenticated, async (req, res) => {
   try {
     // ***** executa a query *****
 
-    const price = await Price.find(query)
-      .populate('product')
+    const priceList = await Price.find(query)
       .populate('messenger')
       .sort('price')
 
-    res.json(price)
+    // const items = []
+    // for (const price in priceList) {
+    //   if (Object.hasOwnProperty.call(object, price)) {
+    //     const element = object[price]
+    //   }
+    // }
+
+    res.json(priceList)
   } catch (err) {
     res
       .status(422)
@@ -84,6 +114,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.messenger = req.body.messenger
     price.uf = req.body.uf
     price.city = req.body.city
+    // TODO: salvar a organização do usuário logado (req.user.organization)
 
     await price.save()
 
