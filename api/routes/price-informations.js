@@ -114,6 +114,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.messenger = req.body.messenger
     price.uf = req.body.uf
     price.city = req.body.city
+    price.organization = req.user.organization
     // TODO: salvar a organização do usuário logado (req.user.organization)
 
     await price.save()
@@ -122,6 +123,7 @@ router.post('/', auth.authenticated, async (req, res) => {
   } catch (err) {
     res.status(422).send('Ocorreu um erro ao incluir o preço: ' + err.message)
   }
+  console.log(req.user.organization)
 })
 
 // altera um produto

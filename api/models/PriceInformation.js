@@ -46,6 +46,10 @@ const PriceSchema = new mongoose.Schema(
     },
     uf: String,
     city: String,
+    organization: {
+      type: ObjectId,
+      ref: 'Organization',
+    },
   },
   {
     timestamps: true,
@@ -68,6 +72,7 @@ PriceSchema.methods.data = function () {
     messenger: this.messenger,
     uf: this.uf,
     city: this.city,
+    organization: this.organization,
   }
 }
 PriceSchema.methods.generateJWT = function () {
