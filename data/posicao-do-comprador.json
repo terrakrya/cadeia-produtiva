@@ -4,28 +4,36 @@
 		"value": "Coletores"
 	},
 	{
-		"text": "Cooperativa / associação",
-		"value": "Cooperativa / associação"
+		"text": "Associação (não beneficia)",
+		"value": "Associação (não beneficia)"
 	},
 	{
-		"text": "Atravessadores",
-		"value": "Atravessadores"
+		"text": "Cooperativa (não beneficia)",
+		"value": "Cooperativa (não beneficia)"
 	},
 	{
-		"text": "Usinas",
-		"value": "Usinas"
+		"text": "Intermediários (atravessadores)",
+		"value": "Intermediários (atravessadores)"
 	},
 	{
-		"text": "Indústria de processamento",
-		"value": "Indústria de processamento"
+		"text": "Usina de beneficiamento comunitária",
+		"value": "Usina de beneficiamento comunitária"
 	},
 	{
-		"text": "Distribuidores",
-		"value": "Distribuidores"
+		"text": "Usina de beneficiamento privada (empresarial)",
+		"value": "Usina de beneficiamento privada (empresarial)"
 	},
 	{
-		"text": "Revendedores",
-		"value": "Revendedores"
+		"text": "Indústria de transformação",
+		"value": "Indústria de transformação"
+	},
+	{
+		"text": "Atacadista",
+		"value": "Atacadista"
+	},
+	{
+		"text": "Varejista",
+		"value": "Varejista"
 	},
 	{
 		"text": "Consumidor final",

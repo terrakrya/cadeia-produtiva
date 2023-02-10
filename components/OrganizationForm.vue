@@ -115,7 +115,7 @@
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Elo na cadeia produtiva">
+              <b-form-group label="Posição comercial">
                 <b-form-select
                   v-model="form.chainLink"
                   class="form-control"
