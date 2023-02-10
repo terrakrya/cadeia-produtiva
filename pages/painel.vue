@@ -12,7 +12,7 @@
                   class="form-control"
                   :options="estados"
                   name="uf"
-                  @input="loadCities()"
+                  @input="loadCities(true)"
                 />
               </b-form-group>
             </b-col>
@@ -22,7 +22,7 @@
                   v-model="filters.city"
                   class="form-control"
                   :options="cidades"
-                  @input="loadPracas()"
+                  @input="loadPracas(true)"
                 />
               </b-form-group>
             </b-col>
@@ -78,10 +78,10 @@
                 <b-form-select
                   v-model="filters.product"
                   class="form-control"
-                  placeholder="selecione um prduto"
                   :options="products"
+                  value-field="_id"
                   text-field="description"
-                  name="product"
+                  @input="applyFilters"
                 />
               </b-form-group>
             </div>
@@ -133,12 +133,12 @@ export default {
   data() {
     return {
       filters: {
-        uf: null,
-        city: null,
+        uf: '',
+        city: '',
         square: null,
         from: null,
         to: null,
-        product: null,
+        product: '',
       },
       estados,
       cidades,
@@ -171,12 +171,65 @@ export default {
   },
 
   async created() {
+    await this.loadCities(false)
+    await this.loadPracas(false)
     await this.applyFilters()
-    this.loadCities()
-    this.loadPracas()
-    this.products = await this.$axios.$get('products')
+    await this.loadProducts()
   },
   methods: {
+    async loadCities(loadFilters) {
+      // lista de cidades com somente o item "selecione a cidade"
+      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
+
+      // filtra as cidades conforme a UF selecionada
+      if (this.filters.uf) {
+        this.cidades = this.cidades.concat(Object(cidades)[this.filters.uf])
+      }
+      else {
+        this.filters.square = null
+      }
+
+      // limpa a cidade digitada, caso não exista na lista
+      if (this.filters.city && this.cidades) {
+        if (!this.cidades.find((c) => c === this.filters.city)) {
+          this.filters.city = ''
+        }
+      }
+
+      if (loadFilters) {
+        await this.applyFilters()
+      }
+    },
+
+    // filtra as praça conforme a cidade selecionada
+    async loadPracas(loadFilters) {
+      if (this.filters.city) {
+        const cidade = this.filters.city
+        const pracas = this.pracas.filter(function (item) {
+          return item.cidade === cidade
+        })
+        if (pracas && pracas.length > 0) {
+          this.filters.square = pracas[0].nome
+        }
+        if (this.filters.city === 'Selecione a cidade') {
+          this.filters.square = ''
+        }
+      }
+      else {
+        this.filters.square = null
+      }
+
+      if (loadFilters) {
+        await this.applyFilters()
+      }
+    },
+
+    async loadProducts() {
+      let products = [{ _id: '', description: 'Selecione o produto' }]
+      Array.prototype.push.apply(products, await this.$axios.$get('products'))
+      this.products = products
+    },
+
     async applyFilters() {
       const filters = {}
 
@@ -186,6 +239,10 @@ export default {
 
       if (this.filters.city) {
         filters.city = this.filters.city
+      }
+
+      if (this.filters.product) {
+        filters.product = this.filters.product
       }
 
       if (this.filters.from) {
@@ -204,43 +261,6 @@ export default {
           filters,
         },
       })
-    },
-
-    async loadCities() {
-      // lista de cidades com somente o item "selecione a cidade"
-      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
-
-      // filtra as cidades conforme a UF selecionada
-      if (this.filters.uf) {
-        this.cidades = this.cidades.concat(Object(cidades)[this.filters.uf])
-      }
-
-      // limpa a cidade digitada, caso não exista na lista
-      if (this.filters.city && this.cidades) {
-        if (!this.cidades.find((c) => c === this.filters.city)) {
-          this.filters.city = ''
-        }
-      }
-
-      await this.applyFilters()
-    },
-
-    // filtra as praça conforme a cidade selecionada
-    async loadPracas() {
-      if (this.filters.city) {
-        const cidade = this.filters.city
-        const pracas = this.pracas.filter(function (item) {
-          return item.cidade === cidade
-        })
-        if (pracas && pracas.length > 0) {
-          this.filters.square = pracas[0].nome
-        }
-        if (this.filters.city === 'Selecione a cidade') {
-          this.filters.square = ''
-        }
-      }
-
-      await this.applyFilters()
     },
   },
 }
