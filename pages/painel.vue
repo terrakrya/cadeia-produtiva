@@ -184,8 +184,7 @@ export default {
       // filtra as cidades conforme a UF selecionada
       if (this.filters.uf) {
         this.cidades = this.cidades.concat(Object(cidades)[this.filters.uf])
-      }
-      else {
+      } else {
         this.filters.square = null
       }
 
@@ -214,8 +213,7 @@ export default {
         if (this.filters.city === 'Selecione a cidade') {
           this.filters.square = ''
         }
-      }
-      else {
+      } else {
         this.filters.square = null
       }
 
@@ -225,7 +223,7 @@ export default {
     },
 
     async loadProducts() {
-      let products = [{ _id: '', description: 'Selecione o produto' }]
+      const products = [{ _id: '', description: 'Selecione o produto' }]
       Array.prototype.push.apply(products, await this.$axios.$get('products'))
       this.products = products
     },
