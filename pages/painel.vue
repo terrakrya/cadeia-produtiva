@@ -94,16 +94,14 @@
             :fields="table_fields"
             :items="priceInformations"
           >
-            <template #cell(local)="data">
-              {{ data.item.city }}
-              /
-              {{ data.item.uf }}
+            <template #cell(messenger)="data">
+              {{ data.item.messenger.name }}
+            </template>
+            <template #cell(buyerPosition)="data">
+              {{ data.item.buyerPosition }}
             </template>
             <template #cell(createdAt)="data">
               {{ data.item.createdAt | moment('DD/MM/YYYY') }}
-            </template>
-            <template #cell(product)="data">
-              {{ data.item.product.code }}
             </template>
             <template #cell(price)="data">
               {{ data.item.minimumPrice | moeda }}
@@ -145,18 +143,18 @@ export default {
       pracas,
       table_fields: [
         {
-          key: 'local',
-          label: 'Cidade/estado',
+          key: 'messenger.name',
+          label: 'De',
+          sortable: true,
+        },
+        {
+          key: 'buyerPosition',
+          label: 'Para',
           sortable: true,
         },
         {
           key: 'createdAt',
           label: 'Data',
-          sortable: true,
-        },
-        {
-          key: 'product.description',
-          label: 'Produto',
           sortable: true,
         },
         {
