@@ -31,6 +31,36 @@
           </div>
           <div class="row">
             <div class="col-sm-4">
+              <b-form-group label=" Tipo *">
+                <b-form-select
+                  v-model="form.transaction"
+                  v-validate="'required'"
+                  class="form-control"
+                  aria-placeholder="selecione a opção"
+                  :options="transacao"
+                  nome="transaction"
+                />
+                <field-error :msg="veeErrors" field="transaction" />
+              </b-form-group>
+            </div>
+            <div
+              v-if="form.transaction === 'transação realizada'"
+              class="col-sm-4"
+            >
+              <b-form-group label="Quantidade transacionada *">
+                <money
+                  v-model="form.transactedQuantity"
+                  v-validate="'required'"
+                  prefix=""
+                  class="form-control"
+                  nome="transactedQuantity"
+                ></money>
+                <field-error :msg="veeErrors" field="transactedQuantity" />
+              </b-form-group>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
               <b-form-group label="Preço mínimo *">
                 <money
                   v-model="form.originalMinimumPrice"
@@ -132,6 +162,7 @@
                   v-validate="'required'"
                   class="form-control"
                   :options="medida"
+                  @imput="Measure()"
                 />
               </b-form-group>
             </div>
@@ -154,7 +185,7 @@
               </b-form-group>
             </div>
           </div>
-          <form-submit :sending="is_sending" />
+          <form-submit :sending="is_sending" @imput="transactedQuantity()" />
         </b-form>
       </div>
     </div>
@@ -168,6 +199,7 @@ import medida from '@/data/tipo-de-unidade.json'
 import pais from '@/data/pais.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
+import transacao from '@/data/transacionada.json'
 export default {
   components: {
     Breadcrumb,
@@ -180,6 +212,7 @@ export default {
       pais,
       estados,
       cidades,
+      transacao,
       form: {
         messenger: '',
         createdAt: this.$moment(new Date())
@@ -196,6 +229,8 @@ export default {
         product: '',
         uf: '',
         city: '',
+        transaction: '',
+        transactedQuantity: '',
       },
       products: [],
       messengers: [],
@@ -208,6 +243,7 @@ export default {
     }
     this.loadCities()
     this.loadMessenger()
+    this.getMeasure()
   },
   methods: {
     async list() {
@@ -252,6 +288,33 @@ export default {
         }
       }
     },
+    transactedQuantity(min, max, mid) {
+      if (this.form.transaction === 'preço de mercado') {
+        this.form.minimumPrice = min * mid
+        this.form.maximumPrice = max * mid
+      } else if (this.form.transaction === 'transação realizada') {
+        this.form.minimumPrice = min * mid * this.form.transactedQuantity
+        this.form.maximumPrice = max * mid * this.form.transactedQuantity
+      }
+    },
+    getMeasure() {
+      if (this.form.measure === 'Kg') {
+        return 1
+      } else if (this.form.measure === 'Tonelada') {
+        return 1000
+      } else if (this.form.measure === 'Latão') {
+        return 12
+      } else if (this.form.measure === 'Caixa') {
+        return 24
+      } else if (
+        this.form.measure === 'Hectolitro' ||
+        this.form.measure === 'Saca'
+      ) {
+        return 60
+      } else if (this.form.measure === 'Barrica') {
+        return 72
+      }
+    },
     edit(id) {
       this.is_loading = true
       this.$axios
@@ -273,7 +336,7 @@ export default {
           this.form.originalMinimumPrice === 0
         ) {
           this.veeErrors.items.push({
-            id: 103,
+            id: 101,
             vmId: this.veeErrors.vmId,
             field: 'originalMinimumPrice',
             msg: 'Este campo é obrigatório.',
@@ -295,46 +358,39 @@ export default {
             scope: null,
           })
           isValid = false
+        } else if (this.form.transaction === 'transação realizada') {
+          if (this.form.transactedQuantity === 0.0) {
+            this.veeErrors.items.push({
+              id: 103,
+              vmId: this.veeErrors.vmId,
+              field: 'transactedQuantity',
+              msg: 'Este campo é obrigatório.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+          }
+        } else if (this.form.transaction === 'preço de mercado') {
+          this.form.transactedQuantity = 0
         } else {
           this.veeErrors.items = this.veeErrors.items.filter(
-            (error) => error.id !== 102 && error.id !== 103
+            (error) => error.id !== 101 && error.id !== 102 && error.id !== 103
           )
         }
 
         if (isValid) {
           this.is_sending = true
-
+          if (this.form.transaction === 'preço de mercado') {
+            this.form.transactedQuantity = 0
+          }
           if (this.isMessenger) {
             this.form.messenger = this.currentUser._id
           }
-          if (this.form.measure === 'Kg') {
-            this.form.minimumPrice = this.form.originalMinimumPrice
-            this.form.maximumPrice = this.form.originalMaximumPrice
-          }
-          if (this.form.measure === 'Tonelada') {
-            this.form.minimumPrice = this.form.originalMinimumPrice * 1000
-            this.form.maximumPrice = this.form.originalMaximumPrice * 1000
-          }
-          if (this.form.measure === 'Latão') {
-            this.form.minimumPrice = this.form.originalMinimumPrice * 12
-            this.form.maximumPrice = this.form.originalMaximumPrice * 12
-          }
-          if (this.form.measure === 'Caixa') {
-            this.form.minimumPrice = this.form.originalMinimumPrice * 24
-            this.form.maximumPrice = this.form.originalMaximumPrice * 24
-          }
-          if (this.form.measure === 'Hectolitro') {
-            this.form.minimumPrice = this.form.originalMinimumPrice * 60
-            this.form.maximumPrice = this.form.originalMaximumPrice * 60
-          }
-          if (this.form.measure === 'Saca') {
-            this.form.minimumPrice = this.form.originalMinimumPrice * 60
-            this.form.maximumPrice = this.form.originalMaximumPrice * 60
-          }
-          if (this.form.measure === 'Barrica') {
-            this.form.minimumPrice = this.form.originalMinimumPrice * 72
-            this.form.maximumPrice = this.form.originalMaximumPrice * 72
-          }
+          this.transactedQuantity(
+            this.form.originalMinimumPrice,
+            this.form.originalMaximumPrice,
+            this.getMeasure()
+          )
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',

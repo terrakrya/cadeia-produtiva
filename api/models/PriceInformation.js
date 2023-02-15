@@ -14,6 +14,14 @@ const PriceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    transaction: {
+      type: String,
+      required: true,
+    },
+    transactedQuantity: {
+      type: Number,
+      required: true,
+    },
     originalMinimumPrice: {
       type: Number,
       required: true,
@@ -73,6 +81,8 @@ PriceSchema.methods.data = function () {
     uf: this.uf,
     city: this.city,
     organization: this.organization,
+    transaction: this.transaction,
+    transactedQuantity: this.transactedQuantity,
   }
 }
 PriceSchema.methods.generateJWT = function () {

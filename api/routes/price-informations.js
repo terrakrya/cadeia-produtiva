@@ -115,6 +115,8 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.uf = req.body.uf
     price.city = req.body.city
     price.organization = req.user.organization
+    price.transaction = req.body.transaction
+    price.transactedQuantity = req.body.transactedQuantity
 
     await price.save()
 
@@ -146,6 +148,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       price.messenger = req.body.messenger
       price.uf = req.body.uf
       price.city = req.body.city
+      price.transaction = req.body.transaction
+      price.transactedQuantity = req.body.transactedQuantity
 
       await price.save()
 
