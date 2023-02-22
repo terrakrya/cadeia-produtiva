@@ -9,7 +9,7 @@
         <form-headline name="Usuário" />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
-          <div v-if="!isAdmin" class="row">
+          <div v-if="isAdmin" class="row">
             <div class="col-sm-6">
               <b-form-group label=" Perfil *">
                 <b-form-radio-group
@@ -22,7 +22,7 @@
               </b-form-group>
             </div>
           </div>
-          <div v-if="!isAdmin" class="row">
+          <div v-if="isAdmin" class="row">
             <div class="col-sm-6">
               <b-form-group label="Selecionar uma organização ">
                 <form-entity-select

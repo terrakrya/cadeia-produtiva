@@ -12,12 +12,22 @@
         <br />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
+          <div v-if="isAdmin" class="row">
+            <div class="col-sm-8">
+              <b-form-group label="Organização ">
+                <form-entity-select
+                  v-model="form.organization"
+                  type="organizations"
+                  @input="teste()"
+                />
+              </b-form-group>
+            </div>
+          </div>
           <div v-if="isAdmin || isManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="Informante *">
+              <b-form-group label="Informante">
                 <b-form-select
                   v-model="form.messenger"
-                  v-validate="'required'"
                   class="form-control"
                   :options="messengers"
                   value-field="id"
@@ -25,7 +35,6 @@
                   name="messenger"
                   @input="loadMessenger()"
                 />
-                <field-error :msg="veeErrors" field="messenger" />
               </b-form-group>
             </div>
           </div>
@@ -231,9 +240,11 @@ export default {
         city: '',
         transaction: '',
         transactedQuantity: '',
+        organization: '',
       },
       products: [],
       messengers: [],
+      organizations: '',
     }
   },
   async created() {
@@ -244,14 +255,32 @@ export default {
     this.loadCities()
     this.loadMessenger()
     this.getMeasure()
+    this.teste()
   },
   methods: {
+    async teste() {
+      if (this.isAdmin) {
+        this.organizations = await this.$axios.$get(
+          'organizations/' + this.form.organization
+        )
+        this.products = this.organizations.products
+        const users = await this.$axios.$get('users')
+        const messengers = users.filter((i) => {
+          return i.role === 'mensageiro'
+        })
+        this.messengers = messengers.filter((i) => {
+          return i.organization === this.form.organization
+        })
+      }
+    },
     async list() {
-      this.products = await this.$axios.$get('products')
-      const users = await this.$axios.$get('users')
-      this.messengers = users.filter((i) => {
-        return i.role === 'mensageiro'
-      })
+      if (this.isManager) {
+        this.products = await this.$axios.$get('products')
+        const users = await this.$axios.$get('users')
+        this.messengers = users.filter((i) => {
+          return i.role === 'mensageiro'
+        })
+      }
       if (!this.isAdmin) {
         this.form.currency = this.currentUser.currency
         this.form.country = this.currentUser.country
@@ -382,6 +411,9 @@ export default {
           this.is_sending = true
           if (this.form.transaction === 'preço de mercado') {
             this.form.transactedQuantity = 0
+          }
+          if (this.isManager && !this.form.messenger) {
+            this.form.messenger = this.currentUser._id
           }
           if (this.isMessenger) {
             this.form.messenger = this.currentUser._id

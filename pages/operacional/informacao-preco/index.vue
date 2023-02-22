@@ -203,6 +203,13 @@ export default {
   },
   methods: {
     async list() {
+      const filters = {}
+
+      if (this.isAdmin) {
+        filters.organization = '!organization'
+      } else if (this.isManager) {
+        filters.organization = this.currentUser.organization
+      }
       this.priceInformations = await this.$axios.$get('price-informations')
     },
 

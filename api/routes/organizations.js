@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const router = require('express').Router()
 const auth = require('../config/auth')
-const populate = require('../config/utils').populate
 const Organization = mongoose.model('Organization')
 
 router.get('/', auth.authenticated, async (req, res) => {
@@ -15,19 +14,20 @@ router.get('/', auth.authenticated, async (req, res) => {
     query._id = filters.id
   }
 
-  if (filters.organizations) {
-    query.organizations = filters.organizations
-  }
-
-  if (filters.types) {
-    query.types = filters.types
+  if (filters.organization) {
+    if (filters.organization === '!organization') {
+      query.$or = [{ organization: null }, { role: 'gestor' }]
+    } else {
+      query.organization = filters.organization
+      query.role = { $ne: 'gestor' }
+    }
   }
 
   try {
     // ***** executa a query *****
 
     const organizations = await Organization.find(query)
-      .populate(populate(req))
+      .populate('products')
       .sort('name')
 
     res.json(organizations)
@@ -44,9 +44,7 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
-    const organizations = await Organization.findOne(query).populate(
-      populate(req)
-    )
+    const organizations = await Organization.findOne(query).populate('products')
     return res.json(organizations)
   } catch (err) {
     res.sendStatus(422)
