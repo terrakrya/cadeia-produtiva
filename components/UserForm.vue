@@ -24,7 +24,7 @@
           </div>
           <div v-if="isAdmin" class="row">
             <div class="col-sm-6">
-              <b-form-group label="Selecionar uma organização ">
+              <b-form-group label="Selecionar uma organização">
                 <form-entity-select
                   v-model="form.organization"
                   type="organizations"
