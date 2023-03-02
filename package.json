@@ -105,5 +105,6 @@
     "stylelint-config-prettier": "^8.0.2",
     "stylelint-config-standard": "^20.0.0",
     "vue-jest": "^3.0.4"
-  }
+  },
+  "packageManager": "yarn@3.4.1"
 }

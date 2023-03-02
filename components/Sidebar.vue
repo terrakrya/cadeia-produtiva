@@ -8,7 +8,7 @@ import { isAdmin } from '~/api/config/auth';
         <b-icon-chevron-down />
       </b-list-group-item>
       <b-list-group-item v-if="isAdmin || isManager" class="bg-brown-2">
-        <b-nav vertical v-if="isAdmin">
+        <b-nav v-if="isAdmin" vertical>
           <b-nav-item to="/cadastros/especies">Espécies</b-nav-item>
         </b-nav>
         <b-nav v-if="isAdmin" vertical>
