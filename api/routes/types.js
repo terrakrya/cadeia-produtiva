@@ -15,8 +15,8 @@ router.get('/', auth.authenticated, async (req, res) => {
     query._id = filters.id
   }
 
-  if (filters.code) {
-    query.code = filters.code
+  if (filters.name) {
+    query.name = filters.name
   }
 
   if (filters.type) {
@@ -61,11 +61,26 @@ router.post('/unique-code', auth.authenticated, async (req, res) => {
     res.sendStatus(422)
   }
 })
+router.post('/unique-name', auth.authenticated, async (req, res) => {
+  const query = { name: req.body.name }
+
+  if (req.body.id) {
+    query._id = { $ne: req.body.id }
+  }
+
+  try {
+    const found = await Type.exists(query)
+    return res.json(!found)
+  } catch (err) {
+    res.sendStatus(422)
+  }
+})
 
 router.post('/', auth.authenticated, async (req, res) => {
   try {
     const type = new Type()
 
+    type.name = req.body.name
     type.code = req.body.code
     type.description = req.body.description
     type.type = req.body.type
@@ -85,6 +100,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
     const type = await Type.findOne(query)
 
     if (type) {
+      type.name = req.body.name
       type.code = req.body.code
       type.description = req.body.description
       type.type = req.body.type

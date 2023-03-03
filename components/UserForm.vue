@@ -33,7 +33,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-4">
               <b-form-group label="Nome *">
                 <b-form-input
                   v-model="form.name"
@@ -41,6 +41,14 @@
                   name="name"
                 />
                 <field-error :msg="veeErrors" field="name" />
+              </b-form-group>
+            </div>
+            <div class="col-sm-2">
+              <b-form-group label="Data de nascimento ">
+                <b-form-input
+                  v-model="form.birthDate"
+                  v-mask="['##/##/##']"
+                />
               </b-form-group>
             </div>
             <div class="col-sm-6">
@@ -131,6 +139,7 @@ export default {
         password_confirmation: '',
         role: null,
         organization: '',
+        birthDate: '',
       },
     }
   },

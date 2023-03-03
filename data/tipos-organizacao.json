@@ -1,6 +1,22 @@
 [
 	{
-		"text": "definir",
-		"value": "definir"
+		"text": "Grupo de Coletores ",
+		"value": "Grupo de Coletores "
+	},
+	{
+		"text": "Associação ",
+		"value": "Associação "
+	},
+	{
+		"text": "Cooperativa",
+		"value": "Cooperativa"
+	},
+	{
+		"text": "Empresa ",
+		"value": "Empresa "
+	},
+	{
+		"text": "Organizações de apoio ( Ongs e outros tipos de organização comunitária )",
+		"value": "Organizações de apoio"
 	}
 ]

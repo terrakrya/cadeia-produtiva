@@ -20,6 +20,16 @@
                 <field-error :msg="veeErrors" field="name" />
               </b-form-group>
             </div>
+            <div class="col-sm-2">
+              <b-form-group label="Sigla *">
+                <b-form-input
+                  v-model="form.sigla"
+                  v-validate="'required'"
+                  name="sigla"
+                />
+                <field-error :msg="veeErrors" field="sigla" />
+              </b-form-group>
+            </div>
             <b-col sm="2">
               <b-form-group label="Tipo *">
                 <b-form-select
@@ -34,7 +44,7 @@
             </b-col>
             <div class="col-sm-3">
               <b-form-group label="CNPJ ">
-                <b-form-input v-model="form.cnpj" v-mask="['###.###.###-##']" />
+                <b-form-input v-model="form.cnpj" v-mask="['##.###.###/####-##']" />
               </b-form-group>
             </div>
           </div>
@@ -60,9 +70,9 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Cidade">
+              <b-form-group label="Município">
                 <b-form-select
-                  v-model="form.city"
+                  v-model="form.County"
                   class="form-control"
                   :options="cidades"
                   @input="loadPracas()"
@@ -89,20 +99,28 @@
                   class="form-control"
                   name="territory"
                   :placeholder="'Selecione o território'"
-                  :sort-by="'name'"
                   :options="territorios"
+                  value-field
                   text-field="nome"
                 />
               </b-form-group>
             </b-col>
           </div>
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-3">
               <b-form-group label="Telefone ">
                 <b-form-input
                   v-model="form.contact"
                   v-mask="['(##) #####-####']"
                   name="contact"
+                />
+              </b-form-group>
+            </div>
+            <div class="col-sm-3">
+              <b-form-group label="Outros contatos ">
+                <b-form-input
+                  v-model="form.otherContacts"
+                  name="otherContacts"
                 />
               </b-form-group>
             </div>
@@ -124,16 +142,15 @@
                 />
               </b-form-group>
             </b-col>
-            <div class="col-sm-3">
-              <b-form-group label="Cooperados (quantidade)">
-                <b-form-input
-                  v-model="form.members"
-                  type="number"
-                  name="members"
+            <b-col sm="6">
+              <b-form-group label=" Atuação na cadeia de valor ">
+                <b-form-select
+                  v-model="form.acting"
+                  class="form-control"
+                  :options="tiposCadeiaValor"
                 />
-                <field-error :msg="veeErrors" field="members" />
               </b-form-group>
-            </div>
+            </b-col>
           </div>
           <div class="row">
             <div class="col-sm-12">
@@ -142,7 +159,7 @@
                   v-model="form.products"
                   :options="products"
                   value-field="id"
-                  text-field="description"
+                  text-field="name"
                 />
               </b-form-group>
             </div>
@@ -154,7 +171,7 @@
                   v-model="form.bestPractices"
                   :options="bestPractices"
                   value-field="id"
-                  text-field="description"
+                  text-field="name"
                 />
               </b-form-group>
             </div>
@@ -164,7 +181,7 @@
                   v-model="form.certifications"
                   :options="certificationTypes"
                   value-field="id"
-                  text-field="description"
+                  text-field="name"
                 />
               </b-form-group>
             </div>
@@ -184,9 +201,10 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import pracas from '@/data/praca.json'
 import territorios from '@/data/territorio.json'
-import tiposOrganizacao from '@/data/posicao-do-comprador.json'
+import tiposOrganizacao from '@/data/tipos-organizacao.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
+import { thisExpression } from '@babel/types'
 export default {
   components: {
     Breadcrumb,
@@ -203,25 +221,28 @@ export default {
         type: '',
         cnpj: '',
         address: '',
-        territory: '',
+        territory: [],
         contact: '',
+        otherContacts: '',
         chainLink: '',
         square: '',
         squareid: '',
-        territories: '',
         protectedArea: '',
         members: 0,
         products: [],
         bestPractices: [],
         certifications: [],
         uf: '',
-        city: '',
+        County: '',
         comments: '',
         email: '',
+        sigla: '',
+        acting: '',
       },
       products: [],
       bestPractices: [],
       certificationTypes: [],
+      tiposCadeiaValor: [],
     }
   },
   async created() {
@@ -232,41 +253,62 @@ export default {
 
     this.loadCities()
     this.loadPracas()
+    
+    this.tiposCadeiaValor = this.tiposOrganizacao
+    let valor = {
+      "text": "Logística",
+		  "value": "Logística"
+    }
+    this.tiposCadeiaValor.push(valor)
   },
   methods: {
     async list() {
+      this.territorios.sort(function(a, b){
+        if(a.nome < b.nome) {
+          return -1
+        } else {
+          return true
+        }
+      })
       this.products = await this.$axios.$get('products')
       const tipos = await this.$axios.$get('types')
       this.bestPractices = tipos.filter((i) => {
-        return i.type === 'boas práticas'
+        return i.type === 'Boas práticas'
       })
       this.certificationTypes = tipos.filter((i) => {
-        return i.type === 'certificação'
+        return i.type === 'Certificação'
       })
     },
+    loadActing() {
+      let valor = {
+        "text": "Logística",
+		    "value": "Logística"
+      }
+      this.tiposCadeiaValor.push(valor)
+    },
     loadCities() {
-      // lista de cidades com somente o item "selecione a cidade"
-      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
+      // lista de cidades com somente o item "selecione a município"
+      this.cidades = [{ value: '', text: 'Selecione a município' }]
 
       // filtra as cidades conforme a UF selecionada
       if (this.form.uf) {
         this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
       }
 
-      // limpa a cidade digitada, caso não exista na lista
-      if (this.form.city && this.cidades) {
-        if (!this.cidades.find((c) => c === this.form.city)) {
-          this.form.city = ''
+      // limpa a município digitada, caso não exista na lista
+      if (this.form.County && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.County)) {
+          this.form.County = ''
         }
       }
     },
 
-    // filtra as praça conforme a cidade selecionada
+    // filtra as praça conforme a município selecionada
     loadPracas() {
-      if (this.form.city) {
-        const cidade = this.form.city
+      if (this.form.County) {
+        const município = this.form.County
         const pracas = this.pracas.filter(function (item) {
-          return item.cidade === cidade
+          return item.município === município
         })
         if (pracas && pracas.length > 0) {
           this.form.square = pracas[0].nome

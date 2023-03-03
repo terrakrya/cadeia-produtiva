@@ -125,6 +125,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     user.comments = req.body.comments
     user.uf = req.body.uf
     user.city = req.body.city
+    user.birthDate = req.body.birthDate
 
     if (req.body.password) {
       user.setPassword(req.body.password)
@@ -162,6 +163,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.comments = req.body.comments
       user.uf = req.body.uf
       user.city = req.body.city
+      user.birthDate = req.body.birthDate
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -201,6 +203,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.comments = req.body.comments
       user.uf = req.body.uf
       user.city = req.body.city
+      user.birthDate = req.body.birthDate
 
       if (req.body.password) {
         user.setPassword(req.body.password)

@@ -91,6 +91,17 @@
                 <field-error :msg="veeErrors" field="originalMaximumPrice" />
               </b-form-group>
             </div>
+            <div class="col-sm-4">
+              <b-form-group label="Unidade de medida *">
+                <b-form-select
+                  v-model="form.measure"
+                  v-validate="'required'"
+                  class="form-control"
+                  :options="medida"
+                  @imput="Measure()"
+                />
+              </b-form-group>
+            </div>
           </div>
           <div class="row">
             <div class="col-sm-6">
@@ -164,17 +175,7 @@
             </b-col>
           </div>
           <div class="row">
-            <div class="col-sm-4">
-              <b-form-group label="Unidade de medida *">
-                <b-form-select
-                  v-model="form.measure"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="medida"
-                  @imput="Measure()"
-                />
-              </b-form-group>
-            </div>
+            
             <div class="col-sm-4">
               <b-form-group label="Moeda">
                 <b-form-select

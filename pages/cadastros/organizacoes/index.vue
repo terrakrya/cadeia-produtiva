@@ -40,8 +40,8 @@
             <template #cell(type)="data">
               {{ data.item.type }}
             </template>
-            <template #cell(cnpj)="data">
-              {{ data.item.cnpj }}
+            <template #cell(sigla)="data">
+              {{ data.item.sigla }}
             </template>
             <template #cell(actions)="data">
               <n-link
@@ -82,8 +82,8 @@ export default {
           sortable: true,
         },
         {
-          key: 'cnpj',
-          label: 'CNPJ',
+          key: 'sigla',
+          label: 'Sigla',
           sortable: true,
         },
         {

@@ -64,6 +64,20 @@ router.post('/unique-code', auth.authenticated, async (req, res) => {
   }
 })
 
+router.post('/unique-name', auth.authenticated, async (req, res) => {
+  const query = { name: req.body.name }
+
+  if (req.body.id) {
+    query._id = { $ne: req.body.id }
+  }
+
+  try {
+    const found = await Product.exists(query)
+    return res.json(!found)
+  } catch (err) {
+    res.sendStatus(422)
+  }
+})
 router.post('/', auth.authenticated, async (req, res) => {
   try {
     const product = new Product()
@@ -71,6 +85,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     product.code = req.body.code
     product.description = req.body.description
     product.specieProduct = req.body.specieProduct
+    product.name = req.body.name
 
     await product.save()
 
@@ -90,6 +105,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       product.code = req.body.code
       product.description = req.body.description
       product.specieProduct = req.body.specieProduct
+      product.name = req.body.name
 
       await product.save()
 

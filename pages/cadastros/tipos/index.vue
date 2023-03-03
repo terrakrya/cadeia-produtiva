@@ -30,15 +30,15 @@
             :items="types"
             :sort-by="'code'"
             :filter="filters.search"
-          >
-            <template #cell(code)="data">
-              {{ data.item.code }}
-            </template>
-            <template #cell(description)="data">
-              {{ data.item.description }}
-            </template>
+          > 
             <template #cell(type)="data">
               {{ data.item.type }}
+            </template>
+            <template #cell(name)="data">
+              {{ data.item.name }}
+            </template>
+            <template #cell(code)="data">
+              {{ data.item.code }}
             </template>
             <template #cell(actions)="data">
               <n-link
@@ -69,20 +69,20 @@ export default {
       filters: { search: null },
       table_fields: [
         {
-          key: 'code',
-          label: 'Código',
-          sortable: true,
-        },
-        {
-          key: 'description',
-          label: 'Descrição',
-          sortable: true,
-        },
-        {
           key: 'type',
           label: 'Tipo',
           sortable: true,
         },
+        {
+          key: 'name',
+          label: 'Nome',
+          sortable: true,
+        },
+        {
+          key: 'code',
+          label: 'Código',
+          sortable: true,
+        }, 
         {
           key: 'actions',
           label: 'Ação',

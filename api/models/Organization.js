@@ -14,18 +14,21 @@ const OrganizationSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    acting: String,
     cnpj: String,
     address: String,
-    territory: String,
+    territory: Array,
     contact: String,
     chainLink: String,
     square: String,
     squareid: String,
     uf: String,
-    city: String,
+    County: String,
     email: String,
     members: Number,
     comments: String,
+    sigla: String,
+    otherContacts: String,
     products: [
       {
         type: ObjectId,
@@ -65,13 +68,16 @@ OrganizationSchema.methods.data = function () {
     square: this.square,
     squareid: this.squareid,
     uf: this.uf,
-    city: this.city,
+    County: this.County,
     members: this.members,
     products: this.products,
     bestPractices: this.bestPractices,
     certifications: this.certifications,
     comments: this.comments,
     email: this.email,
+    otherContacts: this.otherContacts,
+    sigla: this.sigla,
+    acting: this.acting
   }
 }
 OrganizationSchema.methods.generateJWT = function () {

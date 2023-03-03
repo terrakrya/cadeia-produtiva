@@ -31,11 +31,11 @@
             :sort-by="'code'"
             :filter="filters.search"
           >
+            <template #cell(name)="data">
+              {{ data.item.name }}
+            </template>
             <template #cell(code)="data">
               {{ data.item.code }}
-            </template>
-            <template #cell(description)="data">
-              {{ data.item.description }}
             </template>
             <template #cell(actions)="data">
               <n-link
@@ -66,13 +66,13 @@ export default {
       filters: { search: null },
       table_fields: [
         {
-          key: 'code',
-          label: 'Código',
+          key: 'name',
+          label: 'Nome',
           sortable: true,
         },
         {
-          key: 'description',
-          label: 'Descrição',
+          key: 'code',
+          label: 'Código',
           sortable: true,
         },
         {

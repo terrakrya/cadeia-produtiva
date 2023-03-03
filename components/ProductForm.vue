@@ -10,7 +10,17 @@
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
           <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-5">
+              <b-form-group label="Nome *">
+                <b-form-input
+                  v-model="form.name"
+                  v-validate="'required'"
+                  name="name"
+                />
+                <field-error :msg="veeErrors" field="name" />
+              </b-form-group>
+            </div>
+            <div class="col-sm-3">
               <b-form-group label="Código *">
                 <b-form-input
                   v-model="form.code"
@@ -60,6 +70,7 @@ export default {
   data() {
     return {
       form: {
+        name: '',
         code: '',
         description: '',
         specieProduct: '',
@@ -101,9 +112,20 @@ export default {
               scope: null,
             })
             isValid = false
+          } 
+          if (await this.isNotUniqueName(id, this.form.name)) {
+            this.veeErrors.items.push({
+              id: 103,
+              vmId: this.veeErrors.vmId,
+              field: 'name',
+              msg: 'Este código já existe.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
           } else {
             this.veeErrors.items = this.veeErrors.items.filter(
-              (error) => error.id !== 102
+              (error) => error.id !== 102 && error.id !== 103
             )
           }
         }
@@ -134,6 +156,12 @@ export default {
       return !(await this.$axios.$post('products/unique-code', {
         id,
         code,
+      }))
+    },
+    async isNotUniqueName(id, name) {
+      return !(await this.$axios.$post('products/unique-name', {
+        id,
+        name,
       }))
     },
   },

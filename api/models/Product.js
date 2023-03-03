@@ -6,6 +6,11 @@ const secret = process.env.SECRET || 'cadeia-produtiva'
 
 const ProductSchema = new mongoose.Schema(
   {
+    name: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     code: {
       type: String,
       unique: true,
@@ -32,6 +37,7 @@ ProductSchema.methods.data = function () {
     code: this.code,
     description: this.description,
     specieProduct: this.specieProduct,
+    name: this.name,
   }
 }
 ProductSchema.methods.generateJWT = function () {

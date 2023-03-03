@@ -65,13 +65,16 @@ router.post('/', auth.authenticated, async (req, res) => {
     organizations.square = req.body.square
     organizations.squareid = req.body.squareid
     organizations.uf = req.body.uf
-    organizations.city = req.body.city
+    organizations.County = req.body.County
     organizations.members = req.body.members
     organizations.products = req.body.products
     organizations.bestPractices = req.body.bestPractices
     organizations.certifications = req.body.certifications
     organizations.comments = req.body.comments
     organizations.email = req.body.email
+    organizations.sigla = req.body.sigla
+    organizations.otherContacts = req.body.otherContacts
+    organizations.acting = req.body.acting
 
     await organizations.save()
 
@@ -100,13 +103,16 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       organizations.square = req.body.square
       organizations.squareid = req.body.squareid
       organizations.uf = req.body.uf
-      organizations.city = req.body.city
+      organizations.County = req.body.County
       organizations.members = req.body.members
       organizations.products = req.body.products
       organizations.bestPractices = req.body.bestPractices
       organizations.certifications = req.body.certifications
       organizations.comments = req.body.comments
       organizations.email = req.body.email
+      organizations.sigla = req.body.sigla
+      organizations.otherContacts = req.body.otherContacts
+      organizations.acting = req.body.acting
       await organizations.save()
 
       return res.send(organizations)

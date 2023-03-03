@@ -175,7 +175,7 @@ export default {
         },
         {
           key: 'measure',
-          label: 'Unidade de medida',
+          label: 'Unidade ',
           sortable: true,
         },
         {

@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema(
       index: true,
     },
     name: String,
+    birthDate: String,
     cpf: {
       type: String,
       required: true,
@@ -81,6 +82,7 @@ UserSchema.methods.data = function () {
     organization: this.organization,
     uf: this.uf,
     city: this.city,
+    birthDate: this.birthDate,
   }
 }
 UserSchema.methods.generateJWT = function () {

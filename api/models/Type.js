@@ -6,6 +6,11 @@ const secret = process.env.SECRET || 'cadeia-produtiva'
 const TypeSchema = new mongoose.Schema(
   {
     type: String,
+    name: {
+      type: String,
+      unique: true,
+      required: true,
+    },
     code: {
       type: String,
       unique: true,
@@ -26,6 +31,7 @@ TypeSchema.methods.data = function () {
     code: this.code,
     description: this.description,
     type: this.type,
+    name: this.name,
   }
 }
 TypeSchema.methods.generateJWT = function () {
