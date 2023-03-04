@@ -11,7 +11,7 @@
         <b-form @submit.prevent="save">
           <div v-if="isAdmin" class="row">
             <div class="col-sm-6">
-              <b-form-group label=" Perfil *">
+              <b-form-group label="Perfil *">
                 <b-form-radio-group
                   v-model="form.role"
                   v-validate="'required'"
