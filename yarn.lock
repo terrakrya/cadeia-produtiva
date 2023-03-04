@@ -5221,6 +5221,7 @@ __metadata:
     mongoose: ^5.11.12
     mongoose-unique-validator: ^2.0.3
     multer: ^1.4.2
+    node-gyp: ^9.3.1
     nodemailer: ^6.7.8
     nuxt: ^2.14.12
     nuxt-leaflet: ^0.0.25
@@ -13643,7 +13644,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-gyp@npm:latest":
+"node-gyp@npm:^9.3.1, node-gyp@npm:latest":
   version: 9.3.1
   resolution: "node-gyp@npm:9.3.1"
   dependencies:
