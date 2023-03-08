@@ -34,7 +34,11 @@
           <div class="row">
             <b-col sm="6">
               <b-form-group label="Nome popular">
-                <b-form-input v-model="form.popularName" name="popularName" />
+                <b-form-input
+                 v-model="form.popularName"
+                 v-validate="'required'" 
+                 name="popularName" />
+                 <field-error :msg="veeErrors" field="popularName" />
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
@@ -138,15 +142,15 @@ export default {
         if (isValid) {
           this.is_sending = true
 
-          const formData = Object.assign({}, this.form)
-          formData.popularName = formData.popularName.split(',')
+          // const formData = Object.assign({}, this.form)
+          // formData.popularName = formData.popularName.split(',')
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
             url: this.isEditing()
               ? 'species/' + this.$route.params.id
               : 'species',
-            data: formData,
+            data: this.form,
           })
             .then((resp) => {
               const category = resp.data

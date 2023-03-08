@@ -31,8 +31,8 @@
             :sort-by="'code'"
             :filter="filters.search"
           >
-            <template #cell(scientificName)="data">
-              {{ data.item.scientificName }}
+            <template #cell(popularName)="data">
+              {{ data.item.popularName }}
             </template>
             <template #cell(code)="data">
               {{ data.item.code }}
@@ -69,8 +69,8 @@ export default {
       filters: { search: null },
       table_fields: [
         {
-          key: 'scientificName',
-          label: 'Nome científico',
+          key: 'popularName',
+          label: 'Nome popular',
           sortable: true,
         },
         {

@@ -108,8 +108,7 @@ export default {
           this.list = (await this.$axios.$get('species', filterItem))
             .map((specie) => ({
               id: specie._id,
-              title: specie.scientificName,
-              description: specie.localNames,
+              title: specie.popularName,
               picture:
                 specie.images && specie.images.length
                   ? specie.images[0].thumb

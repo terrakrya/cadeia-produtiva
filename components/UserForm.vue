@@ -47,7 +47,7 @@
               <b-form-group label="Data de nascimento ">
                 <b-form-input
                   v-model="form.birthDate"
-                  v-mask="['##/##/##']"
+                  v-mask="['##/##/####']"
                 />
               </b-form-group>
             </div>

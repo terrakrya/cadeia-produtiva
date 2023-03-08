@@ -16,8 +16,8 @@ const SpecieSchema = new mongoose.Schema(
       required: true,
     },
     popularName: {
-      type: [String],
-      index: true,
+      type: String,
+      required: true,
     },
 
     description: String,

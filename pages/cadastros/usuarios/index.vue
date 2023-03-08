@@ -92,9 +92,7 @@ export default {
     async list() {
       const filters = {}
 
-      if (this.isAdmin) {
-        filters.organization = '!organization'
-      } else if (this.isManager) {
+      if (this.isManager) {
         filters.organization = this.currentUser.organization
       }
 
