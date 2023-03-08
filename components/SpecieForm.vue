@@ -93,7 +93,6 @@ export default {
       this.$axios
         .get('species/' + id)
         .then((response) => {
-          response.data.popularName = response.data.popularName.join(',')
 
           this.apiDataToForm(this.form, response.data)
 
