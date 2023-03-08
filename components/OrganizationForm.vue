@@ -202,6 +202,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import pracas from '@/data/praca.json'
 import territorios from '@/data/territorio.json'
 import tiposOrganizacao from '@/data/tipos-organizacao.json'
+import tiposCadeiaValor from '@/data/tipos-cadeia-valor.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import { thisExpression } from '@babel/types'
@@ -214,6 +215,7 @@ export default {
       pracas,
       territorios,
       tiposOrganizacao,
+      tiposCadeiaValor,
       estados,
       cidades,
       form: {
@@ -242,7 +244,6 @@ export default {
       products: [],
       bestPractices: [],
       certificationTypes: [],
-      tiposCadeiaValor: [],
     }
   },
   async created() {
@@ -253,13 +254,6 @@ export default {
 
     this.loadCities()
     this.loadPracas()
-    
-    this.tiposCadeiaValor = this.tiposOrganizacao
-    let valor = {
-      "text": "Logística",
-		  "value": "Logística"
-    }
-    this.tiposCadeiaValor.push(valor)
   },
   methods: {
     async list() {
@@ -278,13 +272,6 @@ export default {
       this.certificationTypes = tipos.filter((i) => {
         return i.type === 'Certificação'
       })
-    },
-    loadActing() {
-      let valor = {
-        "text": "Logística",
-		    "value": "Logística"
-      }
-      this.tiposCadeiaValor.push(valor)
     },
     loadCities() {
       // lista de cidades com somente o item "selecione a município"
