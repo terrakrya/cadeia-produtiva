@@ -140,7 +140,7 @@ export default {
             .map((organization) => ({
               id: organization._id,
               title: organization.name,
-              description: organization.cnpj,
+              description: organization.sigla,
             }))
             .sort(function (a, b) {
               return a.title.localeCompare(b.title)

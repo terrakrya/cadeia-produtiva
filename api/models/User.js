@@ -16,6 +16,7 @@ const UserSchema = new mongoose.Schema(
     comments: String,
     uf: String,
     city: String,
+    gender: String,
     username: {
       type: String,
       lowercase: true,
@@ -83,6 +84,7 @@ UserSchema.methods.data = function () {
     uf: this.uf,
     city: this.city,
     birthDate: this.birthDate,
+    gender: this.gender
   }
 }
 UserSchema.methods.generateJWT = function () {

@@ -44,6 +44,14 @@
               </b-form-group>
             </div>
             <div class="col-sm-2">
+              <b-form-group label="Gênero ">
+                <b-form-select
+                  v-model="form.gender"
+                  :options="genero"
+                />
+              </b-form-group>
+            </div>
+            <div class="col-sm-2">
               <b-form-group label="Data de nascimento ">
                 <b-form-input
                   v-model="form.birthDate"
@@ -51,7 +59,7 @@
                 />
               </b-form-group>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-4">
               <b-form-group label="E-mail *">
                 <b-form-input v-model="form.email" name="email" />
                 <field-error :msg="veeErrors" field="email" />
@@ -121,12 +129,14 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import tiposDeUsuario from '@/data/tipos-de-usuario.json'
+import genero from '@/data/generos.json'
 export default {
   components: {
     Breadcrumb,
   },
   data() {
     return {
+      genero,
       show_password: false,
       tiposDeUsuarioPermitidos: [],
       form: {
@@ -140,6 +150,7 @@ export default {
         role: null,
         organization: '',
         birthDate: '',
+        gender: '',
       },
     }
   },

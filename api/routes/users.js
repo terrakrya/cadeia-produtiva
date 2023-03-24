@@ -39,7 +39,7 @@ router.get('/', auth.authenticated, async (req, res) => {
   try {
     // ***** executa a query *****
 
-    const users = await User.find(query).populate('organizations').sort('name')
+    const users = await User.find(query).populate('organization').sort('name')
 
     res.json(users)
   } catch (err) {
@@ -126,6 +126,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     user.uf = req.body.uf
     user.city = req.body.city
     user.birthDate = req.body.birthDate
+    user.gender = req.body.gender
 
     if (req.body.password) {
       user.setPassword(req.body.password)
@@ -164,6 +165,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.uf = req.body.uf
       user.city = req.body.city
       user.birthDate = req.body.birthDate
+      user.gender = req.body.gender
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -204,6 +206,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.uf = req.body.uf
       user.city = req.body.city
       user.birthDate = req.body.birthDate
+      user.gender = req.body.gender
 
       if (req.body.password) {
         user.setPassword(req.body.password)

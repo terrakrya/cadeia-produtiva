@@ -34,6 +34,9 @@
             <template #cell(name)="data">
               {{ data.item.name }}
             </template>
+            <template #cell(organization)="data">
+              {{ data.item.organization.sigla}}
+            </template>
             <template #cell(role)="data">
               {{ data.item.role }}
             </template>
@@ -68,6 +71,11 @@ export default {
         {
           key: 'name',
           label: 'Nome',
+          sortable: true,
+        },
+        {
+          key: 'organization',
+          label: 'Organização',
           sortable: true,
         },
         {

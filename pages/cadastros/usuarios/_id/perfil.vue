@@ -52,7 +52,15 @@
             </b-col>
           </b-row>
           <b-row>
-            <b-col>
+            <div class="col-sm-2">
+              <b-form-group label="Gênero ">
+                <b-form-select
+                  v-model="form.gender"
+                  :options="genero"
+                />
+              </b-form-group>
+            </div>
+            <div class="col-sm-6">
               <b-form-group label="Celular *">
                 <b-form-input
                   v-model="form.username"
@@ -61,7 +69,7 @@
                   name="username"
                 />
               </b-form-group>
-            </b-col>
+            </div>
             <b-col>
               <b-form-group label="CPF *">
                 <b-form-input
@@ -157,6 +165,7 @@ import pais from '@/data/pais.json'
 import moeda from '@/data/moeda.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
+import genero from '@/data/generos.json'
 
 export default {
   components: {
@@ -164,6 +173,7 @@ export default {
   },
   data() {
     return {
+      genero,
       tipoDeUnidade,
       buyerPositions,
       pais,
