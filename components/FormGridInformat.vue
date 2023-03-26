@@ -5,21 +5,21 @@
     :fields="table_fields"
     :items="list"
   >
-    <template #cell(messenger)="data">
-      {{ data.item.messenger.name }}
+    <template #cell(from)="data">
+      {{ data.item.from }}
     </template>
-    <template #cell(buyerPosition)="data">
-      {{ data.item.buyerPosition }}
+    <template #cell(to)="data">
+      {{ data.item.to }}
     </template>
-    <template #cell(createdAt)="data">
-      {{ data.item.createdAt | moment('DD/MM/YYYY') }}
+    <template #cell(date)="data">
+      {{ data.item.date }}
     </template>
     <template #cell(price)="data">
       {{ data.item.minimumPrice | moeda }}
       /
       {{ data.item.maximumPrice | moeda }}
       /
-      {{ ((data.item.minimumPrice + data.item.maximumPrice) / 2) | moeda }}
+      {{ data.item.averagePrice | moeda }}
     </template>
   </b-table>
 </template>
@@ -33,17 +33,17 @@ export default {
     return {
       table_fields: [
         {
-          key: 'messenger.name',
+          key: 'from',
           label: 'De',
           sortable: true,
         },
         {
-          key: 'buyerPosition',
+          key: 'to',
           label: 'Para',
           sortable: true,
         },
         {
-          key: 'createdAt',
+          key: 'date',
           label: 'Data',
           sortable: true,
         },

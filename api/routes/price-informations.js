@@ -67,16 +67,42 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
   try {
     // ***** executa a query *****
 
-    const priceList = await Price.find(query)
-      .populate('messenger')
-      .sort('price')
+    const priceListAgr = await Price.aggregate(
+      [
+        { "$match": query },
+        { "$sort": { 'createdAt': -1 } },
+        {
+          "$lookup": {
+              from: "users",
+              localField: "messenger",
+              foreignField: "_id",
+              as: "from"
+          }
+        },
+        {
+          "$group": {
+            _id: {
+              "date": { "$dateToString": { format: "%d/%m/%Y", date: "$createdAt" } },
+              "from": "$from.name",
+              "to": "$buyerPosition"
+            },
+            minimumPrice: { "$min": "$minimumPrice" },
+            maximumPrice: { "$max": "$maximumPrice" }
+          }
+        }
+      ]
+    )
 
-    // const items = []
-    // for (const price in priceList) {
-    //   if (Object.hasOwnProperty.call(object, price)) {
-    //     const element = object[price]
-    //   }
-    // }
+    const priceList = priceListAgr.map(function(obj) { 
+      return {
+        date: obj._id.date,
+        from: obj._id.from.length ? obj._id.from[0] : "",
+        to: obj._id.to,
+        minimumPrice: obj.minimumPrice,
+        maximumPrice: obj.maximumPrice,
+        averagePrice: (obj.minimumPrice + obj.maximumPrice) / 2
+      }
+    })
 
     res.json(priceList)
   } catch (err) {
