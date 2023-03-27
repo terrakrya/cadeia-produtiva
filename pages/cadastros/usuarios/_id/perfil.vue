@@ -310,6 +310,10 @@ export default {
 
         if (isValid) {
           this.is_sending = true
+          
+          if (this.isAdmin) {
+            this.form.username = 'admin'
+          }
 
           this.$axios({
             method: 'PUT',
