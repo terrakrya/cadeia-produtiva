@@ -125,7 +125,11 @@
             </div>
             <div class="col-sm-6">
               <b-form-group label="E-mail *">
-                <b-form-input v-model="form.email" name="email" />
+                <b-form-input 
+                 v-model="form.email" 
+                 name="email"
+                 v-validate="'required'"
+                />
                 <field-error :msg="veeErrors" field="email" />
               </b-form-group>
             </div>
