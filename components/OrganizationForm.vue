@@ -97,10 +97,9 @@
                 <b-form-select
                   v-model="form.territory"
                   class="form-control"
-                  name="territory"
-                  :placeholder="'Selecione o território'"
+                  placeholder='Selecione o território'
                   :options="territorios"
-                  value-field
+                  value-field="nome"
                   text-field="nome"
                 />
               </b-form-group>
@@ -205,7 +204,6 @@ import tiposOrganizacao from '@/data/tipos-organizacao.json'
 import tiposCadeiaValor from '@/data/tipos-cadeia-valor.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
-import { thisExpression } from '@babel/types'
 export default {
   components: {
     Breadcrumb,
@@ -223,7 +221,7 @@ export default {
         type: '',
         cnpj: '',
         address: '',
-        territory: [],
+        territory: '',
         contact: '',
         otherContacts: '',
         chainLink: '',
@@ -293,9 +291,9 @@ export default {
     // filtra as praça conforme a município selecionada
     loadPracas() {
       if (this.form.County) {
-        const município = this.form.County
+        const cidade = this.form.County
         const pracas = this.pracas.filter(function (item) {
-          return item.município === município
+          return item.cidade === cidade
         })
         if (pracas && pracas.length > 0) {
           this.form.square = pracas[0].nome
