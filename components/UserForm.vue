@@ -24,11 +24,13 @@
           </div>
           <div v-if="isAdmin" class="row">
             <div class="col-sm-6">
-              <b-form-group label="Selecionar uma organização">
+              <b-form-group label="Selecionar uma organização *">
                 <form-entity-select
                   v-model="form.organization"
+                  v-validate="'required'"
                   type="organizations"
                 />
+                <field-error :msg="veeErrors" field="organization" />
               </b-form-group>
             </div>
           </div>
@@ -60,7 +62,7 @@
               </b-form-group>
             </div>
             <div class="col-sm-4">
-              <b-form-group label="E-mail *">
+              <b-form-group label="E-mail ">
                 <b-form-input v-model="form.email" name="email" />
                 <field-error :msg="veeErrors" field="email" />
               </b-form-group>
@@ -77,10 +79,9 @@
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group label="CPF *">
+              <b-form-group label="CPF ">
                 <b-form-input
                   v-model="form.cpf"
-                  v-validate="'required'"
                   v-mask="['###.###.###-##']"
                   name="cpf"
                 />

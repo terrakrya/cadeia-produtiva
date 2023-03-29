@@ -28,7 +28,6 @@ const UserSchema = new mongoose.Schema(
     birthDate: String,
     cpf: {
       type: String,
-      required: true,
       uniqui: true,
     },
     email: {
@@ -44,6 +43,7 @@ const UserSchema = new mongoose.Schema(
     salt: String,
     organization: {
       type: ObjectId,
+      required: true,
       ref: 'Organization',
     },
   },

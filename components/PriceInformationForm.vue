@@ -112,7 +112,7 @@
                   class="form-control"
                   :options="products"
                   value-field="id"
-                  text-field="description"
+                  text-field="name"
                   name="product"
                 />
                 <field-error :msg="veeErrors" field="product" />
@@ -256,7 +256,7 @@ export default {
     this.loadCities()
     this.loadMessenger()
     this.getMeasure()
-    this.teste()
+    
   },
   methods: {
     async teste() {
@@ -270,7 +270,7 @@ export default {
           return i.role === 'mensageiro'
         })
         this.messengers = messengers.filter((i) => {
-          return i.organization === this.form.organization
+          return i.organization._id === this.form.organization
         })
       }
     },

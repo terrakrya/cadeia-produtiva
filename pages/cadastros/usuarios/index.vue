@@ -35,7 +35,7 @@
               {{ data.item.name }}
             </template>
             <template #cell(organization)="data">
-              {{ data.item.organization.sigla}}
+              {{ data.item.organization.sigla }}
             </template>
             <template #cell(role)="data">
               {{ data.item.role }}
@@ -74,7 +74,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'organization',
+          key: 'organization.sigla',
           label: 'Organização',
           sortable: true,
         },
