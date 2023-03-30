@@ -140,7 +140,7 @@
               </b-form-group>
             </b-col>
             <b-col>
-              <b-form-group label="Confirmar senha">
+              <b-form-group label="Confirmação de senha">
                 <b-form-input
                   v-model="form.password_confirmation"
                   type="password"

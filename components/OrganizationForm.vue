@@ -189,7 +189,7 @@
               </b-form-group>
             </div>
             <div class="col-sm-12">
-              <b-form-group label="Comentarios">
+              <b-form-group label="Comentários">
                 <b-form-textarea v-model="form.comments" />
               </b-form-group>
             </div>

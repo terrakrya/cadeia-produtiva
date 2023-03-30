@@ -22,8 +22,12 @@
               </b-form-group>
             </div>
           </div>
-          <div v-if="isAdmin || isGlobalManager" class="row">
-            <div class="col-sm-6">
+          <div v-if="isAdmin || isGlobalManager " class="row">
+            <div v-if="
+              currentUser.role === 'gestor-global'||
+              form.role === 'gestor'|| 
+              form.role === 'mensageiro'" 
+              class="col-sm-6">
               <b-form-group label="Selecionar uma organização *">
                 <form-entity-select
                   v-model="form.organization"
@@ -54,7 +58,7 @@
               </b-form-group>
             </div>
             <div class="col-sm-2">
-              <b-form-group label="Data de nascimento ">
+              <b-form-group label="Nascimento ">
                 <b-form-input
                   v-model="form.birthDate"
                   v-mask="['##/##/####']"
@@ -111,7 +115,7 @@
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group label="Confirmar senha">
+              <b-form-group label="Confirmação de senha">
                 <b-form-input
                   v-model="form.password_confirmation"
                   type="password"
@@ -261,6 +265,9 @@ export default {
           if (this.isManager) {
             this.form.role = 'mensageiro'
             this.form.organization = this.currentUser.organization
+          }
+          if (this.form.role === 'gestor-global') {
+            this.form.organization = null
           }
 
           // deixa somente os dígitos do telefone

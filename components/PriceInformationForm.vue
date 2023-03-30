@@ -25,7 +25,7 @@
           </div>
           <div v-if="isAdmin || isGlobalManager || isManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="Informante">
+              <b-form-group label="Mensageiro">
                 <b-form-select
                   v-model="form.messenger"
                   class="form-control"
