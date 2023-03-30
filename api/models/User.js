@@ -43,7 +43,6 @@ const UserSchema = new mongoose.Schema(
     salt: String,
     organization: {
       type: ObjectId,
-      required: true,
       ref: 'Organization',
     },
   },

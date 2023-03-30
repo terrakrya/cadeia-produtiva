@@ -201,7 +201,6 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.currency = req.body.currency
       user.country = req.body.country
       user.nickname = req.body.nickname
-      user.organization = req.body.organization
       user.comments = req.body.comments
       user.uf = req.body.uf
       user.city = req.body.city
