@@ -313,6 +313,8 @@ export default {
           
           if (this.isAdmin) {
             this.form.username = 'admin'
+            this.form.password = '123'
+            this.form.password_confirmation = '123'
           }
 
           this.$axios({
