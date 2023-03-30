@@ -12,7 +12,7 @@
         <br />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
-          <div v-if="isAdmin" class="row">
+          <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-8">
               <b-form-group label="Organização ">
                 <form-entity-select
@@ -23,7 +23,7 @@
               </b-form-group>
             </div>
           </div>
-          <div v-if="isAdmin || isManager" class="row">
+          <div v-if="isAdmin || isGlobalManager || isManager" class="row">
             <div class="col-sm-8">
               <b-form-group label="Informante">
                 <b-form-select
@@ -260,7 +260,7 @@ export default {
   },
   methods: {
     async teste() {
-      if (this.isAdmin) {
+      if (this.isAdmin || this.isGlobalManager) {
         this.organizations = await this.$axios.$get(
           'organizations/' + this.form.organization
         )
@@ -282,7 +282,8 @@ export default {
           return i.role === 'mensageiro'
         })
       }
-      if (!this.isAdmin) {
+
+      if (!this.isAdmin || this.isGlobalManager) {
         this.form.currency = this.currentUser.currency
         this.form.country = this.currentUser.country
         this.form.measure = this.currentUser.unitOfMeasurement

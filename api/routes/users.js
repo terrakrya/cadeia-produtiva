@@ -19,7 +19,7 @@ router.get('/', auth.authenticated, async (req, res) => {
     if (filters.id) {
       query._id = filters.id
     } else {
-      query.username = { $ne: 'admin' }
+      query.role = { $ne: 'admin' }
     }
 
     if (filters.organization) {

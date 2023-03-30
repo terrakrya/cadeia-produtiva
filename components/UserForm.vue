@@ -9,7 +9,7 @@
         <form-headline name="Usuário" />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
-          <div v-if="isAdmin" class="row">
+          <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-6">
               <b-form-group label="Perfil *">
                 <b-form-radio-group
@@ -22,7 +22,7 @@
               </b-form-group>
             </div>
           </div>
-          <div v-if="isAdmin" class="row">
+          <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-6">
               <b-form-group label="Selecionar uma organização *">
                 <form-entity-select
@@ -129,7 +129,6 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import tiposDeUsuario from '@/data/tipos-de-usuario.json'
 import genero from '@/data/generos.json'
 export default {
   components: {
@@ -161,7 +160,15 @@ export default {
     },
   },
   created() {
-    this.tiposDeUsuarioPermitidos = tiposDeUsuario
+    this.tiposDeUsuarioPermitidos = [
+      {	"text": "Gestor",	"value": "gestor"	},
+      {	"text": "Mensageiro",	"value": "mensageiro"	}
+    ]
+
+    if (this.isAdmin) {
+      this.tiposDeUsuarioPermitidos.unshift({ "text": "Gestor Global",	"value": "gestor-global" })
+    }
+
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }

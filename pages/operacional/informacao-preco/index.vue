@@ -205,7 +205,7 @@ export default {
     async list() {
       const filters = {}
 
-      if (this.isAdmin) {
+      if (this.isAdmin || this.isGlobalManager) {
         filters.organization = '!organization'
       } else if (this.isManager) {
         filters.organization = this.currentUser.organization

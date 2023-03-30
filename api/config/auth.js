@@ -18,6 +18,10 @@ function isAdmin(req) {
   return hasRole(req, 'admin')
 }
 
+function isGlobalManager(req) {
+  return hasRole(req, 'gestor-global')
+}
+
 function isManager(req) {
   return hasRole(req, 'gestor')
 }
@@ -38,6 +42,18 @@ function authenticatedAdmin(req, res, next) {
   }
 }
 
+function authenticatedGlobalManager(req, res, next) {
+  if (isGlobalManager(req)) {
+    next()
+  } else {
+    return res.status(403).json({
+      status: 403,
+      message:
+        'A permissão de Gestor Global é necessária para acessar este recurso.',
+    })
+  }
+}
+
 const jwtOptions = jwt({
   secret,
   algorithms: ['HS256'],
@@ -47,6 +63,7 @@ const jwtOptions = jwt({
 
 const auth = {
   admin: [jwtOptions, authenticatedAdmin],
+  globalManager: [jwtOptions, authenticatedGlobalManager],
   authenticated: jwtOptions,
   optional: jwt({
     secret,
@@ -56,6 +73,7 @@ const auth = {
     getToken: getTokenFromHeader,
   }),
   isAdmin,
+  isGlobalManager,
   isManager,
   hasRole,
 }

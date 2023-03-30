@@ -22,6 +22,9 @@ if (!Vue.__my_mixin__) {
       isAdmin() {
         return this.hasRole('admin')
       },
+      isGlobalManager() {
+        return this.hasRole('gestor-global')
+      },
       isManager() {
         return this.hasRole('gestor')
       },
