@@ -124,7 +124,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     user.organization = req.body.organization
     user.comments = req.body.comments
     user.uf = req.body.uf
-    user.city = req.body.city
+    user.County = req.body.County
     user.birthDate = req.body.birthDate
     user.gender = req.body.gender
 
@@ -163,9 +163,10 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.organization = req.body.organization
       user.comments = req.body.comments
       user.uf = req.body.uf
-      user.city = req.body.city
+      user.County = req.body.County
       user.birthDate = req.body.birthDate
       user.gender = req.body.gender
+      user.identity = req.body.identity
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -203,9 +204,10 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.nickname = req.body.nickname
       user.comments = req.body.comments
       user.uf = req.body.uf
-      user.city = req.body.city
+      user.County = req.body.County
       user.birthDate = req.body.birthDate
       user.gender = req.body.gender
+      user.identity = req.body.identity
 
       if (req.body.password) {
         user.setPassword(req.body.password)

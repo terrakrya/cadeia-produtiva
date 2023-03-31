@@ -1,26 +1,74 @@
 [
 	{
-		"text": "Grupo de Coletores ",
-		"value": "Grupo de Coletores "
+		"text": "Produção ( extrativismo ) ",
+		"value": "produção ( extrativismo ) "
 	},
 	{
-		"text": "Associação ",
-		"value": "Associação "
+		"text": "Comercialização atacadista ",
+		"value": "comercialização atacadista "
 	},
 	{
-		"text": "Cooperativa",
-		"value": "Cooperativa"
+		"text": "Comercialização varejista",
+		"value": "comercialização varejista"
 	},
 	{
-		"text": "Empresa ",
-		"value": "Empresa "
+		"text": "Logística transporte ",
+		"value": "Logística transporte "
 	},
 	{
-		"text": "Organizações de apoio ( Ongs e outros tipos de organização comunitária )",
-		"value": "Organizações de apoio"
+		"text": "Industrialização",
+		"value": "Industrialização"
 	},
 	{
-		"text": "Logística",
-		"value": "Logística"
+		"text": "Beneficiamento",
+		"value": "Beneficiamento"
+	},
+	{
+		"text": "Transformação",
+		"value": "Transformação"
+	},
+	{
+		"text": "Armazenamento",
+		"value": "Armazenamento"
+	},
+	{
+		"text": "Assistência técnica",
+		"value": "Assistência técnica"
+	},
+	{
+		"text": "Produção",
+		"value": "Produção"
+	},
+	{
+		"text": "Comercialização atacadista",
+		"value": "Comercialização atacadista"
+	},
+	{
+		"text": "Comercialização varejista",
+		"value": "Comercialização varejista"
+	},
+	{
+		"text": "Transporte/Logística (transporte e armazenamento)",
+		"value": "Transporte/Logística (transporte e armazenamento)"
+	},
+	{
+		"text": "Distribuição",
+		"value": "Distribuição"
+	},
+	{
+		"text": "Beneficiamento",
+		"value": "Beneficiamento"
+	},
+	{
+		"text": "Transformação",
+		"value": "Transformação"
+	},
+	{
+		"text": "Consumo",
+		"value": "Consumo"
+	},
+	{
+		"text": "Outro",
+		"value": "Outro"
 	}
 ]

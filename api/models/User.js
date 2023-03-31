@@ -15,8 +15,9 @@ const UserSchema = new mongoose.Schema(
     nickname: String,
     comments: String,
     uf: String,
-    city: String,
+    County: String,
     gender: String,
+    identity: String,
     username: {
       type: String,
       lowercase: true,
@@ -81,7 +82,7 @@ UserSchema.methods.data = function () {
     country: this.country,
     organization: this.organization,
     uf: this.uf,
-    city: this.city,
+    County: this.County,
     birthDate: this.birthDate,
     gender: this.gender
   }

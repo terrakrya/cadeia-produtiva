@@ -60,6 +60,14 @@
                 />
               </b-form-group>
             </div>
+            <div class="col-sm-2">
+              <b-form-group label="Identidade ">
+                <b-form-select
+                  v-model="form.identity"
+                  :options="identidade"
+                />
+              </b-form-group>
+            </div>
             <div class="col-sm-6">
               <b-form-group label="Celular *">
                 <b-form-input
@@ -117,14 +125,14 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Cidade">
+              <b-form-group label="Município">
                 <b-form-select
-                  v-model="form.city"
+                  v-model="form.County"
                   class="form-control"
                   :options="cidades"
-                  name="city"
+                  name="County"
                 />
-                <field-error :msg="veeErrors" field="city" />
+                <field-error :msg="veeErrors" field="County" />
               </b-form-group>
             </b-col>
           </b-row>
@@ -166,6 +174,7 @@ import moeda from '@/data/moeda.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import genero from '@/data/generos.json'
+import identidade from '@/data/identidade-cultural.json'
 
 export default {
   components: {
@@ -173,6 +182,7 @@ export default {
   },
   data() {
     return {
+      identidade,
       genero,
       tipoDeUnidade,
       buyerPositions,
@@ -193,7 +203,8 @@ export default {
         country: 'BR',
         nickname: '',
         uf: '',
-        city: '',
+        County: '',
+        identity: '',
       },
     }
   },
@@ -212,9 +223,9 @@ export default {
       }
 
       // limpa a cidade digitada, caso não exista na lista
-      if (this.form.city && this.cidades) {
-        if (!this.cidades.find((c) => c === this.form.city)) {
-          this.form.city = ''
+      if (this.form.County && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.County)) {
+          this.form.County = ''
         }
       }
     },
