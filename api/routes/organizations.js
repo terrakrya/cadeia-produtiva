@@ -44,7 +44,7 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
-    const organizations = await Organization.findOne(query).populate('product')
+    const organizations = await Organization.findOne(query).populate('products')
     return res.json(organizations)
   } catch (err) {
     res.sendStatus(422)

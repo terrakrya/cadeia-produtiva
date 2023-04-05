@@ -205,6 +205,7 @@ export default {
         uf: '',
         County: '',
         identity: '',
+        gender: '',
       },
     }
   },
