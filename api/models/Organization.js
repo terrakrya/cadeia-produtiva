@@ -23,7 +23,7 @@ const OrganizationSchema = new mongoose.Schema(
     square: String,
     squareid: String,
     uf: String,
-    County: String,
+    county: String,
     email: {
       type: String,
       required: true,
@@ -71,7 +71,7 @@ OrganizationSchema.methods.data = function () {
     square: this.square,
     squareid: this.squareid,
     uf: this.uf,
-    County: this.County,
+    county: this.county,
     members: this.members,
     products: this.products,
     bestPractices: this.bestPractices,

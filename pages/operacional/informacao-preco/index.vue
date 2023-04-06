@@ -111,7 +111,7 @@
               {{ data.item.country }}
             </template>
             <template #cell(product)="data">
-              {{ data.item.product.description }}
+              {{ data.item.product.name }}
             </template>
             <template #cell(measure)="data">
               {{ data.item.measure }}
@@ -169,7 +169,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'product.description',
+          key: 'product.name',
           label: 'Produto',
           sortable: true,
         },

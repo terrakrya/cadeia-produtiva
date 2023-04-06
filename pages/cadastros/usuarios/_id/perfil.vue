@@ -127,12 +127,10 @@
             <b-col sm="4">
               <b-form-group label="Município">
                 <b-form-select
-                  v-model="form.County"
+                  v-model="form.county"
                   class="form-control"
                   :options="cidades"
-                  name="County"
                 />
-                <field-error :msg="veeErrors" field="County" />
               </b-form-group>
             </b-col>
           </b-row>
@@ -203,7 +201,7 @@ export default {
         country: 'BR',
         nickname: '',
         uf: '',
-        County: '',
+        county: '',
         identity: '',
         gender: '',
       },
@@ -224,9 +222,9 @@ export default {
       }
 
       // limpa a cidade digitada, caso não exista na lista
-      if (this.form.County && this.cidades) {
-        if (!this.cidades.find((c) => c === this.form.County)) {
-          this.form.County = ''
+      if (this.form.county && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.county)) {
+          this.form.county = ''
         }
       }
     },

@@ -44,7 +44,19 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
-    const organizations = await Organization.findOne(query).populate('products')
+    const organizations = await Organization.findOne(query)
+      .populate('products')
+    return res.json(organizations)
+  } catch (err) {
+    res.sendStatus(422)
+  }
+})
+router.get('/edit/:id', auth.authenticated, async (req, res) => {
+  const query = { _id: req.params.id }
+
+  try {
+    const organizations = await Organization.findOne(query)
+      .populate('product')
     return res.json(organizations)
   } catch (err) {
     res.sendStatus(422)
@@ -65,7 +77,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     organizations.square = req.body.square
     organizations.squareid = req.body.squareid
     organizations.uf = req.body.uf
-    organizations.County = req.body.County
+    organizations.county = req.body.county
     organizations.members = req.body.members
     organizations.products = req.body.products
     organizations.bestPractices = req.body.bestPractices
@@ -103,7 +115,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       organizations.square = req.body.square
       organizations.squareid = req.body.squareid
       organizations.uf = req.body.uf
-      organizations.County = req.body.County
+      organizations.county = req.body.county
       organizations.members = req.body.members
       organizations.products = req.body.products
       organizations.bestPractices = req.body.bestPractices

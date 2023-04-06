@@ -72,7 +72,7 @@
             <b-col sm="4">
               <b-form-group label="Município">
                 <b-form-select
-                  v-model="form.County"
+                  v-model="form.county"
                   class="form-control"
                   :options="cidades"
                   @input="loadPracas()"
@@ -237,7 +237,7 @@ export default {
         bestPractices: [],
         certifications: [],
         uf: '',
-        County: '',
+        county: '',
         comments: '',
         email: '',
         sigla: '',
@@ -285,17 +285,17 @@ export default {
       }
 
       // limpa a município digitada, caso não exista na lista
-      if (this.form.County && this.cidades) {
-        if (!this.cidades.find((c) => c === this.form.County)) {
-          this.form.County = ''
+      if (this.form.county && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.county)) {
+          this.form.county = ''
         }
       }
     },
 
     // filtra as praça conforme a município selecionada
     loadPracas() {
-      if (this.form.County) {
-        const cidade = this.form.County
+      if (this.form.county) {
+        const cidade = this.form.county
         const pracas = this.pracas.filter(function (item) {
           return item.cidade === cidade
         })
@@ -308,7 +308,7 @@ export default {
     edit(id) {
       this.is_loading = true
       this.$axios
-        .get('organizations/' + id)
+        .get('organizations/edit/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
           if (response.data.image) {
