@@ -265,11 +265,20 @@ export default {
 
         this.products = organizations.products
 
-        const users = await this.$axios.$get('users')
+        const filters = {
+          role: 'mensageiro',
+          organization: this.form.organization
+        }
 
-        this.messengers = users.filter((i) => {
-          return i.role === 'mensageiro' && i.organization.id.toString() === this.form.organization
+        this.messengers = await this.$axios.$get('users', {
+          params: {
+            filters,
+          },
         })
+
+        // this.messengers = users.filter((i) => {
+        //   return i.role === 'mensageiro' && i.organization.id.toString() === this.form.organization
+        // })
       }
     },
     async list() {
