@@ -253,7 +253,7 @@ export default {
     this.loadCities()
 
     if (this.isEditing()) {
-      this.edit(this.$route.params.id)
+      await this.edit(this.$route.params.id)
     }
   },
   methods: {
@@ -353,18 +353,18 @@ export default {
         return 72
       }
     },
-    edit(id) {
+    async edit(id) {
       this.is_loading = true
-      this.$axios
-        .get('price-informations/' + id)
-        .then((response) => {
-          this.apiDataToForm(this.form, response.data)
-          if (response.data.image) {
-            this.images_preview = [response.data.image]
-          }
-          this.is_loading = false
-        })
-        .catch(this.showError)
+
+      try {
+        const dados = await this.$axios.get('price-informations/' + id)
+        this.apiDataToForm(this.form, dados)
+      }
+      catch(e) {
+        this.showError(e)
+      }
+
+      this.is_loading = false
     },
     save() {
       this.$validator.validate().then((isValid) => {
