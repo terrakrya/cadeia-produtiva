@@ -14,7 +14,7 @@
         <b-form @submit.prevent="save">
           <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="Organização">
+              <b-form-group label="Organização *">
                 <form-entity-select
                   v-model="form.organization"
                   type="organizations"
@@ -25,7 +25,7 @@
           </div>
           <div v-if="isAdmin || isGlobalManager || isManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="Mensageiro">
+              <b-form-group label="Mensageiro *">
                 <b-form-select
                   v-model="form.messenger"
                   class="form-control"
@@ -97,8 +97,7 @@
                   v-model="form.measure"
                   v-validate="'required'"
                   class="form-control"
-                  :options="medida"
-                  @imput="Measure()"
+                  :options="medidas"
                 />
               </b-form-group>
             </div>
@@ -175,7 +174,6 @@
             </b-col>
           </div>
           <div class="row">
-            
             <div class="col-sm-4">
               <b-form-group label="Moeda">
                 <b-form-select
@@ -205,7 +203,7 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import posicaoComprador from '@/data/posicao-do-comprador.json'
 import moeda from '@/data/moeda.json'
-import medida from '@/data/tipo-de-unidade.json'
+import medidas from '@/data/tipo-de-unidade.json'
 import pais from '@/data/pais.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
@@ -216,7 +214,7 @@ export default {
   },
   data() {
     return {
-      medida,
+      medidas,
       moeda,
       posicaoComprador,
       pais,
@@ -245,28 +243,21 @@ export default {
       },
       products: [],
       messengers: [],
+      creating: true,
     }
   },
   async created() {
-    await this.list()
-    await this.loadOrganization()
-    this.loadCities()
-
     if (this.isEditing()) {
       await this.edit(this.$route.params.id)
     }
+
+    await this.loadOrganization()
+    await this.preSetDados()
+
+    this.creating = false
   },
   methods: {
-    async list() {
-      // TODO: gestor deve visualizar dados somente da organização dele
-      if (this.isManager) {
-        this.products = await this.$axios.$get('products')
-        const users = await this.$axios.$get('users')
-        this.messengers = users.filter((i) => {
-          return i.role === 'mensageiro'
-        })
-      }
-
+    async preSetDados() {
       // pre-set das informações conforme o usuário logado
       if (!this.isEditing() && !this.isAdmin && !this.isGlobalManager) {
         this.form.currency = this.currentUser.currency
@@ -277,27 +268,29 @@ export default {
       }
     },
     async loadOrganization() {
-      if (this.isAdmin || this.isGlobalManager) {
-        const organizations = await this.$axios.$get(
-          'organizations/' + this.form.organization
-        )
+      const organizations = await this.$axios.$get(
+        'organizations/' + this.form.organization
+      )
 
-        this.products = organizations.products
+      this.products = organizations.products
 
-        const filters = {
-          role: 'mensageiro',
-          organization: this.form.organization
-        }
+      const filters = { role: 'mensageiro' }
 
-        this.messengers = await this.$axios.$get('users', {
-          params: {
-            filters,
-          },
-        })
+      if (this.isMessenger) {
+        filters.id = this.currentUser._id
       }
+      else {
+        filters.organization = this.form.organization
+      }
+
+      this.messengers = await this.$axios.$get('users', {
+        params: {
+          filters,
+        },
+      })
     },
     async loadMessenger() {
-      if (this.form.messenger) {
+      if (this.form.messenger && !this.creating) {
         const selectedMessenger = await this.$axios.$get(
           'users/' + this.form.messenger
         )
@@ -357,8 +350,23 @@ export default {
       this.is_loading = true
 
       try {
-        const dados = await this.$axios.get('price-informations/' + id)
-        this.apiDataToForm(this.form, dados)
+        const dados = await this.$axios.$get('price-informations/' + id)
+
+        console.log('dados:' + JSON.stringify(dados))
+
+        this.form.organization = dados.organization
+        this.form.messenger = dados.messenger
+        this.form.transaction = dados.transaction
+        this.form.originalMinimumPrice = dados.originalMinimumPrice
+        this.form.originalMaximumPrice = dados.originalMaximumPrice
+        this.form.measure = dados.measure
+        this.form.product = dados.product
+        this.form.buyerPosition = dados.buyerPosition
+        this.form.createdAt = dados.createdAt
+        this.form.uf = dados.uf
+        this.form.city = dados.city
+        this.form.currency = dados.currency
+        this.form.country = dados.country
       }
       catch(e) {
         this.showError(e)
@@ -418,15 +426,25 @@ export default {
 
         if (isValid) {
           this.is_sending = true
+
+          if (this.isAdmin || this.isGlobalManager) {
+            console.log('this.messenger: ' + this.form.messenger)
+            console.log('this.messengers: ' + JSON.stringify(this.messengers))
+
+            this.form.organization = this.messengers.find(messenger => messenger._id === this.form.messenger).organization._id
+          }
+          else {
+            this.form.organization = this.currentUser.organization
+          }
+
           if (this.form.transaction === 'preço de mercado') {
             this.form.transactedQuantity = 0
           }
-          if (this.isManager && !this.form.messenger) {
+
+          if ((this.isManager && !this.form.messenger) || this.isMessenger) {
             this.form.messenger = this.currentUser._id
           }
-          if (this.isMessenger) {
-            this.form.messenger = this.currentUser._id
-          }
+
           this.transactedQuantity(
             this.form.originalMinimumPrice,
             this.form.originalMaximumPrice,
