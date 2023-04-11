@@ -14,11 +14,11 @@
         <b-form @submit.prevent="save">
           <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="Organização ">
+              <b-form-group label="Organização">
                 <form-entity-select
                   v-model="form.organization"
                   type="organizations"
-                  @input="teste()"
+                  @input="loadOrganization()"
                 />
               </b-form-group>
             </div>
@@ -245,7 +245,6 @@ export default {
       },
       products: [],
       messengers: [],
-      organizations: '',
     }
   },
   async created() {
@@ -256,21 +255,20 @@ export default {
     this.loadCities()
     this.loadMessenger()
     this.getMeasure()
-    
   },
   methods: {
-    async teste() {
+    async loadOrganization() {
       if (this.isAdmin || this.isGlobalManager) {
-        this.organizations = await this.$axios.$get(
+        const organizations = await this.$axios.$get(
           'organizations/' + this.form.organization
         )
-        this.products = this.organizations.products
+
+        this.products = organizations.products
+
         const users = await this.$axios.$get('users')
-        const messengers = users.filter((i) => {
-          return i.role === 'mensageiro'
-        })
-        this.messengers = messengers.filter((i) => {
-          return i.organization._id === this.form.organization
+
+        this.messengers = users.filter((i) => {
+          return i.role === 'mensageiro' && i.organization.id.toString() === this.form.organization
         })
       }
     },
