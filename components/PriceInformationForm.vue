@@ -249,14 +249,33 @@ export default {
   },
   async created() {
     await this.list()
+    await this.loadOrganization()
+    this.loadCities()
+
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
-    this.loadCities()
-    this.loadMessenger()
-    this.getMeasure()
   },
   methods: {
+    async list() {
+      // TODO: gestor deve visualizar dados somente da organização dele
+      if (this.isManager) {
+        this.products = await this.$axios.$get('products')
+        const users = await this.$axios.$get('users')
+        this.messengers = users.filter((i) => {
+          return i.role === 'mensageiro'
+        })
+      }
+
+      // pre-set das informações conforme o usuário logado
+      if (!this.isEditing() && !this.isAdmin && !this.isGlobalManager) {
+        this.form.currency = this.currentUser.currency
+        this.form.country = this.currentUser.country
+        this.form.measure = this.currentUser.unitOfMeasurement
+        this.form.uf = this.currentUser.uf
+        this.form.city = this.currentUser.city
+      }
+    },
     async loadOrganization() {
       if (this.isAdmin || this.isGlobalManager) {
         const organizations = await this.$axios.$get(
@@ -275,27 +294,6 @@ export default {
             filters,
           },
         })
-
-        // this.messengers = users.filter((i) => {
-        //   return i.role === 'mensageiro' && i.organization.id.toString() === this.form.organization
-        // })
-      }
-    },
-    async list() {
-      if (this.isManager) {
-        this.products = await this.$axios.$get('products')
-        const users = await this.$axios.$get('users')
-        this.messengers = users.filter((i) => {
-          return i.role === 'mensageiro'
-        })
-      }
-
-      if (!this.isAdmin || this.isGlobalManager) {
-        this.form.currency = this.currentUser.currency
-        this.form.country = this.currentUser.country
-        this.form.measure = this.currentUser.unitOfMeasurement
-        this.form.uf = this.currentUser.uf
-        this.form.city = this.currentUser.city
       }
     },
     async loadMessenger() {
@@ -303,6 +301,8 @@ export default {
         const selectedMessenger = await this.$axios.$get(
           'users/' + this.form.messenger
         )
+
+        // pre-set das informações conforme o usuário selecionado
         this.form.currency = selectedMessenger.currency
         this.form.country = selectedMessenger.country
         this.form.measure = selectedMessenger.unitOfMeasurement
