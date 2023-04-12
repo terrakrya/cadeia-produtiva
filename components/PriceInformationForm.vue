@@ -352,8 +352,6 @@ export default {
       try {
         const dados = await this.$axios.$get('price-informations/' + id)
 
-        console.log('dados:' + JSON.stringify(dados))
-
         this.form.organization = dados.organization
         this.form.messenger = dados.messenger
         this.form.transaction = dados.transaction

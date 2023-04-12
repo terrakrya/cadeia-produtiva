@@ -8,7 +8,7 @@ router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****
-  query.organization = req.user.organization
+
 
   try {
     // ***** executa a query *****
@@ -73,10 +73,10 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
         { "$sort": { 'createdAt': -1 } },
         {
           "$lookup": {
-              from: "users",
-              localField: "messenger",
-              foreignField: "_id",
-              as: "from"
+            from: "users",
+            localField: "messenger",
+            foreignField: "_id",
+            as: "from"
           }
         },
         {
@@ -93,7 +93,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
       ]
     )
 
-    const priceList = priceListAgr.map(function(obj) { 
+    const priceList = priceListAgr.map(function (obj) {
       return {
         date: obj._id.date,
         from: obj._id.from.length ? obj._id.from[0] : "",
