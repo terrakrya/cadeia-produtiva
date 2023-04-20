@@ -35,22 +35,18 @@ export default {
         {
           key: 'from',
           label: 'De',
-          sortable: true,
         },
         {
           key: 'to',
           label: 'Para',
-          sortable: true,
         },
         {
           key: 'date',
           label: 'Data',
-          sortable: true,
         },
         {
           key: 'price',
           label: 'Preços: mínimo/máximo/média',
-          sortable: true,
         },
       ],
     }
