@@ -14,13 +14,14 @@
     <template #cell(date)="data">
       {{ data.item.date }}
     </template>
+    <template  #cell(averagePrice)="data">
+       {{data.item.averagePrice | moeda }}
+    </template>
     <template #cell(price)="data">
       {{ data.item.minimumPrice | moeda }}
       /
       {{ data.item.maximumPrice | moeda }}
-      /
-      {{ data.item.averagePrice | moeda }}
-    </template>
+    </template>]
   </b-table>
 </template>
 <script>
@@ -45,8 +46,12 @@ export default {
           label: 'Data',
         },
         {
+          key: 'averagePrice',
+          label: 'Preço médio',
+        },
+        {
           key: 'price',
-          label: 'Preços: mínimo/máximo/média',
+          label: 'Preços: mínimo/máximo',
         },
       ],
     }
