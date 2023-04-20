@@ -83,7 +83,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
           "$group": {
             _id: {
               "date": { "$dateToString": { format: "%d/%m/%Y", date: "$createdAt" } },
-              "from": "$from.name",
+              "from": "$from.buyerPosition",
               "to": "$buyerPosition"
             },
             minimumPrice: { "$min": "$minimumPrice" },
