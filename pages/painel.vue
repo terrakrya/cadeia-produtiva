@@ -77,6 +77,18 @@
         </div>
         <div class="info-content">
           <div class="row">
+            <div class="col-sm-4">
+              <b-form-group label="Produto">
+                <b-form-select
+                  v-model="filters.product"
+                  class="form-control"
+                  :options="products"
+                  value-field="_id"
+                  text-field="description"
+                  @input="applyFilters"
+                />
+              </b-form-group>
+            </div>
             <b-col sm="4">
               <b-form-group label="Estado">
                 <b-form-select
@@ -89,7 +101,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Cidade">
+              <b-form-group label="Município">
                 <b-form-select
                   v-model="filters.city"
                   class="form-control"
@@ -98,17 +110,7 @@
                 />
               </b-form-group>
             </b-col>
-            <b-col sm="4">
-              <b-form-group label="Praça">
-                <input
-                  v-model="filters.square"
-                  type="text"
-                  readonly
-                  class="form-control"
-                  text-field="nome"
-                />
-              </b-form-group>
-            </b-col>
+           
           </div>
           <div class="row">
             <b-col sm="4">
@@ -145,18 +147,17 @@
                 />
               </b-form-group>
             </b-col>
-            <div class="col-sm-4">
-              <b-form-group label="Produto">
-                <b-form-select
-                  v-model="filters.product"
+             <b-col sm="4">
+              <b-form-group label="Praça">
+                <input
+                  v-model="filters.square"
+                  type="text"
+                  readonly
                   class="form-control"
-                  :options="products"
-                  value-field="_id"
-                  text-field="description"
-                  @input="applyFilters"
+                  text-field="nome"
                 />
               </b-form-group>
-            </div>
+            </b-col>
           </div>
           <br />
           <no-item :list="priceInformations" />
