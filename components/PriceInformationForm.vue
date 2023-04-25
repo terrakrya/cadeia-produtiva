@@ -269,7 +269,7 @@ export default {
     },
     async loadOrganization() {
       
-      if (this.isManager) {
+      if (this.isManager || this.isMessenger) {
         const userLoadOrg = await this.$axios.$get(
           'organizations/' + this.currentUser.organization
         )

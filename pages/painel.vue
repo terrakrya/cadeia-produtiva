@@ -84,7 +84,7 @@
                   class="form-control"
                   :options="products"
                   value-field="_id"
-                  text-field="description"
+                  text-field="name"
                   @input="applyFilters"
                 />
               </b-form-group>
@@ -250,7 +250,7 @@ export default {
     },
 
     async loadProducts() {
-      const products = [{ _id: '', description: 'Selecione o produto' }]
+      const products = [{ _id: '', name: 'Selecione o produto' }]
       Array.prototype.push.apply(products, await this.$axios.$get('products'))
       this.products = products
     },
@@ -277,10 +277,6 @@ export default {
       if (this.filters.to) {
         filters.to = this.filters.to
       }
-      if (this.filters.product) {
-        filters.product = this.filters.product
-      }
-
       this.priceInformations = await this.$axios.$get(
         'price-informations/data-published',
         {
