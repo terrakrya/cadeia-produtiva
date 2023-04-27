@@ -213,18 +213,6 @@ export default {
             })
             isValid = false
           }
-          // unicidade do email
-          else if (await this.isNotUniqueEmail(id, this.form.email)) {
-            this.veeErrors.items.push({
-              id: 103,
-              vmId: this.veeErrors.vmId,
-              field: 'email',
-              msg: 'Este email já existe.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-          }
           // unicidade do cpf
           else if (await this.isNotUniqueCpf(id, this.form.cpf)) {
             this.veeErrors.items.push({
@@ -252,7 +240,6 @@ export default {
             this.veeErrors.items = this.veeErrors.items.filter(
               (error) =>
                 error.id !== 102 &&
-                error.id !== 103 &&
                 error.id !== 104 &&
                 error.id !== 105
             )
@@ -296,9 +283,6 @@ export default {
     },
     changePassword() {
       this.show_password = !this.show_password
-    },
-    async isNotUniqueEmail(id, email) {
-      return !(await this.$axios.$post('users/unique-email', { id, email }))
     },
     async isNotUniqueCpf(id, cpf) {
       return !(await this.$axios.$post('users/unique-cpf', { id, cpf }))

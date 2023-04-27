@@ -61,22 +61,6 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   }
 })
 
-// verifica se o email é único no banco de dados
-router.post('/unique-email', auth.authenticated, async (req, res) => {
-  const query = { email: req.body.email }
-
-  if (req.body.id) {
-    query._id = { $ne: req.body.id }
-  }
-
-  try {
-    const found = await User.exists(query)
-    return res.json(!found)
-  } catch (err) {
-    res.sendStatus(422)
-  }
-})
-
 // verifica se o CPF é único no banco de dados
 router.post('/unique-cpf', auth.authenticated, async (req, res) => {
   const query = { cpf: req.body.cpf }
