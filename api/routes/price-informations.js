@@ -35,6 +35,10 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
 
   if (req.query.filters) {
     const filters = JSON.parse(req.query.filters || '{}')
+    
+    if (filters.product) {
+      query.product = filters.product
+    }
 
     if (filters.uf) {
       query.uf = filters.uf
@@ -43,7 +47,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
     if (filters.city) {
       query.city = filters.city
     }
-
+    
     if (filters.from && !filters.to) {
       query.createdAt = {
         $gte: new Date(filters.from),
@@ -59,9 +63,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
       }
     }
 
-    if (filters.product) {
-      query.product = filters.product
-    }
+    
   }
 
   try {

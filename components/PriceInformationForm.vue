@@ -268,16 +268,29 @@ export default {
       }
     },
     async loadOrganization() {
-      const organizations = await this.$axios.$get(
-        'organizations/' + this.form.organization
-      )
+      
+      if (this.isManager || this.isMessenger) {
+        const userLoadOrg = await this.$axios.$get(
+          'organizations/' + this.currentUser.organization
+        )
+        this.products = userLoadOrg.products
 
-      this.products = organizations.products
+        console.log(userLoadOrg.products)
+      }else {
+        const organizations = await this.$axios.$get(
+        'organizations/' + this.form.organization
+        )
+        this.products = organizations.products
+      }
+      
 
       const filters = { role: 'mensageiro' }
 
       if (this.isMessenger) {
         filters.id = this.currentUser._id
+      }
+      else if (this.isManager) {
+        filters.organization = this.currentUser.organization
       }
       else {
         filters.organization = this.form.organization

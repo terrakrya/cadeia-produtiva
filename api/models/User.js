@@ -29,17 +29,9 @@ const UserSchema = new mongoose.Schema(
     birthDate: String,
     cpf: {
       type: String,
-      uniqui: true,
+      unique: true,
     },
-    email: {
-      type: String,
-      lowercase: true,
-      index: {
-        unique: true,
-        partialFilterExpression: { email: { $type: 'string' } },
-      },
-      default: null,
-    },
+    email: String,
     hash: String,
     salt: String,
     organization: {
