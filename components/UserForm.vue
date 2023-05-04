@@ -66,11 +66,11 @@
               </b-form-group>
             </div>
             <div class="col-sm-4">
-              <b-form-group label="E-mail ">
+              <b-form-group label="E-mail *">
                 <b-form-input 
                   v-model="form.email"
                   v-validate="'required'" 
-                  name="email *"
+                  name="email"
                 />
                 <field-error :msg="veeErrors" field="email" />
               </b-form-group>

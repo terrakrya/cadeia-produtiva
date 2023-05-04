@@ -7,7 +7,10 @@
       </div>
     </b-collapse>
     <b-navbar-nav class="ml-auto d-none d-md-flex">
-      <b-nav-item-dropdown :text="currentUser.name" right>
+      <b-nav-item-dropdown 
+      :text="currentUser.name + ' / ' + organization.sigla" 
+      right
+      >
         <b-dropdown-item
           :to="'/cadastros/usuarios/' + currentUser._id + '/perfil'"
         >
@@ -31,5 +34,14 @@ export default {
       default: false,
     },
   },
+  data (){
+    return {
+      organization: [],
+    }
+  },
+
+  async created () {
+    this.organization = await this.$axios.$get('organizations/' + this.currentUser.organization)
+  }
 }
 </script>
