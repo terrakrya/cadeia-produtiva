@@ -7,8 +7,19 @@
       </div>
     </b-collapse>
     <b-navbar-nav class="ml-auto d-none d-md-flex">
-      <b-nav-item-dropdown 
+      <b-nav-item-dropdown v-if="isManager || isMessenger"
       :text="currentUser.name + ' / ' + organization.sigla" 
+      right
+      >
+        <b-dropdown-item
+          :to="'/cadastros/usuarios/' + currentUser._id + '/perfil'"
+        >
+          {{ 'Minha conta' }}
+        </b-dropdown-item>
+        <b-dropdown-item @click="$auth.logout()">Sair</b-dropdown-item>
+      </b-nav-item-dropdown>
+      <b-nav-item-dropdown v-if="isAdmin || isGlobalManager"
+      :text="currentUser.name" 
       right
       >
         <b-dropdown-item
@@ -23,6 +34,7 @@
   </b-navbar>
 </template>
 <script>
+import { isAdmin, isGlobalManager, isManager, isMessenger } from '~/api/config/auth';
 import Sidebar from './Sidebar'
 export default {
   components: {
