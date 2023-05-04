@@ -67,7 +67,11 @@
             </div>
             <div class="col-sm-4">
               <b-form-group label="E-mail ">
-                <b-form-input v-model="form.email" name="email" />
+                <b-form-input 
+                  v-model="form.email"
+                  v-validate="'required'" 
+                  name="email *"
+                />
                 <field-error :msg="veeErrors" field="email" />
               </b-form-group>
             </div>
@@ -188,9 +192,6 @@ export default {
             this.form.username,
             '(##) #####-####'
           )
-          if (response.data.image) {
-            this.images_preview = [response.data.image]
-          }
           this.is_loading = false
         })
         .catch(this.showError)
@@ -200,7 +201,7 @@ export default {
         // valida a email
         if (this.form.email) {
           const id = this.isEditing() ? this.$route.params.id : null
-
+        
           // formato do email
           if (!/\S+@\S+\.\S+/.test(this.form.email)) {
             this.veeErrors.items.push({
@@ -208,6 +209,18 @@ export default {
               vmId: this.veeErrors.vmId,
               field: 'email',
               msg: 'Email com formato inválido.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+          }
+          // unicidade do email
+          else if (await this.isNotUniqueEmail(id, this.form.email)) {
+            this.veeErrors.items.push({
+              id: 103,
+              vmId: this.veeErrors.vmId,
+              field: 'email',
+              msg: 'Este email já existe.',
               rule: 'required',
               scope: null,
             })
@@ -240,6 +253,7 @@ export default {
             this.veeErrors.items = this.veeErrors.items.filter(
               (error) =>
                 error.id !== 102 &&
+                error.id !== 103 &&
                 error.id !== 104 &&
                 error.id !== 105
             )
@@ -286,6 +300,9 @@ export default {
     },
     async isNotUniqueCpf(id, cpf) {
       return !(await this.$axios.$post('users/unique-cpf', { id, cpf }))
+    },
+    async isNotUniqueEmail(id, email) {
+      return !(await this.$axios.$post('users/unique-email', { id, email }))
     },
     async isNotUniqueUsername(id, username) {
       return !(await this.$axios.$post('users/unique-username', {
