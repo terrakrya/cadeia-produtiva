@@ -54,7 +54,38 @@ export default {
     '@nuxt/content',
     '@nuxtjs/auth-next',
     'nuxt-leaflet',
+    // https://go.nuxtjs.dev/pwa
+    '@nuxtjs/pwa',
   ],
+
+  // PWA module configuration: https://go.nuxtjs.dev/pwa
+  pwa: {
+    manifest: {
+      lang: 'pt-BR',
+      name: 'Cadeia de Valor',
+      short_name: 'Valoreia',
+    },
+    meta: {
+      ogHost: process.env.BASE_URL,
+      ogImage: '/icon.png',
+    },
+    icon: {
+      purpose: 'maskable',
+    },
+    workbox: {
+      offlineStrategy: 'NetworkFirst',
+      offlineAnalytics: true,
+      config: {
+        debug: true,
+      },
+      // runtimeCaching: [
+      //   {
+      //     urlPattern: '.*/api/.*',
+      //     handler: 'NetworkOnly',
+      //   },
+      // ],
+    },
+  },
 
   bootstrapVue: {
     icons: true,
@@ -99,6 +130,7 @@ export default {
       '^/api/': '/',
     },
   },
+
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
+  build: { },
 }
