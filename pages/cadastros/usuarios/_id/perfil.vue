@@ -228,12 +228,17 @@ export default {
         }
       }
     },
+
     edit(id) {
       this.is_loading = true
       this.$axios
         .get('users/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
+          this.form.username = this.formatValue(
+            this.form.username,
+            '(##) #####-####'
+          )
           this.is_loading = false
         })
         .catch(this.showError)
@@ -321,9 +326,13 @@ export default {
         if (isValid) {
           this.is_sending = true
           
+
           if (this.isAdmin) {
-            this.form.username = 'admin'
+            this.form.username = '(00) 00000-0001'
           }
+
+          // deixa somente os dígitos do telefone
+          this.form.username = this.form.username.replace(/\D/g, '')
 
           this.$axios({
             method: 'PUT',
