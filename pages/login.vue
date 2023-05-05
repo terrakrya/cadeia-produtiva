@@ -16,6 +16,7 @@
                     type="text"
                     class="form-control"
                     placeholder="Login ou celular"
+                    v-mask="['(##) #####-####']"
                   />
                 </div>
                 <div class="form-group">
@@ -35,7 +36,7 @@
                 <div v-if="error" class="alert alert-danger">
                   {{ error }}
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                <button  type="submit"  class="btn btn-primary btn-lg btn-block">
                   Entrar
                 </button>
                 <br />
@@ -79,8 +80,15 @@ export default {
       this.error = null
       this.is_loading = true
 
+      const dados = {
+        data: {
+          username: this.form.username.replace(/\D/g, ''),
+          password: this.form.password
+        }
+      }
+
       const resp = await this.$auth
-        .loginWith('local', { data: this.form })
+        .loginWith('local', dados)
         .catch((error) => {
           if (error.response && error.response.data) {
             this.error = error.response.data
