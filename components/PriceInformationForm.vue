@@ -67,6 +67,20 @@
                 <field-error :msg="veeErrors" field="transactedQuantity" />
               </b-form-group>
             </div>
+            <div class="col-sm-6">
+              <b-form-group label="Produto *">
+                <b-form-select
+                  v-model="form.product"
+                  v-validate="'required'"
+                  class="form-control"
+                  :options="products"
+                  value-field="id"
+                  text-field="name"
+                  name="product"
+                />
+                <field-error :msg="veeErrors" field="product" />
+              </b-form-group>
+            </div>
           </div>
           <div class="row">
             <div class="col-sm-4">
@@ -103,20 +117,17 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6">
-              <b-form-group label="Produto *">
+            
+            <b-col sm="6">
+              <b-form-group label="Posição na cadeia de valor">
                 <b-form-select
-                  v-model="form.product"
-                  v-validate="'required'"
+                  v-model="form.buyerPosition"
                   class="form-control"
-                  :options="products"
-                  value-field="id"
-                  text-field="name"
-                  name="product"
+                  name="buyerPosition"
+                  :options="buyerPositions"
                 />
-                <field-error :msg="veeErrors" field="product" />
               </b-form-group>
-            </div>
+            </b-col>
             <div class="col-sm-6">
               <b-form-group label="Posição na cadeia de valor do comprador *">
                 <b-form-select
@@ -202,6 +213,7 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import posicaoComprador from '@/data/posicao-do-comprador.json'
+import buyerPositions from '@/data/posicao-do-comprador'
 import moeda from '@/data/moeda.json'
 import medidas from '@/data/tipo-de-unidade.json'
 import pais from '@/data/pais.json'
@@ -214,6 +226,7 @@ export default {
   },
   data() {
     return {
+      buyerPositions,
       medidas,
       moeda,
       posicaoComprador,
@@ -240,6 +253,7 @@ export default {
         transaction: '',
         transactedQuantity: '',
         organization: '',
+        buyerPosition: '',
       },
       products: [],
       messengers: [],
@@ -265,6 +279,7 @@ export default {
         this.form.measure = this.currentUser.unitOfMeasurement
         this.form.uf = this.currentUser.uf
         this.form.city = this.currentUser.city
+        this.form.buyerPosition = this.currentUser.buyerPosition
       }
     },
     async loadOrganization() {
@@ -314,6 +329,7 @@ export default {
         this.form.measure = selectedMessenger.unitOfMeasurement
         this.form.uf = selectedMessenger.uf
         this.form.city = selectedMessenger.city
+        this.form.buyerPosition = selectedMessenger.buyerPosition
       }
     },
     loadCities() {
