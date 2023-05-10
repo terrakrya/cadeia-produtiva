@@ -6,6 +6,10 @@ const secret = process.env.SECRET || 'cadeia-produtiva'
 
 const PriceSchema = new mongoose.Schema(
   {
+    buyerPosition: {
+      type: String,
+      required: true,
+    },
     createdAt: {
       type: Date,
       required: true,
