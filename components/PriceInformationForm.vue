@@ -119,9 +119,9 @@
           <div class="row">
             
             <b-col sm="6">
-              <b-form-group label="Posição na cadeia de valor">
+              <b-form-group label="Posição na cadeia de valor do vendedor ">
                 <b-form-select
-                  v-model="form.buyerPosition"
+                  v-model="form.buyerPositionSeller"
                   class="form-control"
                   name="buyerPosition"
                   :options="buyerPositions"
@@ -131,7 +131,7 @@
             <div class="col-sm-6">
               <b-form-group label="Posição na cadeia de valor do comprador *">
                 <b-form-select
-                  v-model="form.buyerPosition"
+                  v-model="form.buyerPositionBuyer"
                   v-validate="'required'"
                   class="form-control"
                   :options="posicaoComprador"
@@ -239,7 +239,7 @@ export default {
         createdAt: this.$moment(new Date())
           .tz('America/Sao_Paulo')
           .format('YYYY-MM-DD'),
-        buyerPosition: '',
+        buyerPositionBuyer: '',
         minimumPrice: '',
         maximumPrice: '',
         originalMinimumPrice: '',
@@ -253,7 +253,7 @@ export default {
         transaction: '',
         transactedQuantity: '',
         organization: '',
-        buyerPosition: '',
+        buyerPositionSeller: '',
       },
       products: [],
       messengers: [],
@@ -279,7 +279,7 @@ export default {
         this.form.measure = this.currentUser.unitOfMeasurement
         this.form.uf = this.currentUser.uf
         this.form.city = this.currentUser.city
-        this.form.buyerPosition = this.currentUser.buyerPosition
+        this.form.buyerPositionSeller = this.currentUser.buyerPositionSeller
       }
     },
     async loadOrganization() {
@@ -329,7 +329,7 @@ export default {
         this.form.measure = selectedMessenger.unitOfMeasurement
         this.form.uf = selectedMessenger.uf
         this.form.city = selectedMessenger.city
-        this.form.buyerPosition = selectedMessenger.buyerPosition
+        this.form.buyerPositionSeller = selectedMessenger.buyerPositionSeller
       }
     },
     loadCities() {
@@ -388,12 +388,13 @@ export default {
         this.form.originalMaximumPrice = dados.originalMaximumPrice
         this.form.measure = dados.measure
         this.form.product = dados.product
-        this.form.buyerPosition = dados.buyerPosition
+        this.form.buyerPositionBuyer = dados.buyerPositionBuyer
         this.form.createdAt = dados.createdAt
         this.form.uf = dados.uf
         this.form.city = dados.city
         this.form.currency = dados.currency
         this.form.country = dados.country
+        this.form.buyerPositionSeller = dados.buyerPositionSeller
       }
       catch(e) {
         this.showError(e)

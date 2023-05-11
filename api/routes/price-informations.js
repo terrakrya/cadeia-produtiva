@@ -130,7 +130,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     const price = new Price()
 
     price.createdAt = req.body.createdAt
-    price.buyerPosition = req.body.buyerPosition
+    price.buyerPositionBuyer = req.body.buyerPositionBuyer
     price.minimumPrice = req.body.minimumPrice
     price.maximumPrice = req.body.maximumPrice
     price.originalMinimumPrice = req.body.originalMinimumPrice
@@ -145,7 +145,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.organization = req.body.organization
     price.transaction = req.body.transaction
     price.transactedQuantity = req.body.transactedQuantity
-    price.buyerPosition = req.body.buyerPosition
+    price.buyerPositionSeller = req.body.buyerPositionSeller
 
     await price.save()
 
@@ -164,7 +164,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
 
     if (price) {
       price.createdAt = req.body.createdAt
-      price.buyerPosition = req.body.buyerPosition
+      price.buyerPositionBuyer = req.body.buyerPositionBuyer
       price.minimumPrice = req.body.minimumPrice
       price.maximumPrice = req.body.maximumPrice
       price.originalMinimumPrice = req.body.originalMinimumPrice
@@ -178,7 +178,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       price.city = req.body.city
       price.transaction = req.body.transaction
       price.transactedQuantity = req.body.transactedQuantity
-      price.buyerPosition = req.body.buyerPosition
+      price.buyerPositionSeller = req.body.buyerPositionSeller
 
       await price.save()
 

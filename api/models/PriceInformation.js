@@ -6,7 +6,7 @@ const secret = process.env.SECRET || 'cadeia-produtiva'
 
 const PriceSchema = new mongoose.Schema(
   {
-    buyerPosition: {
+    buyerPositionSeller: {
       type: String,
       required: true,
     },
@@ -14,7 +14,7 @@ const PriceSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    buyerPosition: {
+    buyerPositionBuyer: {
       type: String,
       required: true,
     },
