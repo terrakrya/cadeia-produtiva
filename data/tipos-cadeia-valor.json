@@ -20,8 +20,8 @@
 		"value": "Industrialização"
 	},
 	{
-		"text": "Beneficiamento",
-		"value": "Beneficiamento"
+		"text": "Beneficiados",
+		"value": "Beneficiados"
 	},
 	{
 		"text": "Transformação",
@@ -38,14 +38,6 @@
 	{
 		"text": "Distribuição",
 		"value": "Distribuição"
-	},
-	{
-		"text": "Beneficiamento",
-		"value": "Beneficiamento"
-	},
-	{
-		"text": "Transformação",
-		"value": "Transformação"
 	},
 	{
 		"text": "Consumo",
