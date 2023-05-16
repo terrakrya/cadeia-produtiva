@@ -3,6 +3,7 @@ const router = require('express').Router()
 const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const Price = mongoose.model('PriceInformation')
+const ObjectId = mongoose.Types.ObjectId
 
 router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
@@ -37,7 +38,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
     const filters = JSON.parse(req.query.filters || '{}')
     
     if (filters.product) {
-      query.product = filters.product
+      query.product = ObjectId(filters.product)
     }
 
     if (filters.uf) {
