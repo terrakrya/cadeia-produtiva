@@ -14,15 +14,6 @@ router.get('/', auth.authenticated, async (req, res) => {
     query._id = filters.id
   }
 
-  if (filters.organization) {
-    if (filters.organization === '!organization') {
-      query.$or = [{ organization: null }, { role: 'gestor' }]
-    } else {
-      query.organization = filters.organization
-      query.role = { $ne: 'gestor' }
-    }
-  }
-
   try {
     // ***** executa a query *****
 

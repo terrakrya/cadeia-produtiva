@@ -44,16 +44,16 @@
               {{ data.item.sigla }}
             </template>
             <template #cell(actions)="data">
-              <n-link
-                :to="'/cadastros/organizacoes/' + data.item._id + '/editar'"
-                class="btn btn-secondary"
-              >
-                <b-icon-pencil />
-              </n-link>
-              <a class="btn btn-secondary" @click="remove(data.item._id)">
-                <b-icon-trash />
-              </a>
-            </template>
+                <n-link
+                  :to="'/cadastros/organizacoes/' + data.item._id + '/editar'"
+                  class="btn btn-secondary"
+                >
+                  <b-icon-pencil />
+                </n-link>
+                <a class="btn btn-secondary" @click="remove(data.item._id)">
+                 <b-icon-trash />
+                </a>
+              </template>
           </b-table>
         </div>
       </div>
@@ -63,6 +63,7 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
+import { isManager } from '~/api/config/auth'
 export default {
   components: {
     Breadcrumb,
@@ -86,11 +87,7 @@ export default {
           label: 'Sigla',
           sortable: true,
         },
-        {
-          key: 'actions',
-          label: 'Ação',
-          class: 'actions',
-        },
+
       ],
       organizations: [],
     }
@@ -98,10 +95,24 @@ export default {
 
   async created() {
     await this.list()
+    const actions = {
+          key: 'actions',
+          label: 'Ação',
+          class: 'actions',
+        }
+     if (!this.isManager) {
+      this.table_fields.push(actions)
+     }
   },
   methods: {
     async list() {
-      this.organizations = await this.$axios.$get('organizations')
+      if (this.isManager) {
+        this.organizations = await this.$axios.$get('organizations/' 
+        + this.currentUser.organization)
+      } else {
+        this.organizations = await this.$axios.$get('organizations')
+      }
+
     },
 
     remove(id) {
