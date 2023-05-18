@@ -50,13 +50,22 @@ export default {
     'bootstrap-vue/nuxt',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // https://go.nuxtjs.dev/pwa
+    '@nuxtjs/pwa',
     // https://go.nuxtjs.dev/content
     '@nuxt/content',
     '@nuxtjs/auth-next',
     'nuxt-leaflet',
-    // https://go.nuxtjs.dev/pwa
-    '@nuxtjs/pwa',
   ],
+
+  bootstrapVue: {
+    icons: true,
+  },
+
+  // Axios module configuration: https://go.nuxtjs.dev/config-axios
+  axios: {
+    baseURL: (process.env.BASE_URL || '') + '/api/',
+  },
 
   // PWA module configuration: https://go.nuxtjs.dev/pwa
   pwa: {
@@ -68,9 +77,6 @@ export default {
     meta: {
       ogHost: process.env.BASE_URL,
       ogImage: '/icon.png',
-    },
-    icon: {
-      purpose: 'maskable',
     },
     workbox: {
       offlineStrategy: 'NetworkFirst',
@@ -85,15 +91,6 @@ export default {
       //   },
       // ],
     },
-  },
-
-  bootstrapVue: {
-    icons: true,
-  },
-
-  // Axios module configuration: https://go.nuxtjs.dev/config-axios
-  axios: {
-    baseURL: (process.env.BASE_URL || '') + '/api/',
   },
 
   localforage: {
