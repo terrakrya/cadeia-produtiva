@@ -42,6 +42,8 @@ const PriceSchema = new mongoose.Schema(
     },
     country: String,
     currency: String,
+    square: String,
+    squareid: String,
     measure: {
       type: String,
       required: true,

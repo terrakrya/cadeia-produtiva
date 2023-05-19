@@ -107,8 +107,17 @@
             <template #cell(messenger)="data">
               {{ data.item.messenger.name }}
             </template>
-            <template #cell(country)="data">
-              {{ data.item.country }}
+            <template #cell(buyerPosition)="data">
+              {{ data.item.buyerPosition }}
+            </template>
+            <template #cell(uf)="data">
+              {{ data.item.uf }}
+            </template>
+            <template #cell(city)="data">
+              {{ data.item.city }}
+            </template>
+            <template #cell(square)="data">
+              {{ data.item.square }}
             </template>
             <template #cell(product)="data">
               {{ data.item.product.name }}
@@ -164,8 +173,23 @@ export default {
           sortable: true,
         },
         {
-          key: 'country',
-          label: 'País',
+          key: 'buyerPosition',
+          label: 'Posição comercial',
+          sortable: true,
+        },
+        {
+          key: 'uf',
+          label: 'Estado',
+          sortable: true,
+        },
+        {
+          key: 'city',
+          label: 'Município',
+          sortable: true,
+        },
+        {
+          key: 'square',
+          label: 'Praça',
           sortable: true,
         },
         {
@@ -181,12 +205,12 @@ export default {
         {
           key: 'originalMinimumPrice',
           label: 'Preço mínimo',
-          sortable: true,
+          // sortable: true,
         },
         {
           key: 'originalMaximumPrice',
           label: 'Preço máximo',
-          sortable: true,
+          // sortable: true,
         },
         {
           key: 'actions',

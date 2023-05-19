@@ -179,6 +179,7 @@
                   class="form-control"
                   :options="cidades"
                   name="city"
+                  @input="loadPracas()"
                 />
                 <field-error :msg="veeErrors" field="city" />
               </b-form-group>
@@ -219,6 +220,7 @@ import medidas from '@/data/tipo-de-unidade.json'
 import pais from '@/data/pais.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
+import pracas from '@/data/praca.json'
 import transacao from '@/data/transacionada.json'
 export default {
   components: {
@@ -226,6 +228,7 @@ export default {
   },
   data() {
     return {
+      pracas,
       buyerPositions,
       medidas,
       moeda,
@@ -254,6 +257,8 @@ export default {
         transactedQuantity: '',
         organization: '',
         buyerPositionSeller: '',
+        square: '',
+        squareid: '',
       },
       products: [],
       messengers: [],
@@ -269,6 +274,8 @@ export default {
     await this.preSetDados()
 
     this.creating = false
+
+    this.loadPracas()
   },
   methods: {
     async preSetDados() {
@@ -342,6 +349,19 @@ export default {
       if (this.form.city && this.cidades) {
         if (!this.cidades.find((c) => c === this.form.city)) {
           this.form.city = ''
+        }
+      }
+    },
+    // filtra as praça conforme a município selecionada
+    loadPracas() {
+      if (this.form.county) {
+        const cidade = this.form.county
+        const pracas = this.pracas.filter(function (item) {
+          return item.cidade === cidade
+        })
+        if (pracas && pracas.length > 0) {
+          this.form.square = pracas[0].nome
+          this.form.squareid = pracas[0].id
         }
       }
     },
