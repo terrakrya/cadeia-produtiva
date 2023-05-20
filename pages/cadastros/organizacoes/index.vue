@@ -106,13 +106,7 @@ export default {
   },
   methods: {
     async list() {
-      if (this.isManager) {
-        this.organizations = await this.$axios.$get('organizations/' 
-        + this.currentUser.organization)
-      } else {
-        this.organizations = await this.$axios.$get('organizations')
-      }
-
+      this.organizations = await this.$axios.$get('organizations')
     },
 
     remove(id) {
