@@ -18,7 +18,8 @@
     "lint": "yarn lint:js --fix && yarn lint:style --fix",
     "test": "jest",
     "sync_dev": "./scripts/sync_dev.sh",
-    "seed-user": "node ./scripts/seed-user.js"
+    "seed-user": "node ./scripts/seed-user.js",
+    "generate-password": "node ./scripts/generate-password.js"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint",
