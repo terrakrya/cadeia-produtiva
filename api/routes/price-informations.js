@@ -63,8 +63,6 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
         $lte: new Date(filters.to),
       }
     }
-
-    
   }
 
   try {
@@ -74,20 +72,20 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
       [
         { "$match": query },
         { "$sort": { 'createdAt': -1 } },
-        {
-          "$lookup": {
-            from: "users",
-            localField: "messenger",
-            foreignField: "_id",
-            as: "from"
-          }
-        },
+        // {
+        //   "$lookup": {
+        //     from: "users",
+        //     localField: "messenger",
+        //     foreignField: "_id",
+        //     as: "from"
+        //   }
+        // },
         {
           "$group": {
             _id: {
               "date": { "$dateToString": { format: "%d/%m/%Y", date: "$createdAt" } },
-              "from": "$from.buyerPosition",
-              "to": "$buyerPosition"
+              "from": "$buyerPositionSeller",
+              "to": "$buyerPositionBuyer"
             },
             minimumPrice: { "$min": "$minimumPrice" },
             maximumPrice: { "$max": "$maximumPrice" }
@@ -99,7 +97,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
     const priceList = priceListAgr.map(function (obj) {
       return {
         date: obj._id.date,
-        from: obj._id.from.length ? obj._id.from[0] : "",
+        from: obj._id.from,
         to: obj._id.to,
         minimumPrice: obj.minimumPrice,
         maximumPrice: obj.maximumPrice,
