@@ -193,7 +193,7 @@ export default {
           sortable: true,
         },
         {
-          key: 'product.name',
+          key: 'product',
           label: 'Produto',
           sortable: true,
         },
@@ -203,14 +203,14 @@ export default {
           sortable: true,
         },
         {
-          key: 'originalMinimumPrice',
+          key: 'minimumPrice',
           label: 'Preço mínimo',
-          // sortable: true,
+          sortable: true,
         },
         {
-          key: 'originalMaximumPrice',
+          key: 'maximumPrice',
           label: 'Preço máximo',
-          // sortable: true,
+          sortable: true,
         },
         {
           key: 'actions',
