@@ -36,7 +36,7 @@ export default {
         },
         {
           key: 'city',
-          label: 'cidade',
+          label: 'Município',
         },
         {
           key: 'square',
