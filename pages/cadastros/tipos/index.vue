@@ -28,7 +28,7 @@
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
             :items="types"
-            :sort-by="'code'"
+            :sort-by="'type'"
             :filter="filters.search"
           > 
             <template #cell(type)="data">
