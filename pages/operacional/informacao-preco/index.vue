@@ -234,7 +234,17 @@ export default {
       } else if (this.isManager) {
         filters.organization = this.currentUser.organization
       }
-      this.priceInformations = await this.$axios.$get('price-informations')
+
+      const priceInformations = await this.$axios.$get('price-informations')
+
+      if (this.isMessenger) {
+        this.priceInformations = priceInformations.filter((i) => {
+          return i.messenger.id === this.currentUser.id
+        })
+      } else {
+        this.priceInformations = priceInformations
+      }
+      
     },
 
     remove(id) {
