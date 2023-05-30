@@ -215,6 +215,7 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import posicaoComprador from '@/data/posicao-do-comprador.json'
 import buyerPositions from '@/data/posicao-do-comprador'
+import Decimal from 'decimal.js'
 import moeda from '@/data/moeda.json'
 import medidas from '@/data/tipo-de-unidade.json'
 import pais from '@/data/pais.json'
@@ -365,16 +366,21 @@ export default {
         }
       }
     },
-    transactedQuantity(min, max, mid) {
-      if (this.form.transaction === 'preço de mercado') {
-        this.form.minimumPrice = min * mid
-        this.form.maximumPrice = max * mid
-      } else if (this.form.transaction === 'transação realizada') {
-        this.form.minimumPrice = min * mid * this.form.transactedQuantity
-        this.form.maximumPrice = max * mid * this.form.transactedQuantity
+    transactedQuantity() {
+      const multiplyer = this.getMultiplyer()
+      const min = this.form.originalMinimumPrice
+      const max = this.form.originalMaximumPrice
+
+      let quant = 1
+      if (this.form.transaction === 'transação realizada') {
+        quant = this.form.transactedQuantity
       }
+
+      // +({numero}.toFixed(2)) arredonda o número com duas casas decimais e retorna um número (já que o toFloat converte em string)
+      this.form.minimumPrice = +(new Decimal(min).div(multiplyer).div(quant).toFixed(2))
+      this.form.maximumPrice = +(new Decimal(max).div(multiplyer).div(quant).toFixed(2))
     },
-    getMeasure() {
+    getMultiplyer() {
       if (this.form.measure === 'Kg') {
         return 1
       } else if (this.form.measure === 'Tonelada') {
@@ -421,7 +427,8 @@ export default {
     },
     save() {
       this.$validator.validate().then((isValid) => {
-        // validação do preço
+        // #region validação
+
         if (
           !this.form.originalMinimumPrice ||
           this.form.originalMinimumPrice === 0
@@ -469,8 +476,12 @@ export default {
           )
         }
 
+        // #endregion validação
+
         if (isValid) {
           this.is_sending = true
+
+          // #region ajusta os campos do form
 
           if (this.isAdmin || this.isGlobalManager) {
             this.form.organization = this.messengers.find(messenger => messenger._id === this.form.messenger).organization._id
@@ -487,11 +498,11 @@ export default {
             this.form.messenger = this.currentUser._id
           }
 
-          this.transactedQuantity(
-            this.form.originalMinimumPrice,
-            this.form.originalMaximumPrice,
-            this.getMeasure()
-          )
+          this.transactedQuantity()
+
+          // #endregion ajusta os campos do form
+
+          // #region envia os dados preenchidos ao server
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
@@ -509,6 +520,8 @@ export default {
               this.is_sending = false
             })
             .catch(this.showError)
+
+          // #endregion envia os dados preenchidos ao server
         }
       })
     },
