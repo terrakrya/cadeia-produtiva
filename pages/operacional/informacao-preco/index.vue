@@ -241,10 +241,13 @@ export default {
         this.priceInformations = priceInformations.filter((i) => {
           return i.messenger.id === this.currentUser.id
         })
+      } else if (this.isManager) {
+        this.priceInformations = priceInformations.filter((i) => {
+          return i.organization === this.currentUser.organization
+        })
       } else {
         this.priceInformations = priceInformations
       }
-      
     },
 
     remove(id) {
