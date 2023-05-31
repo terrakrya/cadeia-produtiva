@@ -107,6 +107,9 @@
             <template #cell(messenger)="data">
               {{ data.item.messenger.name }}
             </template>
+            <template #cell(organization)="data">
+              {{ data.item.organization.sigla }}
+            </template>
             <template #cell(buyerPosition)="data">
               {{ data.item.buyerPosition }}
             </template>
@@ -170,6 +173,11 @@ export default {
         {
           key: 'messenger.name',
           label: 'Mensageiro',
+          sortable: true,
+        },
+        {
+          key: 'organization',
+          label: 'Organização',
           sortable: true,
         },
         {

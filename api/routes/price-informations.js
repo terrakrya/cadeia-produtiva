@@ -17,6 +17,7 @@ router.get('/', auth.authenticated, async (req, res) => {
     const price = await Price.find(query)
       .populate('product')
       .populate('messenger')
+      .populate('organization')
       .sort('price')
 
     res.json(price)
