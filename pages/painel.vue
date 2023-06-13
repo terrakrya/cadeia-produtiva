@@ -22,9 +22,17 @@
                 @click="$bvModal.show('bv-modal-1')"
                 >Tradutor de praça</b-button
               >
+              <b-button
+                id="show-btn"
+                class="btn btn-primary"
+                variant="danger"
+                @click="$bvModal.show('bv-modal-2')"
+                >Nota metodologica</b-button
+              >
 
               <FormSquareTranslator id="bv-modal-1"/>
               <FormMeasureTranslator id="bv-modal"/>
+              <FormMetodologia id="bv-modal-2"/>
               
             </div>
           </div>
@@ -149,6 +157,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import FormGridInformat from '@/components/FormGridInformat'
 import FormSquareTranslator from '@/components/FormSquareTranslator'
 import FormMeasureTranslator from '@/components/FormMeasureTranslator'
+import FormMetodologia from '@/components/FormMetodologia.vue'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
@@ -160,7 +169,9 @@ export default {
     FormGridInformat,
     FormSquareTranslator,
     FormMeasureTranslator,
-  },
+    FormMetodologia,
+    FormMetodologia
+},
   data() {
     return {
       filters: {
