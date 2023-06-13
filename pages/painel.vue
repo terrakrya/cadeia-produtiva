@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="info-content">
-          <div class="row">
+            <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Produto">
                 <b-form-select
@@ -65,8 +65,8 @@
               </b-form-group>
             </b-col>
            
-          </div>
-          <div class="row">
+            </div>
+            <div class="row">
             <b-col sm="4">
               <b-form-group label="Data inicial">
                 <b-form-datepicker
@@ -112,7 +112,29 @@
                 />
               </b-form-group>
             </b-col>
-          </div>
+
+            
+            </div>
+            <div class="row">
+              <b-col sm="6">
+                <b-form-group label="De ">
+                  <b-form-select
+                    v-model="filters.from"
+                    class="form-control"
+                    :options="buyerPositions"
+                  />
+                </b-form-group>
+              </b-col>
+              <b-col sm="6">
+                <b-form-group label="Para">
+                  <b-form-select
+                    v-model="filters.to"
+                    class="form-control"
+                    :options="posicaoComprador"
+                  />
+                </b-form-group>
+              </b-col>
+            </div>
           <br />
           <no-item :list="priceInformations" />
           <form-grid-informat :list="priceInformations" />
@@ -130,6 +152,8 @@ import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
+import posicaoComprador from '@/data/posicao-do-comprador.json'
+import buyerPositions from '@/data/posicao-do-comprador.json'
 export default {
   components: {
     Breadcrumb,
@@ -143,10 +167,12 @@ export default {
         uf: '',
         city: '',
         square: null,
-        from: null,
-        to: null,
+        from: '',
+        to: '',
         product: '',
       },
+      buyerPositions,
+      posicaoComprador,
       estados,
       cidades,
       pracas,
