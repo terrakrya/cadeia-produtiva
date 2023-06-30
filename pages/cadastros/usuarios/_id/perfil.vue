@@ -229,19 +229,32 @@ export default {
       }
     },
 
-    edit(id) {
+    async edit(id) {
       this.is_loading = true
-      this.$axios
-        .get('users/' + id)
-        .then((response) => {
-          this.apiDataToForm(this.form, response.data)
-          this.form.username = this.formatValue(
-            this.form.username,
-            '(##) #####-####'
-          )
-          this.is_loading = false
-        })
-        .catch(this.showError)
+      try {
+        const dados = await this.$axios.$get('users/' + id)
+
+        this.form.unitOfMeasurement = dados.unitOfMeasurement
+        this.form.name = dados.name
+        this.form.email = dados.email
+        this.form.username = dados.username
+        this.form.cpf = dados.cpf
+        this.form.password = dados.password
+        this.form.password_confirmation = dados.password_confirmation
+        this.form.buyerPosition = dados.buyerPosition
+        this.form.currency = dados.currency
+        this.form.country = dados.country
+        this.form.nickname = dados.nickname
+        this.form.uf = dados.uf
+        this.form.county = dados.county
+        this.form.identity = dados.identity
+        this.form.gender = dados.gender
+      }
+      catch(e) {
+        this.showError(e)
+      }
+
+      this.is_loading = false
     },
 
     async isNotUniqueEmail(id, email) {
