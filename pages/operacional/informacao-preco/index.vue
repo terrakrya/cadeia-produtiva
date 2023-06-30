@@ -22,53 +22,38 @@
                 @click="$bvModal.show('bv-modal')"
                 >Tradutor de medidas</b-button
               >
-
               <b-modal id="bv-modal" hide-footer>
                 <template #modal-title> Conversões</template>
                 <table class="table b-table b-table-stacked-md table-striped">
                   <thead>
                     <tr>
                       <th>Unidade</th>
-                      <!--<th>Lata</th>
-                      <th>Litros</th>-->
                       <th>Kg</th>
                       <th></th>
                     </tr>
                   </thead>
                   <tbody>
                     <td>Lata/Latão</td>
-                    <!--<td>1</td>
-                    <td>20</td>-->
                     <td>12</td>
                   </tbody>
                   <tbody>
                     <td>Caixa</td>
-                    <!--<td>2</td>
-                    <td>40</td>-->
                     <td>24</td>
                   </tbody>
                   <tbody>
                     <td>Hectolitro</td>
-                    <!--<td>5</td>
-                    <td>100</td>-->
                     <td>60</td>
                   </tbody>
                   <tbody>
                     <td>Saca</td>
-                    <!--<td>5</td>
-                    <td>100</td>-->
                     <td>60</td>
                   </tbody>
                   <tbody>
                     <td>Barrica</td>
-                    <!--<td>6</td>
-                    <td>120</td>-->
                     <td>72</td>
                   </tbody>
                   <tbody>
                     <td>Tonelada</td>
-                    <!--<td></td>
-                    <td></td>-->
                     <td>1000</td>
                   </tbody>
                 </table>
@@ -156,6 +141,7 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
+import { isAdmin, isGlobalManager, isManager } from '~/api/config/auth'
 export default {
   components: {
     Breadcrumb,
@@ -164,85 +150,44 @@ export default {
     return {
       translator: true,
       filters: { search: null },
-      table_fields: [
-        {
-          key: 'createdAt',
-          label: 'Data',
-          sortable: true,
-        },
-        {
-          key: 'messenger.name',
-          label: 'Mensageiro',
-          sortable: true,
-        },
-        {
-          key: 'organization',
-          label: 'Organização',
-          sortable: true,
-        },
-        {
-          key: 'buyerPosition',
-          label: 'Posição comercial',
-          sortable: true,
-        },
-        {
-          key: 'uf',
-          label: 'Estado',
-          sortable: true,
-        },
-        {
-          key: 'city',
-          label: 'Município',
-          sortable: true,
-        },
-        {
-          key: 'square',
-          label: 'Praça',
-          sortable: true,
-        },
-        {
-          key: 'product',
-          label: 'Produto',
-          sortable: true,
-        },
-        {
-          key: 'measure',
-          label: 'Unidade ',
-          sortable: true,
-        },
-        {
-          key: 'minimumPrice',
-          label: 'Preço mínimo',
-          sortable: true,
-        },
-        {
-          key: 'maximumPrice',
-          label: 'Preço máximo',
-          sortable: true,
-        },
-        {
-          key: 'actions',
-          label: 'Ação',
-          class: 'actions',
-        },
-      ],
+      table_fields: [],
       priceInformations: [],
     }
   },
 
   async created() {
     await this.list()
+    this.fillTableFields();
   },
   methods: {
-    async list() {
-      const filters = {}
+    fillTableFields() {
+      let table_fields = [{ key: 'createdAt', label: 'Data', sortable: true }]
 
-      if (this.isAdmin || this.isGlobalManager) {
-        filters.organization = '!organization'
-      } else if (this.isManager) {
-        filters.organization = this.currentUser.organization
+      if (this.isAdmin || this.isManager || this.isGlobalManager) {
+        table_fields.push({ key: 'messenger.name', label: 'Mensageiro', sortable: true })
       }
 
+      if (this.isAdmin || this.isGlobalManager) {
+        table_fields.push({ key: 'organization', label: 'Organização', sortable: true })
+      }
+
+      table_fields.push({ key: 'buyerPosition', label: 'Posição comercial', sortable: true })
+      table_fields.push({ key: 'uf', label: 'Estado', sortable: true })
+      table_fields.push({ key: 'city', label: 'Município', sortable: true })
+
+      if (this.isAdmin || this.isGlobalManager) {
+        table_fields.push({ key: 'square', label: 'Praça', sortable: true })
+      }
+
+      table_fields.push({ key: 'product', label: 'Produto', sortable: true })
+      table_fields.push({ key: 'measure', label: 'Unidade', sortable: true })
+      table_fields.push({ key: 'minimumPrice', label: 'Preço mínimo', sortable: true })
+      table_fields.push({ key: 'maximumPrice', label: 'Preço máximo', sortable: true })
+      table_fields.push({ key: 'actions', label: 'Ação', class: 'actions' })
+
+      this.table_fields = table_fields
+    },
+    async list() {
       const priceInformations = await this.$axios.$get('price-informations')
 
       if (this.isMessenger) {
