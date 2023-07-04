@@ -173,7 +173,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Cidade *">
+              <b-form-group label="Município *">
                 <b-form-select
                   v-model="form.city"
                   class="form-control"

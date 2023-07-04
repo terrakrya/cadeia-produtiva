@@ -127,9 +127,10 @@
             <b-col sm="4">
               <b-form-group label="Município">
                 <b-form-select
-                  v-model="form.county"
+                  v-model="form.city"
                   class="form-control"
                   :options="cidades"
+                  name="city"
                 />
               </b-form-group>
             </b-col>
@@ -201,7 +202,7 @@ export default {
         country: 'BR',
         nickname: '',
         uf: '',
-        county: '',
+        city: '',
         identity: '',
         gender: '',
       },
@@ -209,10 +210,10 @@ export default {
   },
   created() {
     this.edit(this.$route.params.id)
-    this.loadCities()
   },
   methods: {
     loadCities() {
+
       // lista de cidades com somente o item "selecione a cidade"
       this.cidades = [{ value: '', text: 'Selecione a cidade' }]
 
@@ -222,13 +223,12 @@ export default {
       }
 
       // limpa a cidade digitada, caso não exista na lista
-      if (this.form.county && this.cidades) {
-        if (!this.cidades.find((c) => c === this.form.county)) {
-          this.form.county = ''
+      if (this.form.city && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.city)) {
+          this.form.city = ''
         }
       }
     },
-
     async edit(id) {
       this.is_loading = true
       try {
@@ -246,7 +246,8 @@ export default {
         this.form.country = dados.country
         this.form.nickname = dados.nickname
         this.form.uf = dados.uf
-        this.form.county = dados.county
+        this.loadCities()
+        this.form.city = dados.city
         this.form.identity = dados.identity
         this.form.gender = dados.gender
       }
