@@ -38,7 +38,6 @@
                 <b-form-select
                   v-model="form.group"
                   class="form-control"
-                  placeholder="Selecione o grupo"
                   :options="grupo"
                 />
               </b-form-group>

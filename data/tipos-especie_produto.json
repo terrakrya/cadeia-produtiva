@@ -1,5 +1,9 @@
 [
 	{
+		"text": "Selecione o tipo",
+		"value": ""
+	},
+	{
 		"text": "Especial (Premium)",
 		"value": "Especial (Premium)"
 	},

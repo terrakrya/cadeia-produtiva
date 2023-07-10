@@ -97,7 +97,6 @@
                 <b-form-select
                   v-model="form.territory"
                   class="form-control"
-                  placeholder='Selecione o território'
                   :options="territorios"
                   value-field="nome"
                   text-field="nome"
@@ -225,7 +224,7 @@ export default {
         type: '',
         cnpj: '',
         address: '',
-        territory: '',
+        territory: 'Selecione o território',
         contact: '',
         otherContacts: '',
         chainLink: '',

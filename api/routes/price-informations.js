@@ -9,7 +9,13 @@ router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****
+  const filters = req.query
 
+  if (req.user.role === 'gestor'){
+    query.organization = req.user.organization
+  }
+    
+  
 
   try {
     // ***** executa a query *****
