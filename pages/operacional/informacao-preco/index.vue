@@ -188,19 +188,7 @@ export default {
       this.table_fields = table_fields
     },
     async list() {
-      const priceInformations = await this.$axios.$get('price-informations')
-
-      if (this.isMessenger) {
-        this.priceInformations = priceInformations.filter((i) => {
-          return i.messenger.id === this.currentUser.id
-        })
-      } else if (this.isManager) {
-        this.priceInformations = priceInformations.filter((i) => {
-          return i.organization === this.currentUser.organization
-        })
-      } else {
-        this.priceInformations = priceInformations
-      }
+      this.priceInformations = await this.$axios.$get('price-informations')
     },
 
     remove(id) {
