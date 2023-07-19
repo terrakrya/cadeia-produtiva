@@ -3,6 +3,7 @@ const passport = require('passport')
 const mongoose = require('mongoose')
 const auth = require('../config/auth')
 const User = mongoose.model('User')
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 router.use('/users', require('./users'))
 router.use('/products', require('./products'))
@@ -41,6 +42,26 @@ router.post('/login', function (req, res, next) {
       }
     }
   )(req, res, next)
+})
+
+router.post('/auth', async function (req, res, next) {
+  if (!req.body.token) {
+    return res.status(422).json('Preencha o token')
+  }
+
+  if (req.body.token !== 'G9Zf61GBL2xtRsFTafGr') {
+    return res.status(422).json('Token inválido')
+  }
+
+  // recupera o usuário de integração (que deve estar criado no BD)
+  const user = await User.findOne({ id: ObjectId('00000000-0000-0000-0000-000000000000') })
+  if (!user) {
+    return res.status(422).json('Usuário de integração não criado')
+  }
+
+  user.token = user.generateUnlimitedJWT()
+
+  return res.json(user.toUnlimitedAuthJSON())
 })
 
 router.get('/profile', auth.authenticated, function (req, res) {

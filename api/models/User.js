@@ -88,6 +88,7 @@ UserSchema.methods.data = function () {
     gender: this.gender
   }
 }
+
 UserSchema.methods.generateJWT = function () {
   const today = new Date()
   const exp = new Date(today)
@@ -102,9 +103,24 @@ UserSchema.methods.generateJWT = function () {
   )
 }
 
+UserSchema.methods.generateUnlimitedJWT = function () {
+  return jwt.sign(
+    {
+      ...this.data(),
+    },
+    secret
+  )
+}
+
 UserSchema.methods.toAuthJSON = function () {
   return {
     ...this.data(),
+    token: this.generateJWT(),
+  }
+}
+
+UserSchema.methods.toUnlimitedAuthJSON = function () {
+  return {
     token: this.generateJWT(),
   }
 }
