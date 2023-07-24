@@ -3,7 +3,7 @@ const passport = require('passport')
 const mongoose = require('mongoose')
 const auth = require('../config/auth')
 const User = mongoose.model('User')
-const ObjectId = mongoose.Schema.Types.ObjectId
+const ObjectId = mongoose.Types.ObjectId
 
 router.use('/users', require('./users'))
 router.use('/products', require('./products'))
@@ -54,7 +54,7 @@ router.post('/auth', async function (req, res, next) {
   }
 
   // recupera o usuário de integração (que deve estar criado no BD)
-  const user = await User.findOne({ id: ObjectId('00000000-0000-0000-0000-000000000000') })
+  const user = await User.findOne({ id: ObjectId('000000000000000000000000') })
   if (!user) {
     return res.status(422).json('Usuário de integração não criado')
   }
