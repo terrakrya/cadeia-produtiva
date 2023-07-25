@@ -54,7 +54,7 @@ router.post('/auth', async function (req, res, next) {
   }
 
   // recupera o usuário de integração (que deve estar criado no BD)
-  const user = await User.findOne({ id: ObjectId('000000000000000000000000') })
+  const user = await User.findOne({ _id: ObjectId('000000000000000000000000') })
   if (!user) {
     return res.status(422).json('Usuário de integração não criado')
   }
