@@ -14,6 +14,7 @@ router.use('/price-informations', require('./price-informations'))
 router.use('/species', require('./species'))
 router.use('/species-products', require('./species-products'))
 router.use('/uploads', require('./uploads'))
+router.use('/geographic-areas', require('./geographic-areas'))
 
 router.post('/login', function (req, res, next) {
   if (!req.body.username) {

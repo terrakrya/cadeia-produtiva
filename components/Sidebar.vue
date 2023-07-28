@@ -30,6 +30,9 @@ import { isAdmin } from '~/api/config/auth';
         <b-nav v-if="isAdmin || isGlobalManager || isManager" vertical>
           <b-nav-item to="/cadastros/usuarios">Usuários</b-nav-item>
         </b-nav>
+        <b-nav v-if="isAdmin || isGlobalManager || isManager" vertical>
+          <b-nav-item to="/cadastros/areas-geograficas">Áreas geográficas</b-nav-item>
+        </b-nav>
       </b-list-group-item>
       <b-list-group-item>
         <i class="fas fa-tools" />

@@ -6,6 +6,7 @@ require('./models/PriceInformation')
 require('./models/SpeciesProduct')
 require('./models/Specie')
 require('./models/Product')
+require('./models/GeographicArea')
 require('./config/passport')
 
 const fs = require('fs')
