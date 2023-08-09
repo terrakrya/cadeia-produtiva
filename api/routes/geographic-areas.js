@@ -43,6 +43,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     geographic.county = req.body.county
     geographic.square = req.body.square
     geographic.squareid = req.body.squareid
+    geographic.polygon = req.body.polygon
 
     await geographic.save()
 
@@ -62,6 +63,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       geographic.uf = req.body.uf
       geographic.county = req.body.county
       geographic.square = req.body.square
+      geographic.squareid = req.body.squareid
+      geographic.polygon = req.body.polygon
 
       await geographic.save()
 

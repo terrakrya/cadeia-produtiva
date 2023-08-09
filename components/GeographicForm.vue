@@ -46,6 +46,14 @@
               </b-form-group>
             </b-col>
           </div>
+          <div>
+            <l-map style="height: 500px" :zoom="zoom" :center="center" @click="onMapClick">
+             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+             <l-marker :lat-lng="markerLatLng" @click="removeMarker"></l-marker>
+             <l-polygon :lat-lngs="polygon" :options="polygonOptions"></l-polygon>
+            </l-map>
+          </div> 
+          <br/>
           <form-submit :sending="is_sending" />
         </b-form>
       </div>
@@ -57,9 +65,15 @@ import Breadcrumb from '@/components/Breadcrumb'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
+import { LMap, LTileLayer, LMarker, LPolygon } from 'vue2-leaflet'
+import 'leaflet/dist/leaflet.css'
 export default {
   components: {
     Breadcrumb,
+    LMap,
+    LTileLayer,
+    LMarker,
+    LPolygon,
   },
   data() {
     return {
@@ -72,7 +86,16 @@ export default {
         square: '',
         squareid: '',
         selctPraca: '',
+        polygon: [],
       },
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution:
+        '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      zoom: 4,
+      center: [-10.850958, -51.492461],
+      polygon: [],
+      polygonOptions: { color: 'blue' },
+      markerLatLng: [0, 0]
     }
   },
   created() {
@@ -83,6 +106,15 @@ export default {
     this.loadPracas()
   },
   methods: {
+    onMapClick(e) {
+      this.markerLatLng = [e.latlng.lat, e.latlng.lng]; // Atualiza as coordenadas do marcador
+      const { lat, lng } = e.latlng;
+      this.polygon.push([lat, lng]);
+      console.log(this.polygon)
+    },
+    removeMarker() {
+       this.markerLatLng = [0, 0];
+    },
     loadCities() {
       // lista de cidades com somente o item "selecione a município"
       this.cidades = [{ value: '', text: 'Selecione a município' }]
@@ -131,6 +163,8 @@ export default {
         // valida a code
         if (isValid) {
           this.is_sending = true
+
+          this.form.polygon.push(this.polygon);
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',

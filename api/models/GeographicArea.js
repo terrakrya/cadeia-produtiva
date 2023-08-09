@@ -9,6 +9,9 @@ const GeographicAreaSchema = new mongoose.Schema(
     county: String,
     square: String,
     squareid: String,
+    polygon: {
+      type: [Array],
+    },
   },
   {
     timestamps: true,
