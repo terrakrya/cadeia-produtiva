@@ -7,7 +7,7 @@
           <div class="col-sm-6">
             <h1>Áreas geográficas</h1>
           </div>
-          <div class="col-sm-6 main-actions">
+          <div v-if="!isManager" class="col-sm-6 main-actions">
             <n-link to="/cadastros/areas-geograficas/cadastrar" class="btn btn-primary">
               <b-icon-plus /> {{ 'Cadastrar' }}
             </n-link>
@@ -83,11 +83,6 @@ export default {
           label: 'Praça',
           sortable: true,
         },
-        {
-          key: 'actions',
-          label: 'Ação',
-          class: 'actions',
-        },
       ],
       geographic: null,
     }
@@ -95,6 +90,14 @@ export default {
 
   async created() {
     await this.list()
+    const actions = {
+          key: 'actions',
+          label: 'Ação',
+          class: 'actions',
+        }
+     if (!this.isManager) {
+      this.table_fields.push(actions)
+     }
   },
   methods: {
     async list() {
