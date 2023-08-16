@@ -35,13 +35,12 @@
             </b-col>
             <b-col sm="4">
               <b-form-group label="Praça">
-                <b-form-select
-                  v-model="form.selctPraca"
+                <input
+                  v-model="form.square"
+                  type="text"
+                  readonly
                   class="form-control"
-                  :options="pracas"
-                  value-field="id"
                   text-field="nome"
-                  @input="loadPracas()"
                 />
               </b-form-group>
             </b-col>
@@ -134,10 +133,10 @@ export default {
 
     // filtra as praça conforme a município selecionada
     loadPracas() {
-      if (this.form.selctPraca) {
-        const selctPraca = this.form.selctPraca
+      if (this.form.county) {
+        const cidade = this.form.county
         const pracas = this.pracas.filter(function (item) {
-          return item.id === selctPraca
+          return item.cidade === cidade
         })
         if (pracas && pracas.length > 0) {
           this.form.square = pracas[0].nome
@@ -151,9 +150,8 @@ export default {
         .get('geographic-areas/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
-          if (response.data.image) {
-            this.images_preview = [response.data.image]
-          }
+          this.polygon = response.data.polygon
+          this.form.square = response.data.square
           this.is_loading = false
         })
         .catch(this.showError)
