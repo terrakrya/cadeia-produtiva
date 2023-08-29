@@ -6,146 +6,86 @@
         <div class="row panel-title">
           <div class="col-sm-6"></div>
           <div class="col-sm-6 main-actions">
-            <n-link to="/Graficos/graficos" class="btn btn-primary">
-               {{ 'Graficos' }}
+            <n-link to="/graficos" class="btn btn-primary">
+              {{ 'Gráficos' }}
             </n-link>
             <div>
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal')"
-                >Tradutor de medidas</b-button
-              >
+              <b-button id="show-btn" class="btn btn-primary" variant="danger" @click="$bvModal.show('bv-modal')">Tradutor
+                de medidas</b-button>
 
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal-1')"
-                >Tradutor de praça</b-button
-              >
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal-2')"
-                >Nota metodologica</b-button
-              >
+              <b-button id="show-btn" class="btn btn-primary" variant="danger"
+                @click="$bvModal.show('bv-modal-1')">Tradutor de praça</b-button>
+              <b-button id="show-btn" class="btn btn-primary" variant="danger" @click="$bvModal.show('bv-modal-2')">Nota
+                metodologica</b-button>
 
-              <FormSquareTranslator id="bv-modal-1"/>
-              <FormMeasureTranslator id="bv-modal"/>
-              <FormMetodologia id="bv-modal-2"/>
-              
+              <FormSquareTranslator id="bv-modal-1" />
+              <FormMeasureTranslator id="bv-modal" />
+              <FormMetodologia id="bv-modal-2" />
+
             </div>
           </div>
         </div>
         <div class="info-content">
-            <div class="row">
+          <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Produto">
-                <b-form-select
-                  v-model="filters.product"
-                  class="form-control"
-                  :options="products"
-                  value-field="_id"
-                  text-field="name"
-                  @input="applyFilters"
-                />
+                <b-form-select v-model="filters.product" class="form-control" :options="products" value-field="_id"
+                  text-field="name" @input="applyFilters" />
               </b-form-group>
             </div>
             <b-col sm="4">
               <b-form-group label="Estado">
-                <b-form-select
-                  v-model="filters.uf"
-                  class="form-control"
-                  :options="estados"
-                  name="uf"
-                  @input="loadCities(true)"
-                />
+                <b-form-select v-model="filters.uf" class="form-control" :options="estados" name="uf"
+                  @input="loadCities(true)" />
               </b-form-group>
             </b-col>
             <b-col sm="4">
               <b-form-group label="Município">
-                <b-form-select
-                  v-model="filters.city"
-                  class="form-control"
-                  :options="cidades"
-                  @input="loadPracas(true)"
-                />
+                <b-form-select v-model="filters.city" class="form-control" :options="cidades" @input="loadPracas(true)" />
               </b-form-group>
             </b-col>
-           
-            </div>
-            <div class="row">
+
+          </div>
+          <div class="row">
             <b-col sm="4">
               <b-form-group label="Data inicial">
-                <b-form-datepicker
-                  v-model="filters.from"
-                  class="date"
-                  name="date_time"
-                  locale="pt-BR"
+                <b-form-datepicker v-model="filters.from" class="date" name="date_time" locale="pt-BR"
                   :date-format-options="{
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
-                  }"
-                  placeholder="DD/MM/AAAA"
-                  @input="applyFilters"
-                />
+                  }" placeholder="DD/MM/AAAA" @input="applyFilters" />
               </b-form-group>
             </b-col>
             <b-col sm="4">
               <b-form-group label="Data final">
-                <b-form-datepicker
-                  v-model="filters.to"
-                  class="date"
-                  name="date_time"
-                  locale="pt-BR"
-                  :date-format-options="{
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  }"
-                  placeholder="DD/MM/AAAA"
-                  @input="applyFilters"
-                />
+                <b-form-datepicker v-model="filters.to" class="date" name="date_time" locale="pt-BR" :date-format-options="{
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                }" placeholder="DD/MM/AAAA" @input="applyFilters" />
               </b-form-group>
             </b-col>
-             <b-col sm="4">
+            <b-col sm="4">
               <b-form-group label="Praça">
-                <input
-                  v-model="filters.square"
-                  type="text"
-                  readonly
-                  class="form-control"
-                  text-field="nome"
-                />
+                <input v-model="filters.square" type="text" readonly class="form-control" text-field="nome" />
               </b-form-group>
             </b-col>
 
-            
-            </div>
-            <div class="row">
-              <b-col sm="6">
-                <b-form-group label="De ">
-                  <b-form-select
-                    v-model="filters.from"
-                    class="form-control"
-                    :options="buyerPositions"
-                  />
-                </b-form-group>
-              </b-col>
-              <b-col sm="6">
-                <b-form-group label="Para">
-                  <b-form-select
-                    v-model="filters.to"
-                    class="form-control"
-                    :options="posicaoComprador"
-                  />
-                </b-form-group>
-              </b-col>
-            </div>
+
+          </div>
+          <div class="row">
+            <b-col sm="6">
+              <b-form-group label="De ">
+                <b-form-select v-model="filters.from" class="form-control" :options="buyerPositions" />
+              </b-form-group>
+            </b-col>
+            <b-col sm="6">
+              <b-form-group label="Para">
+                <b-form-select v-model="filters.to" class="form-control" :options="posicaoComprador" />
+              </b-form-group>
+            </b-col>
+          </div>
           <br />
           <no-item :list="priceInformations" />
           <form-grid-informat :list="priceInformations" />
@@ -174,7 +114,7 @@ export default {
     FormMeasureTranslator,
     FormMetodologia,
     FormMetodologia
-},
+  },
   data() {
     return {
       filters: {
@@ -283,10 +223,10 @@ export default {
           },
         }
       )
-      this.priceInformations.sort(function(a,b){
-        if(a.date > b.date) {
+      this.priceInformations.sort(function (a, b) {
+        if (a.date > b.date) {
           return -1
-        }else {
+        } else {
           return true
         }
       })

@@ -1,9 +1,6 @@
 <template>
   <div class="type">
-    <Breadcrumb
-      :links="[['Operacional', '/operacional/informacao-preco']]"
-      active="Registro de coleta de preços"
-    />
+    <Breadcrumb :links="[['Operacional', '/operacional/informacao-preco']]" active="Registro de coleta de preços" />
     <div class="panel">
       <div class="panel-body">
         <div class="col-sm-6">
@@ -15,69 +12,37 @@
           <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-8">
               <b-form-group label="Organização *">
-                <form-entity-select
-                  v-model="form.organization"
-                  type="organizations"
-                  @input="loadOrganization()"
-                />
+                <form-entity-select v-model="form.organization" type="organizations" @input="loadOrganization()" />
               </b-form-group>
             </div>
           </div>
           <div v-if="isAdmin || isGlobalManager || isManager" class="row">
             <div class="col-sm-8">
               <b-form-group label="Mensageiro *">
-                <b-form-select
-                  v-model="form.messenger"
-                  class="form-control"
-                  :options="messengers"
-                  value-field="id"
-                  text-field="name"
-                  name="messenger"
-                  @input="loadMessenger()"
-                />
+                <b-form-select v-model="form.messenger" class="form-control" :options="messengers" value-field="id"
+                  text-field="name" name="messenger" @input="loadMessenger()" />
               </b-form-group>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-4">
               <b-form-group label=" Tipo *">
-                <b-form-select
-                  v-model="form.transaction"
-                  v-validate="'required'"
-                  class="form-control"
-                  aria-placeholder="selecione a opção"
-                  :options="transacao"
-                  nome="transaction"
-                />
+                <b-form-select v-model="form.transaction" v-validate="'required'" class="form-control"
+                  aria-placeholder="selecione a opção" :options="transacao" nome="transaction" />
                 <field-error :msg="veeErrors" field="transaction" />
               </b-form-group>
             </div>
-            <div
-              v-if="form.transaction === 'transação realizada'"
-              class="col-sm-4"
-            >
+            <div v-if="form.transaction === 'transação realizada'" class="col-sm-4">
               <b-form-group label="Quantidade transacionada *">
-                <money
-                  v-model="form.transactedQuantity"
-                  v-validate="'required'"
-                  prefix=""
-                  class="form-control"
-                  nome="transactedQuantity"
-                ></money>
+                <money v-model="form.transactedQuantity" v-validate="'required'" prefix="" class="form-control"
+                  nome="transactedQuantity"></money>
                 <field-error :msg="veeErrors" field="transactedQuantity" />
               </b-form-group>
             </div>
             <div class="col-sm-6">
               <b-form-group label="Produto *">
-                <b-form-select
-                  v-model="form.product"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="products"
-                  value-field="id"
-                  text-field="name"
-                  name="product"
-                />
+                <b-form-select v-model="form.product" v-validate="'required'" class="form-control" :options="products"
+                  value-field="id" text-field="name" name="product" />
                 <field-error :msg="veeErrors" field="product" />
               </b-form-group>
             </div>
@@ -85,58 +50,35 @@
           <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Preço mínimo *">
-                <money
-                  v-model="form.originalMinimumPrice"
-                  v-validate="'required'"
-                  prefix=""
-                  class="form-control"
-                  name="originalMinimumPrice"
-                ></money>
+                <money v-model="form.originalMinimumPrice" v-validate="'required'" prefix="" class="form-control"
+                  name="originalMinimumPrice"></money>
                 <field-error :msg="veeErrors" field="originalMinimumPrice" />
               </b-form-group>
             </div>
             <div class="col-sm-4">
               <b-form-group label="Preço máximo *">
-                <money
-                  v-model="form.originalMaximumPrice"
-                  prefix=""
-                  class="form-control"
-                ></money>
+                <money v-model="form.originalMaximumPrice" prefix="" class="form-control"></money>
                 <field-error :msg="veeErrors" field="originalMaximumPrice" />
               </b-form-group>
             </div>
             <div class="col-sm-4">
               <b-form-group label="Unidade de medida *">
-                <b-form-select
-                  v-model="form.measure"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="medidas"
-                />
+                <b-form-select v-model="form.measure" v-validate="'required'" class="form-control" :options="medidas" />
               </b-form-group>
             </div>
           </div>
           <div class="row">
-            
+
             <b-col sm="6">
               <b-form-group label="Posição na cadeia de valor do vendedor ">
-                <b-form-select
-                  v-model="form.buyerPositionSeller"
-                  class="form-control"
-                  name="buyerPosition"
-                  :options="buyerPositions"
-                />
+                <b-form-select v-model="form.buyerPositionSeller" class="form-control" name="buyerPosition"
+                  :options="buyerPositions" />
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
               <b-form-group label="Posição na cadeia de valor do comprador *">
-                <b-form-select
-                  v-model="form.buyerPositionBuyer"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="posicaoComprador"
-                  nome="buyerPosition"
-                />
+                <b-form-select v-model="form.buyerPositionBuyer" v-validate="'required'" class="form-control"
+                  :options="posicaoComprador" nome="buyerPosition" />
                 <field-error :msg="veeErrors" field="buyerPosition" />
               </b-form-group>
             </div>
@@ -144,43 +86,25 @@
           <div class="row">
             <div class="col-sm-4">
               <b-form-group :label="'Data *'">
-                <b-form-datepicker
-                  v-model="form.createdAt"
-                  v-validate="'required'"
-                  class="date"
-                  name="date_time"
-                  locale="pt-BR"
-                  :date-format-options="{
+                <b-form-datepicker v-model="form.createdAt" v-validate="'required'" class="date" name="date_time"
+                  locale="pt-BR" :date-format-options="{
                     year: 'numeric',
                     month: '2-digit',
                     day: '2-digit',
-                  }"
-                  placeholder="DD/MM/AAAA"
-                />
+                  }" placeholder="DD/MM/AAAA" />
               </b-form-group>
             </div>
             <b-col sm="4">
               <b-form-group label="Estado *">
-                <b-form-select
-                  v-model="form.uf"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="estados"
-                  name="uf"
-                  @input="loadCities()"
-                />
+                <b-form-select v-model="form.uf" v-validate="'required'" class="form-control" :options="estados" name="uf"
+                  @input="loadCities()" />
                 <field-error :msg="veeErrors" field="uf" />
               </b-form-group>
             </b-col>
             <b-col sm="4">
               <b-form-group label="Município *">
-                <b-form-select
-                  v-model="form.city"
-                  class="form-control"
-                  :options="cidades"
-                  name="city"
-                  @input="loadPracas()"
-                />
+                <b-form-select v-model="form.city" class="form-control" :options="cidades" name="city"
+                  @input="loadPracas()" />
                 <field-error :msg="veeErrors" field="city" />
               </b-form-group>
             </b-col>
@@ -188,20 +112,12 @@
           <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Moeda">
-                <b-form-select
-                  v-model="form.currency"
-                  class="form-control"
-                  :options="moeda"
-                />
+                <b-form-select v-model="form.currency" class="form-control" :options="moeda" />
               </b-form-group>
             </div>
             <div class="col-sm-4">
               <b-form-group label="País">
-                <b-form-select
-                  v-model="form.country"
-                  class="form-control"
-                  :options="pais"
-                />
+                <b-form-select v-model="form.country" class="form-control" :options="pais" />
               </b-form-group>
             </div>
           </div>
@@ -291,11 +207,10 @@ export default {
       }
     },
     async loadOrganization() {
-      let organizationId = null;
+      let organizationId = null
       if (this.isManager || this.isMessenger) {
         organizationId = this.currentUser.organization
-      }
-      else {
+      } else {
         organizationId = this.form.organization
       }
 
@@ -389,9 +304,9 @@ export default {
         return 12
       } else if (this.form.measure === 'Caixa') {
         return 24
-      } else if ( this.form.measure === 'Hectolitro') {
+      } else if (this.form.measure === 'Hectolitro') {
         return 60
-      } else if (this.form.measure === 'Saca'){
+      } else if (this.form.measure === 'Saca') {
         return 48
       } else if (this.form.measure === 'Barrica') {
         return 72
@@ -418,7 +333,7 @@ export default {
         this.form.country = dados.country
         this.form.buyerPositionSeller = dados.buyerPositionSeller
       }
-      catch(e) {
+      catch (e) {
         this.showError(e)
       }
 
