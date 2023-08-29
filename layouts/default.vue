@@ -2,12 +2,9 @@
   <div id="app">
     <div id="wrapper" class="bg-brown-1">
       <Navbar />
-      <div v-if="currentUser">
+      <b-container v-if="currentUser" fluid>
         <b-row class="no-gutters">
-          <b-col md="3" class="d-none d-md-block sidebar-wrapper">
-            <Sidebar />
-          </b-col>
-          <b-col md="9" class="main bg-white">
+          <b-col class="main bg-white">
             <div v-if="loading" class="my-5 text-center">
               <b-spinner variant="secondary" />
             </div>
@@ -16,7 +13,7 @@
             </div>
           </b-col>
         </b-row>
-      </div>
+      </b-container>
     </div>
     <notifications />
   </div>
