@@ -85,7 +85,7 @@ th.actions, td.actions
   color: $brown2
 
 .nuxt-link-exact-active
-  background-color: $brown4
+  font-weight: bold
 
 .pointer
   cursor: pointer
@@ -107,8 +107,10 @@ th.actions, td.actions
   border-radius: 0
   color: $gray5
   font-size: 16px
+  padding-top: 16px
+
   a
-    color: $white !important
+    color: #fff !important
   .fa, .fas, .far
     margin-right: 10px
   .fa-chevron-down
@@ -116,12 +118,12 @@ th.actions, td.actions
   .bi-chevron-down
     margin-left: 10px
   .nav-item a
-    padding: 10px
+    padding: 20px
     // padding-left: 0
   .list-group-item
     background: $brown1
     border: 0
-    padding: 20px
+    padding: 0
 
 .breadcrumb
   color: $gray3
@@ -230,7 +232,7 @@ th.actions, td.actions
           border: 1px solid transparent
         &.active
           background: $orange
-          color: $white
+          color: #fff
           font-weight: bold
           border: 1px solid transparent
         &:hover
