@@ -7,7 +7,7 @@
           <div class="col-sm-6"></div>
           <div class="col-sm-6 main-actions">
             <n-link to="/Graficos/graficos" class="btn btn-primary">
-               {{ 'Graficos' }}
+              {{ 'Graficos' }}
             </n-link>
             <div>
               <b-button
@@ -33,15 +33,14 @@
                 >Nota metodologica</b-button
               >
 
-              <FormSquareTranslator id="bv-modal-1"/>
-              <FormMeasureTranslator id="bv-modal"/>
-              <FormMetodologia id="bv-modal-2"/>
-              
+              <FormSquareTranslator id="bv-modal-1" />
+              <FormMeasureTranslator id="bv-modal" />
+              <FormMetodologia id="bv-modal-2" />
             </div>
           </div>
         </div>
         <div class="info-content">
-            <div class="row">
+          <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Produto">
                 <b-form-select
@@ -75,9 +74,8 @@
                 />
               </b-form-group>
             </b-col>
-           
-            </div>
-            <div class="row">
+          </div>
+          <div class="row">
             <b-col sm="4">
               <b-form-group label="Data inicial">
                 <b-form-datepicker
@@ -112,7 +110,7 @@
                 />
               </b-form-group>
             </b-col>
-             <b-col sm="4">
+            <b-col sm="4">
               <b-form-group label="Praça">
                 <input
                   v-model="filters.square"
@@ -123,29 +121,27 @@
                 />
               </b-form-group>
             </b-col>
-
-            
-            </div>
-            <div class="row">
-              <b-col sm="6">
-                <b-form-group label="De ">
-                  <b-form-select
-                    v-model="filters.from"
-                    class="form-control"
-                    :options="buyerPositions"
-                  />
-                </b-form-group>
-              </b-col>
-              <b-col sm="6">
-                <b-form-group label="Para">
-                  <b-form-select
-                    v-model="filters.to"
-                    class="form-control"
-                    :options="posicaoComprador"
-                  />
-                </b-form-group>
-              </b-col>
-            </div>
+          </div>
+          <div class="row">
+            <b-col sm="6">
+              <b-form-group label="De ">
+                <b-form-select
+                  v-model="filters.from"
+                  class="form-control"
+                  :options="buyerPositions"
+                />
+              </b-form-group>
+            </b-col>
+            <b-col sm="6">
+              <b-form-group label="Para">
+                <b-form-select
+                  v-model="filters.to"
+                  class="form-control"
+                  :options="posicaoComprador"
+                />
+              </b-form-group>
+            </b-col>
+          </div>
           <br />
           <no-item :list="priceInformations" />
           <form-grid-informat :list="priceInformations" />
@@ -173,8 +169,8 @@ export default {
     FormSquareTranslator,
     FormMeasureTranslator,
     FormMetodologia,
-    FormMetodologia
-},
+    FormMetodologia,
+  },
   data() {
     return {
       filters: {
@@ -196,6 +192,23 @@ export default {
   },
 
   async created() {
+    if (this.$auth.user.role === 'mensageiro') {
+      if (
+        !this.$auth.user.unitOfMeasurement ||
+        !this.$auth.user.buyerPosition ||
+        !this.$auth.user.uf ||
+        !this.$auth.user.city ||
+        !this.$auth.user.currency ||
+        !this.$auth.user.country
+      ) {
+        this.$router.push(
+          '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
+        )
+      } else {
+        this.filters.uf = this.$auth.user.uf
+        this.filters.city = this.$auth.user.city
+      }
+    }
     await this.loadCities(false)
     await this.loadPracas(false)
     await this.applyFilters()
@@ -283,10 +296,10 @@ export default {
           },
         }
       )
-      this.priceInformations.sort(function(a,b){
-        if(a.date > b.date) {
+      this.priceInformations.sort(function (a, b) {
+        if (a.date > b.date) {
           return -1
-        }else {
+        } else {
           return true
         }
       })
