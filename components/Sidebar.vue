@@ -1,6 +1,11 @@
 <template>
   <div>
     <b-list-group class="sidebar color-white">
+      <b-list-group-item>
+        <b-nav>
+          <b-nav-item class="text-white" to="/painel"> Início </b-nav-item>
+        </b-nav>
+      </b-list-group-item>
       <b-list-group-item v-if="isAdmin || isGlobalManager || isManager">
         <b-nav v-if="isAdmin || isGlobalManager">
           <b-nav-item class="text-white" to="/cadastros/especies"
