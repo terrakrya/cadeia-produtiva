@@ -10,23 +10,27 @@
               <h4 class="mb-4">Complete seu perfil</h4>
               <div class="row">
                 <b-col sm="6">
-                  <b-form-group label="Unidade de medida">
+                  <b-form-group label="Unidade de medida *">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
                       class="form-control"
                       name="unitOfMeasurement"
+                      v-validate="'required'"
                       :options="tipoDeUnidade"
                     />
+                    <field-error :msg="veeErrors" field="unitOfMeasurement" />
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
-                  <b-form-group label="Posição na cadeia de valor">
+                  <b-form-group label="Posição na cadeia de valor *">
                     <b-form-select
                       v-model="form.buyerPosition"
                       class="form-control"
                       name="buyerPosition"
                       :options="buyerPositions"
+                      v-validate="'required'"
                     />
+                    <field-error :msg="veeErrors" field="buyerPosition" />
                   </b-form-group>
                 </b-col>
               </div>
@@ -90,28 +94,34 @@
               </b-row>
               <div class="row">
                 <div class="col-sm-4">
-                  <b-form-group label="Moeda">
+                  <b-form-group label="Moeda *">
                     <b-form-select
                       v-model="form.currency"
                       false-value="Real"
                       class="form-control"
                       :options="moeda"
+                      v-validate="'required'"
+                      name="currency"
                     />
+                    <field-error :msg="veeErrors" field="currency" />
                   </b-form-group>
                 </div>
                 <div class="col-sm-4">
-                  <b-form-group label="País">
+                  <b-form-group label="País *">
                     <b-form-select
                       v-model="form.country"
                       class="form-control"
                       :options="pais"
+                      v-validate="'required'"
+                      name="country"
                     />
+                    <field-error :msg="veeErrors" field="country" />
                   </b-form-group>
                 </div>
               </div>
               <b-row>
                 <b-col sm="4">
-                  <b-form-group label="Estado">
+                  <b-form-group label="Estado *">
                     <b-form-select
                       v-model="form.uf"
                       v-validate="'required'"
@@ -124,13 +134,15 @@
                   </b-form-group>
                 </b-col>
                 <b-col sm="4">
-                  <b-form-group label="Município">
+                  <b-form-group label="Município *">
                     <b-form-select
                       v-model="form.city"
                       class="form-control"
                       :options="cidades"
                       name="city"
+                      v-validate="'required'"
                     />
+                    <field-error :msg="veeErrors" field="city" />
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -249,8 +261,13 @@ export default {
         this.form.password = dados.password
         this.form.password_confirmation = dados.password_confirmation
         this.form.buyerPosition = dados.buyerPosition
-        this.form.currency = dados.currency
-        this.form.country = dados.country
+        if (dados.currency) {
+          this.form.currency = dados.currency
+        }
+        if (dados.country) {
+          this.form.country = dados.country
+        }
+
         this.form.nickname = dados.nickname
         this.form.uf = dados.uf
         this.loadCities()
@@ -346,10 +363,6 @@ export default {
         if (isValid) {
           this.is_sending = true
 
-          if (this.isAdmin) {
-            this.form.username = '(00) 00000-0001'
-          }
-
           // deixa somente os dígitos do telefone
           this.form.username = this.form.username.replace(/\D/g, '')
 
@@ -367,6 +380,8 @@ export default {
                 }
 
                 this.notify('Dados salvos com sucesso')
+
+                this.$router.push('/')
               }
 
               this.is_sending = false
