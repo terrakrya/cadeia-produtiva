@@ -1,9 +1,6 @@
 <template>
   <div class="product">
-    <Breadcrumb
-      :links="[['Cadastro', '/cadastros/areas-geograficas']]"
-      active="Áreas geográficas"
-    />
+    <Breadcrumb :links="[['Cadastro', '/cadastros/areas-geograficas']]" active="Áreas geográficas" />
     <div class="panel">
       <div class="panel-body">
         <form-headline name="Áreas geográficas" />
@@ -12,49 +9,33 @@
           <div class="row">
             <b-col sm="4">
               <b-form-group label="Estado">
-                <b-form-select
-                  v-model="form.uf"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="estados"
-                  name="uf"
-                  @input="loadCities()"
-                />
+                <b-form-select v-model="form.uf" v-validate="'required'" class="form-control" :options="estados" name="uf"
+                  value-field="codigo_uf" text-field="nome" @input="loadCities()" />
                 <field-error :msg="veeErrors" field="uf" />
               </b-form-group>
             </b-col>
             <b-col sm="4">
               <b-form-group label="Município">
-                <b-form-select
-                  v-model="form.county"
-                  class="form-control"
-                  :options="cidades"
-                  @input="loadPracas()"
-                />
+                <b-form-select v-model="form.county" class="form-control" :options="cidades" value-field="nome"
+                  text-field="nome" @input="loadPracas()" />
               </b-form-group>
             </b-col>
             <b-col sm="4">
               <b-form-group label="Praça">
-                <input
-                  v-model="form.square"
-                  type="text"
-                  readonly
-                  class="form-control"
-                  text-field="nome"
-                />
+                <input v-model="form.square" type="text" readonly class="form-control" text-field="nome" />
               </b-form-group>
             </b-col>
           </div>
           <div class="row">
             <b-col sm="5">
               <b-form-group label="Nome">
-                <input class="form-control" type="text" placeholder="Nome da área">
+                <input class="form-control" type="text" placeholder="Nome da área" />
                 <field-error :msg="veeErrors" field="uf" />
               </b-form-group>
             </b-col>
             <b-col sm="5">
               <b-form-group label="Coordenadas">
-                <b-form-file v-model="file" class="form-control-file" placeholder="arquivo de área"/>
+                <b-form-file v-model="file" class="form-control-file" placeholder="arquivo de área" />
               </b-form-group>
             </b-col>
             <b-col sm="12">
@@ -65,12 +46,12 @@
           </div>
           <div>
             <l-map style="height: 500px" :zoom="zoom" :center="center" @click="onMapClick">
-             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-             <l-marker :lat-lng="markerLatLng" @click="removeMarker"></l-marker>
-             <l-polygon :lat-lngs="polygon" :options="polygonOptions"></l-polygon>
+              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+              <l-marker :lat-lng="markerLatLng" @click="removeMarker"></l-marker>
+              <l-polygon :lat-lngs="polygon" :options="polygonOptions"></l-polygon>
             </l-map>
-          </div> 
-          <br/>
+          </div>
+          <br />
           <form-submit :sending="is_sending" />
         </b-form>
       </div>
@@ -78,11 +59,11 @@
   </div>
 </template>
 <script>
+import { LMap, LTileLayer, LMarker, LPolygon } from 'vue2-leaflet'
 import Breadcrumb from '@/components/Breadcrumb'
 import estados from '@/data/estados.json'
-import cidades from '@/data/cidades.json'
+import cidades from '@/data/municipios.json'
 import pracas from '@/data/praca.json'
-import { LMap, LTileLayer, LMarker, LPolygon } from 'vue2-leaflet'
 import 'leaflet/dist/leaflet.css'
 export default {
   components: {
@@ -105,8 +86,8 @@ export default {
         selctPraca: '',
         polygon: [],
         name: '',
-        comments:'',
-        file: null,
+        comments: '',
+        file: {},
       },
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:
@@ -115,7 +96,7 @@ export default {
       center: [-10.850958, -51.492461],
       polygon: [],
       polygonOptions: { color: 'blue' },
-      markerLatLng: [0, 0]
+      markerLatLng: [0, 0],
     }
   },
   created() {
@@ -127,21 +108,23 @@ export default {
   },
   methods: {
     onMapClick(e) {
-      this.markerLatLng = [e.latlng.lat, e.latlng.lng]; // Atualiza as coordenadas do marcador
-      const { lat, lng } = e.latlng;
-      this.polygon.push([lat, lng]);
-      console.log(this.polygon)
+      this.markerLatLng = [e.latlng.lat, e.latlng.lng] // Atualiza as coordenadas do marcador
+      const { lat, lng } = e.latlng
+      this.polygon.push([lat, lng])
+
     },
     removeMarker() {
-       this.markerLatLng = [0, 0];
+      this.markerLatLng = [0, 0]
     },
     loadCities() {
       // lista de cidades com somente o item "selecione a município"
-      this.cidades = [{ value: '', text: 'Selecione a município' }]
+      //this.cidades = [{ value: '', nome: 'Selecione a município' }]
 
       // filtra as cidades conforme a UF selecionada
       if (this.form.uf) {
-        this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
+        this.cidades = this.cidades.filter((item) => {
+          return item.codigo_uf === this.form.uf
+        })
       }
 
       // limpa a município digitada, caso não exista na lista

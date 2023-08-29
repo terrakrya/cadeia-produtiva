@@ -9,6 +9,9 @@ const GeographicAreaSchema = new mongoose.Schema(
     county: String,
     square: String,
     squareid: String,
+    name: String,
+    comments: String,
+    file: [Object],
     polygon: {
       type: [Array],
     },
@@ -25,7 +28,10 @@ GeographicAreaSchema.methods.data = function () {
     id: this.id,
     uf: this.uf,
     county: this.county,
-    square: this.square
+    square: this.square,
+    name: this.name,
+    comments: this.comments,
+    file: this.file,
   }
 }
 GeographicAreaSchema.methods.generateJWT = function () {

@@ -44,6 +44,9 @@ router.post('/', auth.authenticated, async (req, res) => {
     geographic.square = req.body.square
     geographic.squareid = req.body.squareid
     geographic.polygon = req.body.polygon
+    geographic.name = req.body.name
+    geographic.comments = req.body.comments
+    geographic.file = req.body.file
 
     await geographic.save()
 
@@ -65,6 +68,9 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       geographic.square = req.body.square
       geographic.squareid = req.body.squareid
       geographic.polygon = req.body.polygon
+      geographic.name = req.body.name
+      geographic.comments = req.body.comments
+      geographic.file = req.body.file
 
       await geographic.save()
 
