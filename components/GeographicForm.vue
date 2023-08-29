@@ -45,6 +45,24 @@
               </b-form-group>
             </b-col>
           </div>
+          <div class="row">
+            <b-col sm="5">
+              <b-form-group label="Nome">
+                <input class="form-control" type="text" placeholder="Nome da área">
+                <field-error :msg="veeErrors" field="uf" />
+              </b-form-group>
+            </b-col>
+            <b-col sm="5">
+              <b-form-group label="Coordenadas">
+                <b-form-file v-model="file" class="form-control-file" placeholder="arquivo de área"/>
+              </b-form-group>
+            </b-col>
+            <b-col sm="12">
+              <b-form-group label="Comentários">
+                <b-form-textarea v-model="form.comments" />
+              </b-form-group>
+            </b-col>
+          </div>
           <div>
             <l-map style="height: 500px" :zoom="zoom" :center="center" @click="onMapClick">
              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
@@ -86,6 +104,9 @@ export default {
         squareid: '',
         selctPraca: '',
         polygon: [],
+        name: '',
+        comments:'',
+        file: null,
       },
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:

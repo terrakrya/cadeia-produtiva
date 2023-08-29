@@ -6,6 +6,9 @@
         <div class="row panel-title">
           <div class="col-sm-6"></div>
           <div class="col-sm-6 main-actions">
+            <n-link to="/Graficos/graficos" class="btn btn-primary">
+               {{ 'Graficos' }}
+            </n-link>
             <div>
               <b-button
                 id="show-btn"

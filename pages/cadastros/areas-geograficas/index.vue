@@ -13,6 +13,15 @@
             </n-link>
           </div>
         </div>
+        <br/>
+        <div>
+            <l-map style="height: 500px" :zoom="zoom" :center="center">
+             <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
+             <l-marker :lat-lng="markerLatLng" @click="removeMarker"></l-marker>
+             <l-polygon :lat-lngs="polygon" :options="polygonOptions"></l-polygon>
+            </l-map>
+          </div> 
+          <br/>
         <div class="info-content">
           <div class="text-right">
             <input
@@ -60,9 +69,15 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
+import { LMap, LTileLayer, LMarker, LPolygon } from 'vue2-leaflet'
+import 'leaflet/dist/leaflet.css'
 export default {
   components: {
     Breadcrumb,
+    LMap,
+    LTileLayer,
+    LMarker,
+    LPolygon,
   },
   data() {
     return {
@@ -85,6 +100,14 @@ export default {
         },
       ],
       geographic: null,
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution:
+        '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      zoom: 4,
+      center: [-10.850958, -51.492461],
+      polygon: [],
+      polygonOptions: { color: 'blue' },
+      markerLatLng: [0, 0]
     }
   },
 
@@ -102,6 +125,15 @@ export default {
   methods: {
     async list() {
       this.geographic = await this.$axios.$get('geographic-areas')
+    },
+    onMapClick(e) {
+      this.markerLatLng = [e.latlng.lat, e.latlng.lng]; // Atualiza as coordenadas do marcador
+      const { lat, lng } = e.latlng;
+      this.polygon.push([lat, lng]);
+      console.log(this.polygon)
+    },
+    removeMarker() {
+       this.markerLatLng = [0, 0];
     },
 
     remove(id) {

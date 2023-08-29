@@ -389,11 +389,10 @@ export default {
         return 12
       } else if (this.form.measure === 'Caixa') {
         return 24
-      } else if (
-        this.form.measure === 'Hectolitro' ||
-        this.form.measure === 'Saca'
-      ) {
+      } else if ( this.form.measure === 'Hectolitro') {
         return 60
+      } else if (this.form.measure === 'Saca'){
+        return 48
       } else if (this.form.measure === 'Barrica') {
         return 72
       }
