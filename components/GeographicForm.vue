@@ -1,6 +1,9 @@
 <template>
   <div class="product">
-    <Breadcrumb :links="[['Cadastro', '/cadastros/areas-geograficas']]" active="Áreas geográficas" />
+    <Breadcrumb
+      :links="[['Cadastro', '/cadastros/areas-geograficas']]"
+      active="Áreas geográficas"
+    />
     <div class="panel">
       <div class="panel-body">
         <form-headline name="Áreas geográficas" />
@@ -9,33 +12,61 @@
           <div class="row">
             <b-col sm="4">
               <b-form-group label="Estado">
-                <b-form-select v-model="form.uf" v-validate="'required'" class="form-control" :options="estados" name="uf"
-                  value-field="codigo_uf" text-field="nome" @input="loadCities()" />
+                <b-form-select
+                  v-model="form.uf"
+                  v-validate="'required'"
+                  class="form-control"
+                  :options="estados"
+                  name="uf"
+                  value-field="codigo_uf"
+                  text-field="nome"
+                  @input="loadCities()"
+                />
                 <field-error :msg="veeErrors" field="uf" />
               </b-form-group>
             </b-col>
             <b-col sm="4">
               <b-form-group label="Município">
-                <b-form-select v-model="form.county" class="form-control" :options="cidades" value-field="nome"
-                  text-field="nome" @input="loadPracas()" />
+                <b-form-select
+                  v-model="form.county"
+                  class="form-control"
+                  :options="cidades"
+                  value-field="nome"
+                  text-field="nome"
+                  @input="loadPracas()"
+                />
               </b-form-group>
             </b-col>
             <b-col sm="4">
               <b-form-group label="Praça">
-                <input v-model="form.square" type="text" readonly class="form-control" text-field="nome" />
+                <input
+                  v-model="form.square"
+                  type="text"
+                  readonly
+                  class="form-control"
+                  text-field="nome"
+                />
               </b-form-group>
             </b-col>
           </div>
           <div class="row">
             <b-col sm="5">
               <b-form-group label="Nome">
-                <input class="form-control" type="text" placeholder="Nome da área" />
+                <input
+                  class="form-control"
+                  type="text"
+                  placeholder="Nome da área"
+                />
                 <field-error :msg="veeErrors" field="uf" />
               </b-form-group>
             </b-col>
             <b-col sm="5">
               <b-form-group label="Coordenadas">
-                <b-form-file v-model="file" class="form-control-file" placeholder="arquivo de área" />
+                <b-form-file
+                  v-model="file"
+                  class="form-control-file"
+                  placeholder="arquivo de área"
+                />
               </b-form-group>
             </b-col>
             <b-col sm="12">
@@ -45,10 +76,24 @@
             </b-col>
           </div>
           <div>
-            <l-map style="height: 500px" :zoom="zoom" :center="center" @click="onMapClick">
-              <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
-              <l-marker :lat-lng="markerLatLng" @click="removeMarker"></l-marker>
-              <l-polygon :lat-lngs="polygon" :options="polygonOptions"></l-polygon>
+            <l-map
+              style="height: 500px"
+              :zoom="zoom"
+              :center="center"
+              @click="onMapClick"
+            >
+              <l-tile-layer
+                :url="url"
+                :attribution="attribution"
+              ></l-tile-layer>
+              <l-marker
+                :lat-lng="markerLatLng"
+                @click="removeMarker"
+              ></l-marker>
+              <l-polygon
+                :lat-lngs="polygon"
+                :options="polygonOptions"
+              ></l-polygon>
             </l-map>
           </div>
           <br />
@@ -111,14 +156,13 @@ export default {
       this.markerLatLng = [e.latlng.lat, e.latlng.lng] // Atualiza as coordenadas do marcador
       const { lat, lng } = e.latlng
       this.polygon.push([lat, lng])
-
     },
     removeMarker() {
       this.markerLatLng = [0, 0]
     },
     loadCities() {
       // lista de cidades com somente o item "selecione a município"
-      //this.cidades = [{ value: '', nome: 'Selecione a município' }]
+      // this.cidades = [{ value: '', nome: 'Selecione a município' }]
 
       // filtra as cidades conforme a UF selecionada
       if (this.form.uf) {
@@ -161,12 +205,12 @@ export default {
         .catch(this.showError)
     },
     save() {
-      this.$validator.validate().then(async (isValid) => {
+      this.$validator.validate().then((isValid) => {
         // valida a code
         if (isValid) {
           this.is_sending = true
 
-          this.form.polygon.push(this.polygon);
+          this.form.polygon.push(this.polygon)
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',

@@ -137,7 +137,7 @@
                 <b-form-select
                   v-model="filters.to"
                   class="form-control"
-                  :options="posicaoComprador"
+                  :options="buyerPositions"
                 />
               </b-form-group>
             </b-col>
@@ -160,7 +160,6 @@ import FormMetodologia from '@/components/FormMetodologia.vue'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
-import posicaoComprador from '@/data/posicao-do-comprador.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 export default {
   components: {
@@ -168,7 +167,6 @@ export default {
     FormGridInformat,
     FormSquareTranslator,
     FormMeasureTranslator,
-    FormMetodologia,
     FormMetodologia,
   },
   data() {
@@ -182,7 +180,6 @@ export default {
         product: '',
       },
       buyerPositions,
-      posicaoComprador,
       estados,
       cidades,
       pracas,
