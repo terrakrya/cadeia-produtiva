@@ -4,8 +4,7 @@
   - Package manager: **Yarn**
   - UI framework: **Bootstrap Vue**
   - Nuxt.js modules: **Axios - Promise based HTTP client, Progressive Web App (PWA), Content - Git-based headless CMS**
-  - Linting tools: **ESLint, Prettier, Lint staged files, StyleLint, Commitlint**
-  - Testing framework: **Jest**
+  - Linting tools: **Prettier, Lint staged files, StyleLint, Commitlint**
   - Rendering mode: **Single Page App**
   - Deployment target: **Server (Node.js hosting)**
   - Development tools: **jsconfig.json (Recommended for VS Code if you're not using typescript), Semantic Pull Requests, Dependabot (For auto-updating dependencies, GitHub only)**
