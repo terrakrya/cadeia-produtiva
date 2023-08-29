@@ -1,32 +1,24 @@
 <template>
   <b-navbar v-if="currentUser" :toggleable="true" type="dark" class="p-3">
-    <b-navbar-toggle v-visible="true" target="sidebar"></b-navbar-toggle>
-    <b-navbar-nav class="ml-auto d-none d-md-flex">
-      <b-nav-item-dropdown
-        v-if="isManager || isMessenger"
-        :text="currentUser.name + ' / ' + organization.sigla"
-        right
-      >
-        <b-dropdown-item
-          :to="'/cadastros/usuarios/' + currentUser._id + '/perfil'"
+    <b-navbar-toggle v-visible="true" target="sidebar" class="text-white">
+      <span style="font-size: 30px"><b-icon-list class="text-white" /></span>
+    </b-navbar-toggle>
+    <div>
+      <div class="d-flex justify-content-end align-items-center text-white">
+        <small>
+          <strong>
+            <b-icon-person-fill class="mr-2" />
+            {{ currentUser.name.split(' ')[0] }}
+          </strong>
+        </small>
+      </div>
+      <div class="text-white">
+        <small>{{ roles[currentUser.role] || currentUser.role }}</small>
+        <small v-if="isManager || isMessenger">
+          - {{ organization.sigla }}</small
         >
-          {{ 'Minha conta' }}
-        </b-dropdown-item>
-        <b-dropdown-item @click="$auth.logout()">Sair</b-dropdown-item>
-      </b-nav-item-dropdown>
-      <b-nav-item-dropdown
-        v-if="isAdmin || isGlobalManager"
-        :text="currentUser.name"
-        right
-      >
-        <b-dropdown-item
-          :to="'/cadastros/usuarios/' + currentUser._id + '/perfil'"
-        >
-          {{ 'Minha conta' }}
-        </b-dropdown-item>
-        <b-dropdown-item @click="$auth.logout()">Sair</b-dropdown-item>
-      </b-nav-item-dropdown>
-    </b-navbar-nav>
+      </div>
+    </div>
     <b-collapse id="sidebar" is-nav>
       <div>
         <Sidebar />
@@ -49,6 +41,12 @@ export default {
   data() {
     return {
       organization: [],
+      roles: {
+        admin: 'Administrador',
+        gestor: 'Gestor',
+        'gestor-global': 'Gestor Global',
+        mensageiro: 'Mensageiro',
+      },
     }
   },
 
