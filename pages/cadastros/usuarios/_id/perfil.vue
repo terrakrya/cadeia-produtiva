@@ -3,162 +3,170 @@
     <breadcrumb active="Minha conta" />
     <div class="panel">
       <div class="panel-body">
-        <form-headline name="Minha conta" />
         <loading :loading="is_loading" />
-        <b-form v-if="!is_loading" @submit.prevent="save">
-          <div class="row">
-            <b-col sm="6">
-              <b-form-group label="Unidade de medida">
-                <b-form-select
-                  v-model="form.unitOfMeasurement"
-                  class="form-control"
-                  name="unitOfMeasurement"
-                  :options="tipoDeUnidade"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col sm="6">
-              <b-form-group label="Posição na cadeia de valor">
-                <b-form-select
-                  v-model="form.buyerPosition"
-                  class="form-control"
-                  name="buyerPosition"
-                  :options="buyerPositions"
-                />
-              </b-form-group>
-            </b-col>
-          </div>
-          <b-row>
-            <b-col>
-              <b-form-group label="Nome *">
-                <b-form-input
-                  v-model="form.name"
-                  v-validate="'required'"
-                  name="name"
-                />
-                <field-error :msg="veeErrors" field="name" />
-              </b-form-group>
-            </b-col>
-            <div class="col-sm-4">
-              <b-form-group label="Apelido ">
-                <b-form-input v-model="form.nickname" />
-              </b-form-group>
-            </div>
-            <b-col>
-              <b-form-group label="E-mail *">
-                <b-form-input v-model="form.email" name="email" />
-                <field-error :msg="veeErrors" field="email" />
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row>
-            <div class="col-sm-2">
-              <b-form-group label="Gênero ">
-                <b-form-select
-                  v-model="form.gender"
-                  :options="genero"
-                />
-              </b-form-group>
-            </div>
-            <div class="col-sm-2">
-              <b-form-group label="Identidade ">
-                <b-form-select
-                  v-model="form.identity"
-                  :options="identidade"
-                />
-              </b-form-group>
-            </div>
-            <div class="col-sm-6">
-              <b-form-group label="Celular *">
-                <b-form-input
-                  v-model="form.username"
-                  v-mask="'(##) #####-####'"
-                  v-validate="'required'"
-                  name="username"
-                />
-              </b-form-group>
-            </div>
-            <b-col>
-              <b-form-group label="CPF *">
-                <b-form-input
-                  v-model="form.cpf"
-                  v-mask="['###.###.###-##']"
-                  v-validate="'required'"
-                  name="cpf"
-                />
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <div class="row">
-            <div class="col-sm-4">
-              <b-form-group label="Moeda">
-                <b-form-select
-                  v-model="form.currency"
-                  false-value="Real"
-                  class="form-control"
-                  :options="moeda"
-                />
-              </b-form-group>
-            </div>
-            <div class="col-sm-4">
-              <b-form-group label="País">
-                <b-form-select
-                  v-model="form.country"
-                  class="form-control"
-                  :options="pais"
-                />
-              </b-form-group>
-            </div>
-          </div>
-          <b-row>
-            <b-col sm="4">
-              <b-form-group label="Estado">
-                <b-form-select
-                  v-model="form.uf"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="estados"
-                  name="uf"
-                  @input="loadCities()"
-                />
-                <field-error :msg="veeErrors" field="uf" />
-              </b-form-group>
-            </b-col>
-            <b-col sm="4">
-              <b-form-group label="Município">
-                <b-form-select
-                  v-model="form.city"
-                  class="form-control"
-                  :options="cidades"
-                  name="city"
-                />
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <b-row>
-            <b-col>
-              <b-form-group label="Senha">
-                <b-form-input
-                  v-model="form.password"
-                  type="password"
-                  name="pass"
-                />
-                <field-error :msg="veeErrors" field="pass" />
-              </b-form-group>
-            </b-col>
-            <b-col>
-              <b-form-group label="Confirmação de senha">
-                <b-form-input
-                  v-model="form.password_confirmation"
-                  type="password"
-                  name="pass_confirmation"
-                />
-                <field-error :msg="veeErrors" field="pass_confirmation" />
-              </b-form-group>
-            </b-col>
-          </b-row>
-          <form-submit :sending="is_sending" />
-        </b-form>
+        <b-tabs>
+          <b-tab title="Meu perfil">
+            <b-form v-if="!is_loading" @submit.prevent="save">
+              <h4 class="mb-4">Complete seu perfil</h4>
+              <div class="row">
+                <b-col sm="6">
+                  <b-form-group label="Unidade de medida">
+                    <b-form-select
+                      v-model="form.unitOfMeasurement"
+                      class="form-control"
+                      name="unitOfMeasurement"
+                      :options="tipoDeUnidade"
+                    />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="6">
+                  <b-form-group label="Posição na cadeia de valor">
+                    <b-form-select
+                      v-model="form.buyerPosition"
+                      class="form-control"
+                      name="buyerPosition"
+                      :options="buyerPositions"
+                    />
+                  </b-form-group>
+                </b-col>
+              </div>
+              <b-row>
+                <b-col>
+                  <b-form-group label="Nome *">
+                    <b-form-input
+                      v-model="form.name"
+                      v-validate="'required'"
+                      name="name"
+                    />
+                    <field-error :msg="veeErrors" field="name" />
+                  </b-form-group>
+                </b-col>
+                <div class="col-sm-4">
+                  <b-form-group label="Apelido ">
+                    <b-form-input v-model="form.nickname" />
+                  </b-form-group>
+                </div>
+                <b-col>
+                  <b-form-group label="E-mail *">
+                    <b-form-input v-model="form.email" name="email" />
+                    <field-error :msg="veeErrors" field="email" />
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <b-row>
+                <div class="col-sm-2">
+                  <b-form-group label="Gênero ">
+                    <b-form-select v-model="form.gender" :options="genero" />
+                  </b-form-group>
+                </div>
+                <div class="col-sm-2">
+                  <b-form-group label="Identidade ">
+                    <b-form-select
+                      v-model="form.identity"
+                      :options="identidade"
+                    />
+                  </b-form-group>
+                </div>
+                <div class="col-sm-6">
+                  <b-form-group label="Celular *">
+                    <b-form-input
+                      v-model="form.username"
+                      v-mask="'(##) #####-####'"
+                      v-validate="'required'"
+                      name="username"
+                    />
+                  </b-form-group>
+                </div>
+                <b-col>
+                  <b-form-group label="CPF *">
+                    <b-form-input
+                      v-model="form.cpf"
+                      v-mask="['###.###.###-##']"
+                      v-validate="'required'"
+                      name="cpf"
+                    />
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <div class="row">
+                <div class="col-sm-4">
+                  <b-form-group label="Moeda">
+                    <b-form-select
+                      v-model="form.currency"
+                      false-value="Real"
+                      class="form-control"
+                      :options="moeda"
+                    />
+                  </b-form-group>
+                </div>
+                <div class="col-sm-4">
+                  <b-form-group label="País">
+                    <b-form-select
+                      v-model="form.country"
+                      class="form-control"
+                      :options="pais"
+                    />
+                  </b-form-group>
+                </div>
+              </div>
+              <b-row>
+                <b-col sm="4">
+                  <b-form-group label="Estado">
+                    <b-form-select
+                      v-model="form.uf"
+                      v-validate="'required'"
+                      class="form-control"
+                      :options="estados.map((e) => e.uf)"
+                      name="uf"
+                      @input="loadCities()"
+                    />
+                    <field-error :msg="veeErrors" field="uf" />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="4">
+                  <b-form-group label="Município">
+                    <b-form-select
+                      v-model="form.city"
+                      class="form-control"
+                      :options="cidades"
+                      name="city"
+                    />
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <form-submit :sending="is_sending" />
+            </b-form>
+          </b-tab>
+          <b-tab title="Segurança">
+            <h4 class="mb-4">Alterar senha</h4>
+
+            <b-form v-if="!is_loading" @submit.prevent="save">
+              <b-row>
+                <b-col>
+                  <b-form-group label="Senha">
+                    <b-form-input
+                      v-model="form.password"
+                      type="password"
+                      name="pass"
+                    />
+                    <field-error :msg="veeErrors" field="pass" />
+                  </b-form-group>
+                </b-col>
+                <b-col>
+                  <b-form-group label="Confirmação de senha">
+                    <b-form-input
+                      v-model="form.password_confirmation"
+                      type="password"
+                      name="pass_confirmation"
+                    />
+                    <field-error :msg="veeErrors" field="pass_confirmation" />
+                  </b-form-group>
+                </b-col>
+              </b-row>
+              <form-submit :sending="is_sending" />
+            </b-form>
+          </b-tab>
+        </b-tabs>
       </div>
     </div>
   </div>
@@ -213,7 +221,6 @@ export default {
   },
   methods: {
     loadCities() {
-
       // lista de cidades com somente o item "selecione a cidade"
       this.cidades = [{ value: '', text: 'Selecione a cidade' }]
 
@@ -250,8 +257,7 @@ export default {
         this.form.city = dados.city
         this.form.identity = dados.identity
         this.form.gender = dados.gender
-      }
-      catch(e) {
+      } catch (e) {
         this.showError(e)
       }
 
@@ -339,7 +345,6 @@ export default {
 
         if (isValid) {
           this.is_sending = true
-          
 
           if (this.isAdmin) {
             this.form.username = '(00) 00000-0001'
