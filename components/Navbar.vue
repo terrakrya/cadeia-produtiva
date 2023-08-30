@@ -1,6 +1,6 @@
 <template>
   <b-navbar v-if="currentUser" :toggleable="true" type="dark" class="p-3">
-    <b-navbar-toggle v-visible="true" target="sidebar" class="text-white">
+    <b-navbar-toggle v-show="true" target="sidebar" class="text-white">
       <span style="font-size: 30px"><b-icon-list class="text-white" /></span>
     </b-navbar-toggle>
     <div>
@@ -14,9 +14,7 @@
       </div>
       <div class="text-white">
         <small>{{ roles[currentUser.role] || currentUser.role }}</small>
-        <small v-if="isManager || isMessenger">
-          - {{ organization.sigla }}</small
-        >
+        <small v-if="organization"> - {{ organization.sigla }}</small>
       </div>
     </div>
     <b-collapse id="sidebar" is-nav>
@@ -40,7 +38,7 @@ export default {
   },
   data() {
     return {
-      organization: [],
+      organization: null,
       roles: {
         admin: 'Administrador',
         gestor: 'Gestor',
@@ -51,9 +49,11 @@ export default {
   },
 
   async created() {
-    this.organization = await this.$axios.$get(
-      'organizations/' + this.currentUser.organization
-    )
+    if (this.isManager || this.isMessenger) {
+      this.organization = await this.$axios.$get(
+        'organizations/' + this.currentUser.organization
+      )
+    }
   },
 }
 </script>

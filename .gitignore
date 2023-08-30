@@ -91,3 +91,7 @@ sw.*
 
 # uploads directory
 uploads
+
+ca-certificate.crt
+
+api/config/mongodb.ca.crt
