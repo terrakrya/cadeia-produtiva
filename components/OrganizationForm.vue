@@ -83,7 +83,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Praça">
+              <b-form-group label="Região imediata">
                 <input
                   v-model="form.square"
                   type="text"
@@ -129,8 +129,8 @@
               <b-form-group label="E-mail *">
                 <b-form-input
                   v-model="form.email"
-                  name="email"
                   v-validate="'required'"
+                  name="email"
                 />
                 <field-error :msg="veeErrors" field="email" />
               </b-form-group>
@@ -294,7 +294,7 @@ export default {
       }
     },
 
-    // filtra as praça conforme a município selecionada
+    // filtra as regiões imediatas conforme a município selecionada
     loadPracas() {
       if (this.form.county) {
         const cidade = this.form.county

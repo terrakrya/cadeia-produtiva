@@ -105,7 +105,7 @@ export default {
         },
         {
           key: 'square',
-          label: 'Praça',
+          label: 'Região imediata',
           sortable: true,
         },
       ],

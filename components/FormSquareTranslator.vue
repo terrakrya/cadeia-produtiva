@@ -32,7 +32,7 @@
   </b-modal>
 </template>
 <script>
-import pracas from '@/data/praca.json'
+import squares from '@/data/praca.json'
 export default {
   name: 'FormSquareTranslator',
   props: {
@@ -43,7 +43,7 @@ export default {
   },
   data() {
     return {
-      pracas,
+      squares,
       groupedlist: [],
     }
   },
@@ -61,7 +61,7 @@ export default {
           return memo
         }, {})
       }
-      const groupedlist = groupBy(pracas, 'nome')
+      const groupedlist = groupBy(squares, 'nome')
       this.groupedlist = groupedlist
     },
   },

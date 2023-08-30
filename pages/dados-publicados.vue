@@ -19,7 +19,7 @@
                 class="btn btn-primary"
                 variant="danger"
                 @click="$bvModal.show('bv-modal')"
-                >Tradutor de medidas</b-button
+                >Medidas</b-button
               >
 
               <b-button
@@ -27,14 +27,14 @@
                 class="btn btn-primary"
                 variant="danger"
                 @click="$bvModal.show('bv-modal-1')"
-                >Tradutor de praça</b-button
+                >Regiões imediatas</b-button
               >
               <b-button
                 id="show-btn"
                 class="btn btn-primary"
                 variant="danger"
                 @click="$bvModal.show('bv-modal-2')"
-                >Nota metodologica</b-button
+                >Nota metodológica</b-button
               >
 
               <FormSquareTranslator id="bv-modal-1" />
@@ -128,7 +128,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Praça">
+              <b-form-group label="Região imediata">
                 <input
                   v-model="filters.square"
                   type="text"
@@ -249,7 +249,7 @@ export default {
       }
     },
 
-    // filtra as praça conforme a cidade selecionada
+    // filtra as regiões imediatas conforme a cidade selecionada
     async loadPracas(loadFilters) {
       if (this.filters.city) {
         const cidade = this.filters.city

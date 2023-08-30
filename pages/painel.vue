@@ -19,7 +19,7 @@
                 class="btn btn-primary"
                 variant="danger"
                 @click="$bvModal.show('bv-modal')"
-                >Tradutor de medidas</b-button
+                >Medidas</b-button
               >
 
               <b-button
@@ -27,7 +27,7 @@
                 class="btn btn-primary"
                 variant="danger"
                 @click="$bvModal.show('bv-modal-1')"
-                >Tradutor de praça</b-button
+                >Regiões imediatas</b-button
               >
               <b-button
                 id="show-btn"
@@ -68,7 +68,7 @@ import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
-import pracas from '@/data/praca.json'
+import squares from '@/data/praca.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 export default {
   components: {
@@ -91,7 +91,7 @@ export default {
       buyerPositions,
       estados,
       cidades,
-      pracas,
+      squares,
       priceInformations: [],
       products: [],
     }
@@ -113,7 +113,7 @@ export default {
       }
     }
     await this.loadCities(false)
-    await this.loadPracas(false)
+    await this.loadSquares(false)
     await this.applyFilters()
     await this.loadProducts()
   },
@@ -141,15 +141,15 @@ export default {
       }
     },
 
-    // filtra as praça conforme a cidade selecionada
-    async loadPracas(loadFilters) {
+    // filtra as regiões imediatas conforme a cidade selecionada
+    async loadSquares(loadFilters) {
       if (this.filters.city) {
         const cidade = this.filters.city
-        const pracas = this.pracas.filter(function (item) {
+        const squares = this.squares.filter(function (item) {
           return item.cidade === cidade
         })
-        if (pracas && pracas.length > 0) {
-          this.filters.square = pracas[0].nome
+        if (squares && squares.length > 0) {
+          this.filters.square = squares[0].nome
         }
         if (this.filters.city === 'Selecione a cidade') {
           this.filters.square = ''

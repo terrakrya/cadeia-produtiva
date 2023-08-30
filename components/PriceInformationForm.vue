@@ -350,7 +350,7 @@ export default {
         }
       }
     },
-    // filtra as praça conforme a município selecionada
+    // filtra as regiões imediatas conforme a município selecionada
     loadPracas() {
       if (this.form.county) {
         const cidade = this.form.county

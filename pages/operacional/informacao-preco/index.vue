@@ -141,7 +141,7 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import { isAdmin, isGlobalManager, isManager } from '~/api/config/auth'
+
 export default {
   components: {
     Breadcrumb,
@@ -157,35 +157,59 @@ export default {
 
   async created() {
     await this.list()
-    this.fillTableFields();
+    this.fillTableFields()
   },
   methods: {
     fillTableFields() {
-      let table_fields = [{ key: 'createdAt', label: 'Data', sortable: true }]
+      const tableFields = [{ key: 'createdAt', label: 'Data', sortable: true }]
 
       if (this.isAdmin || this.isManager || this.isGlobalManager) {
-        table_fields.push({ key: 'messenger.name', label: 'Mensageiro', sortable: true })
+        tableFields.push({
+          key: 'messenger.name',
+          label: 'Mensageiro',
+          sortable: true,
+        })
       }
 
       if (this.isAdmin || this.isGlobalManager) {
-        table_fields.push({ key: 'organization', label: 'Organização', sortable: true })
+        tableFields.push({
+          key: 'organization',
+          label: 'Organização',
+          sortable: true,
+        })
       }
 
-      table_fields.push({ key: 'buyerPosition', label: 'Posição comercial', sortable: true })
-      table_fields.push({ key: 'uf', label: 'Estado', sortable: true })
-      table_fields.push({ key: 'city', label: 'Município', sortable: true })
+      tableFields.push({
+        key: 'buyerPosition',
+        label: 'Posição comercial',
+        sortable: true,
+      })
+      tableFields.push({ key: 'uf', label: 'Estado', sortable: true })
+      tableFields.push({ key: 'city', label: 'Município', sortable: true })
 
       if (this.isAdmin || this.isGlobalManager) {
-        table_fields.push({ key: 'square', label: 'Praça', sortable: true })
+        tableFields.push({
+          key: 'square',
+          label: 'Região Imediata',
+          sortable: true,
+        })
       }
 
-      table_fields.push({ key: 'product', label: 'Produto', sortable: true })
-      table_fields.push({ key: 'measure', label: 'Unidade', sortable: true })
-      table_fields.push({ key: 'minimumPrice', label: 'Preço mínimo', sortable: true })
-      table_fields.push({ key: 'maximumPrice', label: 'Preço máximo', sortable: true })
-      table_fields.push({ key: 'actions', label: 'Ação', class: 'actions' })
+      tableFields.push({ key: 'product', label: 'Produto', sortable: true })
+      tableFields.push({ key: 'measure', label: 'Unidade', sortable: true })
+      tableFields.push({
+        key: 'minimumPrice',
+        label: 'Preço mínimo',
+        sortable: true,
+      })
+      tableFields.push({
+        key: 'maximumPrice',
+        label: 'Preço máximo',
+        sortable: true,
+      })
+      tableFields.push({ key: 'actions', label: 'Ação', class: 'actions' })
 
-      this.table_fields = table_fields
+      this.table_fields = tableFields
     },
     async list() {
       this.priceInformations = await this.$axios.$get('price-informations')

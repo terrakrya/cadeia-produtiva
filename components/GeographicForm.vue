@@ -38,7 +38,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Praça">
+              <b-form-group label="Região imediata">
                 <input
                   v-model="form.square"
                   type="text"
@@ -179,7 +179,7 @@ export default {
       }
     },
 
-    // filtra as praça conforme a município selecionada
+    // filtra as regioes imediatas conforme a município selecionada
     loadPracas() {
       if (this.form.county) {
         const cidade = this.form.county
