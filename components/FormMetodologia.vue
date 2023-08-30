@@ -1,5 +1,5 @@
 <template>
-  <b-modal :id="id">
+  <b-modal :id="id" hide-footer title="Nota metodológica">
     METODOLOGIA DO INDICADOR DE PREÇOS DA CASTANHA-DA-AMAZÔNIA SIE-CASTANHA/OCA
     <br />
 
@@ -222,6 +222,15 @@
     eletrônico: “”. Durante a safra, a equipe da OCA deverá divulgar boletins
     mensais de analise do comportamento dos preços praticados no mercado para os
     diferentes produtos cadastrados no SIE-Castanha.
+    <br />
+    <br />
+    <b-button
+      class="btn btn-primary"
+      variant="danger"
+      block
+      @click="$bvModal.hide(id)"
+      >Fechar</b-button
+    >
   </b-modal>
 </template>
 <script>

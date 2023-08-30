@@ -7,21 +7,19 @@
         show
         >Verifique os requisitos acima antes de continuar</b-alert
       >
-      <div class="btn-group">
-        <button
-          role="button"
-          class="btn btn-lg"
-          :class="{
-            'floating-button': floating,
-            'btn-secondary': floating,
-            'btn-primary': !floating,
-            'btn-block': !floating,
-          }"
-        >
-          <div v-if="sending"><b-spinner small /> Enviando dados...</div>
-          <div v-else>{{ 'Salvar' }}</div>
-        </button>
-      </div>
+      <button
+        role="button"
+        class="btn btn-lg"
+        :class="{
+          'floating-button': floating,
+          'btn-secondary': floating,
+          'btn-primary': !floating,
+          'btn-block': !floating,
+        }"
+      >
+        <div v-if="sending"><b-spinner small /> Enviando dados...</div>
+        <div v-else>{{ 'Salvar' }}</div>
+      </button>
     </div>
   </div>
 </template>

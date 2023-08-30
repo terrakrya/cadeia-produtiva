@@ -1,34 +1,41 @@
 <template>
-  <b-modal :id="id">
-    <template>
-      <div class="square-translator">
-        <table v-for="(a, index) in groupedlist" :key="index" class="table">
+  <b-modal :id="id" title="Regiões imediatas" hide-footer>
+    <div class="square-translator">
+      <table
+        v-for="(a, index) in groupedlist"
+        :key="index"
+        class="table b-table text-left mb-5"
+      >
+        <thead>
           <tr>
-            <td>
+            <th style="text-align: left !important">
               <strong>{{ index }}</strong>
-            </td>
+            </th>
           </tr>
+        </thead>
+        <tbody>
           <tr>
-            <thead>
-              <td>
-                <strong>UF</strong>
-              </td>
-              <td>
-                <strong>Município</strong>
-              </td>
-            </thead>
-            <tbody v-for="(dados, index2) in a" :key="index2">
-              <td style="width: 30%">
-                <small>{{ dados.estado }}</small>
-              </td>
-              <td style="width: 70%">
-                <small>{{ dados.cidade }}</small>
-              </td>
-            </tbody>
+            <table>
+              <tbody v-for="(dados, index2) in a" :key="index2">
+                <td style="width: 30%">
+                  <small>{{ dados.estado }}</small>
+                </td>
+                <td style="width: 70%">
+                  <small>{{ dados.cidade }}</small>
+                </td>
+              </tbody>
+            </table>
           </tr>
-        </table>
-      </div>
-    </template>
+        </tbody>
+      </table>
+    </div>
+    <b-button
+      class="btn btn-primary"
+      variant="danger"
+      block
+      @click="$bvModal.hide(id)"
+      >Fechar</b-button
+    >
   </b-modal>
 </template>
 <script>
@@ -69,19 +76,9 @@ export default {
 </script>
 <style>
 .square-translator {
-  .table table,
-  td,
-  thead {
-    text-align: center;
-    width: 300px;
-    border-collapse: collapse;
-  }
-
-  .square-translator th,
-  td {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    padding: 5px;
+  .table table {
+    width: 100%;
+    font-size: 12px;
   }
 }
 </style>

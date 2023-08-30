@@ -2,7 +2,7 @@
   <div id="app">
     <div id="wrapper" class="bg-brown-1">
       <Navbar />
-      <b-container v-if="currentUser" fluid>
+      <b-container v-if="currentUser" fluid class="pb-3">
         <b-row class="no-gutters">
           <b-col class="main bg-white">
             <div v-if="loading" class="my-5 text-center">
@@ -21,12 +21,10 @@
 
 <script>
 import Navbar from '@/components/Navbar'
-import Sidebar from '@/components/Sidebar'
 
 export default {
   components: {
     Navbar,
-    Sidebar,
   },
 
   middleware: 'auth',

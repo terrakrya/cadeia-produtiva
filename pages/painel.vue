@@ -27,14 +27,14 @@
                 class="btn btn-primary"
                 variant="danger"
                 @click="$bvModal.show('bv-modal-1')"
-                >Regiões imediatas</b-button
+                >Regiões</b-button
               >
               <b-button
                 id="show-btn"
                 class="btn btn-primary"
                 variant="danger"
                 @click="$bvModal.show('bv-modal-2')"
-                >Nota metodologica</b-button
+                >Metodologia</b-button
               >
 
               <FormSquareTranslator id="bv-modal-1" />

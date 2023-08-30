@@ -8,6 +8,13 @@
             <h1>Coleta de preços</h1>
           </div>
           <div class="col-sm-6 main-actions">
+            <b-button
+              id="show-btn"
+              class="btn btn-primary"
+              variant="danger"
+              @click="$bvModal.show('bv-modal')"
+              >Medidas</b-button
+            >
             <n-link
               to="/operacional/informacao-preco/cadastrar"
               class="btn btn-primary"
@@ -15,56 +22,7 @@
               <b-icon-plus /> {{ 'Registrar' }}
             </n-link>
             <div>
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal')"
-                >Tradutor de medidas</b-button
-              >
-              <b-modal id="bv-modal" hide-footer>
-                <template #modal-title> Conversões</template>
-                <table class="table b-table b-table-stacked-md table-striped">
-                  <thead>
-                    <tr>
-                      <th>Unidade</th>
-                      <th>Kg</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <td>Lata/Latão</td>
-                    <td>12</td>
-                  </tbody>
-                  <tbody>
-                    <td>Caixa</td>
-                    <td>24</td>
-                  </tbody>
-                  <tbody>
-                    <td>Hectolitro</td>
-                    <td>60</td>
-                  </tbody>
-                  <tbody>
-                    <td>Saca</td>
-                    <td>60</td>
-                  </tbody>
-                  <tbody>
-                    <td>Barrica</td>
-                    <td>72</td>
-                  </tbody>
-                  <tbody>
-                    <td>Tonelada</td>
-                    <td>1000</td>
-                  </tbody>
-                </table>
-                <b-button
-                  class="btn btn-primary"
-                  variant="danger"
-                  block
-                  @click="$bvModal.hide('bv-modal')"
-                  >Fechar</b-button
-                >
-              </b-modal>
+              <FormMeasureTranslator id="bv-modal" />
             </div>
           </div>
         </div>
