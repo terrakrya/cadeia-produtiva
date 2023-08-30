@@ -18,7 +18,7 @@ router.use('/geographic-areas', require('./geographic-areas'))
 
 router.post('/login', function (req, res, next) {
   if (!req.body.username) {
-    return res.status(422).json('Preencha o login ou celular')
+    return res.status(422).json('Preencha o seu telefone')
   }
 
   if (!req.body.password) {
