@@ -1,8 +1,11 @@
 <template>
   <b-navbar v-if="currentUser" :toggleable="true" type="dark" class="p-3">
-    <b-navbar-toggle v-show="true" target="sidebar" class="text-white">
-      <span style="font-size: 30px"><b-icon-list class="text-white" /></span>
-    </b-navbar-toggle>
+    <div>
+      <b-navbar-toggle v-show="true" target="sidebar" class="text-white">
+        <span style="font-size: 30px"><b-icon-list class="text-white" /></span>
+      </b-navbar-toggle>
+      <b-navbar-brand class="text-white ml-2" to="/painel">IÊ</b-navbar-brand>
+    </div>
     <div>
       <div class="d-flex justify-content-end align-items-center text-white">
         <small>
