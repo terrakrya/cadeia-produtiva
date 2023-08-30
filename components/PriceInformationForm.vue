@@ -39,6 +39,21 @@
             </div>
           </div>
           <div class="row">
+            <div class="col-sm-6">
+              <b-form-group label="Produto *">
+                <b-form-select
+                  v-model="form.product"
+                  v-validate="'required'"
+                  class="form-control"
+                  :options="products"
+                  value-field="id"
+                  text-field="name"
+                  name="product"
+                />
+                <field-error :msg="veeErrors" field="product" />
+              </b-form-group>
+            </div>
+
             <div class="col-sm-4">
               <b-form-group label=" Tipo *">
                 <b-form-select
@@ -65,20 +80,6 @@
                   nome="transactedQuantity"
                 ></money>
                 <field-error :msg="veeErrors" field="transactedQuantity" />
-              </b-form-group>
-            </div>
-            <div class="col-sm-6">
-              <b-form-group label="Produto *">
-                <b-form-select
-                  v-model="form.product"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="products"
-                  value-field="id"
-                  text-field="name"
-                  name="product"
-                />
-                <field-error :msg="veeErrors" field="product" />
               </b-form-group>
             </div>
           </div>
