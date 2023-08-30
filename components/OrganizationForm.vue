@@ -44,7 +44,10 @@
             </b-col>
             <div class="col-sm-3">
               <b-form-group label="CNPJ ">
-                <b-form-input v-model="form.cnpj" v-mask="['##.###.###/####-##']" />
+                <b-form-input
+                  v-model="form.cnpj"
+                  v-mask="['##.###.###/####-##']"
+                />
               </b-form-group>
             </div>
           </div>
@@ -62,7 +65,7 @@
                   v-model="form.uf"
                   v-validate="'required'"
                   class="form-control"
-                  :options="estados"
+                  :options="estados.map((e) => e.uf)"
                   name="uf"
                   @input="loadCities()"
                 />
@@ -124,10 +127,10 @@
             </div>
             <div class="col-sm-6">
               <b-form-group label="E-mail *">
-                <b-form-input 
-                 v-model="form.email" 
-                 name="email"
-                 v-validate="'required'"
+                <b-form-input
+                  v-model="form.email"
+                  name="email"
+                  v-validate="'required'"
                 />
                 <field-error :msg="veeErrors" field="email" />
               </b-form-group>
@@ -258,8 +261,8 @@ export default {
   },
   methods: {
     async list() {
-      this.territorios.sort(function(a, b){
-        if(a.nome < b.nome) {
+      this.territorios.sort(function (a, b) {
+        if (a.nome < b.nome) {
           return -1
         } else {
           return true

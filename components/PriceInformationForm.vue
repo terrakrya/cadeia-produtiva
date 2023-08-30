@@ -164,7 +164,7 @@
                   v-model="form.uf"
                   v-validate="'required'"
                   class="form-control"
-                  :options="estados"
+                  :options="estados.map((e) => e.uf)"
                   name="uf"
                   @input="loadCities()"
                 />

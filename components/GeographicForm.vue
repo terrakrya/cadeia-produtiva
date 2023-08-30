@@ -16,7 +16,7 @@
                   v-model="form.uf"
                   v-validate="'required'"
                   class="form-control"
-                  :options="estados"
+                  :options="estado.map((e) => e.uf)"
                   name="uf"
                   value-field="codigo_uf"
                   text-field="nome"
