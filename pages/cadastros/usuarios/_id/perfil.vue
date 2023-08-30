@@ -13,9 +13,9 @@
                   <b-form-group label="Unidade de medida *">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
+                      v-validate="'required'"
                       class="form-control"
                       name="unitOfMeasurement"
-                      v-validate="'required'"
                       :options="tipoDeUnidade"
                     />
                     <field-error :msg="veeErrors" field="unitOfMeasurement" />
@@ -25,10 +25,10 @@
                   <b-form-group label="Posição na cadeia de valor *">
                     <b-form-select
                       v-model="form.buyerPosition"
+                      v-validate="'required'"
                       class="form-control"
                       name="buyerPosition"
                       :options="buyerPositions"
-                      v-validate="'required'"
                     />
                     <field-error :msg="veeErrors" field="buyerPosition" />
                   </b-form-group>
@@ -97,10 +97,10 @@
                   <b-form-group label="Moeda *">
                     <b-form-select
                       v-model="form.currency"
+                      v-validate="'required'"
                       false-value="Real"
                       class="form-control"
                       :options="moeda"
-                      v-validate="'required'"
                       name="currency"
                     />
                     <field-error :msg="veeErrors" field="currency" />
@@ -110,9 +110,9 @@
                   <b-form-group label="País *">
                     <b-form-select
                       v-model="form.country"
+                      v-validate="'required'"
                       class="form-control"
                       :options="pais"
-                      v-validate="'required'"
                       name="country"
                     />
                     <field-error :msg="veeErrors" field="country" />
@@ -137,10 +137,10 @@
                   <b-form-group label="Município *">
                     <b-form-select
                       v-model="form.city"
+                      v-validate="'required'"
                       class="form-control"
                       :options="cidades"
                       name="city"
-                      v-validate="'required'"
                     />
                     <field-error :msg="veeErrors" field="city" />
                   </b-form-group>
@@ -151,10 +151,9 @@
           </b-tab>
           <b-tab title="Segurança">
             <h4 class="mb-4">Alterar senha</h4>
-
             <b-form v-if="!is_loading" @submit.prevent="save">
               <b-row>
-                <b-col>
+                <b-col md="6">
                   <b-form-group label="Senha">
                     <b-form-input
                       v-model="form.password"
@@ -164,7 +163,7 @@
                     <field-error :msg="veeErrors" field="pass" />
                   </b-form-group>
                 </b-col>
-                <b-col>
+                <b-col md="6">
                   <b-form-group label="Confirmação de senha">
                     <b-form-input
                       v-model="form.password_confirmation"
