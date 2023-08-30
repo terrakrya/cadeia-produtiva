@@ -1,22 +1,21 @@
+const Decimal = require('decimal.js')
 const mongoose = require('mongoose')
 const router = require('express').Router()
 const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const Price = mongoose.model('PriceInformation')
 const ObjectId = mongoose.Types.ObjectId
+const squares = require('../../data/praca.json')
 
 router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****
-  if (req.user.role === 'gestor'){
+  if (req.user.role === 'gestor') {
     query.organization = req.user.organization
-  }
-  else if (req.user.role === 'mensageiro') {
+  } else if (req.user.role === 'mensageiro') {
     query.messenger = req.user.id
   }
-    
-  
 
   try {
     // ***** executa a query *****
@@ -35,6 +34,129 @@ router.get('/', auth.authenticated, async (req, res) => {
   }
 })
 
+router.get('/summary', auth.authenticated, async (req, res) => {
+  const query = {}
+
+  if (req.query.product) {
+    query.product = req.query.product
+  }
+
+  if (req.query.buyerPosition) {
+    query.buyerPositionBuyer = req.query.buyerPosition
+  }
+
+  const prices = await Price.find(query)
+
+  let summary = null
+  if (prices && prices.length) {
+    summary = {
+      minimumPrice: prices[0].minimumPrice,
+      maximumPrice: prices[0].maximumPrice,
+      averagePrice: 0,
+      squares: {},
+    }
+
+    prices.forEach((price) => {
+      const square = squares.find(
+        (square) => square.estado === price.uf && square.cidade === price.city
+      )
+      if (square) {
+        if (summary.minimumPrice > price.minimumPrice) {
+          summary.minimumPrice = price.minimumPrice
+        }
+
+        if (summary.maximumPrice < price.maximumPrice) {
+          summary.maximumPrice = price.maximumPrice
+        }
+
+        const squareName = square.nome + ' - ' + square.estado
+        if (!summary.squares[squareName]) {
+          summary.squares[squareName] = {
+            minimumPrice: price.minimumPrice,
+            maximumPrice: price.maximumPrice,
+            averagePrices: [
+              new Decimal(price.minimumPrice).plus(price.maximumPrice).div(2),
+            ],
+          }
+        } else {
+          summary.squares[squareName].minimumPrice =
+            summary.squares[squareName].minimumPrice < price.minimumPrice
+              ? summary.squares[squareName].minimumPrice
+              : price.minimumPrice
+          summary.squares[squareName].maximumPrice =
+            summary.squares[squareName].maximumPrice > price.maximumPrice
+              ? summary.squares[squareName].maximumPrice
+              : price.maximumPrice
+          summary.squares[squareName].averagePrices.push(
+            new Decimal(price.minimumPrice).plus(price.maximumPrice).div(2)
+          )
+        }
+      }
+    })
+
+    summary.minimumAveragePrice = 0
+    summary.maximumAveragePrice = 0
+    summary.squares = Object.keys(summary.squares).map((key) => {
+      const square = summary.squares[key]
+
+      const averagePrice = new Decimal(
+        square.averagePrices.reduce((a, b) => new Decimal(a).plus(b), 0)
+      )
+        .div(square.averagePrices.length)
+        .toNumber()
+
+      if (
+        summary.minimumAveragePrice === 0 ||
+        summary.minimumAveragePrice > averagePrice
+      ) {
+        summary.minimumAveragePrice = averagePrice
+      }
+
+      if (
+        summary.maximumAveragePrice === 0 ||
+        summary.maximumAveragePrice < averagePrice
+      ) {
+        summary.maximumAveragePrice = averagePrice
+      }
+
+      return {
+        name: key,
+        minimumPrice: square.minimumPrice,
+        maximumPrice: square.maximumPrice,
+        averagePrice,
+      }
+    })
+
+    summary.squares = summary.squares.sort((a, b) => {
+      if (a.averagePrice > b.averagePrice) {
+        return -1
+      }
+      if (a.averagePrice < b.averagePrice) {
+        return 1
+      }
+      return 0
+    })
+
+    summary.squares = summary.squares.map((square) => {
+      return {
+        ...square,
+        percentAveragePrice: new Decimal(square.averagePrice)
+          .times(100)
+          .div(summary.maximumAveragePrice)
+          .toNumber(),
+      }
+    })
+
+    summary.averagePrice = new Decimal(
+      summary.squares.reduce((a, b) => new Decimal(a).plus(b.averagePrice), 0)
+    )
+      .div(summary.squares.length)
+      .toNumber()
+  }
+
+  res.json(summary)
+})
+
 router.get('/data-published', auth.authenticated, async (req, res) => {
   const query = {}
 
@@ -44,7 +166,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
 
   if (req.query.filters) {
     const filters = JSON.parse(req.query.filters || '{}')
-    
+
     if (filters.product) {
       query.product = ObjectId(filters.product)
     }
@@ -56,7 +178,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
     if (filters.city) {
       query.city = filters.city
     }
-    
+
     if (filters.from && !filters.to) {
       query.createdAt = {
         $gte: new Date(filters.from),
@@ -76,31 +198,29 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
   try {
     // ***** executa a query *****
 
-    const priceListAgr = await Price.aggregate(
-      [
-        { "$match": query },
-        { "$sort": { 'createdAt': -1 } },
-        // {
-        //   "$lookup": {
-        //     from: "users",
-        //     localField: "messenger",
-        //     foreignField: "_id",
-        //     as: "from"
-        //   }
-        // },
-        {
-          "$group": {
-            _id: {
-              "date": { "$dateToString": { format: "%d/%m/%Y", date: "$createdAt" } },
-              "from": "$buyerPositionSeller",
-              "to": "$buyerPositionBuyer"
-            },
-            minimumPrice: { "$min": "$minimumPrice" },
-            maximumPrice: { "$max": "$maximumPrice" }
-          }
-        }
-      ]
-    )
+    const priceListAgr = await Price.aggregate([
+      { $match: query },
+      { $sort: { createdAt: -1 } },
+      // {
+      //   "$lookup": {
+      //     from: "users",
+      //     localField: "messenger",
+      //     foreignField: "_id",
+      //     as: "from"
+      //   }
+      // },
+      {
+        $group: {
+          _id: {
+            date: { $dateToString: { format: '%d/%m/%Y', date: '$createdAt' } },
+            from: '$buyerPositionSeller',
+            to: '$buyerPositionBuyer',
+          },
+          minimumPrice: { $min: '$minimumPrice' },
+          maximumPrice: { $max: '$maximumPrice' },
+        },
+      },
+    ])
 
     const priceList = priceListAgr.map(function (obj) {
       return {
@@ -109,7 +229,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
         to: obj._id.to,
         minimumPrice: obj.minimumPrice,
         maximumPrice: obj.maximumPrice,
-        averagePrice: (obj.minimumPrice + obj.maximumPrice) / 2
+        averagePrice: (obj.minimumPrice + obj.maximumPrice) / 2,
       }
     })
 

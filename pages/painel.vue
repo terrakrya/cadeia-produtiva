@@ -54,7 +54,60 @@
             allowFullScreen="true"
             style="min-height: 1500px; margin-bottom: 32px"
           ></iframe>
-          <div v-else>Dashboard do mensageiro</div>
+          <div v-else>
+            <div v-if="loading" class="text-center">
+              <Loading loading />
+            </div>
+            <div v-else>
+              <b-row v-if="summary" class="text-center">
+                <b-col>
+                  <div class="text-muted">Mínimo</div>
+                  <div class="p-2 price-info">
+                    {{ summary.minimumPrice | moeda }}
+                  </div>
+                </b-col>
+                <b-col>
+                  <div class="text-muted">Médio</div>
+                  <div class="p-2 price-info">
+                    {{ summary.averagePrice | moeda }}
+                  </div>
+                </b-col>
+                <b-col>
+                  <div class="text-muted">Máximo</div>
+                  <div class="p-2 price-info">
+                    {{ summary.maximumPrice | moeda }}
+                  </div>
+                </b-col>
+              </b-row>
+
+              <hr />
+              <h4 class="text-center">Preço médio por região</h4>
+              <div class="pt-4">
+                <div
+                  v-for="(square, squareIndex) in summary.squares"
+                  :key="square.name"
+                  class="mb-3"
+                >
+                  <div class="ml-3">
+                    <strong>{{ square.name }}</strong>
+                  </div>
+                  <div
+                    class="px-3 py-1 square-summary"
+                    :style="
+                      'width: ' +
+                      (square.percentAveragePrice > 40
+                        ? square.percentAveragePrice
+                        : 40) +
+                      '%; background-color: ' +
+                      generateGradientColors[squareIndex]
+                    "
+                  >
+                    {{ square.averagePrice | moeda }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -80,13 +133,10 @@ export default {
   },
   data() {
     return {
+      loading: false,
       filters: {
-        uf: '',
-        city: '',
-        square: null,
-        from: '',
-        to: '',
         product: '',
+        buyerPosition: '',
       },
       buyerPositions,
       estados,
@@ -95,6 +145,30 @@ export default {
       priceInformations: [],
       products: [],
     }
+  },
+  computed: {
+    generateGradientColors() {
+      const arr = this.summary.squares
+      const startColor = [32, 153, 104] // RGB values for #209968
+      const endColor = [153, 125, 32] // RGB values for #997D20
+      const colorRange = [
+        endColor[0] - startColor[0],
+        endColor[1] - startColor[1],
+        endColor[2] - startColor[2],
+      ]
+      const colorStep = 1 / (arr.length - 1)
+      const gradientColors = []
+
+      for (let i = 0; i < arr.length; i++) {
+        const r = Math.round(startColor[0] + colorRange[0] * (i * colorStep))
+        const g = Math.round(startColor[1] + colorRange[1] * (i * colorStep))
+        const b = Math.round(startColor[2] + colorRange[2] * (i * colorStep))
+        const color = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`
+        gradientColors.push(color)
+      }
+
+      return gradientColors
+    },
   },
 
   async created() {
@@ -110,101 +184,23 @@ export default {
         this.$router.push(
           '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
         )
+      } else {
+        this.loading = true
+        await this.load()
+        await this.loadProducts()
+        this.loading = false
       }
     }
-    await this.loadCities(false)
-    await this.loadSquares(false)
-    await this.applyFilters()
-    await this.loadProducts()
   },
   methods: {
-    async loadCities(loadFilters) {
-      // lista de cidades com somente o item "selecione a cidade"
-      this.cidades = [{ value: '', text: 'Todas as cidades' }]
-
-      // filtra as cidades conforme a UF selecionada
-      if (this.filters.uf) {
-        this.cidades = this.cidades.concat(Object(cidades)[this.filters.uf])
-      } else {
-        this.filters.square = null
-      }
-
-      // limpa a cidade digitada, caso não exista na lista
-      if (this.filters.city && this.cidades) {
-        if (!this.cidades.find((c) => c === this.filters.city)) {
-          this.filters.city = ''
-        }
-      }
-
-      if (loadFilters) {
-        await this.applyFilters()
-      }
-    },
-
-    // filtra as regiões imediatas conforme a cidade selecionada
-    async loadSquares(loadFilters) {
-      if (this.filters.city) {
-        const cidade = this.filters.city
-        const squares = this.squares.filter(function (item) {
-          return item.cidade === cidade
-        })
-        if (squares && squares.length > 0) {
-          this.filters.square = squares[0].nome
-        }
-        if (this.filters.city === 'Selecione a cidade') {
-          this.filters.square = ''
-        }
-      } else {
-        this.filters.square = null
-      }
-
-      if (loadFilters) {
-        await this.applyFilters()
-      }
-    },
-
     async loadProducts() {
-      const products = [{ _id: '', name: 'Selecione o produto' }]
-      Array.prototype.push.apply(products, await this.$axios.$get('products'))
+      const products = await this.$axios.$get('products')
       this.products = products
     },
 
-    async applyFilters() {
-      const filters = {}
-
-      if (this.filters.uf) {
-        filters.uf = this.filters.uf
-      }
-
-      if (this.filters.city) {
-        filters.city = this.filters.city
-      }
-
-      if (this.filters.product) {
-        filters.product = this.filters.product
-      }
-
-      if (this.filters.from) {
-        filters.from = this.filters.from
-      }
-
-      if (this.filters.to) {
-        filters.to = this.filters.to
-      }
-      this.priceInformations = await this.$axios.$get(
-        'price-informations/data-published',
-        {
-          params: {
-            filters,
-          },
-        }
-      )
-      this.priceInformations.sort(function (a, b) {
-        if (a.date > b.date) {
-          return -1
-        } else {
-          return true
-        }
+    async load() {
+      this.summary = await this.$axios.$get('price-informations/summary', {
+        params: this.filters,
       })
     },
   },
