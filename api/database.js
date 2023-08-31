@@ -1,3 +1,4 @@
+/* eslint-disable no-constant-condition */
 require('./models/User')
 require('./models/Category')
 require('./models/Type')
@@ -16,7 +17,7 @@ mongoose.set('useCreateIndex', true)
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-if (isProduction) {
+if (isProduction || true) {
   // Create certificate file from env var (because mongoose doesnt accept cert data directly)
   fs.writeFileSync('./api/config/mongodb.ca.crt', process.env.MONGO_CA_CERT)
 

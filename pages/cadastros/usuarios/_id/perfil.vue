@@ -149,8 +149,7 @@
               <form-submit :sending="is_sending" />
             </b-form>
           </b-tab>
-          <b-tab title="Segurança">
-            <h4 class="mb-4">Alterar senha</h4>
+          <b-tab title="Alterar senha">
             <b-form v-if="!is_loading" @submit.prevent="save">
               <b-row>
                 <b-col md="6">
