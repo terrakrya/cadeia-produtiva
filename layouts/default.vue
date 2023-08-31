@@ -4,7 +4,7 @@
       <Navbar />
       <b-container v-if="currentUser" fluid class="pb-3">
         <b-row class="no-gutters">
-          <b-col class="main bg-white">
+          <b-col class="main bg-white" style="border-radius: 6px">
             <div v-if="loading" class="my-5 text-center">
               <b-spinner variant="secondary" />
             </div>
