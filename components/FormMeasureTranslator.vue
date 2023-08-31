@@ -30,7 +30,7 @@
           <td>Saca</td>
           <!--<td>5</td>
                     <td>100</td>-->
-          <td>60</td>
+          <td>48</td>
         </tr>
         <tr>
           <td>Barrica</td>

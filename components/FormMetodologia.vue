@@ -63,7 +63,7 @@
     Kg;<br />
     - 1 Caixa = 24 Kg;<br />
     - Hectolitro = 55 Kg;<br />
-    - Saca = 60 Kg;<br />
+    - Saca = 48 Kg;<br />
     - Barrica = 72 Kg;<br />
     - Tonelada = 1000 Kg. <br />
     Preço Mínimo: Valor relatado por um informante do sistema referente ao menor
