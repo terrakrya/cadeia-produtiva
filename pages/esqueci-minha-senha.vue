@@ -3,25 +3,20 @@
     <b-container>
       <b-row v-if="show_login" align-v="center" style="padding-top: 5em">
         <b-col md="6" offset-md="3">
-          <b-card class="bg-brown-1">
+          <div class="text-primary">
+            <h1>IÊ</h1>
+            <p>Inteligência econômica ecológica</p>
+          </div>
+          <b-card class="bg-brown-1 text-left">
             <b-card-body>
-              <img src="~/assets/img/logo.png" />
-              <h2 class="mb-4 mt-4">
-                <a href="/" class="text-white text-uppercase">
-                  Inteligência em economia ecológica
-                </a>
-              </h2>
-              <p>Esqueci minha senha</p>
+              <p>Recuperar senha</p>
               <form class="form-auth-small" @submit.prevent="send">
                 <div class="form-group">
-                  <label for="signin-email" class="control-label sr-only">
-                    Login ou celular
-                  </label>
                   <input
                     v-model="form.username"
                     type="text"
                     class="form-control"
-                    placeholder="Login ou celular"
+                    placeholder="Seu telefone"
                   />
                 </div>
                 <div v-if="is_sending" class="alert alert-info">
@@ -33,11 +28,15 @@
                 <div v-if="info" class="alert alert-info">
                   {{ info }}
                 </div>
-                <button type="submit" class="btn btn-primary btn-lg btn-block">
+                <button type="submit" class="btn btn-white btn-lg btn-block">
                   Enviar
                 </button>
                 <br />
-                <a href="/login" class="text-red">Voltar para o login</a>
+                <div class="text-center">
+                  <a href="/login" class="text-white"
+                    ><small>Cancelar</small></a
+                  >
+                </div>
               </form>
             </b-card-body>
           </b-card>
