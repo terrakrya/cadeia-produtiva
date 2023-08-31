@@ -3,57 +3,48 @@
     <breadcrumb active="Dados publicados" />
     <div class="panel">
       <div class="panel-body">
-        <div class="row panel-title">
-          <div class="col-sm-6"></div>
-          <div class="col-sm-6 main-actions">
-            <div>
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                to="/operacional/informacao-preco"
-                >Coleta de preços</b-button
-              >
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal')"
-                >Medidas</b-button
-              >
+        <div class="d-flex justify-content-between">
+          <div>
+            <b-button
+              id="show-btn"
+              variant="secondary"
+              size="sm"
+              class="mb-1"
+              @click="$bvModal.show('bv-modal')"
+              >Medidas</b-button
+            >
+            <b-button
+              id="show-btn"
+              variant="secondary"
+              size="sm"
+              class="mb-1"
+              @click="$bvModal.show('bv-modal-1')"
+              >Regiões</b-button
+            >
+            <b-button
+              id="show-btn"
+              size="sm"
+              class="mb-1"
+              variant="secondary"
+              @click="$bvModal.show('bv-modal-2')"
+              >Metodologia</b-button
+            >
 
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal-1')"
-                >Regiões imediatas</b-button
-              >
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal-2')"
-                >Nota metodológica</b-button
-              >
-
-              <FormSquareTranslator id="bv-modal-1" />
-              <FormMeasureTranslator id="bv-modal" />
-              <FormMetodologia id="bv-modal-2" />
-            </div>
+            <FormSquareTranslator id="bv-modal-1" />
+            <FormMeasureTranslator id="bv-modal" />
+            <FormMetodologia id="bv-modal-2" />
+          </div>
+          <div class="text-right">
+            <b-button
+              id="show-btn"
+              class="btn btn-primary"
+              variant="danger"
+              to="/operacional/informacao-preco"
+              >Coleta de preços</b-button
+            >
           </div>
         </div>
         <div class="info-content">
-          <iframe
-            v-if="!isMessenger"
-            title="Report Section"
-            width="100%"
-            min-height="500px"
-            src="https://app.powerbi.com/view?r=eyJrIjoiZjkwMzE2YzQtYTMxNy00MjZlLWE1YmQtMDAxYzViMjhhMDAyIiwidCI6ImZmMjIxZjk2LTI1NGUtNDFlYy1iMTUwLWI5ZmExZDBkMDNjNCJ9"
-            frameborder="0"
-            allowFullScreen="true"
-            style="min-height: 1500px; margin-bottom: 32px"
-          ></iframe>
           <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Produto">
