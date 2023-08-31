@@ -1,17 +1,21 @@
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const Decimal = require('decimal.js')
 const ObjectId = mongoose.Schema.Types.ObjectId
 
 const secret = process.env.SECRET || 'cadeia-produtiva'
 
 const PriceSchema = new mongoose.Schema(
   {
-    buyerPositionSeller: {
-      type: String,
-      required: true,
-    },
     createdAt: {
       type: Date,
+      required: true,
+    },
+    buyerPosition: {
+      type: String,
+    },
+    buyerPositionSeller: {
+      type: String,
       required: true,
     },
     buyerPositionBuyer: {
@@ -38,6 +42,9 @@ const PriceSchema = new mongoose.Schema(
       type: Number,
     },
     maximumPrice: {
+      type: Number,
+    },
+    averagePrice: {
       type: Number,
     },
     country: String,
@@ -70,6 +77,42 @@ const PriceSchema = new mongoose.Schema(
     toJSON: { virtuals: true },
   }
 )
+
+const getConversion = (measure) => {
+  if (measure === 'Kg') {
+    return 1
+  } else if (measure === 'Tonelada') {
+    return 1000
+  } else if (measure === 'Latão') {
+    return 12
+  } else if (measure === 'Caixa') {
+    return 24
+  } else if (measure === 'Hectolitro') {
+    return 60
+  } else if (measure === 'Saca') {
+    return 48
+  } else if (measure === 'Barrica') {
+    return 72
+  }
+}
+
+// pre save middleware
+PriceSchema.pre('save', function (next) {
+  const conversion = getConversion(this.measure)
+  const min = this.originalMinimumPrice
+  const max = this.originalMaximumPrice
+
+  let quant = 1
+  if (this.transaction === 'transação realizada') {
+    quant = this.transactedQuantity
+  }
+
+  this.minimumPrice = new Decimal(min).div(conversion).div(quant).toFixed(2)
+  this.maximumPrice = new Decimal(max).div(conversion).div(quant).toFixed(2)
+  this.averagePrice = (this.minimumPrice + this.maximumPrice) / 2
+
+  next()
+})
 
 PriceSchema.methods.data = function () {
   return {
