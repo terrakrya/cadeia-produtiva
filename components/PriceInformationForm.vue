@@ -298,19 +298,19 @@ export default {
         organizationId = this.form.organization
       }
 
-      const organization = await this.$axios.$get(
-        'organizations/' + organizationId
-      )
-      this.products = organization.products
-
       const filters = { role: 'mensageiro' }
+
+      if (organizationId) {
+        const organization = await this.$axios.$get(
+          'organizations/' + organizationId
+        )
+        this.products = organization.products
+      }
 
       if (this.isMessenger) {
         filters.id = this.currentUser._id
-      } else if (this.isManager) {
-        filters.organization = this.currentUser.organization
-      } else {
-        filters.organization = this.form.organization
+      } else if (organizationId) {
+        filters.organization = organizationId
       }
 
       this.messengers = await this.$axios.$get('users', {
