@@ -3,43 +3,48 @@
     <breadcrumb active="Dados publicados" />
     <div class="panel">
       <div class="panel-body">
-        <div class="row panel-title">
-          <div class="col-sm-6"></div>
-          <div class="col-sm-6 main-actions">
-            <div>
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                to="/operacional/informacao-preco"
-                >Coleta de preços</b-button
-              >
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal')"
-                >Medidas</b-button
-              >
+        <div class="panel-title">
+          <div>
+            <div class="d-flex justify-content-between">
+              <div>
+                <b-button
+                  id="show-btn"
+                  variant="secondary"
+                  size="sm"
+                  class="mb-1"
+                  @click="$bvModal.show('bv-modal')"
+                  >Medidas</b-button
+                >
+                <b-button
+                  id="show-btn"
+                  variant="secondary"
+                  size="sm"
+                  class="mb-1"
+                  @click="$bvModal.show('bv-modal-1')"
+                  >Regiões</b-button
+                >
+                <b-button
+                  id="show-btn"
+                  size="sm"
+                  class="mb-1"
+                  variant="secondary"
+                  @click="$bvModal.show('bv-modal-2')"
+                  >Metodologia</b-button
+                >
 
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal-1')"
-                >Regiões</b-button
-              >
-              <b-button
-                id="show-btn"
-                class="btn btn-primary"
-                variant="danger"
-                @click="$bvModal.show('bv-modal-2')"
-                >Metodologia</b-button
-              >
-
-              <FormSquareTranslator id="bv-modal-1" />
-              <FormMeasureTranslator id="bv-modal" />
-              <FormMetodologia id="bv-modal-2" />
+                <FormSquareTranslator id="bv-modal-1" />
+                <FormMeasureTranslator id="bv-modal" />
+                <FormMetodologia id="bv-modal-2" />
+              </div>
+              <div class="text-right">
+                <b-button
+                  id="show-btn"
+                  class="btn btn-primary"
+                  variant="danger"
+                  to="/operacional/informacao-preco"
+                  >Coleta de preços</b-button
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -61,19 +66,19 @@
             <div v-else>
               <b-row v-if="summary" class="text-center">
                 <b-col>
-                  <div class="text-muted">Mínimo</div>
+                  <div class="text-muted"><small>Mínimo</small></div>
                   <div class="p-2 price-info">
                     {{ summary.minimumPrice | moeda }}
                   </div>
                 </b-col>
                 <b-col>
-                  <div class="text-muted">Médio</div>
+                  <div class="text-muted"><small>Médio</small></div>
                   <div class="p-2 price-info">
                     {{ summary.averagePrice | moeda }}
                   </div>
                 </b-col>
                 <b-col>
-                  <div class="text-muted">Máximo</div>
+                  <div class="text-muted"><small>Máximo</small></div>
                   <div class="p-2 price-info">
                     {{ summary.maximumPrice | moeda }}
                   </div>
@@ -81,8 +86,104 @@
               </b-row>
 
               <hr />
-              <h4 class="text-center">Preço médio por região</h4>
-              <div class="pt-4">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <h5 class="text-left">Preço médio por região</h5>
+                  <div
+                    v-if="!showFilters"
+                    class="text-muted"
+                    style="font-size: 11px"
+                  >
+                    <div v-if="productFilter" @click="showFilters = true">
+                      {{ productFilter }}
+                      <b-icon icon="pencil" class="ml-1" />
+                    </div>
+                    <div
+                      v-if="filters.buyerPosition"
+                      @click="showFilters = true"
+                    >
+                      {{ filters.buyerPosition }}
+                      <b-icon icon="pencil" class="ml-1" />
+                    </div>
+                    <div v-if="filters.from && filters.to">
+                      De {{ filters.from | moment('DD/MM/YYYY') }} até
+                      {{ filters.to | moment('DD/MM/YYYY') }}
+                      <b-icon icon="pencil" class="ml-1" />
+                    </div>
+                    <div v-if="filters.from && !filters.to">
+                      De {{ filters.from | moment('DD/MM/YYYY') }} até Hoje
+                      <b-icon icon="pencil" class="ml-1" />
+                    </div>
+                    <div v-if="!filters.from && filters.to">
+                      Até {{ filters.to | moment('DD/MM/YYYY') }}
+                      <b-icon icon="pencil" class="ml-1" />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <b-btn @click="showFilters = !showFilters">
+                    <b-icon icon="filter"></b-icon>
+                  </b-btn>
+                </div>
+              </div>
+              <div v-if="showFilters" class="py-4">
+                <div class="row">
+                  <div class="col-md-6">
+                    <b-form-group label="Produto">
+                      <b-form-select
+                        v-model="filters.product"
+                        class="form-control"
+                        :options="products"
+                        value-field="_id"
+                        text-field="name"
+                      />
+                    </b-form-group>
+                  </div>
+                  <div class="col-md-6">
+                    <b-form-group label="Tipo de comprador">
+                      <b-form-select
+                        v-model="filters.buyerPosition"
+                        class="form-control"
+                        :options="buyerPositions"
+                      />
+                    </b-form-group>
+                  </div>
+                </div>
+                <div class="row">
+                  <b-col cols="6">
+                    <b-form-group label="Data inicial">
+                      <b-form-input
+                        v-model="filters.from"
+                        type="date"
+                        name="date_time"
+                        locale="pt-BR"
+                        placeholder="DD/MM/AAAA"
+                      />
+                    </b-form-group>
+                  </b-col>
+                  <b-col cols="6">
+                    <b-form-group label="Data final">
+                      <b-form-input
+                        v-model="filters.to"
+                        type="date"
+                        name="date_time"
+                        locale="pt-BR"
+                        placeholder="DD/MM/AAAA"
+                        clearable
+                      />
+                    </b-form-group>
+                  </b-col>
+                </div>
+                <b-button
+                  variant="primary"
+                  size="lg"
+                  block
+                  @click="applyFilters"
+                >
+                  Filtrar
+                </b-button>
+              </div>
+              <div v-if="summary" class="pt-4">
                 <div
                   v-for="(square, squareIndex) in summary.squares"
                   :key="square.name"
@@ -106,6 +207,9 @@
                   </div>
                 </div>
               </div>
+              <div v-else class="text-center pt-4">
+                <NoItem :list="[]" />
+              </div>
             </div>
           </div>
         </div>
@@ -123,20 +227,24 @@ import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import squares from '@/data/praca.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
+import NoItem from '~/components/NoItem.vue'
 export default {
   components: {
     Breadcrumb,
-
     FormSquareTranslator,
     FormMeasureTranslator,
     FormMetodologia,
+    NoItem,
   },
   data() {
     return {
       loading: false,
+      showFilters: false,
       filters: {
         product: '',
-        buyerPosition: '',
+        buyerPosition: 'Cooperativa (não beneficia)',
+        from: '',
+        to: '',
       },
       buyerPositions,
       estados,
@@ -144,9 +252,19 @@ export default {
       squares,
       priceInformations: [],
       products: [],
+      summary: null,
     }
   },
   computed: {
+    productFilter() {
+      if (this.filters.product) {
+        const product = this.products.find(
+          (product) => product._id === this.filters.product
+        )
+        return product.name
+      }
+      return ''
+    },
     generateGradientColors() {
       const arr = this.summary.squares
       const startColor = [32, 153, 104] // RGB values for #209968
@@ -186,8 +304,8 @@ export default {
         )
       } else {
         this.loading = true
-        await this.load()
         await this.loadProducts()
+        await this.load()
         this.loading = false
       }
     }
@@ -196,12 +314,23 @@ export default {
     async loadProducts() {
       const products = await this.$axios.$get('products')
       this.products = products
+      if (this.products && this.products.length > 0) {
+        this.filters.product = this.products[0]._id
+      }
     },
 
     async load() {
-      this.summary = await this.$axios.$get('price-informations/summary', {
+      const summary = await this.$axios.$get('price-informations/summary', {
         params: this.filters,
       })
+
+      console.log('summary', summary)
+
+      this.summary = summary
+    },
+    applyFilters() {
+      this.showFilters = false
+      this.load()
     },
   },
 }
