@@ -5,6 +5,7 @@
     :fields="table_fields"
     :items="list"
     :sort-by="'date'"
+    stacked="lg"
   >
     <template #cell(from)="data">
       {{ data.item.from }}
@@ -15,14 +16,14 @@
     <template #cell(date)="data">
       {{ data.item.date }}
     </template>
-    <template  #cell(averagePrice)="data">
-       {{data.item.averagePrice | moeda }}
+    <template #cell(averagePrice)="data">
+      {{ data.item.averagePrice | moeda }}
     </template>
     <template #cell(price)="data">
       {{ data.item.minimumPrice | moeda }}
       /
       {{ data.item.maximumPrice | moeda }}
-    </template>]
+    </template>
   </b-table>
 </template>
 <script>
@@ -52,7 +53,7 @@ export default {
         },
         {
           key: 'price',
-          label: 'Preços: mínimo/máximo',
+          label: 'Mínimo/Máximo',
         },
       ],
     }
