@@ -91,17 +91,15 @@
                   <h5 class="text-left">Preço médio por região</h5>
                   <div
                     v-if="!showFilters"
-                    class="text-muted"
+                    class="text-muted pointer"
                     style="font-size: 11px"
+                    @click="showFilters = true"
                   >
-                    <div v-if="productFilter" @click="showFilters = true">
+                    <div v-if="productFilter">
                       {{ productFilter }}
                       <b-icon icon="pencil" class="ml-1" />
                     </div>
-                    <div
-                      v-if="filters.buyerPosition"
-                      @click="showFilters = true"
-                    >
+                    <div v-if="filters.buyerPosition">
                       {{ filters.buyerPosition }}
                       <b-icon icon="pencil" class="ml-1" />
                     </div>
