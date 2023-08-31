@@ -52,6 +52,13 @@
       </b-list-group-item>
       <b-list-group-item>
         <b-nav>
+          <b-nav-item class="text-white" to="/dados-publicados">
+            Dados publicados
+          </b-nav-item>
+        </b-nav>
+      </b-list-group-item>
+      <b-list-group-item>
+        <b-nav>
           <b-nav-item
             class="text-white"
             :to="'/cadastros/usuarios/' + currentUser._id + '/perfil'"
