@@ -1,13 +1,10 @@
 <template>
   <div class="type">
-    <Breadcrumb
-      :links="[['Operacional', '/operacional/informacao-preco']]"
-      active="Registro de coleta de preços"
-    />
+    <Breadcrumb active="Registro de coleta de preços" />
     <div class="panel">
       <div class="panel-body">
-        <div class="col-sm-6">
-          <h1>Registro de coleta de preços</h1>
+        <div>
+          <h4>Registro de coleta de preços</h4>
         </div>
         <br />
         <loading :loading="is_loading" />
