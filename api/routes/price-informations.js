@@ -37,12 +37,28 @@ router.get('/', auth.authenticated, async (req, res) => {
 router.get('/summary', auth.authenticated, async (req, res) => {
   const query = {}
 
-  if (req.query.product) {
-    query.product = req.query.product
+  const filters = req.query
+
+  if (filters.product) {
+    query.product = filters.product
   }
 
-  if (req.query.buyerPosition) {
-    query.buyerPositionBuyer = req.query.buyerPosition
+  if (filters.buyerPosition) {
+    query.buyerPositionBuyer = filters.buyerPosition
+  }
+  if (filters.from && !filters.to) {
+    query.createdAt = {
+      $gte: new Date(filters.from),
+    }
+  } else if (filters.to && !filters.from) {
+    query.createdAt = {
+      $lte: new Date(filters.to),
+    }
+  } else if (filters.from && filters.to) {
+    query.createdAt = {
+      $gte: new Date(filters.from),
+      $lte: new Date(filters.to),
+    }
   }
 
   const prices = await Price.find(query)
