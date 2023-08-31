@@ -27,91 +27,96 @@
           </div>
         </div>
         <div class="info-content">
-          <div class="text-right">
-            <input
-              v-model="filters.search"
-              type="search"
-              :placeholder="'Buscar'"
-              class="form-control search-input"
-            />
+          <div v-if="loading" class="text-center">
+            <Loading loading />
           </div>
-          <br />
-          <no-item :list="priceInformations" />
-          <b-table
-            class="table b-table b-table-stacked-md table-striped"
-            :fields="table_fields"
-            :items="priceInformations"
-            :sort-by="'product'"
-            :filter="filters.search"
-            stacked="lg"
-          >
-            <template #cell(createdAt)="data">
-              {{ data.item.createdAt | moment('DD/MM/YYYY') }}
-            </template>
-            <template #cell(messenger)="data">
-              {{ data.item.messenger.name }}
-            </template>
-            <template #cell(organization)="data">
-              <span v-if="data.item.organization">{{
-                data.item.organization.sigla
-              }}</span>
-            </template>
-            <template #cell(buyerPosition)="data">
-              {{ data.item.buyerPosition }}
-            </template>
-            <template #cell(uf)="data">
-              {{ data.item.uf }}
-            </template>
-            <template #cell(city)="data">
-              {{ data.item.city }}
-            </template>
-            <template #cell(square)="data">
-              {{ data.item.square }}
-            </template>
-            <template #cell(product)="data">
-              {{ data.item.product.name }}
-            </template>
-            <template #cell(measure)="data">
-              {{ data.item.measure }}
-            </template>
-            <template #cell(minimumPrice)="data">
-              {{ data.item.originalMinimumPrice | moeda }}
-              <small
-                v-if="data.item.measure != 'Kg'"
-                class="text-muted"
-                style="font-size: 11px"
-                @click="$bvModal.show('bv-modal')"
-              >
-                <br />
-                {{ data.item.minimumPrice | moeda }}/Kg
-              </small>
-            </template>
-            <template #cell(maximumPrice)="data">
-              {{ data.item.originalMaximumPrice | moeda }}
-              <small
-                v-if="data.item.measure != 'Kg'"
-                class="text-muted"
-                style="font-size: 11px"
-                @click="$bvModal.show('bv-modal')"
-              >
-                <br />
-                {{ data.item.maximumPrice | moeda }}/Kg
-              </small>
-            </template>
-            <template #cell(actions)="data">
-              <n-link
-                :to="
-                  '/operacional/informacao-preco/' + data.item._id + '/editar'
-                "
-                class="btn btn-secondary"
-              >
-                <b-icon-pencil />
-              </n-link>
-              <a class="btn btn-secondary" @click="remove(data.item._id)">
-                <b-icon-trash />
-              </a>
-            </template>
-          </b-table>
+          <div v-else>
+            <div class="text-right">
+              <input
+                v-model="filters.search"
+                type="search"
+                :placeholder="'Buscar'"
+                class="form-control search-input"
+              />
+            </div>
+            <br />
+            <no-item :list="priceInformations" />
+            <b-table
+              class="table b-table b-table-stacked-md table-striped"
+              :fields="table_fields"
+              :items="priceInformations"
+              :sort-by="'product'"
+              :filter="filters.search"
+              stacked="lg"
+            >
+              <template #cell(createdAt)="data">
+                {{ data.item.createdAt | moment('DD/MM/YYYY') }}
+              </template>
+              <template #cell(messenger)="data">
+                {{ data.item.messenger.name }}
+              </template>
+              <template #cell(organization)="data">
+                <span v-if="data.item.organization">{{
+                  data.item.organization.sigla
+                }}</span>
+              </template>
+              <template #cell(buyerPosition)="data">
+                {{ data.item.buyerPosition }}
+              </template>
+              <template #cell(uf)="data">
+                {{ data.item.uf }}
+              </template>
+              <template #cell(city)="data">
+                {{ data.item.city }}
+              </template>
+              <template #cell(square)="data">
+                {{ data.item.square }}
+              </template>
+              <template #cell(product)="data">
+                {{ data.item.product.name }}
+              </template>
+              <template #cell(measure)="data">
+                {{ data.item.measure }}
+              </template>
+              <template #cell(minimumPrice)="data">
+                {{ data.item.originalMinimumPrice | moeda }}
+                <small
+                  v-if="data.item.measure != 'Kg'"
+                  class="text-muted"
+                  style="font-size: 11px"
+                  @click="$bvModal.show('bv-modal')"
+                >
+                  <br />
+                  {{ data.item.minimumPrice | moeda }}/Kg
+                </small>
+              </template>
+              <template #cell(maximumPrice)="data">
+                {{ data.item.originalMaximumPrice | moeda }}
+                <small
+                  v-if="data.item.measure != 'Kg'"
+                  class="text-muted"
+                  style="font-size: 11px"
+                  @click="$bvModal.show('bv-modal')"
+                >
+                  <br />
+                  {{ data.item.maximumPrice | moeda }}/Kg
+                </small>
+              </template>
+              <template #cell(actions)="data">
+                <n-link
+                  :to="
+                    '/operacional/informacao-preco/' + data.item._id + '/editar'
+                  "
+                  class="btn btn-secondary"
+                >
+                  <b-icon-pencil />
+                </n-link>
+                <a class="btn btn-secondary" @click="remove(data.item._id)">
+                  <b-icon-trash />
+                </a>
+              </template>
+            </b-table>
+          </div>
         </div>
       </div>
     </div>
@@ -128,6 +133,7 @@ export default {
   data() {
     return {
       translator: true,
+      loading: true,
       filters: { search: null },
       table_fields: [],
       priceInformations: [],
@@ -135,8 +141,10 @@ export default {
   },
 
   async created() {
+    this.loading = true
     await this.list()
     this.fillTableFields()
+    this.loading = false
   },
   methods: {
     fillTableFields() {
