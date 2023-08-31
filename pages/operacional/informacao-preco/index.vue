@@ -43,6 +43,7 @@
             :items="priceInformations"
             :sort-by="'product'"
             :filter="filters.search"
+            stacked="lg"
           >
             <template #cell(createdAt)="data">
               {{ data.item.createdAt | moment('DD/MM/YYYY') }}
@@ -51,7 +52,9 @@
               {{ data.item.messenger.name }}
             </template>
             <template #cell(organization)="data">
-              {{ data.item.organization.sigla }}
+              <span v-if="data.item.organization">{{
+                data.item.organization.sigla
+              }}</span>
             </template>
             <template #cell(buyerPosition)="data">
               {{ data.item.buyerPosition }}
@@ -73,9 +76,27 @@
             </template>
             <template #cell(minimumPrice)="data">
               {{ data.item.originalMinimumPrice | moeda }}
+              <small
+                v-if="data.item.measure != 'Kg'"
+                class="text-muted"
+                style="font-size: 11px"
+                @click="$bvModal.show('bv-modal')"
+              >
+                <br />
+                {{ data.item.minimumPrice | moeda }}/Kg
+              </small>
             </template>
             <template #cell(maximumPrice)="data">
               {{ data.item.originalMaximumPrice | moeda }}
+              <small
+                v-if="data.item.measure != 'Kg'"
+                class="text-muted"
+                style="font-size: 11px"
+                @click="$bvModal.show('bv-modal')"
+              >
+                <br />
+                {{ data.item.maximumPrice | moeda }}/Kg
+              </small>
             </template>
             <template #cell(actions)="data">
               <n-link
