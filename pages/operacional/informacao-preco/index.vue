@@ -3,26 +3,24 @@
     <breadcrumb active="Coleta de preços" />
     <div class="panel">
       <div class="panel-body">
-        <div class="row panel-title">
-          <div class="col-sm-6">
-            <h1>Coleta de preços</h1>
-          </div>
-          <div class="col-sm-6 main-actions">
-            <b-button
-              id="show-btn"
-              class="btn btn-primary"
-              variant="danger"
-              @click="$bvModal.show('bv-modal')"
-              >Medidas</b-button
-            >
-            <n-link
-              to="/operacional/informacao-preco/cadastrar"
-              class="btn btn-primary"
-            >
-              <b-icon-plus /> {{ 'Registrar' }}
-            </n-link>
+        <div class="panel-title">
+          <div class="d-flex justify-content-between">
             <div>
+              <b-button
+                id="show-btn"
+                variant="secondary"
+                @click="$bvModal.show('bv-modal')"
+                >Medidas</b-button
+              >
               <FormMeasureTranslator id="bv-modal" />
+            </div>
+            <div class="text-right">
+              <n-link
+                to="/operacional/informacao-preco/cadastrar"
+                class="btn btn-primary"
+              >
+                <b-icon-plus /> {{ 'Registrar' }}
+              </n-link>
             </div>
           </div>
         </div>
