@@ -15,14 +15,14 @@
     <template #cell(date)="data">
       {{ data.item.date }}
     </template>
-    <template  #cell(averagePrice)="data">
-       {{data.item.averagePrice | moeda }}
+    <template #cell(averagePrice)="data">
+      {{ data.item.averagePrice | moeda }}
     </template>
     <template #cell(price)="data">
       {{ data.item.minimumPrice | moeda }}
       /
-      {{ data.item.maximumPrice | moeda }}
-    </template>]
+      {{ data.item.maximumPrice | moeda }} </template
+    >]
   </b-table>
 </template>
 <script>

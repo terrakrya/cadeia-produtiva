@@ -27,10 +27,12 @@
   "dependencies": {
     "@fnando/cnpj": "^1.0.2",
     "@fnando/cpf": "^1.0.2",
+    "@mapbox/togeojson": "^0.16.0",
     "@nuxt/content": "^1.11.1",
     "@nuxtjs/auth-next": "5.0.0-1610809099.bcf293f",
     "@nuxtjs/axios": "^5.12.5",
     "@nuxtjs/pwa": "^3.3.4",
+    "@tmcw/togeojson": "^5.8.1",
     "apexcharts": "^3.33.1",
     "bootstrap": "^4.5.3",
     "bootstrap-vue": "^2.21.2",
@@ -77,7 +79,8 @@
     "vue2-filters": "^0.11.1",
     "vue2-leaflet": "^2.6.0",
     "vuex-persistedstate": "^4.0.0",
-    "xlsx": "^0.16.9"
+    "xlsx": "^0.16.9",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",
