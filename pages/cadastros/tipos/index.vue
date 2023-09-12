@@ -30,7 +30,7 @@
             :items="types"
             :sort-by="'type'"
             :filter="filters.search"
-          > 
+          >
             <template #cell(type)="data">
               {{ data.item.type }}
             </template>
@@ -82,7 +82,7 @@ export default {
           key: 'code',
           label: 'Código',
           sortable: true,
-        }, 
+        },
         {
           key: 'actions',
           label: 'Ação',

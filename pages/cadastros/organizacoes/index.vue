@@ -44,16 +44,16 @@
               {{ data.item.sigla }}
             </template>
             <template #cell(actions)="data">
-                <n-link
-                  :to="'/cadastros/organizacoes/' + data.item._id + '/editar'"
-                  class="btn btn-secondary"
-                >
-                  <b-icon-pencil />
-                </n-link>
-                <a class="btn btn-secondary" @click="remove(data.item._id)">
-                 <b-icon-trash />
-                </a>
-              </template>
+              <n-link
+                :to="'/cadastros/organizacoes/' + data.item._id + '/editar'"
+                class="btn btn-secondary"
+              >
+                <b-icon-pencil />
+              </n-link>
+              <a class="btn btn-secondary" @click="remove(data.item._id)">
+                <b-icon-trash />
+              </a>
+            </template>
           </b-table>
         </div>
       </div>
@@ -87,7 +87,6 @@ export default {
           label: 'Sigla',
           sortable: true,
         },
-
       ],
       organizations: [],
     }
@@ -96,13 +95,13 @@ export default {
   async created() {
     await this.list()
     const actions = {
-          key: 'actions',
-          label: 'Ação',
-          class: 'actions',
-        }
-     if (!this.isManager) {
+      key: 'actions',
+      label: 'Ação',
+      class: 'actions',
+    }
+    if (!this.isManager) {
       this.table_fields.push(actions)
-     }
+    }
   },
   methods: {
     async list() {

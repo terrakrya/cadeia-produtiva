@@ -35,10 +35,11 @@
             <b-col sm="6">
               <b-form-group label="Nome popular">
                 <b-form-input
-                 v-model="form.popularName"
-                 v-validate="'required'" 
-                 name="popularName" />
-                 <field-error :msg="veeErrors" field="popularName" />
+                  v-model="form.popularName"
+                  v-validate="'required'"
+                  name="popularName"
+                />
+                <field-error :msg="veeErrors" field="popularName" />
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
@@ -93,7 +94,6 @@ export default {
       this.$axios
         .get('species/' + id)
         .then((response) => {
-
           this.apiDataToForm(this.form, response.data)
 
           if (response.data.image) {

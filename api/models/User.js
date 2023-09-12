@@ -85,7 +85,7 @@ UserSchema.methods.data = function () {
     uf: this.uf,
     city: this.city,
     birthDate: this.birthDate,
-    gender: this.gender
+    gender: this.gender,
   }
 }
 

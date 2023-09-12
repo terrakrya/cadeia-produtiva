@@ -80,7 +80,7 @@ OrganizationSchema.methods.data = function () {
     email: this.email,
     otherContacts: this.otherContacts,
     sigla: this.sigla,
-    acting: this.acting
+    acting: this.acting,
   }
 }
 OrganizationSchema.methods.generateJWT = function () {

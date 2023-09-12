@@ -25,6 +25,7 @@
               :lat-lngs="polygon"
               :options="polygonOptions"
             ></l-polygon>
+            <l-geo-json :geojson="geojson"></l-geo-json>
           </l-map>
         </div>
         <br />
@@ -76,7 +77,7 @@
 </template>
 
 <script>
-import { LMap, LTileLayer, LMarker, LPolygon } from 'vue2-leaflet'
+import { LMap, LTileLayer, LMarker, LPolygon, LGeoJson } from 'vue2-leaflet'
 import Breadcrumb from '@/components/Breadcrumb'
 import 'leaflet/dist/leaflet.css'
 import estados from '@/data/estados.json'
@@ -87,6 +88,7 @@ export default {
     LTileLayer,
     LMarker,
     LPolygon,
+    LGeoJson,
   },
   data() {
     return {
@@ -115,6 +117,7 @@ export default {
         '&copy; <a target="_blank" href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       zoom: 4,
       center: [-10.850958, -51.492461],
+      geojson: null,
       polygon: [],
       polygonOptions: { color: 'blue' },
       markerLatLng: [0, 0],
@@ -131,6 +134,7 @@ export default {
     if (!this.isManager) {
       this.table_fields.push(actions)
     }
+    this.geojson = this.geographic.polygon
   },
   methods: {
     async list() {
