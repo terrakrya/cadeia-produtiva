@@ -39,6 +39,17 @@
                 />
               </b-form-group>
             </div>
+            <b-col sm="6">
+              <b-form-group label=" Boas práticas ">
+                <b-form-select
+                  v-model="form.bestPractices"
+                  value-field="id"
+                  text-field="name"
+                  class="form-control"
+                  :options="bestPractices"
+                />
+              </b-form-group>
+            </b-col>
           </div>
           <div class="row">
             <div class="col-sm-6">
@@ -52,6 +63,17 @@
                 <field-error :msg="veeErrors" field="specieProduct" />
               </b-form-group>
             </div>
+            <b-col sm="6">
+              <b-form-group label=" Certificação ">
+                <b-form-select
+                  v-model="form.certifications"
+                  value-field="id"
+                  text-field="name"
+                  class="form-control"
+                  :options="certifications"
+                />
+              </b-form-group>
+            </b-col>
           </div>
           <form-submit :sending="is_sending" />
         </b-form>
@@ -74,27 +96,47 @@ export default {
         code: '',
         description: '',
         specieProduct: '',
+        bestPractices: '',
+        certifications: '',
       },
+      bestPractices: [],
+      certifications: [],
     }
   },
-  created() {
+  async created() {
+    await this.list()
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
   },
   methods: {
-    edit(id) {
+    async edit(id) {
       this.is_loading = true
-      this.$axios
-        .get('products/' + id)
-        .then((response) => {
-          this.apiDataToForm(this.form, response.data)
-          if (response.data.image) {
-            this.images_preview = [response.data.image]
-          }
-          this.is_loading = false
-        })
-        .catch(this.showError)
+
+      try {
+        const dados = await this.$axios.$get('products/' + id)
+
+        this.form.name = dados.name
+        this.form.code = dados.code
+        this.form.description = dados.description
+        this.form.specieProduct = dados.specieProduct
+        this.form.bestPractices = dados.bestPractices
+        this.form.certifications = dados.certifications
+        console.log(dados.bestPractices)
+      } catch (e) {
+        this.showError(e)
+      }
+
+      this.is_loading = false
+    },
+    async list() {
+      const tipos = await this.$axios.$get('types')
+      this.bestPractices = tipos.filter((i) => {
+        return i.type === 'Boas práticas'
+      })
+      this.certifications = tipos.filter((i) => {
+        return i.type === 'Certificação'
+      })
     },
     save() {
       this.$validator.validate().then(async (isValid) => {
