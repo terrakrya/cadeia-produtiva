@@ -85,7 +85,8 @@ router.post('/', auth.authenticated, async (req, res) => {
     organizations.sigla = req.body.sigla
     organizations.otherContacts = req.body.otherContacts
     organizations.acting = req.body.acting
-
+    organizations.socialNetwork = req.body.socialNetwork
+    organizations.site = req.body.site
     await organizations.save()
 
     return res.send(organizations)
@@ -123,6 +124,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       organizations.sigla = req.body.sigla
       organizations.otherContacts = req.body.otherContacts
       organizations.acting = req.body.acting
+      organizations.socialNetwork = req.body.socialNetwork
+      organizations.site = req.body.site
       await organizations.save()
 
       return res.send(organizations)

@@ -50,6 +50,8 @@ const OrganizationSchema = new mongoose.Schema(
         ref: 'Type',
       },
     ],
+    socialNetwork: String,
+    site: String,
   },
   {
     timestamps: true,
@@ -81,6 +83,8 @@ OrganizationSchema.methods.data = function () {
     otherContacts: this.otherContacts,
     sigla: this.sigla,
     acting: this.acting,
+    socialNetwork: this.socialNetwork,
+    site: this.site,
   }
 }
 OrganizationSchema.methods.generateJWT = function () {
