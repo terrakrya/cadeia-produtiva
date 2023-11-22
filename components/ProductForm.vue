@@ -39,19 +39,6 @@
                 />
               </b-form-group>
             </div>
-            <b-col sm="6">
-              <b-form-group label=" Boas práticas ">
-                <b-form-select
-                  v-model="form.bestPractices"
-                  value-field="id"
-                  text-field="name"
-                  class="form-control"
-                  :options="bestPractices"
-                />
-              </b-form-group>
-            </b-col>
-          </div>
-          <div class="row">
             <div class="col-sm-6">
               <b-form-group label="Selecionar uma classe de espécie/produto *">
                 <form-entity-select
@@ -63,17 +50,28 @@
                 <field-error :msg="veeErrors" field="specieProduct" />
               </b-form-group>
             </div>
-            <b-col sm="6">
-              <b-form-group label=" Certificação ">
-                <b-form-select
-                  v-model="form.certifications"
+          </div>
+          <div class="filter-form">
+            <div class="filter">
+              <b-form-group label="Boas práticas">
+                <b-form-checkbox-group
+                  v-model="form.bestPractices"
+                  :options="bestPractices"
                   value-field="id"
                   text-field="name"
-                  class="form-control"
-                  :options="certifications"
                 />
               </b-form-group>
-            </b-col>
+            </div>
+            <div class="filter">
+              <b-form-group label="Certificação">
+                <b-form-checkbox-group
+                  v-model="form.certifications"
+                  :options="certifications"
+                  value-field="id"
+                  text-field="name"
+                />
+              </b-form-group>
+            </div>
           </div>
           <form-submit :sending="is_sending" />
         </b-form>
@@ -96,8 +94,8 @@ export default {
         code: '',
         description: '',
         specieProduct: '',
-        bestPractices: '',
-        certifications: '',
+        bestPractices: [],
+        certifications: [],
       },
       bestPractices: [],
       certifications: [],
@@ -122,7 +120,6 @@ export default {
         this.form.specieProduct = dados.specieProduct
         this.form.bestPractices = dados.bestPractices
         this.form.certifications = dados.certifications
-        console.log(dados.bestPractices)
       } catch (e) {
         this.showError(e)
       }
@@ -209,3 +206,18 @@ export default {
   },
 }
 </script>
+<style>
+.filter-form {
+  margin-bottom: 10px;
+}
+
+.filter-form label {
+  margin-right: 10px;
+}
+.filter-form .filter {
+  border: 1px solid #161b22;
+  padding: 5px 20px;
+  border-radius: 20px;
+  margin-bottom: 4px;
+}
+</style>
