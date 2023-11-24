@@ -64,11 +64,16 @@
                 <field-error :msg="veeErrors" field="transaction" />
               </b-form-group>
             </div>
+          </div>
+          <div class="row">
+            <h5>Preço por {{ form.measure }}</h5>
+          </div>
+          <div class="row">
             <div
               v-if="form.transaction === 'transação realizada'"
               class="col-sm-4"
             >
-              <b-form-group label="Quantidade transacionada *">
+              <b-form-group label="Quantidade Comercializada *">
                 <money
                   v-model="form.transactedQuantity"
                   v-validate="'required'"
@@ -79,10 +84,29 @@
                 <field-error :msg="veeErrors" field="transactedQuantity" />
               </b-form-group>
             </div>
+            <div
+              v-if="form.transaction === 'transação realizada'"
+              class="col-sm-4"
+            >
+              <b-form-group label="Preço">
+                <money
+                  v-model="form.originalPrice"
+                  v-validate="'required'"
+                  prefix=""
+                  class="form-control"
+                  name="originalPrice"
+                ></money>
+                <field-error :msg="veeErrors" field="originalPrice" />
+              </b-form-group>
+            </div>
           </div>
           <div class="row">
-            <div class="col-sm-4">
-              <b-form-group label="Preço mínimo *">
+            <!--<div>-->
+            <div
+              v-if="form.transaction === 'preço de mercado'"
+              class="col-sm-4"
+            >
+              <b-form-group label="Mínimo *">
                 <money
                   v-model="form.originalMinimumPrice"
                   v-validate="'required'"
@@ -93,8 +117,11 @@
                 <field-error :msg="veeErrors" field="originalMinimumPrice" />
               </b-form-group>
             </div>
-            <div class="col-sm-4">
-              <b-form-group label="Preço máximo *">
+            <div
+              v-if="form.transaction === 'preço de mercado'"
+              class="col-sm-4"
+            >
+              <b-form-group label="Máximo *">
                 <money
                   v-model="form.originalMaximumPrice"
                   prefix=""
@@ -103,6 +130,7 @@
                 <field-error :msg="veeErrors" field="originalMaximumPrice" />
               </b-form-group>
             </div>
+            <!--</div>-->
             <div class="col-sm-4">
               <b-form-group label="Unidade de medida *">
                 <b-form-select
@@ -116,7 +144,7 @@
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Posição na cadeia de valor do vendedor ">
+              <b-form-group label="Posição Comercial do vendedor ">
                 <b-form-select
                   v-model="form.buyerPositionSeller"
                   class="form-control"
@@ -126,7 +154,7 @@
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
-              <b-form-group label="Posição na cadeia de valor do comprador *">
+              <b-form-group label="Posição Comercial do comprador *">
                 <b-form-select
                   v-model="form.buyerPositionBuyer"
                   v-validate="'required'"
@@ -185,19 +213,21 @@
           <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Moeda">
-                <b-form-select
+                <input
                   v-model="form.currency"
+                  type="text"
+                  readonly
                   class="form-control"
-                  :options="moeda"
                 />
               </b-form-group>
             </div>
             <div class="col-sm-4">
               <b-form-group label="País">
-                <b-form-select
+                <input
                   v-model="form.country"
+                  type="text"
+                  readonly
                   class="form-control"
-                  :options="pais"
                 />
               </b-form-group>
             </div>
@@ -245,13 +275,14 @@ export default {
         maximumPrice: '',
         originalMinimumPrice: '',
         originalMaximumPrice: '',
+        originalPrice: '',
         currency: '',
         country: '',
         measure: '',
         product: '',
         uf: '',
         city: '',
-        transaction: '',
+        transaction: 'preço de mercado',
         transactedQuantity: '',
         organization: '',
         buyerPositionSeller: '',
@@ -284,7 +315,7 @@ export default {
         this.form.measure = this.currentUser.unitOfMeasurement
         this.form.uf = this.currentUser.uf
         this.form.city = this.currentUser.city
-        this.form.buyerPositionSeller = this.currentUser.buyerPositionSeller
+        this.form.buyerPositionSeller = this.currentUser.buyerPosition
       }
     },
     async loadOrganization() {
@@ -328,7 +359,7 @@ export default {
         this.form.measure = selectedMessenger.unitOfMeasurement
         this.form.uf = selectedMessenger.uf
         this.form.city = selectedMessenger.city
-        this.form.buyerPositionSeller = selectedMessenger.buyerPositionSeller
+        this.form.buyerPositionSeller = selectedMessenger.buyerPosition
       }
     },
     loadCities() {
@@ -417,6 +448,7 @@ export default {
         this.form.currency = dados.currency
         this.form.country = dados.country
         this.form.buyerPositionSeller = dados.buyerPositionSeller
+        this.form.originalPrice = dados.originalPrice
       } catch (e) {
         this.showError(e)
       }

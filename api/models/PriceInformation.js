@@ -41,6 +41,9 @@ const PriceSchema = new mongoose.Schema(
     minimumPrice: {
       type: Number,
     },
+    originalPrice: {
+      type: Number,
+    },
     maximumPrice: {
       type: Number,
     },
@@ -132,6 +135,7 @@ PriceSchema.methods.data = function () {
     organization: this.organization,
     transaction: this.transaction,
     transactedQuantity: this.transactedQuantity,
+    originalPrice: this.originalPrice,
   }
 }
 PriceSchema.methods.generateJWT = function () {
