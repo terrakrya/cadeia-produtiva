@@ -12,7 +12,7 @@
                 class="btn btn-primary"
                 variant="danger"
                 to="/operacional/informacao-preco"
-                >Coleta de preços</b-button
+                >Histórico de Preços Informados</b-button
               >
               <b-button
                 id="show-btn"

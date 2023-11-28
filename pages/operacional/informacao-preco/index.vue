@@ -1,6 +1,6 @@
 <template>
   <div class="priceInformation">
-    <breadcrumb active="Coleta de preços" />
+    <breadcrumb active="Histórico de Preços Informados" />
     <div class="panel">
       <div class="panel-body">
         <div class="panel-title">
