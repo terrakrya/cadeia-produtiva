@@ -4,7 +4,7 @@ const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const Type = mongoose.model('Type')
 
-router.get('/', auth.authenticated, async (req, res) => {
+router.get('/', auth.globalManager, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****
@@ -36,7 +36,7 @@ router.get('/', auth.authenticated, async (req, res) => {
   }
 })
 
-router.get('/:id', auth.authenticated, async (req, res) => {
+router.get('/:id', auth.globalManager, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
@@ -47,7 +47,7 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   }
 })
 
-router.post('/unique-code', auth.authenticated, async (req, res) => {
+router.post('/unique-code', auth.globalManager, async (req, res) => {
   const query = { code: req.body.code }
 
   if (req.body.id) {
@@ -61,7 +61,7 @@ router.post('/unique-code', auth.authenticated, async (req, res) => {
     res.sendStatus(422)
   }
 })
-router.post('/unique-name', auth.authenticated, async (req, res) => {
+router.post('/unique-name', auth.globalManager, async (req, res) => {
   const query = { name: req.body.name }
 
   if (req.body.id) {
@@ -76,7 +76,7 @@ router.post('/unique-name', auth.authenticated, async (req, res) => {
   }
 })
 
-router.post('/', auth.authenticated, async (req, res) => {
+router.post('/', auth.globalManager, async (req, res) => {
   try {
     const type = new Type()
 
@@ -93,7 +93,7 @@ router.post('/', auth.authenticated, async (req, res) => {
   }
 })
 // altera um produto
-router.put('/:id', auth.authenticated, async (req, res) => {
+router.put('/:id', auth.globalManager, async (req, res) => {
   try {
     const query = { _id: req.params.id }
 
@@ -116,7 +116,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
   }
 })
 
-router.delete('/:id', auth.authenticated, (req, res) => {
+router.delete('/:id', auth.globalManager, (req, res) => {
   const query = { _id: req.params.id }
 
   Type.findOne(query).exec(function (err, type) {

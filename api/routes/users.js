@@ -8,37 +8,16 @@ const populate = require('../config/utils').populate
 const User = mongoose.model('User')
 
 // recupera a lista de usuários
-router.get('/', auth.authenticated, async (req, res) => {
+router.get('/', auth.manager, async (req, res) => {
   const query = {}
-
-  // ***** monta os filtros *****
-
-  if (req.query.filters) {
-    const filters = JSON.parse(req.query.filters || '{}')
-
-    if (filters.id) {
-      query._id = filters.id
-    } else {
-      query.role = { $ne: 'admin' }
-    }
-
-    if (filters.organization) {
-      if (filters.organization === '!organization') {
-        query.$or = [{ organization: null }, { role: 'gestor' }]
-      } else {
-        query.organization = filters.organization
-        query.role = { $ne: 'gestor' }
-      }
-    }
-
-    if (filters.role) {
-      query.role = filters.role
-    }
-  }
+  const userRole = req.user.role
 
   try {
     // ***** executa a query *****
-
+    
+   if (userRole === 'gestor') {
+    query.organization = req.user.organization
+  }
     const users = await User.find(query).populate('organization').sort('name')
 
     res.json(users)
@@ -52,9 +31,20 @@ router.get('/', auth.authenticated, async (req, res) => {
 // recupera um usuário
 router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
+  const userRole = req.user.role
+  const userId = req.user.id
+
+  if (userRole === 'mensageiro') {
+    query._id = userId
+  }
+
+  if (userRole === 'gestor') {
+    query.organization = req.user.organization
+  }
 
   try {
     const user = await User.findOne(query).populate(populate(req))
+
     return res.json(user)
   } catch (err) {
     res.sendStatus(422)
@@ -110,8 +100,9 @@ router.post('/unique-username', auth.authenticated, async (req, res) => {
 })
 
 // inclui um usuário
-router.post('/', auth.authenticated, async (req, res) => {
+router.post('/', auth.manager, async (req, res) => {
   try {
+    const userRole = req.user.role
     const user = new User()
 
     user.username = req.body.username
@@ -127,6 +118,11 @@ router.post('/', auth.authenticated, async (req, res) => {
     user.city = req.body.city
     user.birthDate = req.body.birthDate
     user.gender = req.body.gender
+
+    if (userRole === 'gestor') {
+      user.role = 'mensageiro'
+      user.organization = req.user.organization
+    }
 
     if (req.body.password) {
       user.setPassword(req.body.password)
@@ -146,6 +142,12 @@ router.post('/', auth.authenticated, async (req, res) => {
 router.put('/:id', auth.authenticated, async (req, res) => {
   try {
     const query = { _id: req.params.id }
+    const userRole = req.user.role
+    const userId = req.user.id
+
+    if(userRole === 'mensageiro') {
+      query._id = userId
+    }
 
     const user = await User.findOne(query)
 
@@ -168,6 +170,12 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.gender = req.body.gender
       user.identity = req.body.identity
 
+      if (userRole === 'gestor'  || userRole === 'mensageiro') {
+        user.role = 'mensageiro'
+        user.organization = req.user.organization
+      }
+
+
       if (req.body.password) {
         user.setPassword(req.body.password)
       }
@@ -189,6 +197,12 @@ router.put('/:id', auth.authenticated, async (req, res) => {
 router.put('/:id/profile', auth.authenticated, async (req, res) => {
   try {
     const query = { _id: req.params.id }
+    const userRole = req.user.role
+    const userId = req.user.id
+
+    if(userRole === 'mensageiro') {
+      query._id = userId
+    }
 
     const user = await User.findOne(query)
 
@@ -209,6 +223,11 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.gender = req.body.gender
       user.identity = req.body.identity
 
+      if (userRole === 'gestor'  || userRole === 'mensageiro') {
+        user.role = 'mensageiro'
+        user.organization = req.user.organization
+      }
+
       if (req.body.password) {
         user.setPassword(req.body.password)
       }
@@ -227,8 +246,13 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
 })
 
 // exclui um usuário
-router.delete('/:id', auth.authenticated, (req, res) => {
+router.delete('/:id', auth.manager, (req, res) => {
   const query = { _id: req.params.id }
+  const userRole = req.user.role
+
+  if (userRole === 'gestor') {
+    query.organization = req.user.organization
+  }
 
   User.findOne(query).exec(function (err, user) {
     if (err) {

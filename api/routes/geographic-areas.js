@@ -7,7 +7,7 @@ const tj = require('@mapbox/togeojson')
 const fs = require('fs')
 const DOMParser = require('xmldom').DOMParser
 
-router.get('/', auth.authenticated, async (req, res) => {
+router.get('/', auth.manager, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****
@@ -30,7 +30,7 @@ router.get('/', auth.authenticated, async (req, res) => {
   }
 })
 
-router.get('/:id', auth.authenticated, async (req, res) => {
+router.get('/:id', auth.manager, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
@@ -43,7 +43,7 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   }
 })
 
-router.post('/', auth.authenticated, async (req, res) => {
+router.post('/', auth.globalManager, async (req, res) => {
   try {
     const geographic = new GeographicArea()
 
@@ -75,7 +75,7 @@ router.post('/', auth.authenticated, async (req, res) => {
   }
 })
 // altera um produto
-router.put('/:id', auth.authenticated, async (req, res) => {
+router.put('/:id', auth.globalManager, async (req, res) => {
   try {
     const query = { _id: req.params.id }
 
@@ -104,7 +104,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
   }
 })
 
-router.delete('/:id', auth.authenticated, (req, res) => {
+router.delete('/:id', auth.globalManager, (req, res) => {
   const query = { _id: req.params.id }
 
   GeographicArea.findOne(query).exec(function (err, geographic) {
