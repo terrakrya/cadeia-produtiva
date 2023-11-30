@@ -27,7 +27,7 @@
                 class="btn btn-primary"
                 variant="danger"
                 @click="$bvModal.show('bv-modal-1')"
-                >Regiões imediatas</b-button
+                >Regiões Castanheiras</b-button
               >
               <b-button
                 id="show-btn"
@@ -37,7 +37,7 @@
                 >Nota metodológica</b-button
               >
 
-              <FormSquareTranslator id="bv-modal-1" />
+              <FormRegionsTranslator id="bv-modal-1" />
               <FormMeasureTranslator id="bv-modal" />
               <FormMetodologia id="bv-modal-2" />
             </div>
@@ -171,7 +171,7 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import FormGridInformat from '@/components/FormGridInformat'
-import FormSquareTranslator from '@/components/FormSquareTranslator'
+import FormRegionsTranslator from '@/components/FormRegionsTranslator'
 import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
 import estados from '@/data/estados.json'
@@ -182,7 +182,7 @@ export default {
   components: {
     Breadcrumb,
     FormGridInformat,
-    FormSquareTranslator,
+    FormRegionsTranslator,
     FormMeasureTranslator,
     FormMetodologia,
   },
