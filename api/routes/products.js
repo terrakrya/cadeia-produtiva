@@ -4,7 +4,40 @@ const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const Product = mongoose.model('Product')
 
-router.get('/', auth.globalManager, async (req, res) => {
+router.get('/', auth.authenticated, async (req, res) => {
+  const query = {}
+
+  const filters = req.query
+
+  if (filters.id) {
+    query._id = filters.id
+  }
+
+  if (filters.code) {
+    query.code = filters.code
+  }
+
+  if (filters.description) {
+    query.description = filters.description
+  }
+
+  try {
+    // ***** executa a query *****
+
+    const product = await Product.find(query)
+      .populate('specieProduct')
+      .populate('type')
+      .sort('code')
+
+    res.json(product)
+  } catch (err) {
+    res
+      .status(422)
+      .send('Ocorreu um erro ao carregar a lista de produto: ' + err.message)
+  }
+})
+
+router.get('/cadastro-de-produtos', auth.globalManager, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****

@@ -23,7 +23,7 @@ router.get('/', auth.manager, async (req, res) => {
   }
 })
 
-router.get('/:id', auth.globalManager, async (req, res) => {
+router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
