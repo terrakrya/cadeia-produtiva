@@ -8,13 +8,21 @@ const populate = require('../config/utils').populate
 const User = mongoose.model('User')
 
 // recupera a lista de usuários
-router.get('/', auth.manager, async (req, res) => {
+router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
   const userRole = req.user.role
 
   try {
     // ***** executa a query *****
     
+   if (userRole === 'mensageiro' && req.query.populate === 'network') {
+    return res.status(403).json({
+      status: 403,
+      message:
+        'A permissão de Gestor é necessária para acessar este recurso.',
+    })
+   }
+
    if (userRole === 'gestor') {
     query.organization = req.user.organization
   }
