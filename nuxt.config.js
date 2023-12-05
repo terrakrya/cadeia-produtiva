@@ -71,8 +71,8 @@ export default {
   pwa: {
     manifest: {
       lang: 'pt-BR',
-      name: 'Cadeia de Valor',
-      short_name: 'Valoreia',
+      name: 'IÊ - Castanha',
+      short_name: 'IÊ - Castanha',
     },
     meta: {
       ogHost: process.env.BASE_URL,

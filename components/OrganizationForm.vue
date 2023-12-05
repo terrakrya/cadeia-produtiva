@@ -1,7 +1,7 @@
 <template>
   <div class="organization-form">
     <Breadcrumb
-      :links="[['Cadastro', '/cadastros/organizações']]"
+      :links="[['Cadastro', '/cadastros/organizacoes']]"
       active="Organização"
     />
     <div class="panel">

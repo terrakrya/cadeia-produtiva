@@ -32,7 +32,7 @@
                   >Metodologia</b-button
                 >
 
-                <FormSquareTranslator id="bv-modal-1" />
+                <FormRegionsTranslator id="bv-modal-1" />
                 <FormMeasureTranslator id="bv-modal" />
                 <FormMetodologia id="bv-modal-2" />
               </div>
@@ -218,7 +218,7 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import FormSquareTranslator from '@/components/FormSquareTranslator'
+import FormRegionsTranslator from '@/components/FormRegionsTranslator'
 import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
 import estados from '@/data/estados.json'
@@ -229,7 +229,7 @@ import NoItem from '~/components/NoItem.vue'
 export default {
   components: {
     Breadcrumb,
-    FormSquareTranslator,
+    FormRegionsTranslator,
     FormMeasureTranslator,
     FormMetodologia,
     NoItem,
