@@ -19,7 +19,7 @@
                 to="/operacional/informacao-preco/cadastrar"
                 class="btn btn-primary"
               >
-                <b-icon-plus /> {{ 'Registrar' }}
+                <b-icon-plus /> {{ 'Coletar' }}
               </n-link>
             </div>
           </div>
