@@ -301,12 +301,18 @@ export default {
 
     await this.loadOrganization()
     await this.preSetDados()
+    await this.setMessenger()
 
     this.creating = false
 
     this.loadPracas()
   },
   methods: {
+    setMessenger() {
+      if (this.isAdmin || this.isGlobalManager || this.isManager) {
+      this.form.messenger = this.currentUser._id;
+    }
+    },
     preSetDados() {
       // pre-set das informações conforme o usuário logado
       if (!this.isEditing() && !this.isAdmin && !this.isGlobalManager) {
