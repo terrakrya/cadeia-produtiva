@@ -127,7 +127,7 @@
                 </b-col>
               </div>
               <div class="row">
-                <b-col md="2" sm="9">
+                <b-col md="3" sm="9">
                   <b-form-group label="Unidade de medida mais comum *">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
