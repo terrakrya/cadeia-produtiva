@@ -50,29 +50,29 @@
                 <field-error :msg="veeErrors" field="product" />
               </b-form-group>
             </div>
-
-            <div class="col-sm-4">
-              <b-form-group label=" Tipo *">
-                <b-form-select
-                  v-model="form.transaction"
-                  v-validate="'required'"
-                  class="form-control"
-                  aria-placeholder="selecione a opção"
-                  :options="transacao"
-                  nome="transaction"
-                />
-                <field-error :msg="veeErrors" field="transaction" />
-              </b-form-group>
+            <div class="text-right">
+              <b-button
+                id="show-btn"
+                variant="secondary"
+                @click="form.transaction = true"
+                >Preços Ofertados no Mercado Local
+              </b-button>
+            </div>
+            <b></b>
+            <div class="text-right">
+              <b-button
+                id="show-btn"
+                variant="secondary"
+                @click="form.transaction = false"
+                >Preço de Venda Realizada
+              </b-button>
             </div>
           </div>
-          <div class="row">
+          <!--<div class="row">
             <h5>Preço por {{ form.measure }}</h5>
-          </div>
+          </div>-->
           <div class="row">
-            <div
-              v-if="form.transaction === 'transação realizada'"
-              class="col-sm-4"
-            >
+            <div v-if="!form.transaction" class="col-sm-4">
               <b-form-group label="Quantidade Comercializada *">
                 <money
                   v-model="form.transactedQuantity"
@@ -84,10 +84,7 @@
                 <field-error :msg="veeErrors" field="transactedQuantity" />
               </b-form-group>
             </div>
-            <div
-              v-if="form.transaction === 'transação realizada'"
-              class="col-sm-4"
-            >
+            <div v-if="!form.transaction" class="col-sm-4">
               <b-form-group label="Preço">
                 <money
                   v-model="form.originalPrice"
@@ -102,11 +99,8 @@
           </div>
           <div class="row">
             <!--<div>-->
-            <div
-              v-if="form.transaction === 'preço de mercado'"
-              class="col-sm-4"
-            >
-              <b-form-group label="Mínimo *">
+            <div v-if="form.transaction" class="col-sm-4">
+              <b-form-group label="Menor preço *">
                 <money
                   v-model="form.originalMinimumPrice"
                   v-validate="'required'"
@@ -117,11 +111,8 @@
                 <field-error :msg="veeErrors" field="originalMinimumPrice" />
               </b-form-group>
             </div>
-            <div
-              v-if="form.transaction === 'preço de mercado'"
-              class="col-sm-4"
-            >
-              <b-form-group label="Máximo *">
+            <div v-if="form.transaction" class="col-sm-4">
+              <b-form-group label="Maior preço *">
                 <money
                   v-model="form.originalMaximumPrice"
                   prefix=""
@@ -144,7 +135,7 @@
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Posição Comercial do vendedor ">
+              <b-form-group label="Vendedor ">
                 <b-form-select
                   v-model="form.buyerPositionSeller"
                   class="form-control"
@@ -154,7 +145,7 @@
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
-              <b-form-group label="Posição Comercial do comprador *">
+              <b-form-group label="Comprador *">
                 <b-form-select
                   v-model="form.buyerPositionBuyer"
                   v-validate="'required'"
@@ -198,7 +189,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Município *">
+              <b-form-group label="Município de Referência *">
                 <b-form-select
                   v-model="form.city"
                   class="form-control"
@@ -231,6 +222,16 @@
                 />
               </b-form-group>
             </div>
+            <div class="col-sm-4">
+              <b-form-group label="Região Castanheira">
+                <input
+                  v-model="form.region"
+                  type="text"
+                  readonly
+                  class="form-control"
+                />
+              </b-form-group>
+            </div>
           </div>
           <form-submit :sending="is_sending" @imput="transactedQuantity()" />
         </b-form>
@@ -250,12 +251,14 @@ import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
 import transacao from '@/data/transacionada.json'
+import regiao from '@/data/regioes-castanheiras.json'
 export default {
   components: {
     Breadcrumb,
   },
   data() {
     return {
+      regiao,
       pracas,
       buyerPositions,
       medidas,
@@ -279,15 +282,16 @@ export default {
         currency: '',
         country: '',
         measure: '',
-        product: '',
+        product: '63ff4160ff65e9001b61c6af',
         uf: '',
         city: '',
-        transaction: 'preço de mercado',
+        transaction: true,
         transactedQuantity: '',
         organization: '',
         buyerPositionSeller: '',
         square: '',
         squareid: '',
+        region: '',
       },
       products: [],
       messengers: [],
@@ -306,12 +310,15 @@ export default {
     this.creating = false
 
     this.loadPracas()
+    this.estados.sort(function (x, y) {
+      return x.uf.localeCompare(y.uf)
+    })
   },
   methods: {
     setMessenger() {
       if (this.isAdmin || this.isGlobalManager || this.isManager) {
-      this.form.messenger = this.currentUser._id;
-    }
+        this.form.messenger = this.currentUser._id
+      }
     },
     preSetDados() {
       // pre-set das informações conforme o usuário logado
@@ -386,15 +393,12 @@ export default {
     },
     // filtra as regiões imediatas conforme a município selecionada
     loadPracas() {
-      if (this.form.county) {
-        const cidade = this.form.county
-        const pracas = this.pracas.filter(function (item) {
-          return item.cidade === cidade
+      if (this.form.city) {
+        const cidade = this.form.city
+        const regiao = this.regiao.filter(function (item) {
+          return item.municipio === cidade
         })
-        if (pracas && pracas.length > 0) {
-          this.form.square = pracas[0].nome
-          this.form.squareid = pracas[0].id
-        }
+        this.form.region = regiao.municipio
       }
     },
     transactedQuantity() {

@@ -74,6 +74,7 @@ const PriceSchema = new mongoose.Schema(
       type: ObjectId,
       ref: 'Organization',
     },
+    region: String,
   },
   {
     timestamps: true,
@@ -136,6 +137,7 @@ PriceSchema.methods.data = function () {
     transaction: this.transaction,
     transactedQuantity: this.transactedQuantity,
     originalPrice: this.originalPrice,
+    region: this.region,
   }
 }
 PriceSchema.methods.generateJWT = function () {
