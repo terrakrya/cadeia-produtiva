@@ -100,8 +100,8 @@
                     <field-error :msg="veeErrors" field="country" />
                   </b-form-group>
                 </div>
-                <b-col sm="1">
-                  <b-form-group label="Estado *">
+                <b-col sm="2">
+                  <b-form-group label="Estado de Atuação *">
                     <b-form-select
                       v-model="form.uf"
                       v-validate="'required'"
@@ -114,7 +114,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col sm="2">
-                  <b-form-group label="Município *">
+                  <b-form-group label="Município de Referência *">
                     <b-form-select
                       v-model="form.city"
                       v-validate="'required'"
@@ -128,7 +128,7 @@
               </div>
               <div class="row">
                 <b-col sm="2">
-                  <b-form-group label="Unidade de medida *">
+                  <b-form-group label="Unidade de medida mais comum *">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
                       v-validate="'required'"
