@@ -19,7 +19,7 @@
                     <field-error :msg="veeErrors" field="name" />
                   </b-form-group>
                 </b-col>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <b-form-group label="Data de nascimento *">
                     <b-form-input
                       v-model="form.birthDate"
@@ -41,12 +41,12 @@
                 </b-col>
               </b-row>
               <b-row>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <b-form-group label="Gênero ">
                     <b-form-select v-model="form.gender" :options="genero" />
                   </b-form-group>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <b-form-group label="Identidade ">
                     <b-form-select
                       v-model="form.identity"
@@ -54,7 +54,7 @@
                     />
                   </b-form-group>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <b-form-group label="Celular *">
                     <b-form-input
                       v-model="form.username"
@@ -76,7 +76,7 @@
                 </b-col>
               </b-row>
               <div class="row">
-                <b-col sm="3">
+                <b-col md="4">
                   <b-form-group label="Posição na cadeia de valor *">
                     <b-form-select
                       v-model="form.buyerPosition"
@@ -88,7 +88,7 @@
                     <field-error :msg="veeErrors" field="buyerPosition" />
                   </b-form-group>
                 </b-col>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <b-form-group label="País *">
                     <b-form-select
                       v-model="form.country"
@@ -100,7 +100,7 @@
                     <field-error :msg="veeErrors" field="country" />
                   </b-form-group>
                 </div>
-                <b-col sm="2">
+                <b-col sm="3">
                   <b-form-group label="Estado de Atuação *">
                     <b-form-select
                       v-model="form.uf"
@@ -113,7 +113,7 @@
                     <field-error :msg="veeErrors" field="uf" />
                   </b-form-group>
                 </b-col>
-                <b-col sm="2">
+                <b-col sm="3">
                   <b-form-group label="Município de Referência *">
                     <b-form-select
                       v-model="form.city"
@@ -127,7 +127,7 @@
                 </b-col>
               </div>
               <div class="row">
-                <b-col sm="2">
+                <b-col md="2" sm="9">
                   <b-form-group label="Unidade de medida mais comum *">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
@@ -139,7 +139,7 @@
                     <field-error :msg="veeErrors" field="unitOfMeasurement" />
                   </b-form-group>
                 </b-col>
-                <div class="col-sm-1">
+                <div class="col-md-3 col-sm-5">
                   <b-form-group label="Moeda *">
                     <b-form-select
                       v-model="form.currency"

@@ -12,7 +12,7 @@
         <tr>
           <td>Lata</td>
           <td class="td-lata">1</td>
-          <!-- <--<td>20</td>-->
+          <!--<td>20</td>-->
           <td>12</td>
         </tr>
         <tr>
