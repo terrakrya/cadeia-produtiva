@@ -4,38 +4,38 @@
       <thead>
         <tr>
           <th>Unidade</th>
-          <th>Caixa</th>
+          <th>Lata</th>
           <th>Kg</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>Lata</td>
-          <td class="td-caixa">1</td>
+          <td class="td-lata">1</td>
           <!-- <--<td>20</td>-->
           <td>12</td>
         </tr>
         <tr>
           <td>Caixa</td>
-          <td class="td-caixa">2</td>
+          <td class="td-lata">2</td>
           <!--   <td>40</td>-->
           <td>24</td>
         </tr>
         <tr>
           <td>Saca</td>
-          <td class="td-caixa">5</td>
+          <td class="td-lata">4</td>
           <!--<td>100</td>-->
           <td>48</td>
         </tr>
         <tr>
           <td>Hectolitro</td>
-          <td class="td-caixa">5</td>
+          <td class="td-lata">5</td>
           <!--<td>100</td>-->
           <td>60</td>
         </tr>
         <tr>
           <td>Barrica</td>
-          <td class="td-caixa">6</td>
+          <td class="td-lata">6</td>
           <!-- <td>120</td>-->
           <td>72</td>
         </tr>
