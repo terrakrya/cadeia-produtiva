@@ -60,8 +60,7 @@ function authenticatedManager(req, res, next) {
   } else {
     return res.status(403).json({
       status: 403,
-      message:
-        'A permissão de Gestor é necessária para acessar este recurso.',
+      message: 'A permissão de Gestor é necessária para acessar este recurso.',
     })
   }
 }

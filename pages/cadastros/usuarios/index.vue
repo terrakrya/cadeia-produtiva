@@ -98,7 +98,6 @@ export default {
   },
   methods: {
     async list() {
-      
       this.users = await this.$axios.$get('users', {
         params: {
           populate: 'network',

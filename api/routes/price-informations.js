@@ -292,6 +292,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.transactedQuantity = req.body.transactedQuantity
     price.buyerPositionSeller = req.body.buyerPositionSeller
     price.originalPrice = req.body.originalPrice
+    price.region = req.body.region
 
     await price.save()
 
@@ -328,6 +329,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       price.transactedQuantity = req.body.transactedQuantity
       price.buyerPositionSeller = req.body.buyerPositionSeller
       price.originalPrice = req.body.originalPrice
+      price.region = req.body.region
 
       await price.save()
 

@@ -14,18 +14,18 @@ router.get('/', auth.authenticated, async (req, res) => {
 
   try {
     // ***** executa a query *****
-    
-   if (userRole === 'mensageiro' && req.query.populate === 'network') {
-    return res.status(403).json({
-      status: 403,
-      message:
-        'A permissão de Gestor é necessária para acessar este recurso.',
-    })
-   }
 
-   if (userRole === 'gestor') {
-    query.organization = req.user.organization
-  }
+    if (userRole === 'mensageiro' && req.query.populate === 'network') {
+      return res.status(403).json({
+        status: 403,
+        message:
+          'A permissão de Gestor é necessária para acessar este recurso.',
+      })
+    }
+
+    if (userRole === 'gestor') {
+      query.organization = req.user.organization
+    }
     const users = await User.find(query).populate('organization').sort('name')
 
     res.json(users)
@@ -153,7 +153,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
     const userRole = req.user.role
     const userId = req.user.id
 
-    if(userRole === 'mensageiro') {
+    if (userRole === 'mensageiro') {
       query._id = userId
     }
 
@@ -178,11 +178,10 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.gender = req.body.gender
       user.identity = req.body.identity
 
-      if (userRole === 'gestor'  || userRole === 'mensageiro') {
+      if (userRole === 'gestor' || userRole === 'mensageiro') {
         user.role = 'mensageiro'
         user.organization = req.user.organization
       }
-
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -208,7 +207,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
     const userRole = req.user.role
     const userId = req.user.id
 
-    if(userRole === 'mensageiro') {
+    if (userRole === 'mensageiro') {
       query._id = userId
     }
 
@@ -231,7 +230,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.gender = req.body.gender
       user.identity = req.body.identity
 
-      if (userRole === 'gestor'  || userRole === 'mensageiro') {
+      if (userRole === 'gestor' || userRole === 'mensageiro') {
         user.role = 'mensageiro'
         user.organization = req.user.organization
       }

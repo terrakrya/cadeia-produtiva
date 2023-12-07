@@ -47,7 +47,6 @@
               :filter="filters.search"
               stacked="lg"
             >
-            
               <template #cell(product)="data">
                 {{ data.item.product.name }}
               </template>
@@ -55,7 +54,8 @@
                 {{ data.item.createdAt | moment('DD/MM/YYYY') }}
               </template>
               <template #cell(buyerPosition)="data">
-                Preço de {{ data.item.messenger.buyerPosition }} para {{ data.item.buyerPositionBuyer }}
+                Preço de {{ data.item.messenger.buyerPosition }} para
+                {{ data.item.buyerPositionBuyer }}
               </template>
               <template #cell(messenger)="data">
                 {{ data.item.messenger.name }}
@@ -148,7 +148,7 @@ export default {
   methods: {
     fillTableFields() {
       const tableFields = [{ key: 'product', label: 'Produto', sortable: true }]
-      
+
       tableFields.push({ key: 'createdAt', label: 'Data', sortable: true })
 
       if (this.isAdmin || this.isManager || this.isGlobalManager) {
