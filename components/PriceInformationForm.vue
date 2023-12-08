@@ -229,6 +229,7 @@
                   type="text"
                   readonly
                   class="form-control"
+                  text-field="regiaoCastanheira"
                 />
               </b-form-group>
             </div>
@@ -313,6 +314,7 @@ export default {
     this.estados.sort(function (x, y) {
       return x.uf.localeCompare(y.uf)
     })
+    this.form.transaction = true
   },
   methods: {
     setMessenger() {
@@ -398,7 +400,9 @@ export default {
         const regiao = this.regiao.filter(function (item) {
           return item.municipio === cidade
         })
-        this.form.region = regiao.municipio
+        if (regiao && regiao.length > 0) {
+          this.form.region = regiao[0].regiaoCastanheira
+        }
       }
     },
     transactedQuantity() {
@@ -496,7 +500,7 @@ export default {
             scope: null,
           })
           isValid = false
-        } else if (this.form.transaction === 'transação realizada') {
+        } else if (this.form.transaction === false) {
           if (this.form.transactedQuantity === 0.0) {
             this.veeErrors.items.push({
               id: 103,
@@ -508,7 +512,7 @@ export default {
             })
             isValid = false
           }
-        } else if (this.form.transaction === 'preço de mercado') {
+        } else if (this.form.transaction === true) {
           this.form.transactedQuantity = 0
         } else {
           this.veeErrors.items = this.veeErrors.items.filter(
@@ -531,7 +535,7 @@ export default {
             this.form.organization = this.currentUser.organization
           }
 
-          if (this.form.transaction === 'preço de mercado') {
+          if (this.form.transaction === true) {
             this.form.transactedQuantity = 0
           }
 
