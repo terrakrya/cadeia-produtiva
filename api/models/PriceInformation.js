@@ -58,6 +58,10 @@ const PriceSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    measurePrice: {
+      type: String,
+      required: true,
+    },
     product: {
       type: ObjectId,
       ref: 'Product',
@@ -87,7 +91,7 @@ const getConversion = (measure) => {
     return 1
   } else if (measure === 'Tonelada') {
     return 1000
-  } else if (measure === 'Latão') {
+  } else if (measure === 'Lata') {
     return 12
   } else if (measure === 'Caixa') {
     return 24
@@ -107,7 +111,7 @@ PriceSchema.pre('save', function (next) {
   const max = this.originalMaximumPrice
 
   let quant = 1
-  if (this.transaction === 'transação realizada') {
+  if (!this.transaction) {
     quant = this.transactedQuantity
   }
 
@@ -129,6 +133,7 @@ PriceSchema.methods.data = function () {
     currency: this.currency,
     country: this.country,
     measure: this.measure,
+    measurePrice: this.measurePrice,
     product: this.product,
     messenger: this.messenger,
     uf: this.uf,
