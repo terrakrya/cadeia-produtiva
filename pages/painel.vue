@@ -41,8 +41,8 @@
                   id="show-btn"
                   class="btn btn-primary"
                   variant="danger"
-                  to="/operacional/informacao-preco"
-                  >Histórico de Preços Informados</b-button
+                  to="/operacional/informacao-preco/cadastrar"
+                  >Coletar Preços</b-button
                 >
               </div>
             </div>
