@@ -5,6 +5,7 @@
     :fields="table_fields"
     :items="list"
     :sort-by="'date'"
+    stacked="lg"
   >
     <template #cell(from)="data">
       {{ data.item.from }}
@@ -52,7 +53,7 @@ export default {
         },
         {
           key: 'price',
-          label: 'Preços: mínimo/máximo',
+          label: 'Mínimo/Máximo',
         },
       ],
     }

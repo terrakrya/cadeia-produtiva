@@ -39,10 +39,17 @@
               <div class="text-right">
                 <b-button
                   id="show-btn"
-                  class="btn btn-primary"
+                  class="btn btn-primary mb-1"
                   variant="danger"
                   to="/operacional/informacao-preco/cadastrar"
                   >Coletar Preços</b-button
+                >
+                <b-button
+                  id="show-btn"
+                  class="btn btn-primary mb-1"
+                  variant="danger"
+                  to="/dados-publicados"
+                  >Dados publicados</b-button
                 >
               </div>
             </div>

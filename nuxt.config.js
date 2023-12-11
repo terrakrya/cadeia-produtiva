@@ -71,8 +71,8 @@ export default {
   pwa: {
     manifest: {
       lang: 'pt-BR',
-      name: 'IÊ - Castanha',
-      short_name: 'IÊ - Castanha',
+      name: 'IÊ',
+      short_name: 'IÊ',
     },
     meta: {
       ogHost: process.env.BASE_URL,
@@ -129,5 +129,6 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
+  build: {},
   build: {},
 }
