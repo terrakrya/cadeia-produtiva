@@ -16,7 +16,7 @@
                   v-model="form.uf"
                   v-validate="'required'"
                   class="form-control"
-                  :options="estado.map((e) => e.uf)"
+                  :options="estados"
                   name="uf"
                   value-field="codigo_uf"
                   text-field="nome"
@@ -60,15 +60,12 @@
                 <field-error :msg="veeErrors" field="uf" />
               </b-form-group>
             </b-col>
-            <b-col sm="5">
-              <b-form-group label="Coordenadas">
-                <b-form-file
-                  v-model="file"
-                  class="form-control-file"
-                  placeholder="arquivo de área"
-                />
-              </b-form-group>
-            </b-col>
+            <Upload
+              v-model="form.file"
+              type="documents"
+              label="Coordenadas"
+              edit-title
+            />
             <b-col sm="12">
               <b-form-group label="Comentários">
                 <b-form-textarea v-model="form.comments" />
@@ -132,7 +129,7 @@ export default {
         polygon: [],
         name: '',
         comments: '',
-        file: {},
+        file: null,
       },
       url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       attribution:

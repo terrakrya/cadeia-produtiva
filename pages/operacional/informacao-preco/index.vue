@@ -1,6 +1,6 @@
 <template>
   <div class="priceInformation">
-    <breadcrumb active="Coleta de preços" />
+    <breadcrumb active="Histórico de Preços Informados" />
     <div class="panel">
       <div class="panel-body">
         <div class="panel-title">
@@ -19,7 +19,7 @@
                 to="/operacional/informacao-preco/cadastrar"
                 class="btn btn-primary"
               >
-                <b-icon-plus /> {{ 'Registrar' }}
+                <b-icon-plus /> {{ 'Coletar' }}
               </n-link>
             </div>
           </div>
@@ -47,8 +47,15 @@
               :filter="filters.search"
               stacked="lg"
             >
+              <template #cell(product)="data">
+                {{ data.item.product.name }}
+              </template>
               <template #cell(createdAt)="data">
                 {{ data.item.createdAt | moment('DD/MM/YYYY') }}
+              </template>
+              <template #cell(buyerPosition)="data">
+                Preço de {{ data.item.messenger.buyerPosition }} para
+                {{ data.item.buyerPositionBuyer }}
               </template>
               <template #cell(messenger)="data">
                 {{ data.item.messenger.name }}
@@ -58,9 +65,6 @@
                   data.item.organization.sigla
                 }}</span>
               </template>
-              <template #cell(buyerPosition)="data">
-                {{ data.item.buyerPosition }}
-              </template>
               <template #cell(uf)="data">
                 {{ data.item.uf }}
               </template>
@@ -69,12 +73,6 @@
               </template>
               <template #cell(square)="data">
                 {{ data.item.square }}
-              </template>
-              <template #cell(product)="data">
-                {{ data.item.product.name }}
-              </template>
-              <template #cell(measure)="data">
-                {{ data.item.measure }}
               </template>
               <template #cell(minimumPrice)="data">
                 {{ data.item.originalMinimumPrice | moeda }}
@@ -99,6 +97,9 @@
                   <br />
                   {{ data.item.maximumPrice | moeda }}/Kg
                 </small>
+              </template>
+              <template #cell(measure)="data">
+                {{ data.item.measure }}
               </template>
               <template #cell(actions)="data">
                 <n-link
@@ -146,7 +147,9 @@ export default {
   },
   methods: {
     fillTableFields() {
-      const tableFields = [{ key: 'createdAt', label: 'Data', sortable: true }]
+      const tableFields = [{ key: 'product', label: 'Produto', sortable: true }]
+
+      tableFields.push({ key: 'createdAt', label: 'Data', sortable: true })
 
       if (this.isAdmin || this.isManager || this.isGlobalManager) {
         tableFields.push({
@@ -166,7 +169,7 @@ export default {
 
       tableFields.push({
         key: 'buyerPosition',
-        label: 'Posição comercial',
+        label: 'Relação comercial',
         sortable: true,
       })
       tableFields.push({ key: 'uf', label: 'Estado', sortable: true })
@@ -179,9 +182,6 @@ export default {
           sortable: true,
         })
       }
-
-      tableFields.push({ key: 'product', label: 'Produto', sortable: true })
-      tableFields.push({ key: 'measure', label: 'Unidade', sortable: true })
       tableFields.push({
         key: 'minimumPrice',
         label: 'Preço mínimo',
@@ -192,6 +192,9 @@ export default {
         label: 'Preço máximo',
         sortable: true,
       })
+
+      tableFields.push({ key: 'measure', label: 'Unidade', sortable: true })
+
       tableFields.push({ key: 'actions', label: 'Ação', class: 'actions' })
 
       this.table_fields = tableFields

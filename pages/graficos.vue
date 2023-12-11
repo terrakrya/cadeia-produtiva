@@ -1,7 +1,13 @@
 <template>
   <div>
     <!-- IFrame incorporando o relatório do Power BI -->
-    <iframe width="800" height="600" :src="powerBILink" frameborder="0" allowFullScreen="true"></iframe>
+    <iframe
+      width="800"
+      height="600"
+      :src="powerBILink"
+      frameborder="0"
+      allowFullScreen="true"
+    ></iframe>
   </div>
 </template>
 <script>

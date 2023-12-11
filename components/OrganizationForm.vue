@@ -1,7 +1,7 @@
 <template>
   <div class="organization-form">
     <Breadcrumb
-      :links="[['Cadastro', '/cadastros/organizações']]"
+      :links="[['Cadastro', '/cadastros/organizacoes']]"
       active="Organização"
     />
     <div class="panel">
@@ -118,14 +118,19 @@
               </b-form-group>
             </div>
             <div class="col-sm-3">
-              <b-form-group label="Outros contatos ">
+              <b-form-group label="Site ">
+                <b-form-input v-model="form.site" name="Site" />
+              </b-form-group>
+            </div>
+            <div class="col-sm-3">
+              <b-form-group label="Rede social ">
                 <b-form-input
-                  v-model="form.otherContacts"
-                  name="otherContacts"
+                  v-model="form.socialNetwork"
+                  name="socialNetwork"
                 />
               </b-form-group>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-3">
               <b-form-group label="E-mail *">
                 <b-form-input
                   v-model="form.email"
@@ -229,7 +234,6 @@ export default {
         address: '',
         territory: 'Selecione o território',
         contact: '',
-        otherContacts: '',
         chainLink: '',
         square: '',
         squareid: '',
@@ -244,6 +248,8 @@ export default {
         email: '',
         sigla: '',
         acting: '',
+        site: '',
+        socialNetwork: '',
       },
       products: [],
       bestPractices: [],

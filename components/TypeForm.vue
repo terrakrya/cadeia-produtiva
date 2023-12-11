@@ -109,7 +109,7 @@ export default {
               scope: null,
             })
             isValid = false
-          } 
+          }
           if (await this.isNotUniqueName(id, this.form.name)) {
             this.veeErrors.items.push({
               id: 103,

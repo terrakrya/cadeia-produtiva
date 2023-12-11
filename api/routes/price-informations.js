@@ -281,6 +281,7 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.currency = req.body.currency
     price.country = req.body.country
     price.measure = req.body.measure
+    price.measurePrice = req.body.measurePrice
     price.product = req.body.product
     price.messenger = req.body.messenger
     price.uf = req.body.uf
@@ -291,6 +292,8 @@ router.post('/', auth.authenticated, async (req, res) => {
     price.transaction = req.body.transaction
     price.transactedQuantity = req.body.transactedQuantity
     price.buyerPositionSeller = req.body.buyerPositionSeller
+    price.originalPrice = req.body.originalPrice
+    price.region = req.body.region
 
     await price.save()
 
@@ -317,6 +320,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       price.currency = req.body.currency
       price.country = req.body.country
       price.measure = req.body.measure
+      price.measurePrice = req.body.measurePrice
       price.product = req.body.product
       price.messenger = req.body.messenger
       price.uf = req.body.uf
@@ -326,6 +330,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       price.transaction = req.body.transaction
       price.transactedQuantity = req.body.transactedQuantity
       price.buyerPositionSeller = req.body.buyerPositionSeller
+      price.originalPrice = req.body.originalPrice
+      price.region = req.body.region
 
       await price.save()
 

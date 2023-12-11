@@ -32,7 +32,7 @@
                   >Metodologia</b-button
                 >
 
-                <FormSquareTranslator id="bv-modal-1" />
+                <FormRegionsTranslator id="bv-modal-1" />
                 <FormMeasureTranslator id="bv-modal" />
                 <FormMetodologia id="bv-modal-2" />
               </div>
@@ -41,8 +41,8 @@
                   id="show-btn"
                   class="btn btn-primary mb-1"
                   variant="danger"
-                  to="/operacional/informacao-preco"
-                  >Coleta de preços</b-button
+                  to="/operacional/informacao-preco/cadastrar"
+                  >Coletar Preços</b-button
                 >
                 <b-button
                   id="show-btn"
@@ -76,18 +76,21 @@
                   <div class="text-muted"><small>Mínimo</small></div>
                   <div class="p-2 price-info">
                     {{ summary.minimumPrice | moeda }}
+                    Por {{ $auth.user.unitOfMeasurement }}
                   </div>
                 </b-col>
                 <b-col>
                   <div class="text-muted"><small>Médio</small></div>
                   <div class="p-2 price-info">
                     {{ summary.averagePrice | moeda }}
+                    Por {{ $auth.user.unitOfMeasurement }}
                   </div>
                 </b-col>
                 <b-col>
                   <div class="text-muted"><small>Máximo</small></div>
                   <div class="p-2 price-info">
                     {{ summary.maximumPrice | moeda }}
+                    Por {{ $auth.user.unitOfMeasurement }}
                   </div>
                 </b-col>
               </b-row>
@@ -225,7 +228,7 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import FormSquareTranslator from '@/components/FormSquareTranslator'
+import FormRegionsTranslator from '@/components/FormRegionsTranslator'
 import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
 import estados from '@/data/estados.json'
@@ -233,16 +236,18 @@ import cidades from '@/data/cidades.json'
 import squares from '@/data/praca.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 import NoItem from '~/components/NoItem.vue'
+import regiao from '@/data/regioes-castanheiras.json'
 export default {
   components: {
     Breadcrumb,
-    FormSquareTranslator,
+    FormRegionsTranslator,
     FormMeasureTranslator,
     FormMetodologia,
     NoItem,
   },
   data() {
     return {
+      regiao,
       loading: false,
       showFilters: false,
       filters: {
@@ -314,6 +319,11 @@ export default {
         this.loading = false
       }
     }
+    const user = await this.$axios.$get('user/' + this.$auth.user._id)
+    this.regiao = this.regiao.filter(function (item) {
+      return item.municipio === user.city
+    })
+    console.log(user.city)
   },
   methods: {
     async loadProducts() {
@@ -328,9 +338,6 @@ export default {
       const summary = await this.$axios.$get('price-informations/summary', {
         params: this.filters,
       })
-
-      console.log('summary', summary)
-
       this.summary = summary
     },
     applyFilters() {

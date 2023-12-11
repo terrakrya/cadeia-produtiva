@@ -11,6 +11,7 @@ const GeographicAreaSchema = new mongoose.Schema(
     squareid: String,
     name: String,
     comments: String,
+    teste: Object,
     file: [Object],
     polygon: {
       type: [Array],
@@ -32,6 +33,7 @@ GeographicAreaSchema.methods.data = function () {
     name: this.name,
     comments: this.comments,
     file: this.file,
+    teste: this.teste,
   }
 }
 GeographicAreaSchema.methods.generateJWT = function () {

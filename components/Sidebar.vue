@@ -46,7 +46,7 @@
       <b-list-group-item>
         <b-nav>
           <b-nav-item class="text-white" to="/operacional/informacao-preco">
-            Coleta de preços
+            Histórico de Preços Informados
           </b-nav-item>
         </b-nav>
       </b-list-group-item>

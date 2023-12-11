@@ -3,45 +3,44 @@
     <breadcrumb active="Dados publicados" />
     <div class="panel">
       <div class="panel-body">
-        <div class="d-flex justify-content-between">
-          <div>
-            <b-button
-              id="show-btn"
-              variant="secondary"
-              size="sm"
-              class="mb-1"
-              @click="$bvModal.show('bv-modal')"
-              >Medidas</b-button
-            >
-            <b-button
-              id="show-btn"
-              variant="secondary"
-              size="sm"
-              class="mb-1"
-              @click="$bvModal.show('bv-modal-1')"
-              >Regiões</b-button
-            >
-            <b-button
-              id="show-btn"
-              size="sm"
-              class="mb-1"
-              variant="secondary"
-              @click="$bvModal.show('bv-modal-2')"
-              >Metodologia</b-button
-            >
+        <div class="row panel-title">
+          <div class="col-sm-6"></div>
+          <div class="col-sm-6 main-actions">
+            <div>
+              <b-button
+                id="show-btn"
+                class="btn btn-primary"
+                variant="danger"
+                to="/operacional/informacao-preco"
+                >Histórico de Preços Informados</b-button
+              >
+              <b-button
+                id="show-btn"
+                class="btn btn-primary"
+                variant="danger"
+                @click="$bvModal.show('bv-modal')"
+                >Medidas</b-button
+              >
 
-            <FormSquareTranslator id="bv-modal-1" />
-            <FormMeasureTranslator id="bv-modal" />
-            <FormMetodologia id="bv-modal-2" />
-          </div>
-          <div class="text-right">
-            <b-button
-              id="show-btn"
-              class="btn btn-primary"
-              variant="danger"
-              to="/operacional/informacao-preco"
-              >Coleta de preços</b-button
-            >
+              <b-button
+                id="show-btn"
+                class="btn btn-primary"
+                variant="danger"
+                @click="$bvModal.show('bv-modal-1')"
+                >Regiões Castanheiras</b-button
+              >
+              <b-button
+                id="show-btn"
+                class="btn btn-primary"
+                variant="danger"
+                @click="$bvModal.show('bv-modal-2')"
+                >Nota metodológica</b-button
+              >
+
+              <FormRegionsTranslator id="bv-modal-1" />
+              <FormMeasureTranslator id="bv-modal" />
+              <FormMetodologia id="bv-modal-2" />
+            </div>
           </div>
         </div>
         <div class="info-content">
@@ -162,7 +161,7 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import FormGridInformat from '@/components/FormGridInformat'
-import FormSquareTranslator from '@/components/FormSquareTranslator'
+import FormRegionsTranslator from '@/components/FormRegionsTranslator'
 import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
 import estados from '@/data/estados.json'
@@ -173,7 +172,7 @@ export default {
   components: {
     Breadcrumb,
     FormGridInformat,
-    FormSquareTranslator,
+    FormRegionsTranslator,
     FormMeasureTranslator,
     FormMetodologia,
   },

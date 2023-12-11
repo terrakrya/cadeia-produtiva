@@ -48,6 +48,9 @@ a, a:hover, a:active, a:focus, a:visited
   cursor: pointer
   color: $orange
 
+.b-table tr > .td-lata
+  padding-left:20px
+
 th.actions, td.actions
   width: auto
   text-align: center
@@ -74,6 +77,10 @@ th.actions, td.actions
   background-color: #fff !important
   color: $orange
   border-color: #fff
+
+.explanatory-text
+  font-size: 13px
+  margin: 1rem 0
 
 .badge
   color: $white !important
@@ -653,3 +660,12 @@ form
       padding: 0
     .panel-body, .info-content
       padding-top: 0
+
+@media (min-width: 576px) and (max-width: 1806px)
+  .col-sm-3, .col-sm-5
+    max-width: 35%
+  .col-sm-9
+    margin-right:5.9rem
+  form 
+    legend
+      white-space: nowrap

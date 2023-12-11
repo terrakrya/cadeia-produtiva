@@ -22,8 +22,8 @@
     <template #cell(price)="data">
       {{ data.item.minimumPrice | moeda }}
       /
-      {{ data.item.maximumPrice | moeda }}
-    </template>
+      {{ data.item.maximumPrice | moeda }} </template
+    >]
   </b-table>
 </template>
 <script>

@@ -43,13 +43,24 @@ function authenticatedAdmin(req, res, next) {
 }
 
 function authenticatedGlobalManager(req, res, next) {
-  if (isGlobalManager(req)) {
+  if (isGlobalManager(req) || isAdmin(req)) {
     next()
   } else {
     return res.status(403).json({
       status: 403,
       message:
         'A permissão de Gestor Global é necessária para acessar este recurso.',
+    })
+  }
+}
+
+function authenticatedManager(req, res, next) {
+  if (isManager(req) || isGlobalManager(req) || isAdmin(req)) {
+    next()
+  } else {
+    return res.status(403).json({
+      status: 403,
+      message: 'A permissão de Gestor é necessária para acessar este recurso.',
     })
   }
 }
@@ -64,6 +75,7 @@ const jwtOptions = jwt({
 const auth = {
   admin: [jwtOptions, authenticatedAdmin],
   globalManager: [jwtOptions, authenticatedGlobalManager],
+  manager: [jwtOptions, authenticatedManager],
   authenticated: jwtOptions,
   optional: jwt({
     secret,

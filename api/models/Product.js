@@ -23,6 +23,18 @@ const ProductSchema = new mongoose.Schema(
       ref: 'SpeciesProduct',
       required: true,
     },
+    bestPractices: [
+      {
+        type: ObjectId,
+        ref: 'Type',
+      },
+    ],
+    certifications: [
+      {
+        type: ObjectId,
+        ref: 'Type',
+      },
+    ],
   },
   {
     timestamps: true,
@@ -38,6 +50,8 @@ ProductSchema.methods.data = function () {
     description: this.description,
     specieProduct: this.specieProduct,
     name: this.name,
+    bestPractices: this.bestPractices,
+    certifications: this.certifications,
   }
 }
 ProductSchema.methods.generateJWT = function () {

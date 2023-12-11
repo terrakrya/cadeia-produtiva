@@ -39,8 +39,6 @@
                 />
               </b-form-group>
             </div>
-          </div>
-          <div class="row">
             <div class="col-sm-6">
               <b-form-group label="Selecionar uma classe de espécie/produto *">
                 <form-entity-select
@@ -50,6 +48,28 @@
                   name="specieProduct"
                 />
                 <field-error :msg="veeErrors" field="specieProduct" />
+              </b-form-group>
+            </div>
+          </div>
+          <div class="filter-form">
+            <div class="filter">
+              <b-form-group label="Boas práticas">
+                <b-form-checkbox-group
+                  v-model="form.bestPractices"
+                  :options="bestPractices"
+                  value-field="id"
+                  text-field="name"
+                />
+              </b-form-group>
+            </div>
+            <div class="filter">
+              <b-form-group label="Certificação">
+                <b-form-checkbox-group
+                  v-model="form.certifications"
+                  :options="certifications"
+                  value-field="id"
+                  text-field="name"
+                />
               </b-form-group>
             </div>
           </div>
@@ -74,27 +94,46 @@ export default {
         code: '',
         description: '',
         specieProduct: '',
+        bestPractices: [],
+        certifications: [],
       },
+      bestPractices: [],
+      certifications: [],
     }
   },
-  created() {
+  async created() {
+    await this.list()
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
   },
   methods: {
-    edit(id) {
+    async edit(id) {
       this.is_loading = true
-      this.$axios
-        .get('products/' + id)
-        .then((response) => {
-          this.apiDataToForm(this.form, response.data)
-          if (response.data.image) {
-            this.images_preview = [response.data.image]
-          }
-          this.is_loading = false
-        })
-        .catch(this.showError)
+
+      try {
+        const dados = await this.$axios.$get('products/' + id)
+
+        this.form.name = dados.name
+        this.form.code = dados.code
+        this.form.description = dados.description
+        this.form.specieProduct = dados.specieProduct
+        this.form.bestPractices = dados.bestPractices
+        this.form.certifications = dados.certifications
+      } catch (e) {
+        this.showError(e)
+      }
+
+      this.is_loading = false
+    },
+    async list() {
+      const tipos = await this.$axios.$get('types')
+      this.bestPractices = tipos.filter((i) => {
+        return i.type === 'Boas práticas'
+      })
+      this.certifications = tipos.filter((i) => {
+        return i.type === 'Certificação'
+      })
     },
     save() {
       this.$validator.validate().then(async (isValid) => {
@@ -112,7 +151,7 @@ export default {
               scope: null,
             })
             isValid = false
-          } 
+          }
           if (await this.isNotUniqueName(id, this.form.name)) {
             this.veeErrors.items.push({
               id: 103,
@@ -167,3 +206,18 @@ export default {
   },
 }
 </script>
+<style>
+.filter-form {
+  margin-bottom: 10px;
+}
+
+.filter-form label {
+  margin-right: 10px;
+}
+.filter-form .filter {
+  border: 1px solid #161b22;
+  padding: 5px 20px;
+  border-radius: 20px;
+  margin-bottom: 4px;
+}
+</style>

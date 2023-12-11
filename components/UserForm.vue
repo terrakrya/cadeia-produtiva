@@ -22,12 +22,15 @@
               </b-form-group>
             </div>
           </div>
-          <div v-if="isAdmin || isGlobalManager " class="row">
-            <div v-if="
-              currentUser.role === 'gestor-global'||
-              form.role === 'gestor'|| 
-              form.role === 'mensageiro'" 
-              class="col-sm-6">
+          <div v-if="isAdmin || isGlobalManager" class="row">
+            <div
+              v-if="
+                currentUser.role === 'gestor-global' ||
+                form.role === 'gestor' ||
+                form.role === 'mensageiro'
+              "
+              class="col-sm-6"
+            >
               <b-form-group label="Selecionar uma organização *">
                 <form-entity-select
                   v-model="form.organization"
@@ -51,10 +54,7 @@
             </div>
             <div class="col-sm-2">
               <b-form-group label="Gênero ">
-                <b-form-select
-                  v-model="form.gender"
-                  :options="genero"
-                />
+                <b-form-select v-model="form.gender" :options="genero" />
               </b-form-group>
             </div>
             <div class="col-sm-2">
@@ -67,9 +67,9 @@
             </div>
             <div class="col-sm-4">
               <b-form-group label="E-mail *">
-                <b-form-input 
+                <b-form-input
                   v-model="form.email"
-                  v-validate="'required'" 
+                  v-validate="'required'"
                   name="email"
                 />
                 <field-error :msg="veeErrors" field="email" />
@@ -169,12 +169,15 @@ export default {
   },
   created() {
     this.tiposDeUsuarioPermitidos = [
-      {	"text": "Gestor",	"value": "gestor"	},
-      {	"text": "Mensageiro",	"value": "mensageiro"	}
+      { text: 'Gestor', value: 'gestor' },
+      { text: 'Mensageiro', value: 'mensageiro' },
     ]
 
     if (this.isAdmin) {
-      this.tiposDeUsuarioPermitidos.unshift({ "text": "Gestor Global",	"value": "gestor-global" })
+      this.tiposDeUsuarioPermitidos.unshift({
+        text: 'Gestor Global',
+        value: 'gestor-global',
+      })
     }
 
     if (this.isEditing()) {
@@ -201,7 +204,7 @@ export default {
         // valida a email
         if (this.form.email) {
           const id = this.isEditing() ? this.$route.params.id : null
-        
+
           // formato do email
           if (!/\S+@\S+\.\S+/.test(this.form.email)) {
             this.veeErrors.items.push({

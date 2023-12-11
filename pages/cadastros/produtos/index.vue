@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     async list() {
-      this.products = await this.$axios.$get('products')
+      this.products = await this.$axios.$get('products/cadastro-de-produtos')
     },
 
     remove(id) {

@@ -8,27 +8,28 @@
 		"value": "Kg"
 	},
 	{
-		"text": "Tonelada",
-		"value": "Tonelada"
+		"text": "Lata ",
+		"value": "Lata"
 	},
 	{
-		"text": "Latão",
-		"value": "Latão"
-	},
-	{
-		"text": "Caixa",
+		"text": "Caixa (2 Latas)",
 		"value": "Caixa"
 	},
 	{
-		"text": "Hectolitro",
+		"text": "Saca (4 Latas)",
+		"value": "Saca"
+	},
+
+	{
+		"text": "Hectolitro (5 Latas)",
 		"value": "Hectolitro"
 	},
 	{
-		"text": "Saca",
-		"value": "Saca"
+		"text": "Barrica (6 Latas)",
+		"value": "Barrica"
 	},
 	{
-		"text": "Barrica",
-		"value": "Barrica"
+		"text": "Tonelada",
+		"value": "Tonelada"
 	}
 ]

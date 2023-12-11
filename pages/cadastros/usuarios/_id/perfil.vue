@@ -8,35 +8,9 @@
           <b-tab title="Meu perfil">
             <b-form v-if="!is_loading" @submit.prevent="save">
               <h4 class="mb-4">Complete seu perfil</h4>
-              <div class="row">
-                <b-col sm="6">
-                  <b-form-group label="Unidade de medida *">
-                    <b-form-select
-                      v-model="form.unitOfMeasurement"
-                      v-validate="'required'"
-                      class="form-control"
-                      name="unitOfMeasurement"
-                      :options="tipoDeUnidade"
-                    />
-                    <field-error :msg="veeErrors" field="unitOfMeasurement" />
-                  </b-form-group>
-                </b-col>
-                <b-col sm="6">
-                  <b-form-group label="Posição na cadeia de valor *">
-                    <b-form-select
-                      v-model="form.buyerPosition"
-                      v-validate="'required'"
-                      class="form-control"
-                      name="buyerPosition"
-                      :options="buyerPositions"
-                    />
-                    <field-error :msg="veeErrors" field="buyerPosition" />
-                  </b-form-group>
-                </b-col>
-              </div>
               <b-row>
-                <b-col>
-                  <b-form-group label="Nome *">
+                <b-col class="col-sm-3">
+                  <b-form-group label="Nome Completo *">
                     <b-form-input
                       v-model="form.name"
                       v-validate="'required'"
@@ -45,12 +19,21 @@
                     <field-error :msg="veeErrors" field="name" />
                   </b-form-group>
                 </b-col>
-                <div class="col-sm-4">
+                <div class="col-sm-3">
+                  <b-form-group label="Data de nascimento *">
+                    <b-form-input
+                      v-model="form.birthDate"
+                      v-mask="'##/##/####'"
+                      name="birthDate"
+                    />
+                  </b-form-group>
+                </div>
+                <div class="col-sm-2">
                   <b-form-group label="Apelido ">
                     <b-form-input v-model="form.nickname" />
                   </b-form-group>
                 </div>
-                <b-col>
+                <b-col sm="3">
                   <b-form-group label="E-mail *">
                     <b-form-input v-model="form.email" name="email" />
                     <field-error :msg="veeErrors" field="email" />
@@ -58,12 +41,12 @@
                 </b-col>
               </b-row>
               <b-row>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <b-form-group label="Gênero ">
                     <b-form-select v-model="form.gender" :options="genero" />
                   </b-form-group>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <b-form-group label="Identidade ">
                     <b-form-select
                       v-model="form.identity"
@@ -71,7 +54,7 @@
                     />
                   </b-form-group>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-3">
                   <b-form-group label="Celular *">
                     <b-form-input
                       v-model="form.username"
@@ -81,7 +64,7 @@
                     />
                   </b-form-group>
                 </div>
-                <b-col>
+                <b-col class="col-sm-2">
                   <b-form-group label="CPF *">
                     <b-form-input
                       v-model="form.cpf"
@@ -93,7 +76,70 @@
                 </b-col>
               </b-row>
               <div class="row">
-                <div class="col-sm-4">
+                <b-col md="4">
+                  <b-form-group label="Posição na cadeia de valor *">
+                    <b-form-select
+                      v-model="form.buyerPosition"
+                      v-validate="'required'"
+                      class="form-control"
+                      name="buyerPosition"
+                      :options="buyerPositions"
+                    />
+                    <field-error :msg="veeErrors" field="buyerPosition" />
+                  </b-form-group>
+                </b-col>
+                <div class="col-sm-3">
+                  <b-form-group label="País *">
+                    <b-form-select
+                      v-model="form.country"
+                      v-validate="'required'"
+                      class="form-control"
+                      :options="pais"
+                      name="country"
+                    />
+                    <field-error :msg="veeErrors" field="country" />
+                  </b-form-group>
+                </div>
+                <b-col sm="3">
+                  <b-form-group label="Estado de Atuação *">
+                    <b-form-select
+                      v-model="form.uf"
+                      v-validate="'required'"
+                      class="form-control"
+                      :options="estados.map((e) => e.uf)"
+                      name="uf"
+                      @input="loadCities()"
+                    />
+                    <field-error :msg="veeErrors" field="uf" />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="3">
+                  <b-form-group label="Município de Referência *">
+                    <b-form-select
+                      v-model="form.city"
+                      v-validate="'required'"
+                      class="form-control"
+                      :options="cidades"
+                      name="city"
+                    />
+                    <field-error :msg="veeErrors" field="city" />
+                  </b-form-group>
+                </b-col>
+              </div>
+              <div class="row">
+                <b-col md="3" sm="9">
+                  <b-form-group label="Unidade de medida mais comum *">
+                    <b-form-select
+                      v-model="form.unitOfMeasurement"
+                      v-validate="'required'"
+                      class="form-control"
+                      name="unitOfMeasurement"
+                      :options="tipoDeUnidade"
+                    />
+                    <field-error :msg="veeErrors" field="unitOfMeasurement" />
+                  </b-form-group>
+                </b-col>
+                <div class="col-md-3 col-sm-5">
                   <b-form-group label="Moeda *">
                     <b-form-select
                       v-model="form.currency"
@@ -106,50 +152,12 @@
                     <field-error :msg="veeErrors" field="currency" />
                   </b-form-group>
                 </div>
-                <div class="col-sm-4">
-                  <b-form-group label="País *">
-                    <b-form-select
-                      v-model="form.country"
-                      v-validate="'required'"
-                      class="form-control"
-                      :options="pais"
-                      name="country"
-                    />
-                    <field-error :msg="veeErrors" field="country" />
-                  </b-form-group>
-                </div>
               </div>
-              <b-row>
-                <b-col sm="4">
-                  <b-form-group label="Estado *">
-                    <b-form-select
-                      v-model="form.uf"
-                      v-validate="'required'"
-                      class="form-control"
-                      :options="estados.map((e) => e.uf)"
-                      name="uf"
-                      @input="loadCities()"
-                    />
-                    <field-error :msg="veeErrors" field="uf" />
-                  </b-form-group>
-                </b-col>
-                <b-col sm="4">
-                  <b-form-group label="Município *">
-                    <b-form-select
-                      v-model="form.city"
-                      v-validate="'required'"
-                      class="form-control"
-                      :options="cidades"
-                      name="city"
-                    />
-                    <field-error :msg="veeErrors" field="city" />
-                  </b-form-group>
-                </b-col>
-              </b-row>
               <form-submit :sending="is_sending" />
             </b-form>
           </b-tab>
-          <b-tab title="Alterar senha">
+          <b-tab title="Alterar Senha">
+            <h4 class="mb-4">Alterar senha</h4>
             <b-form v-if="!is_loading" @submit.prevent="save">
               <b-row>
                 <b-col md="6">
@@ -223,6 +231,7 @@ export default {
         city: '',
         identity: '',
         gender: '',
+        birthDate: '',
       },
     }
   },
@@ -259,6 +268,7 @@ export default {
         this.form.password = dados.password
         this.form.password_confirmation = dados.password_confirmation
         this.form.buyerPosition = dados.buyerPosition
+        this.form.birthDate = dados.birthDate
         if (dados.currency) {
           this.form.currency = dados.currency
         }
@@ -272,6 +282,7 @@ export default {
         this.form.city = dados.city
         this.form.identity = dados.identity
         this.form.gender = dados.gender
+        this.form.birthDate = dados.birthDate
       } catch (e) {
         this.showError(e)
       }

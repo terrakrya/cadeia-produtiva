@@ -98,15 +98,8 @@ export default {
   },
   methods: {
     async list() {
-      const filters = {}
-
-      if (this.isManager) {
-        filters.organization = this.currentUser.organization
-      }
-
       this.users = await this.$axios.$get('users', {
         params: {
-          filters,
           populate: 'network',
         },
       })
