@@ -85,7 +85,7 @@
               </b-form-group>
             </div> 
             <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Preço">
+              <b-form-group label="Preço *">
                 <money
                   v-model="form.originalPrice"
                   :required="!form.transaction"
@@ -146,9 +146,10 @@
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Vendedor ">
+              <b-form-group label="Vendedor *">
                 <b-form-select
                   v-model="form.buyerPositionSeller"
+                  v-validate="'required'"
                   class="form-control"
                   name="buyerPosition"
                   :options="buyerPositions"
