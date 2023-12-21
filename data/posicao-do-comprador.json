@@ -40,6 +40,10 @@
 		"value": "Varejista"
 	},
 	{
+		"text": "Compra pública (PAA, PNAE, etc.)",
+		"value": "Compra pública (PAA, PNAE, etc.)"
+	},
+	{
 		"text": "Consumidor final",
 		"value": "Consumidor final"
 	}
