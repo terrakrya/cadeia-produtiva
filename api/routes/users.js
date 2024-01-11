@@ -293,10 +293,9 @@ router.post('/forgot-password', async (req, res) => {
         token,
         'trocar-senha'
       )
-      const host =
-        (req.headers.host.startsWith('local') ? 'http://' : '') +
-        req.headers.host
-      const link = new URL(pathLink, host).toString()
+      const host = 'https://' + req.headers.host;
+      const link = new URL(pathLink, host).toString();
+        
 
       // #endregion
 
