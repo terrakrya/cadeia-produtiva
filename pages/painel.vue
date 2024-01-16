@@ -76,21 +76,21 @@
                   <div class="text-muted"><small>Mínimo</small></div>
                   <div class="p-2 price-info">
                     {{ summary.minimumPrice | moeda }}
-                    Por {{ $auth.user.unitOfMeasurement }}
+                    Por Kg
                   </div>
                 </b-col>
                 <b-col>
                   <div class="text-muted"><small>Médio</small></div>
                   <div class="p-2 price-info">
                     {{ summary.averagePrice | moeda }}
-                    Por {{ $auth.user.unitOfMeasurement }}
+                    Por Kg
                   </div>
                 </b-col>
                 <b-col>
                   <div class="text-muted"><small>Máximo</small></div>
                   <div class="p-2 price-info">
                     {{ summary.maximumPrice | moeda }}
-                    Por {{ $auth.user.unitOfMeasurement }}
+                    Por Kg
                   </div>
                 </b-col>
               </b-row>
