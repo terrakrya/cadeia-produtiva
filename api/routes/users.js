@@ -357,11 +357,55 @@ router.get('/password-reset/:token/valid', async (req, res) => {
   }
 })
 
+router.get('/usuarios/:token/trocar-senha', async (req, res) => {
+  const token = req.params.token
+    const tokenData = await getTokenData(token)
+
+
+    if (tokenData.valid) {
+      res.send(`
+          <html>
+          <head><title>Reset Password</title></head>
+          <body>
+              <form action="/submit-new-password" method="post">
+                  <input type="hidden" name="token" value="${token}">
+                  <label for="password">Nova Senha:</label>
+                  <input type="password" id="password" name="password">
+                  <button type="submit">Trocar Senha</button>
+              </form>
+          </body>
+          </html>
+      `);
+  } else {
+      res.send("Invalid or expired token");
+  }
+});
+
 // salva a nova senha ao usuário
 router.post('/password-reset/:token', async (req, res) => {
   try {
     const token = req.params.token
     const tokenData = await getTokenData(token)
+
+
+    if (tokenData.valid) {
+      res.send(`
+          <html>
+          <head><title>Reset Password</title></head>
+          <body>
+              <form action="/submit-new-password" method="post">
+                  <input type="hidden" name="token" value="${token}">
+                  <label for="password">New Password:</label>
+                  <input type="password" id="password" name="password">
+                  <button type="submit">Reset Password</button>
+              </form>
+          </body>
+          </html>
+      `);
+  } else {
+      res.send("Invalid or expired token");
+  }
+
 
     if (!req.body.password) {
       return res.status(422).send('Preencha a senha')
