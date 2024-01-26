@@ -7,19 +7,11 @@
       <b-navbar-brand class="text-white ml-2" to="/painel">IÊ</b-navbar-brand>
     </div>
     <div>
-      <div class="d-flex justify-content-end align-items-center text-white">
-        <small>
-          <strong>
-            <b-icon-person-fill class="mr-2" />
-            {{ currentUser.name.split(' ')[0] }}
-          </strong>
-        </small>
-      </div>
-      <div class="text-white">
-        <small>{{ roles[currentUser.role] || currentUser.role }}</small>
-        <small v-if="organization"> - {{ organization.sigla }}</small>
-      </div>
-    </div>
+  <button class="btn-user">
+    <div class="btn-user-text">Olá, {{ currentUser.name.split(' ')[0] }}</div>
+  </button>
+</div>
+
     <b-collapse id="sidebar" is-nav>
       <div>
         <Sidebar />
