@@ -2,7 +2,7 @@
   <div id="app">
     <div id="wrapper" class="bg-brown-1">
       <Navbar />
-      <b-container v-if="currentUser" fluid class="pb-3">
+      <div>
         <b-row class="no-gutters">
           <b-col class="main bg-white" style="border-radius: 6px">
             <div v-if="loading" class="my-5 text-center">
@@ -13,7 +13,7 @@
             </div>
           </b-col>
         </b-row>
-      </b-container>
+      </div>
     </div>
     <notifications />
   </div>

@@ -4,7 +4,8 @@
     <div class="panel">
       <div class="panel-body">
         <div>
-          <h4>Coleta de preços</h4>
+          <h4 class="form-title">Informar preço</h4>
+          <h6 class="form-subtitle">Todos os campos são obrigatórios</h6>
         </div>
         <br />
         <loading :loading="is_loading" />
@@ -37,7 +38,7 @@
           </div>
           <div class="row">
             <div class="col-sm-6">
-              <b-form-group label="Produto *">
+              <b-form-group label="Produto">
                 <b-form-select
                   v-model="form.product"
                   v-validate="'required'"
