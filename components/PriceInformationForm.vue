@@ -12,7 +12,7 @@
         <b-form @submit.prevent="save">
           <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="Organização *">
+              <b-form-group label="Organização">
                 <form-entity-select
                   v-model="form.organization"
                   type="organizations"
@@ -23,7 +23,7 @@
           </div>
           <div v-if="isAdmin || isGlobalManager || isManager" class="row">
             <div class="col-sm-8">
-              <b-form-group label="Mensageiro *">
+              <b-form-group label="Mensageiro">
                 <b-form-select
                   v-model="form.messenger"
                   class="form-control"
@@ -37,8 +37,7 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6">
-              <b-form-group label="Produto">
+            <div class="col-sm-6 mb-4">
                 <b-form-select
                   v-model="form.product"
                   v-validate="'required'"
@@ -49,24 +48,32 @@
                   name="product"
                 />
                 <field-error :msg="veeErrors" field="product" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 title-buttons-form">
+              <b-form-group label="Selecione a classificação de preço">
               </b-form-group>
             </div>
-            <div style="align-self: center; margin: 5px">
-              <b-button
-                id="show-btn"
-                variant="secondary"
-                @click="form.transaction = true"
-                >Preços Ofertados no Mercado Local
-              </b-button>
-            </div>
-            <b></b>
-            <div style="align-self: center; margin: 5px">
-              <b-button
-                id="show-btn"
-                variant="secondary"
-                @click="form.transaction = false"
-                >Preço de Venda Realizada
-              </b-button>
+            <div
+              class="col-md-8 d-flex justify-content-center align-items-center mb-4"
+            >
+              <div class="button-transaction">
+                <b-button
+                  id="show-btn-offered"
+                  variant="form"
+                  @click="form.transaction = true"
+                  :class="{'selected-button': form.transaction, 'mr-3': true}"
+                  >Preço Ofertado
+                </b-button>
+                <b-button
+                  id="show-btn-sold"
+                  variant="form"
+                  @click="form.transaction = false"
+                  :class="{'selected-button': !form.transaction}"
+                  >Preço Vendido
+                </b-button>
+              </div>
             </div>
           </div>
           <!--<div class="row">
@@ -74,7 +81,7 @@
           </div>-->
           <div class="row">
             <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Quantidade Vendida *">
+              <b-form-group label="Quantidade Vendida">
                 <money
                   v-model="form.transactedQuantity"
                   :required="!form.transaction"
@@ -84,13 +91,12 @@
                 ></money>
                 <field-error :msg="veeErrors" field="transactedQuantity" />
               </b-form-group>
-            </div> 
+            </div>
             <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Preço *">
+              <b-form-group label="Preço">
                 <money
                   v-model="form.originalPrice"
                   :required="!form.transaction"
-                  prefix=""
                   class="form-control"
                   name="originalPrice"
                 ></money>
@@ -101,11 +107,10 @@
           <div class="row">
             <!--<div>-->
             <div v-if="form.transaction" class="col-sm-4">
-              <b-form-group label="Menor preço *">
+              <b-form-group label="Menor preço">
                 <money
                   v-model="form.originalMinimumPrice"
                   :required="form.transaction"
-                  prefix=""
                   class="form-control"
                   name="originalMinimumPrice"
                 ></money>
@@ -113,11 +118,10 @@
               </b-form-group>
             </div>
             <div v-if="form.transaction" class="col-sm-4">
-              <b-form-group label="Maior preço *">
+              <b-form-group label="Maior preço">
                 <money
                   v-model="form.originalMaximumPrice"
                   :required="form.transaction"
-                  prefix=""
                   class="form-control"
                 ></money>
                 <field-error :msg="veeErrors" field="originalMaximumPrice" />
@@ -125,7 +129,7 @@
             </div>
             <!--</div>-->
             <div class="col-sm-4">
-              <b-form-group label="Unidade de Medida da Venda *">
+              <b-form-group label="Unidade de Medida da Venda">
                 <b-form-select
                   v-model="form.measure"
                   v-validate="'required'"
@@ -135,7 +139,7 @@
               </b-form-group>
             </div>
             <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Unidade de Medida do Preço *">
+              <b-form-group label="Unidade de Medida do Preço">
                 <b-form-select
                   v-model="form.measurePrice"
                   :required="!form.transaction"
@@ -147,7 +151,7 @@
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Vendedor *">
+              <b-form-group label="Vendedor">
                 <b-form-select
                   v-model="form.buyerPositionSeller"
                   v-validate="'required'"
@@ -158,7 +162,7 @@
               </b-form-group>
             </b-col>
             <div class="col-sm-6">
-              <b-form-group label="Comprador *">
+              <b-form-group label="Comprador">
                 <b-form-select
                   v-model="form.buyerPositionBuyer"
                   v-validate="'required'"
@@ -172,7 +176,7 @@
           </div>
           <div class="row">
             <div class="col-sm-4">
-              <b-form-group :label="'Data *'">
+              <b-form-group :label="'Data'">
                 <b-form-datepicker
                   v-model="form.createdAt"
                   v-validate="'required'"
@@ -189,7 +193,7 @@
               </b-form-group>
             </div>
             <b-col sm="4">
-              <b-form-group label="Estado *">
+              <b-form-group label="Estado">
                 <b-form-select
                   v-model="form.uf"
                   v-validate="'required'"
@@ -202,7 +206,7 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Município de Referência *">
+              <b-form-group label="Município de Referência">
                 <b-form-select
                   v-model="form.city"
                   class="form-control"
@@ -409,18 +413,14 @@ export default {
       let min = this.form.originalMinimumPrice
       let max = this.form.originalMaximumPrice
       if (!this.form.transaction) {
-        const finalValue = (this.form.originalPrice * multiplyer) / multiplyerPrice
+        const finalValue =
+          (this.form.originalPrice * multiplyer) / multiplyerPrice
         this.form.originalMinimumPrice = finalValue
         this.form.originalMaximumPrice = finalValue
-      }
-      else {
-      // +({numero}.toFixed(2)) arredonda o número com duas casas decimais e retorna um número (já que o toFloat converte em string)
-      this.form.minimumPrice = +new Decimal(min)
-        .div(multiplyer)
-        .toFixed(2)
-      this.form.maximumPrice = +new Decimal(max)
-        .div(multiplyer)
-        .toFixed(2)
+      } else {
+        // +({numero}.toFixed(2)) arredonda o número com duas casas decimais e retorna um número (já que o toFloat converte em string)
+        this.form.minimumPrice = +new Decimal(min).div(multiplyer).toFixed(2)
+        this.form.maximumPrice = +new Decimal(max).div(multiplyer).toFixed(2)
       }
     },
     getMultiplyer(measure) {
@@ -475,7 +475,8 @@ export default {
 
         if (
           (!this.form.originalMinimumPrice ||
-          this.form.originalMinimumPrice === 0) && this.form.transaction
+            this.form.originalMinimumPrice === 0) &&
+          this.form.transaction
         ) {
           this.veeErrors.items.push({
             id: 101,
@@ -520,7 +521,7 @@ export default {
 
         if (this.form.transaction === true) {
           this.form.transactedQuantity = 0
-        } 
+        }
 
         // #endregion validação
 

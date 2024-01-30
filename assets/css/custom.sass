@@ -65,6 +65,14 @@ body
 .form-subtitle
   font-size: 14px
   font-weight: 400
+  margin-bottom: 0px
+
+.button-transaction
+  align-self: center
+  margin: 5px
+
+.title-buttons-form
+  margin-bottom: -15px
 
 a, a:hover, a:active, a:focus, a:visited
   text-decoration: none
@@ -88,10 +96,23 @@ th.actions, td.actions
   border-color: $orange
   color: $gray5
 
+.selected-button
+  background-color: $brown1 !important
+  color: white !important
+
 .btn-secondary, .btn-secondary:hover, .btn-secondary:active, .btn-secondary:focus, .btn-secondary:visited
   color: $white
   background-color: $gray2
   border-color: $gray2
+.btn-form
+  color: $white
+  background-color: $gray2
+  border-color: $gray2
+  border-radius: 99px
+  width: 135px
+  height: 44px
+  font-weight: 700
+  font-size: 14px
 .btn-default
   background-color: transparent !important
   color: $gray1 !important
@@ -418,7 +439,7 @@ th.actions, td.actions
 
 form
   legend
-    color: $gray1
+    color: $brown1
     border: 0
     font-weight: bold
     font-size: 16px
@@ -680,6 +701,13 @@ form
       text-align: left
     .tab-content
       padding-top: 0
+
+.button-transaction
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  margin: 0 auto
         
 @media print
   .sidebar-wrapper, .breadcrumb, .main-actions

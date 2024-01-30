@@ -9,7 +9,7 @@
       >
       <button
         role="button"
-        class="btn btn-lg"
+        class="btn btn-lg rounded-pill"
         :class="{
           'floating-button': floating,
           'btn-secondary': floating,
