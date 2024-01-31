@@ -51,7 +51,7 @@
         </b-nav>
       </b-list-group-item>
       <b-list-group-item>
-        <b-nav>
+        <b-nav v-if="isAdmin || isGlobalManager || isManager">
           <b-nav-item class="text-white" to="/dados-publicados">
             Dados publicados
           </b-nav-item>
