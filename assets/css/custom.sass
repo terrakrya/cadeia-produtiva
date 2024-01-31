@@ -2,7 +2,7 @@
 @import "vue-select/src/scss/vue-select.scss"
 @import "leaflet/dist/leaflet.css"
 
-$brown1: #93312A
+$brown1: #852E27
 $brown3: #fff
 $brown2: #f1f1e9
 $brown4: #b2e7d8
@@ -14,11 +14,15 @@ $gray2: #f1f1e9
 $gray3: #93312A
 $gray4: #ccc
 $gray5: #f1f1e9
-$white: #93312A
+$gray6: #f2f2f2
+$white: #ffffff
 
 body
   overscroll-behavior-y: none
   background-color: $brown3
+
+#wrapper
+  padding-bottom: 50px
 
 .text-primary
   color: $orange !important
@@ -58,21 +62,28 @@ body
   color: #641610
   opacity: 70%
 
-.form-title
-  color: $brown1
-  margin-bottom: 5px
-
-.form-subtitle
-  font-size: 14px
-  font-weight: 400
-  margin-bottom: 0px
-
 .button-transaction
   align-self: center
   margin: 5px
 
+.form-title
+  color: $brown1
+  margin-bottom: 5px
+  margin-top: 25px
+  font-weight: 700
+
+.form-subtitle
+  font-size: 14px
+  font-weight: 500
+  margin-bottom: 0px
+  opacity: 80%
+
 .title-buttons-form
   margin-bottom: -15px
+
+.custom-select
+  background-color: #64161019 !important
+  color: #93312A
 
 a, a:hover, a:active, a:focus, a:visited
   text-decoration: none
@@ -88,31 +99,31 @@ th.actions, td.actions
   .fa
     margin-bottom: 5px
 
-.btn
-  box-shadow: none !important
-
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary:visited
   background-color: $orange !important
   border-color: $orange
   color: $gray5
+  border-radius: 50px
 
 .selected-button
   background-color: $brown1 !important
   color: white !important
 
 .btn-secondary, .btn-secondary:hover, .btn-secondary:active, .btn-secondary:focus, .btn-secondary:visited
-  color: $white
+  color: $brown1
   background-color: $gray2
   border-color: $gray2
+  border-radius: 50px
 .btn-form
-  color: $white
-  background-color: $gray2
-  border-color: $gray2
+  color: $brown1
+  background-color: $white
+  border-color: $white
   border-radius: 99px
   width: 135px
   height: 44px
   font-weight: 700
   font-size: 14px
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.05)
 .btn-default
   background-color: transparent !important
   color: $gray1 !important
@@ -127,7 +138,7 @@ th.actions, td.actions
   margin: 1rem 0
 
 .badge
-  color: $white !important
+  color: $brown1 !important
 .bg-brown-1
   background-color: $brown1
 .bg-brown-3
@@ -136,6 +147,8 @@ th.actions, td.actions
   background-color: $brown2 !important
 .bg-gray
   background-color: $gray5 !important
+.bg-gray-1
+  background-color: $gray6 !important
 
 .red
   color: $red !important
@@ -174,6 +187,10 @@ th.actions, td.actions
 .navbar
   background-color: $brown1
   // box-shadow: 1px 2px 3px rgba(0,0,0,.1)
+  position: fixed
+  top: 0
+  width: 100%
+  z-index: 1000
   .logo
     max-width: 50px
     // margin-right: 5px
@@ -183,6 +200,19 @@ th.actions, td.actions
     border-color: #fff
     .navbar-toggler-icon
       color: #fff
+
+.bottom-navbar
+    position: fixed
+    bottom: 0
+    left: 0
+    width: 100%
+    background-color: white
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1)
+    display: flex
+    justify-content: space-around
+    padding: 10px 0
+    z-index: 1000
+
 .sidebar-wrapper
   flex-basis: 400px
   min-height: calc(100vh - 72px)
@@ -272,11 +302,11 @@ th.actions, td.actions
   tr
     &.b-table-bottom-row
       background-color: $gray2 !important
-      color: $white
+      color: $brown1
       font-weight: bold
     th
       background-color: $gray2
-      color: $white
+      color: $brown1
     > td, > th
       vertical-align: middle !important
       font-size: 15px
@@ -313,7 +343,7 @@ th.actions, td.actions
       > a
         margin-right: 0
         background: $gray2
-        color: $white
+        color: $brown1
         &:hover
           border: 1px solid transparent
         &.active
@@ -349,13 +379,13 @@ th.actions, td.actions
 .modal-content
   border-radius: 6px
   .close
-    color: $white
+    color: $brown1
   .modal-header
     background-color: $gray2
     .modal-title
       text-transform: uppercase
       font-weight: 400
-      color: $white
+      color: $brown1
       float: left
 .modal-body
   .breadcrumb
@@ -442,7 +472,7 @@ form
     color: $brown1
     border: 0
     font-weight: bold
-    font-size: 16px
+    font-size: 14px
   .custom-control-label
     font-weight: normal
     padding-left: 10px
@@ -465,6 +495,7 @@ form
     padding-left: 15px
     border-width: 2px
     border-color: $brown1
+    background-color: $gray6
 
   .btn-primary
     background: $orange
@@ -597,7 +628,7 @@ form
         float: left
         width: calc(100%)
       i
-        background-color: $white
+        background-color: $brown1
         cursor: pointer
         width: 18px
         height: 20px

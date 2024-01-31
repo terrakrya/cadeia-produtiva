@@ -1,10 +1,10 @@
 <template>
   <div id="app">
-    <div id="wrapper" class="bg-brown-1">
+    <div id="wrapper" class="bg-gray-1">
       <Navbar />
       <div>
         <b-row class="no-gutters">
-          <b-col class="main bg-white" style="border-radius: 6px">
+          <b-col class="main bg-gray-1">
             <div v-if="loading" class="my-5 text-center">
               <b-spinner variant="secondary" />
             </div>
@@ -14,6 +14,7 @@
           </b-col>
         </b-row>
       </div>
+      <BottomNavbar />
     </div>
     <notifications />
   </div>
@@ -21,10 +22,12 @@
 
 <script>
 import Navbar from '@/components/Navbar'
+import BottomNavbar from '@/components/BottomNavbar'
 
 export default {
   components: {
     Navbar,
+    BottomNavbar,
   },
 
   middleware: 'auth',

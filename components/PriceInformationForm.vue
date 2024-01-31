@@ -1,6 +1,6 @@
 <template>
   <div class="type">
-    <Breadcrumb active="Coleta de preços" />
+    <!-- <Breadcrumb active="Coleta de preços" /> -->
     <div class="panel">
       <div class="panel-body">
         <div>
@@ -60,14 +60,12 @@
             >
               <div class="button-transaction">
                 <b-button
-                  id="show-btn-offered"
                   variant="form"
                   @click="form.transaction = true"
                   :class="{'selected-button': form.transaction, 'mr-3': true}"
                   >Preço Ofertado
                 </b-button>
                 <b-button
-                  id="show-btn-sold"
                   variant="form"
                   @click="form.transaction = false"
                   :class="{'selected-button': !form.transaction}"
