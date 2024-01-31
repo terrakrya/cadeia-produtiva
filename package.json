@@ -27,6 +27,9 @@
   "dependencies": {
     "@fnando/cnpj": "^1.0.2",
     "@fnando/cpf": "^1.0.2",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/vue-fontawesome": "^2.0.10",
     "@mapbox/togeojson": "^0.16.0",
     "@nuxt/content": "^1.11.1",
     "@nuxtjs/auth-next": "5.0.0-1610809099.bcf293f",
