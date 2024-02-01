@@ -15,6 +15,7 @@ $gray3: #93312A
 $gray4: #ccc
 $gray5: #f1f1e9
 $gray6: #f2f2f2
+$gray7: #818181
 $white: #ffffff
 
 body
@@ -22,7 +23,7 @@ body
   background-color: $brown3
 
 #wrapper
-  padding-bottom: 50px
+  padding-bottom: 100px
   padding-top: 80px
 
 .text-primary
@@ -115,6 +116,10 @@ th.actions, td.actions
   background-color: $gray2
   border-color: $gray2
   border-radius: 50px
+
+.btn-bottom, .btn-bottom:hover, .btn-bottom:active, .btn-bottom:focus, .btn-bottom:visited
+  color: $gray7
+
 .btn-form
   color: $brown1
   background-color: $white
@@ -209,13 +214,12 @@ th.actions, td.actions
     width: 100%
     background-color: white
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1)
-    display: flex
-    justify-content: space-around
     padding: 10px 0
     z-index: 1000
-    isplay: flex
+    display: flex
     justify-content: space-around
     align-items: center
+    border-radius: 20px 20px 0 0
 
 .nav-button
   display: flex

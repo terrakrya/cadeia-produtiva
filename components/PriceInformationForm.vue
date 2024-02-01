@@ -105,7 +105,7 @@
           <div class="row">
             <!--<div>-->
             <div v-if="form.transaction" class="col-sm-4">
-              <b-form-group label="Menor preço">
+              <b-form-group label="Informe o menor preço">
                 <money
                   v-model="form.originalMinimumPrice"
                   :required="form.transaction"
@@ -116,7 +116,7 @@
               </b-form-group>
             </div>
             <div v-if="form.transaction" class="col-sm-4">
-              <b-form-group label="Maior preço">
+              <b-form-group label="Informe o maior preço">
                 <money
                   v-model="form.originalMaximumPrice"
                   :required="form.transaction"

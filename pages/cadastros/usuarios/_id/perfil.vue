@@ -24,6 +24,7 @@
                     <b-form-input
                       v-model="form.birthDate"
                       v-mask="'##/##/####'"
+                      v-validate="'required|min:10'"
                       name="birthDate"
                     />
                   </b-form-group>
@@ -43,13 +44,18 @@
               <b-row>
                 <div class="col-sm-3">
                   <b-form-group label="Gênero ">
-                    <b-form-select v-model="form.gender" :options="genero" />
+                    <b-form-select 
+                    v-model="form.gender" 
+                    class="form-control"
+                    :options="genero" />
                   </b-form-group>
                 </div>
                 <div class="col-sm-3">
                   <b-form-group label="Identidade ">
                     <b-form-select
                       v-model="form.identity"
+                      class="form-control"
+                      name="identity"
                       :options="identidade"
                     />
                   </b-form-group>
@@ -58,8 +64,8 @@
                   <b-form-group label="Celular *">
                     <b-form-input
                       v-model="form.username"
-                      v-mask="'(##) #####-####'"
-                      v-validate="'required'"
+                      v-mask="['(##) ####-####', '(##) #####-####']"
+                      v-validate="'required|min:14'"
                       name="username"
                     />
                   </b-form-group>
@@ -69,7 +75,7 @@
                     <b-form-input
                       v-model="form.cpf"
                       v-mask="['###.###.###-##']"
-                      v-validate="'required'"
+                      v-validate="'required|min:14'"
                       name="cpf"
                     />
                   </b-form-group>
@@ -161,7 +167,7 @@
             <b-form v-if="!is_loading" @submit.prevent="save">
               <b-row>
                 <b-col md="6">
-                  <b-form-group label="Senha">
+                  <b-form-group label="Insira a nova senha">
                     <b-form-input
                       v-model="form.password"
                       type="password"
@@ -171,7 +177,7 @@
                   </b-form-group>
                 </b-col>
                 <b-col md="6">
-                  <b-form-group label="Confirmação de senha">
+                  <b-form-group label="Repita a nova senha">
                     <b-form-input
                       v-model="form.password_confirmation"
                       type="password"

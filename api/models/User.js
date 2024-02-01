@@ -86,6 +86,7 @@ UserSchema.methods.data = function () {
     city: this.city,
     birthDate: this.birthDate,
     gender: this.gender,
+    identity: this.identity,
   }
 }
 
