@@ -14,6 +14,7 @@
                     <b-form-input
                       v-model="form.name"
                       v-validate="'required'"
+                      placeholder="Insira o seu nome completo"
                       name="name"
                     />
                     <field-error :msg="veeErrors" field="name" />
@@ -25,18 +26,26 @@
                       v-model="form.birthDate"
                       v-mask="'##/##/####'"
                       v-validate="'required|min:10'"
+                      placeholder="Insira sua data de nascimento"
                       name="birthDate"
                     />
                   </b-form-group>
                 </div>
                 <div class="col-sm-2">
                   <b-form-group label="Apelido ">
-                    <b-form-input v-model="form.nickname" />
+                    <b-form-input
+                      v-model="form.nickname"
+                      placeholder="Insira o seu apelido"
+                    />
                   </b-form-group>
                 </div>
                 <b-col sm="3">
                   <b-form-group label="E-mail *">
-                    <b-form-input v-model="form.email" name="email" />
+                    <b-form-input
+                      v-model="form.email"
+                      name="email"
+                      placeholder="Insira seu email"
+                    />
                     <field-error :msg="veeErrors" field="email" />
                   </b-form-group>
                 </b-col>
@@ -44,10 +53,11 @@
               <b-row>
                 <div class="col-sm-3">
                   <b-form-group label="Gênero ">
-                    <b-form-select 
-                    v-model="form.gender" 
-                    class="form-control"
-                    :options="genero" />
+                    <b-form-select
+                      v-model="form.gender"
+                      class="form-control"
+                      :options="genero"
+                    />
                   </b-form-group>
                 </div>
                 <div class="col-sm-3">
@@ -66,6 +76,7 @@
                       v-model="form.username"
                       v-mask="['(##) ####-####', '(##) #####-####']"
                       v-validate="'required|min:14'"
+                      placeholder="Insira seu número de celular"
                       name="username"
                     />
                   </b-form-group>
@@ -76,6 +87,7 @@
                       v-model="form.cpf"
                       v-mask="['###.###.###-##']"
                       v-validate="'required|min:14'"
+                      placeholder="Insira seu CPF"
                       name="cpf"
                     />
                   </b-form-group>
