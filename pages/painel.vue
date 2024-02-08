@@ -1,10 +1,11 @@
 <template>
   <div class="SpeciesProduct">
-    <breadcrumb active="Dados publicados" />
     <div class="panel">
       <div class="panel-body">
-        <div class="panel-title">
-          <div>
+        <div>
+          <h4 class="form-title">Dados publicados</h4>
+          <h6 class="form-subtitle">Mostrando preços da sua região</h6>
+          <!-- <div>
             <div class="d-flex justify-content-between">
               <div>
                 <b-button
@@ -36,24 +37,8 @@
                 <FormMeasureTranslator id="bv-modal" />
                 <FormMetodologia id="bv-modal-2" />
               </div>
-              <div class="text-right">
-                <b-button
-                  id="show-btn"
-                  class="btn btn-primary mb-1"
-                  variant="danger"
-                  to="/operacional/informacao-preco/cadastrar"
-                  >Coletar Preços</b-button
-                >
-                <!-- <b-button
-                  id="show-btn"
-                  class="btn btn-primary mb-1"
-                  variant="danger"
-                  to="/dados-publicados"
-                  >Dados publicados</b-button
-                > -->
-              </div>
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="info-content">
           <iframe
@@ -71,29 +56,44 @@
               <Loading loading />
             </div>
             <div v-else>
-              <b-row v-if="summary" class="text-center">
-                <b-col>
-                  <div class="text-muted"><small>Mínimo</small></div>
-                  <div class="p-2 price-info">
-                    {{ summary.minimumPrice | moeda }}
-                    Por Kg
+              <b-row v-if="summary" class="price-summary-box">
+                <div class="date-box-wrapper">
+                  <font-awesome-icon icon="fa-solid fa-calendar-days" size="lg" />
+                  <div class="date-box">{{ currentDate }}</div>
+                </div>
+                <div class="prices-container">
+                  <div class="price-row">
+                    <div class="price-label">Mínimo</div>
+                    <div class="price-value">
+                      {{ summary.minimumPrice | moeda }} <span class="price-measure">KG</span>
+                    </div>
                   </div>
-                </b-col>
-                <b-col>
-                  <div class="text-muted"><small>Médio</small></div>
-                  <div class="p-2 price-info">
-                    {{ summary.averagePrice | moeda }}
-                    Por Kg
+                  <hr>
+                  <div class="price-row">
+                    <div class="price-label">Médio</div>
+                    <div class="price-value">
+                      {{ summary.averagePrice | moeda }} <span class="price-measure">KG</span>
+                    </div>
                   </div>
-                </b-col>
-                <b-col>
-                  <div class="text-muted"><small>Máximo</small></div>
-                  <div class="p-2 price-info">
-                    {{ summary.maximumPrice | moeda }}
-                    Por Kg
+                  <hr>
+                  <div class="price-row">
+                    <div class="price-label">Máximo</div>
+                    <div class="price-value">
+                      {{ summary.maximumPrice | moeda }} <span class="price-measure">KG</span>
+                    </div>
                   </div>
-                </b-col>
+                </div>
               </b-row>
+
+              <div class="text-right">
+                <b-button
+                  id="show-btn"
+                  class="btn mb-1 mt-5"
+                  variant="panel"
+                  to="/operacional/informacao-preco/cadastrar"
+                  >Coletar Preço</b-button
+                >
+              </div>
 
               <hr />
               <div class="d-flex justify-content-between align-items-center">
@@ -297,6 +297,13 @@ export default {
 
       return gradientColors
     },
+
+    currentDate() {
+      const today = new Date();
+      const day = String(today.getDate()).padStart(2, '0');
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      return `${day}/${month}`;
+    },
   },
 
   async created() {
@@ -340,6 +347,7 @@ export default {
       })
       this.summary = summary
     },
+
     applyFilters() {
       this.showFilters = false
       this.load()
