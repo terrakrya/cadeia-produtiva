@@ -58,28 +58,34 @@
             <div v-else>
               <b-row v-if="summary" class="price-summary-box">
                 <div class="date-box-wrapper">
-                  <font-awesome-icon icon="fa-solid fa-calendar-days" size="lg" />
+                  <font-awesome-icon
+                    icon="fa-solid fa-calendar-days"
+                    size="lg"
+                  />
                   <div class="date-box">{{ currentDate }}</div>
                 </div>
                 <div class="prices-container">
                   <div class="price-row">
                     <div class="price-label">Mínimo</div>
                     <div class="price-value">
-                      {{ summary.minimumPrice | moeda }} <span class="price-measure">KG</span>
+                      {{ summary.minimumPrice | moeda }}
+                      <span class="price-measure">KG</span>
                     </div>
                   </div>
-                  <hr>
+                  <hr />
                   <div class="price-row">
                     <div class="price-label">Médio</div>
                     <div class="price-value">
-                      {{ summary.averagePrice | moeda }} <span class="price-measure">KG</span>
+                      {{ summary.averagePrice | moeda }}
+                      <span class="price-measure">KG</span>
                     </div>
                   </div>
-                  <hr>
+                  <hr />
                   <div class="price-row">
                     <div class="price-label">Máximo</div>
                     <div class="price-value">
-                      {{ summary.maximumPrice | moeda }} <span class="price-measure">KG</span>
+                      {{ summary.maximumPrice | moeda }}
+                      <span class="price-measure">KG</span>
                     </div>
                   </div>
                 </div>
@@ -91,7 +97,7 @@
                   class="btn mb-1 mt-5"
                   variant="panel"
                   to="/operacional/informacao-preco/cadastrar"
-                  >Coletar Preço</b-button
+                  >Informar Preço</b-button
                 >
               </div>
 
@@ -299,10 +305,10 @@ export default {
     },
 
     currentDate() {
-      const today = new Date();
-      const day = String(today.getDate()).padStart(2, '0');
-      const month = String(today.getMonth() + 1).padStart(2, '0');
-      return `${day}/${month}`;
+      const today = new Date()
+      const day = String(today.getDate()).padStart(2, '0')
+      const month = String(today.getMonth() + 1).padStart(2, '0')
+      return `${day}/${month}`
     },
   },
 
