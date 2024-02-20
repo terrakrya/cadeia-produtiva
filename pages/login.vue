@@ -14,10 +14,10 @@
                 <div class="form-group">
                   <input
                     v-model="form.username"
-                    v-mask="['(##) #####-####']"
+                    v-mask="['###.###.###-##']"
                     type="text"
                     class="form-control"
-                    placeholder="Seu telefone"
+                    placeholder="Seu CPF"
                   />
                 </div>
                 <div class="form-group">

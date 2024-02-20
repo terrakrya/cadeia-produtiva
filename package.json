@@ -67,7 +67,7 @@
     "passport-local": "^1.0.0",
     "pdf-image": "^2.0.0",
     "pouchdb": "^7.2.2",
-    "sharp": "^0.27.0",
+    "sharp": "^0.29.0",
     "slugify": "^1.4.6",
     "uuid": "^8.3.2",
     "v-money": "^0.8.1",

@@ -20,7 +20,12 @@ const UserSchema = new mongoose.Schema(
     identity: String,
     username: {
       type: String,
-      lowercase: true,
+      unique: true,
+      required: true,
+      index: true,
+    },
+    cellphone: {
+      type: String,
       unique: true,
       required: true,
       index: true,
@@ -30,6 +35,7 @@ const UserSchema = new mongoose.Schema(
     cpf: {
       type: String,
       unique: true,
+      index: true,
     },
     email: {
       type: String,
@@ -74,6 +80,7 @@ UserSchema.methods.data = function () {
     id: this.id,
     role: this.role,
     username: this.username,
+    cellphone: this.cellphone,
     email: this.email,
     name: this.name,
     nickname: this.nickname,

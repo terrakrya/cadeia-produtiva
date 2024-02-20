@@ -78,18 +78,19 @@
             <div class="col-sm-6">
               <b-form-group label="Celular *">
                 <b-form-input
-                  v-model="form.username"
+                  v-model="form.cellphone"
                   v-validate="'required'"
                   v-mask="['(##) #####-####']"
-                  name="username"
+                  name="cellphone"
                 />
-                <field-error :msg="veeErrors" field="username" />
+                <field-error :msg="veeErrors" field="cellphone" />
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group label="CPF ">
+              <b-form-group label="CPF *">
                 <b-form-input
                   v-model="form.cpf"
+                  v-validate="'required'"
                   v-mask="['###.###.###-##']"
                   name="cpf"
                 />
@@ -151,6 +152,7 @@ export default {
         username: '',
         name: '',
         email: '',
+        cellphone: '',
         cpf: '',
         comments: '',
         password: '',
@@ -191,8 +193,8 @@ export default {
         .get('users/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
-          this.form.username = this.formatValue(
-            this.form.username,
+          this.form.cellphone = this.formatValue(
+            this.form.cellphone,
             '(##) #####-####'
           )
           this.is_loading = false
@@ -242,11 +244,11 @@ export default {
             isValid = false
           }
           // unicidade do celular
-          else if (await this.isNotUniqueUsername(id, this.form.username)) {
+          else if (await this.isNotUniqueCellphone(id, this.form.cellphone)) {
             this.veeErrors.items.push({
               id: 105,
               vmId: this.veeErrors.vmId,
-              field: 'username',
+              field: 'cellphone',
               msg: 'Este celular já existe.',
               rule: 'required',
               scope: null,
@@ -274,8 +276,8 @@ export default {
             this.form.organization = null
           }
 
-          // deixa somente os dígitos do telefone
-          this.form.username = this.form.username.replace(/\D/g, '')
+          // deixa somente os dígitos do CPF
+          this.form.username = this.form.cpf.replace(/\D/g, '')
 
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
@@ -307,10 +309,10 @@ export default {
     async isNotUniqueEmail(id, email) {
       return !(await this.$axios.$post('users/unique-email', { id, email }))
     },
-    async isNotUniqueUsername(id, username) {
-      return !(await this.$axios.$post('users/unique-username', {
+    async isNotUniqueCellphone(id, cellphone) {
+      return !(await this.$axios.$post('users/unique-cellphone', {
         id,
-        username,
+        cellphone,
       }))
     },
   },

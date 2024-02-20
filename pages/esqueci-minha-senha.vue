@@ -16,7 +16,7 @@
                     v-model="form.username"
                     type="text"
                     class="form-control"
-                    placeholder="Seu telefone"
+                    placeholder="Seu CPF"
                   />
                 </div>
                 <div v-if="is_sending" class="alert alert-info">
