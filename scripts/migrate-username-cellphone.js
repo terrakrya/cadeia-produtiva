@@ -3,14 +3,15 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 
 const migrateDocuments = async () => {
-  let users = await User.find({ cellphone: null });
-
+  const users = await User.find({ cellphone: null })
 
   for (const user of users) {
-    let oldUsername = user.username
-    let newUsername = user.cpf.replace(/\D/g, '')
+    const oldUsername = user.username
+    const newUsername = user.cpf.replace(/\D/g, '')
 
-    await user.updateOne({ $set: { username: newUsername, cellphone: oldUsername } })
+    await user.updateOne({
+      $set: { username: newUsername, cellphone: oldUsername },
+    })
   }
 }
 

@@ -9,16 +9,32 @@
           </div>
           <b-card class="bg-brown-1 text-left">
             <b-card-body>
-              <p>Recuperar senha</p>
               <form class="form-auth-small" @submit.prevent="send">
-                <div class="form-group">
-                  <input
-                    v-model="form.username"
-                    v-mask="['###.###.###-##']"
-                    type="text"
-                    class="form-control"
-                    placeholder="Seu CPF"
-                  />
+                <div>
+                  <b-form-group label="Nova Senha" label-class="text-white">
+                    <b-form-input
+                      v-model="form.password"
+                      type="password"
+                      name="password"
+                    />
+                    <field-error :msg="veeErrors" field="password" />
+                  </b-form-group>
+                </div>
+                <div>
+                  <b-form-group
+                    label="Confirme a nova senha"
+                    label-class="text-white"
+                  >
+                    <b-form-input
+                      v-model="form.password_confirmation"
+                      type="password"
+                      name="password_confirmation"
+                    />
+                    <field-error
+                      :msg="veeErrors"
+                      field="password_confirmation"
+                    />
+                  </b-form-group>
                 </div>
                 <div v-if="is_sending" class="alert alert-info">
                   <b-spinner small /> Enviando...
@@ -34,9 +50,7 @@
                 </button>
                 <br />
                 <div class="text-center">
-                  <a href="/login" class="text-white"
-                    ><small>Cancelar</small></a
-                  >
+                  <a href="/login" class="text-white"><small>Voltar</small></a>
                 </div>
               </form>
             </b-card-body>
@@ -57,7 +71,8 @@ export default {
       error: null,
       info: null,
       form: {
-        username: '',
+        password: '',
+        password_confirmation: '',
       },
     }
   },
@@ -76,22 +91,19 @@ export default {
       this.error = null
       this.info = null
 
-      // deixa somente os dígitos do CPF
-      this.form.username = this.form.username.replace(/\D/g, '')
-
       try {
         const resp = await this.$axios({
           method: 'POST',
-          url: 'users/forgot-password',
+          url: `users/password-reset/${this.$route.query.token}`,
           data: this.form,
         })
 
         const messageSent = resp.data
 
         if (messageSent) {
-          this.info = 'Foi enviada a redefinição de senha para seu e-mail'
+          this.info = 'Senha alterada com sucesso'
         } else {
-          this.error = 'Não foi possível enviar a redefinição de senha'
+          this.error = 'Não foi possível redefinir sua senha'
         }
       } catch (err) {
         this.error = err.response.data
