@@ -286,21 +286,14 @@ router.post('/forgot-password', async (req, res) => {
     const user = await User.findOne(query)
 
     if (user) {
-      // #region monta o link de redefinição da senha
-
       const tokenData = moment().format('YYYY-MM-DDTHH:mm') + '+' + user.id
       const token = Buffer.from(tokenData).toString('base64')
       const pathLink = path.posix.join(
         path.posix.sep,
-        'usuarios',
-        token,
-        'trocar-senha'
+        `trocar-senha?token=${token}`,
       )
-      const host = 'https://' + req.headers.host;
-      const link = new URL(pathLink, host).toString();
-
-
-      // #endregion
+      const host = 'https://' + req.headers.host
+      const link = new URL(pathLink, host).toString()
 
       const text =
         '<p>Olá,</p>' +
@@ -360,58 +353,14 @@ router.get('/password-reset/:token/valid', async (req, res) => {
   }
 })
 
-router.get('/usuarios/:token/trocar-senha', async (req, res) => {
-  const token = req.params.token
-  const tokenData = await getTokenData(token)
-
-
-  if (tokenData.valid) {
-    res.send(`
-          <html>
-          <head><title>Reset Password</title></head>
-          <body>
-              <form action="/submit-new-password" method="post">
-                  <input type="hidden" name="token" value="${token}">
-                  <label for="password">Nova Senha:</label>
-                  <input type="password" id="password" name="password">
-                  <button type="submit">Trocar Senha</button>
-              </form>
-          </body>
-          </html>
-      `);
-  } else {
-    res.send("Invalid or expired token");
-  }
-});
-
 // salva a nova senha ao usuário
 router.post('/password-reset/:token', async (req, res) => {
   try {
     const token = req.params.token
     const tokenData = await getTokenData(token)
 
-
-    if (tokenData.valid) {
-      res.send(`
-          <html>
-          <head><title>Reset Password</title></head>
-          <body>
-              <form action="/submit-new-password" method="post">
-                  <input type="hidden" name="token" value="${token}">
-                  <label for="password">New Password:</label>
-                  <input type="password" id="password" name="password">
-                  <button type="submit">Reset Password</button>
-              </form>
-          </body>
-          </html>
-      `);
-    } else {
-      res.send("Invalid or expired token");
-    }
-
-
-    if (!req.body.password) {
-      return res.status(422).send('Preencha a senha')
+    if (!req.body.password || !(req.body.password == req.body.password_confirmation)) {
+      return res.status(422).send('Confira as senhas informadas')
     } else if (tokenData.valid) {
       const query = { _id: tokenData.userId }
       const user = await User.findOne(query)
@@ -425,6 +374,7 @@ router.post('/password-reset/:token', async (req, res) => {
     } else {
       return res.status(422).send('Link expirado')
     }
+
   } catch (err) {
     res
       .status(422)
