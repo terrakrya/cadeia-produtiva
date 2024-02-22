@@ -73,11 +73,11 @@
                 <div class="col-sm-3">
                   <b-form-group label="Celular *">
                     <b-form-input
-                      v-model="form.username"
+                      v-model="form.cellphone"
                       v-mask="['(##) ####-####', '(##) #####-####']"
                       v-validate="'required|min:14'"
                       placeholder="Insira seu número de celular"
-                      name="username"
+                      name="cellphone"
                     />
                   </b-form-group>
                 </div>
@@ -238,6 +238,7 @@ export default {
         name: '',
         email: '',
         username: '',
+        cellphone: '',
         cpf: '',
         password: '',
         password_confirmation: '',
@@ -282,6 +283,7 @@ export default {
         this.form.name = dados.name
         this.form.email = dados.email
         this.form.username = dados.username
+        this.form.cellphone = dados.cellphone
         this.form.cpf = dados.cpf
         this.form.password = dados.password
         this.form.password_confirmation = dados.password_confirmation
@@ -316,10 +318,10 @@ export default {
       return !(await this.$axios.$post('users/unique-cpf', { id, cpf }))
     },
 
-    async isNotUniqueUsername(id, username) {
-      return !(await this.$axios.$post('users/unique-username', {
+    async isNotUniqueCellphone(id, cellphone) {
+      return !(await this.$axios.$post('users/unique-cellphone', {
         id,
-        username,
+        cellphone,
       }))
     },
 
@@ -365,12 +367,12 @@ export default {
             })
             isValid = false
           }
-          // unicidade do CPF
-          else if (await this.isNotUniqueUsername(id, this.form.username)) {
+          // unicidade do Celular
+          else if (await this.isNotUniqueCellphone(id, this.form.cellphone)) {
             this.veeErrors.items.push({
               id: 105,
               vmId: this.veeErrors.vmId,
-              field: 'username',
+              field: 'cellphone',
               msg: 'Este Celular já existe.',
               rule: 'required',
               scope: null,
@@ -390,8 +392,8 @@ export default {
         if (isValid) {
           this.is_sending = true
 
-          // deixa somente os dígitos do telefone
-          this.form.username = this.form.username.replace(/\D/g, '')
+          // deixa somente os dígitos do CPF
+          this.form.username = this.form.cpf.replace(/\D/g, '')
 
           this.$axios({
             method: 'PUT',

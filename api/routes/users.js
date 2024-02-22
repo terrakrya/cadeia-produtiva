@@ -91,9 +91,9 @@ router.post('/unique-cpf', auth.authenticated, async (req, res) => {
   }
 })
 
-// verifica se o login é único no banco de dados
-router.post('/unique-username', auth.authenticated, async (req, res) => {
-  const query = { username: req.body.username }
+// verifica se o celular é único no banco de dados
+router.post('/unique-cellphone', auth.authenticated, async (req, res) => {
+  const query = { cellphone: req.body.cellphone.replace(/\D/g, '') }
 
   if (req.body.id) {
     query._id = { $ne: req.body.id }
@@ -117,6 +117,7 @@ router.post('/', auth.manager, async (req, res) => {
     user.email = req.body.email
     user.name = req.body.name
     user.role = req.body.role
+    user.cellphone = req.body.cellphone.replace(/\D/g, '')
     user.cpf = req.body.cpf
     user.unitOfMeasurement = req.body.unitOfMeasurement
     user.buyerPosition = req.body.buyerPosition
@@ -164,6 +165,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.email = req.body.email
       user.name = req.body.name
       user.role = req.body.role
+      user.cellphone = req.body.cellphone.replace(/\D/g, '')
       user.cpf = req.body.cpf
       user.unitOfMeasurement = req.body.unitOfMeasurement
       user.buyerPosition = req.body.buyerPosition
@@ -217,6 +219,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.name = req.body.name || user.name
       user.email = req.body.email || user.email
       user.username = req.body.username || user.username
+      user.cellphone = req.body.cellphone.replace(/\D/g, '') || user.cellphone
       user.cpf = req.body.cpf || user.cpf
       user.unitOfMeasurement = req.body.unitOfMeasurement
       user.buyerPosition = req.body.buyerPosition
@@ -295,7 +298,7 @@ router.post('/forgot-password', async (req, res) => {
       )
       const host = 'https://' + req.headers.host;
       const link = new URL(pathLink, host).toString();
-        
+
 
       // #endregion
 
@@ -359,11 +362,11 @@ router.get('/password-reset/:token/valid', async (req, res) => {
 
 router.get('/usuarios/:token/trocar-senha', async (req, res) => {
   const token = req.params.token
-    const tokenData = await getTokenData(token)
+  const tokenData = await getTokenData(token)
 
 
-    if (tokenData.valid) {
-      res.send(`
+  if (tokenData.valid) {
+    res.send(`
           <html>
           <head><title>Reset Password</title></head>
           <body>
@@ -377,7 +380,7 @@ router.get('/usuarios/:token/trocar-senha', async (req, res) => {
           </html>
       `);
   } else {
-      res.send("Invalid or expired token");
+    res.send("Invalid or expired token");
   }
 });
 
@@ -402,9 +405,9 @@ router.post('/password-reset/:token', async (req, res) => {
           </body>
           </html>
       `);
-  } else {
+    } else {
       res.send("Invalid or expired token");
-  }
+    }
 
 
     if (!req.body.password) {
