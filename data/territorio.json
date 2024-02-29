@@ -92,6 +92,21 @@
 	{
 		"estado": "Amazonas",
 		"tipo": "Terra Indígena",
+		"nome": "TI Diahui"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Évare I"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Évare II"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
 		"nome": "TI Itxi Mitare"
 	},
 	{
@@ -108,6 +123,11 @@
 		"estado": "Amazonas",
 		"tipo": "Terra Indígena",
 		"nome": "TI Nhamunda-Mapuera"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Nove de Janeiro"
 	},
 	{
 		"estado": "Amazonas",
@@ -192,7 +212,7 @@
 	{
 		"estado": "Amazonas",
 		"tipo": "Unidade de Conservação",
-		"nome": "RESEX  Rio Unini"
+		"nome": "RESEX Rio Unini"
 	},
 	{
 		"estado": "Amazonas",
@@ -203,6 +223,11 @@
 		"estado": "Amazonas",
 		"tipo": "Unidade de Conservação",
 		"nome": "RESEX Auati-Paraná"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Canutama"
 	},
 	{
 		"estado": "Amazonas",
@@ -553,6 +578,11 @@
 		"estado": "Pará",
 		"tipo": "Unidade de Conservação",
 		"nome": "RESEX Tapajós-Arapiuns"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Terra do Meio"
 	},
 	{
 		"estado": "Pará",
