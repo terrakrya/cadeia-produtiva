@@ -13,7 +13,6 @@ const UserSchema = new mongoose.Schema(
     currency: String,
     country: String,
     nickname: String,
-    comments: String,
     uf: String,
     city: String,
     gender: String,

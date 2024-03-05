@@ -97,11 +97,6 @@
                 <field-error :msg="veeErrors" field="cpf" />
               </b-form-group>
             </div>
-            <div class="col-sm-12">
-              <b-form-group label="Comentários">
-                <b-form-textarea v-model="form.comments" />
-              </b-form-group>
-            </div>
             <div v-if="isEditing()" class="text-right">
               <a class="pointer" @click="changePassword">{{
                 'Mude sua senha'
@@ -154,7 +149,6 @@ export default {
         email: '',
         cellphone: '',
         cpf: '',
-        comments: '',
         password: '',
         password_confirmation: '',
         role: null,
