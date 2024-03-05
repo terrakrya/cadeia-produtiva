@@ -196,19 +196,8 @@ export default {
   },
 
   async created() {
-    if (this.$auth.user.role === 'mensageiro') {
-      if (
-        !this.$auth.user.unitOfMeasurement ||
-        !this.$auth.user.buyerPosition ||
-        !this.$auth.user.uf ||
-        !this.$auth.user.city ||
-        !this.$auth.user.currency ||
-        !this.$auth.user.country
-      ) {
-        this.$router.push(
-          '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
-        )
-      }
+    if (this.$auth.user.role === 'mensageiro'  || this.$auth.user.role === 'gestor') {
+        this.$router.push( '/painel')
     }
     await this.loadCities(false)
     await this.loadPracas(false)
