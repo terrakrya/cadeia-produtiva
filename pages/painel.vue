@@ -242,7 +242,6 @@ import cidades from '@/data/cidades.json'
 import squares from '@/data/praca.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 import NoItem from '~/components/NoItem.vue'
-import regiao from '@/data/regioes-castanheiras.json'
 export default {
   components: {
     Breadcrumb,
@@ -253,7 +252,7 @@ export default {
   },
   data() {
     return {
-      regiao,
+      regiao: null,
       loading: false,
       showFilters: false,
       filters: {
@@ -332,11 +331,9 @@ export default {
         this.loading = false
       }
     }
-    const user = await this.$axios.$get('user/' + this.$auth.user._id)
-    this.regiao = this.regiao.filter(function (item) {
-      return item.municipio === user.city
-    })
-    console.log(user.city)
+    const user = await this.$axios.$get('users/' + this.$auth.user._id)
+    this.regiao = user.chestnutRegion
+    console.log(this.$auth.user._id)
   },
   methods: {
     async loadProducts() {

@@ -126,7 +126,7 @@
                       class="form-control"
                       :options="estados.map((e) => e.uf)"
                       name="uf"
-                      @input="loadCities()"
+                      @input="loadCities();loadChestnutRegions()"
                     />
                     <field-error :msg="veeErrors" field="uf" />
                   </b-form-group>
@@ -141,6 +141,17 @@
                       name="city"
                     />
                     <field-error :msg="veeErrors" field="city" />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="3">
+                  <b-form-group label="Região Castanheira">
+                    <b-form-select
+                      v-model="form.chestnutRegion"
+                      class="form-control"
+                      :options="regioes"
+                      name="chestnutRegion"
+                    />
+                    <field-error :msg="veeErrors" field="chestnutRegion" />
                   </b-form-group>
                 </b-col>
               </div>
@@ -218,6 +229,7 @@ import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import genero from '@/data/generos.json'
 import identidade from '@/data/identidade-cultural.json'
+import regioes from '@/data/regioes-castanheiras.json'
 
 export default {
   components: {
@@ -233,7 +245,9 @@ export default {
       moeda,
       estados,
       cidades,
+      regioes,
       form: {
+        chestnutRegion: '',
         unitOfMeasurement: '',
         name: '',
         email: '',
@@ -274,6 +288,20 @@ export default {
         }
       }
     },
+    loadChestnutRegions() {
+      // lista de regioes com somente o item "selecione a regiao"
+      this.regioes = [{ value: '', text: 'Selecione a região', selected: true }]
+
+      // filtra as regioes conforme a UF selecionada
+      if (this.form.uf) {
+        const estado = this.estados.find((c) => c.uf === this.form.uf)
+        const regiao = regioes.find((c) => c.estado === estado.nome)
+  
+        if (regiao){
+          this.regioes = this.regioes.concat({ value: regiao.regiaoCastanheira, text: regiao.regiaoCastanheira })
+        }
+      }
+    },
     async edit(id) {
       this.is_loading = true
       try {
@@ -300,6 +328,8 @@ export default {
         this.form.uf = dados.uf
         this.loadCities()
         this.form.city = dados.city
+        this.loadChestnutRegions()
+        this.form.chestnutRegion = dados.chestnutRegion
         this.form.identity = dados.identity
         this.form.gender = dados.gender
         this.form.birthDate = dados.birthDate
