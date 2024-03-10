@@ -4,7 +4,9 @@
       <div class="panel-body">
         <div>
           <h4 class="form-title">Dados publicados</h4>
-          <h6 class="form-subtitle">Mostrando preços da sua região</h6>
+          <h6 class="form-subtitle">
+            Mostrando preços da região {{ this.$auth.user.chestnutRegion }}
+          </h6>
           <!-- <div>
             <div class="d-flex justify-content-between">
               <div>
@@ -62,13 +64,13 @@
                     icon="fa-solid fa-calendar-days"
                     size="lg"
                   />
-                  <div class="date-box">{{ currentDate }}</div>
+                  <div class="date-box">{{ formattedHarvestPeriod }}</div>
                 </div>
                 <div class="prices-container">
                   <div class="price-row">
                     <div class="price-label">Mínimo</div>
                     <div class="price-value">
-                      {{ summary.minimumPrice | moeda }}
+                      {{ harvestSummary.minimumPrice | moeda }}
                       <span class="price-measure">KG</span>
                     </div>
                   </div>
@@ -76,7 +78,7 @@
                   <div class="price-row">
                     <div class="price-label">Médio</div>
                     <div class="price-value">
-                      {{ summary.averagePrice | moeda }}
+                      {{ harvestSummary.averagePrice | moeda }}
                       <span class="price-measure">KG</span>
                     </div>
                   </div>
@@ -84,7 +86,7 @@
                   <div class="price-row">
                     <div class="price-label">Máximo</div>
                     <div class="price-value">
-                      {{ summary.maximumPrice | moeda }}
+                      {{ harvestSummary.maximumPrice | moeda }}
                       <span class="price-measure">KG</span>
                     </div>
                   </div>
@@ -214,7 +216,7 @@
                         ? square.percentAveragePrice
                         : 40) +
                       '%; background-color: ' +
-                      generateGradientColors[squareIndex]
+                      gradientColors[squareIndex]
                     "
                   >
                     {{ square.averagePrice | moeda }}
@@ -237,9 +239,6 @@ import Breadcrumb from '@/components/Breadcrumb'
 import FormRegionsTranslator from '@/components/FormRegionsTranslator'
 import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
-import estados from '@/data/estados.json'
-import cidades from '@/data/cidades.json'
-import squares from '@/data/praca.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 import NoItem from '~/components/NoItem.vue'
 export default {
@@ -255,19 +254,26 @@ export default {
       regiao: null,
       loading: false,
       showFilters: false,
+      harvestFilters: {
+        product: '',
+        buyerPosition: 'Cooperativa (não beneficia)',
+        from: '',
+        to: '',
+        chestnutRegions: [],
+      },
       filters: {
         product: '',
         buyerPosition: 'Cooperativa (não beneficia)',
         from: '',
         to: '',
+        chestnutRegions: [],
       },
       buyerPositions,
-      estados,
-      cidades,
-      squares,
       priceInformations: [],
       products: [],
       summary: null,
+      harvestSummary: null,
+      gradientColors: [],
     }
   },
   computed: {
@@ -280,34 +286,14 @@ export default {
       }
       return ''
     },
-    generateGradientColors() {
-      const arr = this.summary.squares
-      const startColor = [32, 153, 104] // RGB values for #209968
-      const endColor = [153, 125, 32] // RGB values for #997D20
-      const colorRange = [
-        endColor[0] - startColor[0],
-        endColor[1] - startColor[1],
-        endColor[2] - startColor[2],
-      ]
-      const colorStep = 1 / (arr.length - 1)
-      const gradientColors = []
+    harvestPeriod() {
+      const beginDate = Date.parse(`${new Date().getFullYear() - 1}-10-01`)
+      const endDate = Date.parse(`${new Date().getFullYear()}-09-30`)
 
-      for (let i = 0; i < arr.length; i++) {
-        const r = Math.round(startColor[0] + colorRange[0] * (i * colorStep))
-        const g = Math.round(startColor[1] + colorRange[1] * (i * colorStep))
-        const b = Math.round(startColor[2] + colorRange[2] * (i * colorStep))
-        const color = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`
-        gradientColors.push(color)
-      }
-
-      return gradientColors
+      return [new Date(beginDate), new Date(endDate)]
     },
-
-    currentDate() {
-      const today = new Date()
-      const day = String(today.getDate()).padStart(2, '0')
-      const month = String(today.getMonth() + 1).padStart(2, '0')
-      return `${day}/${month}`
+    formattedHarvestPeriod() {
+      return `Safra ${this.harvestPeriod[0].getFullYear()}/${this.harvestPeriod[1].getFullYear()}`
     },
   },
 
@@ -319,7 +305,8 @@ export default {
         !this.$auth.user.uf ||
         !this.$auth.user.city ||
         !this.$auth.user.currency ||
-        !this.$auth.user.country
+        !this.$auth.user.country ||
+        !this.$auth.user.chestnutRegion
       ) {
         this.$router.push(
           '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
@@ -331,9 +318,6 @@ export default {
         this.loading = false
       }
     }
-    const user = await this.$axios.$get('users/' + this.$auth.user._id)
-    this.regiao = user.chestnutRegion
-    console.log(this.$auth.user._id)
   },
   methods: {
     async loadProducts() {
@@ -345,10 +329,45 @@ export default {
     },
 
     async load() {
+      this.filters.chestnutRegions = [this.$auth.user.chestnutRegion]
+      this.harvestFilters.chestnutRegions = [this.$auth.user.chestnutRegion]
       const summary = await this.$axios.$get('price-informations/summary', {
         params: this.filters,
       })
+
+      const harvestSummary = await this.$axios.$get(
+        'price-informations/summary',
+        {
+          params: this.harvestFilters,
+        }
+      )
+
       this.summary = summary
+      this.harvestSummary = harvestSummary
+      this.generateGradientColors()
+    },
+
+    generateGradientColors() {
+      const arr = this.summary == null ? [] : this.summary.squares
+
+      const startColor = [32, 153, 104] // RGB values for #209968
+      const endColor = [153, 125, 32] // RGB values for #997D20
+      const colorRange = [
+        endColor[0] - startColor[0],
+        endColor[1] - startColor[1],
+        endColor[2] - startColor[2],
+      ]
+      const colorStep = 1 / Math.max(1, arr.length - 1)
+      const gradientColors = []
+
+      for (let i = 0; i < arr.length; i++) {
+        const r = Math.round(startColor[0] + colorRange[0] * (i * colorStep))
+        const g = Math.round(startColor[1] + colorRange[1] * (i * colorStep))
+        const b = Math.round(startColor[2] + colorRange[2] * (i * colorStep))
+        const color = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`
+        gradientColors.push(color)
+      }
+      this.gradientColors = gradientColors
     },
 
     applyFilters() {

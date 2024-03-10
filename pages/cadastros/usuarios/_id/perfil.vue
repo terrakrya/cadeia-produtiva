@@ -126,7 +126,7 @@
                       class="form-control"
                       :options="estados.map((e) => e.uf)"
                       name="uf"
-                      @input="loadCities();loadChestnutRegions()"
+                      @input="loadCities()"
                     />
                     <field-error :msg="veeErrors" field="uf" />
                   </b-form-group>
@@ -148,7 +148,7 @@
                     <b-form-select
                       v-model="form.chestnutRegion"
                       class="form-control"
-                      :options="regioes"
+                      :options="chestnutRegions"
                       name="chestnutRegion"
                     />
                     <field-error :msg="veeErrors" field="chestnutRegion" />
@@ -246,6 +246,7 @@ export default {
       estados,
       cidades,
       regioes,
+      chestnutRegions: [],
       form: {
         chestnutRegion: '',
         unitOfMeasurement: '',
@@ -289,18 +290,20 @@ export default {
       }
     },
     loadChestnutRegions() {
-      // lista de regioes com somente o item "selecione a regiao"
-      this.regioes = [{ value: '', text: 'Selecione a região', selected: true }]
+      this.chestnutRegions = [
+        { value: '', text: 'Selecione a região', selected: true },
+      ]
+      const regionsNames = [
+        ...new Set(regioes.map((item) => item.regiaoCastanheira)),
+      ]
 
-      // filtra as regioes conforme a UF selecionada
-      if (this.form.uf) {
-        const estado = this.estados.find((c) => c.uf === this.form.uf)
-        const regiao = regioes.find((c) => c.estado === estado.nome)
-  
-        if (regiao){
-          this.regioes = this.regioes.concat({ value: regiao.regiaoCastanheira, text: regiao.regiaoCastanheira })
-        }
-      }
+      regionsNames.forEach(
+        (regionName) =>
+          (this.chestnutRegions = this.chestnutRegions.concat({
+            value: regionName,
+            text: regionName,
+          }))
+      )
     },
     async edit(id) {
       this.is_loading = true
