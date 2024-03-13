@@ -5,42 +5,13 @@
         <div>
           <h4 class="form-title">Dados publicados</h4>
           <h6 class="form-subtitle">
-            Mostrando preços da região {{ this.$auth.user.chestnutRegion }}
+            Mostrando preços
+            <span v-if="productFilter"
+              >para<b> {{ productFilter }}</b></span
+            >
+            da região
+            {{ this.$auth.user.chestnutRegion }}
           </h6>
-          <!-- <div>
-            <div class="d-flex justify-content-between">
-              <div>
-                <b-button
-                  id="show-btn"
-                  variant="secondary"
-                  size="sm"
-                  class="mb-1"
-                  @click="$bvModal.show('bv-modal')"
-                  >Medidas</b-button
-                >
-                <b-button
-                  id="show-btn"
-                  variant="secondary"
-                  size="sm"
-                  class="mb-1"
-                  @click="$bvModal.show('bv-modal-1')"
-                  >Regiões</b-button
-                >
-                <b-button
-                  id="show-btn"
-                  size="sm"
-                  class="mb-1"
-                  variant="secondary"
-                  @click="$bvModal.show('bv-modal-2')"
-                  >Metodologia</b-button
-                >
-
-                <FormRegionsTranslator id="bv-modal-1" />
-                <FormMeasureTranslator id="bv-modal" />
-                <FormMetodologia id="bv-modal-2" />
-              </div>
-            </div>
-          </div> -->
         </div>
         <div class="info-content">
           <iframe
@@ -58,36 +29,47 @@
               <Loading loading />
             </div>
             <div v-else>
-              <b-row v-if="summary" class="price-summary-box">
+              <b-row v-if="userRegionSummary" class="price-summary-box">
                 <div class="date-box-wrapper">
                   <font-awesome-icon
                     icon="fa-solid fa-calendar-days"
                     size="lg"
                   />
-                  <div class="date-box">{{ formattedHarvestPeriod }}</div>
+                  <div
+                    class="date-box d-flex flex-column justify-content-center align-items-center"
+                  >
+                    <span>Safra</span>
+                    <span>{{ formattedPeriod }}</span>
+                  </div>
                 </div>
                 <div class="prices-container">
                   <div class="price-row">
                     <div class="price-label">Mínimo</div>
                     <div class="price-value">
-                      {{ harvestSummary.minimumPrice | moeda }}
-                      <span class="price-measure">KG</span>
+                      {{ userRegionSummary.minimumPrice | moeda }}
+                      <span class="price-measure">{{
+                        this.$auth.user.unitOfMeasurement
+                      }}</span>
                     </div>
                   </div>
                   <hr />
                   <div class="price-row">
                     <div class="price-label">Médio</div>
                     <div class="price-value">
-                      {{ harvestSummary.averagePrice | moeda }}
-                      <span class="price-measure">KG</span>
+                      {{ userRegionSummary.averagePrice | moeda }}
+                      <span class="price-measure">{{
+                        this.$auth.user.unitOfMeasurement
+                      }}</span>
                     </div>
                   </div>
                   <hr />
                   <div class="price-row">
                     <div class="price-label">Máximo</div>
                     <div class="price-value">
-                      {{ harvestSummary.maximumPrice | moeda }}
-                      <span class="price-measure">KG</span>
+                      {{ userRegionSummary.maximumPrice | moeda }}
+                      <span class="price-measure">{{
+                        this.$auth.user.unitOfMeasurement
+                      }}</span>
                     </div>
                   </div>
                 </div>
@@ -106,7 +88,10 @@
               <hr />
               <div class="d-flex justify-content-between align-items-center">
                 <div>
-                  <h5 class="text-left">Preço médio por região</h5>
+                  <h4 class="form-title">Outras regiões</h4>
+                  <h6 class="form-subtitle">
+                    Mostrando preços médios de outras regiões
+                  </h6>
                   <div
                     v-if="!showFilters"
                     class="text-muted pointer"
@@ -173,6 +158,7 @@
                         type="date"
                         name="date_time"
                         locale="pt-BR"
+                        formatter="{}"
                         placeholder="DD/MM/AAAA"
                       />
                     </b-form-group>
@@ -205,21 +191,43 @@
                   :key="square.name"
                   class="mb-3"
                 >
-                  <div class="ml-3">
-                    <strong>{{ square.name }}</strong>
-                  </div>
                   <div
-                    class="px-3 py-1 square-summary"
-                    :style="
-                      'width: ' +
-                      (square.percentAveragePrice > 40
-                        ? square.percentAveragePrice
-                        : 40) +
-                      '%; background-color: ' +
-                      gradientColors[squareIndex]
-                    "
+                    class="px-3 py-2 square-summary d-flex justify-content-between align-items-center"
                   >
-                    {{ square.averagePrice | moeda }}
+                    <div>
+                      {{ square.averagePrice | moeda }}
+                      <span
+                        v-if="
+                          square.averagePrice > userRegionSummary.averagePrice
+                        "
+                        class="text-success"
+                      >
+                        ↑
+                        {{
+                          priceDiffFromUserRegion(
+                            userRegionSummary.averagePrice,
+                            square.averagePrice
+                          ) | percentage
+                        }}
+                      </span>
+                      <span
+                        v-if="
+                          square.averagePrice < userRegionSummary.averagePrice
+                        "
+                        class="text-danger"
+                      >
+                        ↓
+                        {{
+                          priceDiffFromUserRegion(
+                            userRegionSummary.averagePrice,
+                            square.averagePrice
+                          ) | percentage
+                        }}
+                      </span>
+                    </div>
+                    <div class="ml-3">
+                      <strong>{{ square.name }}</strong>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -254,16 +262,10 @@ export default {
       regiao: null,
       loading: false,
       showFilters: false,
-      harvestFilters: {
-        product: '',
-        buyerPosition: 'Cooperativa (não beneficia)',
-        from: '',
-        to: '',
-        chestnutRegions: [],
-      },
       filters: {
+        unitOfMeasurement: '',
         product: '',
-        buyerPosition: 'Cooperativa (não beneficia)',
+        buyerPosition: '',
         from: '',
         to: '',
         chestnutRegions: [],
@@ -272,7 +274,7 @@ export default {
       priceInformations: [],
       products: [],
       summary: null,
-      harvestSummary: null,
+      userRegionSummary: null,
       gradientColors: [],
     }
   },
@@ -286,14 +288,26 @@ export default {
       }
       return ''
     },
-    harvestPeriod() {
-      const beginDate = Date.parse(`${new Date().getFullYear() - 1}-10-01`)
-      const endDate = Date.parse(`${new Date().getFullYear()}-09-30`)
+    currentHarvestPeriod() {
+      const today = this.$moment(new Date())
 
-      return [new Date(beginDate), new Date(endDate)]
+      if (today.isBefore(`${today.year()}-10-01`)) {
+        return [
+          `${new Date().getFullYear() - 1}-10-01`,
+          `${new Date().getFullYear()}-09-30`,
+        ]
+      }
+
+      return [
+        `${new Date().getFullYear()}-10-01`,
+        `${new Date().getFullYear() + 1}-09-30`,
+      ]
     },
-    formattedHarvestPeriod() {
-      return `Safra ${this.harvestPeriod[0].getFullYear()}/${this.harvestPeriod[1].getFullYear()}`
+    formattedPeriod() {
+      return `${this.currentHarvestPeriod[0].slice(
+        0,
+        4
+      )}/${this.currentHarvestPeriod[1].slice(0, 4)}`
     },
   },
 
@@ -314,12 +328,21 @@ export default {
       } else {
         this.loading = true
         await this.loadProducts()
+        this.filters = {
+          ...this.filters,
+          from: this.currentHarvestPeriod[0],
+          to: this.currentHarvestPeriod[1],
+        }
         await this.load()
         this.loading = false
       }
     }
   },
   methods: {
+    priceDiffFromUserRegion(basePrice, priceToCompare) {
+      return (priceToCompare - basePrice) / basePrice
+    },
+
     async loadProducts() {
       const products = await this.$axios.$get('products')
       this.products = products
@@ -329,45 +352,29 @@ export default {
     },
 
     async load() {
-      this.filters.chestnutRegions = [this.$auth.user.chestnutRegion]
-      this.harvestFilters.chestnutRegions = [this.$auth.user.chestnutRegion]
+      this.filters = {
+        ...this.filters,
+        unitOfMeasurement: this.$auth.user.unitOfMeasurement,
+      }
+
       const summary = await this.$axios.$get('price-informations/summary', {
         params: this.filters,
       })
 
-      const harvestSummary = await this.$axios.$get(
+      const userRegionSummary = await this.$axios.$get(
         'price-informations/summary',
         {
-          params: this.harvestFilters,
+          params: {
+            product: this.filters.product,
+            chestnutRegions: [this.$auth.user.chestnutRegion],
+            from: this.currentHarvestPeriod[0],
+            to: this.currentHarvestPeriod[1],
+          },
         }
       )
 
       this.summary = summary
-      this.harvestSummary = harvestSummary
-      this.generateGradientColors()
-    },
-
-    generateGradientColors() {
-      const arr = this.summary == null ? [] : this.summary.squares
-
-      const startColor = [32, 153, 104] // RGB values for #209968
-      const endColor = [153, 125, 32] // RGB values for #997D20
-      const colorRange = [
-        endColor[0] - startColor[0],
-        endColor[1] - startColor[1],
-        endColor[2] - startColor[2],
-      ]
-      const colorStep = 1 / Math.max(1, arr.length - 1)
-      const gradientColors = []
-
-      for (let i = 0; i < arr.length; i++) {
-        const r = Math.round(startColor[0] + colorRange[0] * (i * colorStep))
-        const g = Math.round(startColor[1] + colorRange[1] * (i * colorStep))
-        const b = Math.round(startColor[2] + colorRange[2] * (i * colorStep))
-        const color = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`
-        gradientColors.push(color)
-      }
-      this.gradientColors = gradientColors
+      this.userRegionSummary = userRegionSummary
     },
 
     applyFilters() {
