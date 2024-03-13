@@ -70,7 +70,13 @@ router.get('/summary', auth.authenticated, async (req, res) => {
 
   const prices = await Price.find(query)
 
-  let summary = null
+  let summary = {
+    minimumPrice: null,
+    maximumPrice: null,
+    averagePrice: null,
+    squares: {},
+  }
+
   if (prices && prices.length) {
     summary = {
       minimumPrice: prices[0].minimumPrice,
