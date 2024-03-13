@@ -198,6 +198,7 @@
                       {{ square.averagePrice | moeda }}
                       <span
                         v-if="
+                          userRegionSummary.averagePrice &&
                           square.averagePrice > userRegionSummary.averagePrice
                         "
                         class="text-success"
@@ -212,6 +213,7 @@
                       </span>
                       <span
                         v-if="
+                          userRegionSummary.averagePrice &&
                           square.averagePrice < userRegionSummary.averagePrice
                         "
                         class="text-danger"
