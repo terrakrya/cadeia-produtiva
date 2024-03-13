@@ -48,6 +48,11 @@ router.get('/summary', auth.authenticated, async (req, res) => {
   if (filters.buyerPosition) {
     query.buyerPositionBuyer = filters.buyerPosition
   }
+
+  if (filters.unitOfMeasurement) {
+    query.measure = filters.unitOfMeasurement
+  }
+
   if (filters.from && !filters.to) {
     query.createdAt = {
       $gte: new Date(filters.from),

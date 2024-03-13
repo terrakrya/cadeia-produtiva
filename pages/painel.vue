@@ -366,6 +366,7 @@ export default {
         {
           params: {
             product: this.filters.product,
+            unitOfMeasurement: this.$auth.user.unitOfMeasurement,
             chestnutRegions: [this.$auth.user.chestnutRegion],
             from: this.currentHarvestPeriod[0],
             to: this.currentHarvestPeriod[1],
