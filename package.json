@@ -18,7 +18,8 @@
     "lint": "yarn lint:js --fix && yarn lint:style --fix",
     "sync_dev": "./scripts/sync_dev.sh",
     "seed-user": "node ./scripts/seed-user.js",
-    "generate-password": "node ./scripts/generate-password.js"
+    "generate-password": "node ./scripts/generate-password.js",
+    "migrate-regioes-castanheiras": "node ./scripts/migrate-regioes-castanheiras.js"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint",

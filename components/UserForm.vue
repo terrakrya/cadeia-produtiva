@@ -97,6 +97,17 @@
                 <field-error :msg="veeErrors" field="cpf" />
               </b-form-group>
             </div>
+            <div class="col-sm-6">
+              <b-form-group label="Região Castanheira">
+                <b-form-select
+                  v-model="form.chestnutRegion"
+                  class="form-control"
+                  :options="chestnutRegions"
+                  name="chestnutRegion"
+                />
+                <field-error :msg="veeErrors" field="chestnutRegion" />
+              </b-form-group>
+            </div>
             <div v-if="isEditing()" class="text-right">
               <a class="pointer" @click="changePassword">{{
                 'Mude sua senha'
@@ -134,6 +145,8 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import genero from '@/data/generos.json'
+import regioes from '@/data/regioes-castanheiras.json'
+
 export default {
   components: {
     Breadcrumb,
@@ -143,7 +156,10 @@ export default {
       genero,
       show_password: false,
       tiposDeUsuarioPermitidos: [],
+      regioes,
+      chestnutRegions: [],
       form: {
+        chestnutRegion: '',
         username: '',
         name: '',
         email: '',
@@ -181,8 +197,26 @@ export default {
     }
   },
   methods: {
+    loadChestnutRegions() {
+      this.chestnutRegions = [
+        { value: '', text: 'Selecione a região', selected: true },
+      ]
+      const regionsNames = [
+        ...new Set(regioes.map((item) => item.regiaoCastanheira)),
+      ]
+
+      regionsNames.forEach(
+        (regionName) =>
+          (this.chestnutRegions = this.chestnutRegions.concat({
+            value: regionName,
+            text: regionName,
+          }))
+      )
+    },
+
     edit(id) {
       this.is_loading = true
+      this.loadChestnutRegions()
       this.$axios
         .get('users/' + id)
         .then((response) => {

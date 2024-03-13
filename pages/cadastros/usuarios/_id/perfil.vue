@@ -143,6 +143,17 @@
                     <field-error :msg="veeErrors" field="city" />
                   </b-form-group>
                 </b-col>
+                <b-col sm="3">
+                  <b-form-group label="Região Castanheira">
+                    <b-form-select
+                      v-model="form.chestnutRegion"
+                      class="form-control"
+                      :options="chestnutRegions"
+                      name="chestnutRegion"
+                    />
+                    <field-error :msg="veeErrors" field="chestnutRegion" />
+                  </b-form-group>
+                </b-col>
               </div>
               <div class="row">
                 <b-col md="3" sm="9">
@@ -218,6 +229,7 @@ import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import genero from '@/data/generos.json'
 import identidade from '@/data/identidade-cultural.json'
+import regioes from '@/data/regioes-castanheiras.json'
 
 export default {
   components: {
@@ -233,7 +245,10 @@ export default {
       moeda,
       estados,
       cidades,
+      regioes,
+      chestnutRegions: [],
       form: {
+        chestnutRegion: '',
         unitOfMeasurement: '',
         name: '',
         email: '',
@@ -274,6 +289,22 @@ export default {
         }
       }
     },
+    loadChestnutRegions() {
+      this.chestnutRegions = [
+        { value: '', text: 'Selecione a região', selected: true },
+      ]
+      const regionsNames = [
+        ...new Set(regioes.map((item) => item.regiaoCastanheira)),
+      ]
+
+      regionsNames.forEach(
+        (regionName) =>
+          (this.chestnutRegions = this.chestnutRegions.concat({
+            value: regionName,
+            text: regionName,
+          }))
+      )
+    },
     async edit(id) {
       this.is_loading = true
       try {
@@ -300,6 +331,8 @@ export default {
         this.form.uf = dados.uf
         this.loadCities()
         this.form.city = dados.city
+        this.loadChestnutRegions()
+        this.form.chestnutRegion = dados.chestnutRegion
         this.form.identity = dados.identity
         this.form.gender = dados.gender
         this.form.birthDate = dados.birthDate

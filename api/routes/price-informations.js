@@ -5,7 +5,6 @@ const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const Price = mongoose.model('PriceInformation')
 const ObjectId = mongoose.Types.ObjectId
-const squares = require('../../data/praca.json')
 
 router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
@@ -38,14 +37,22 @@ router.get('/summary', auth.authenticated, async (req, res) => {
   const query = {}
 
   const filters = req.query
-
   if (filters.product) {
     query.product = filters.product
+  }
+
+  if (filters.chestnutRegions) {
+    query.region = filters.chestnutRegions
   }
 
   if (filters.buyerPosition) {
     query.buyerPositionBuyer = filters.buyerPosition
   }
+
+  if (filters.unitOfMeasurement) {
+    query.measure = filters.unitOfMeasurement
+  }
+
   if (filters.from && !filters.to) {
     query.createdAt = {
       $gte: new Date(filters.from),
@@ -73,40 +80,35 @@ router.get('/summary', auth.authenticated, async (req, res) => {
     }
 
     prices.forEach((price) => {
-      const square = squares.find(
-        (square) => square.estado === price.uf && square.cidade === price.city
-      )
-      if (square) {
-        if (summary.minimumPrice > price.minimumPrice) {
-          summary.minimumPrice = price.minimumPrice
-        }
+      if (summary.minimumPrice > price.minimumPrice) {
+        summary.minimumPrice = price.minimumPrice
+      }
 
-        if (summary.maximumPrice < price.maximumPrice) {
-          summary.maximumPrice = price.maximumPrice
-        }
+      if (summary.maximumPrice < price.maximumPrice) {
+        summary.maximumPrice = price.maximumPrice
+      }
 
-        const squareName = square.nome + ' - ' + square.estado
-        if (!summary.squares[squareName]) {
-          summary.squares[squareName] = {
-            minimumPrice: price.minimumPrice,
-            maximumPrice: price.maximumPrice,
-            averagePrices: [
-              new Decimal(price.minimumPrice).plus(price.maximumPrice).div(2),
-            ],
-          }
-        } else {
-          summary.squares[squareName].minimumPrice =
-            summary.squares[squareName].minimumPrice < price.minimumPrice
-              ? summary.squares[squareName].minimumPrice
-              : price.minimumPrice
-          summary.squares[squareName].maximumPrice =
-            summary.squares[squareName].maximumPrice > price.maximumPrice
-              ? summary.squares[squareName].maximumPrice
-              : price.maximumPrice
-          summary.squares[squareName].averagePrices.push(
-            new Decimal(price.minimumPrice).plus(price.maximumPrice).div(2)
-          )
+      const squareName = price.region
+      if (!summary.squares[squareName]) {
+        summary.squares[squareName] = {
+          minimumPrice: price.minimumPrice,
+          maximumPrice: price.maximumPrice,
+          averagePrices: [
+            new Decimal(price.minimumPrice).plus(price.maximumPrice).div(2),
+          ],
         }
+      } else {
+        summary.squares[squareName].minimumPrice =
+          summary.squares[squareName].minimumPrice < price.minimumPrice
+            ? summary.squares[squareName].minimumPrice
+            : price.minimumPrice
+        summary.squares[squareName].maximumPrice =
+          summary.squares[squareName].maximumPrice > price.maximumPrice
+            ? summary.squares[squareName].maximumPrice
+            : price.maximumPrice
+        summary.squares[squareName].averagePrices.push(
+          new Decimal(price.minimumPrice).plus(price.maximumPrice).div(2)
+        )
       }
     })
 
