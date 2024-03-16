@@ -17,7 +17,7 @@ const UserSchema = new mongoose.Schema(
     city: String,
     gender: String,
     identity: String,
-    chestnutRegion: String,
+    region: String,
     username: {
       type: String,
       unique: true,
@@ -94,7 +94,7 @@ UserSchema.methods.data = function () {
     birthDate: this.birthDate,
     gender: this.gender,
     identity: this.identity,
-    chestnutRegion: this.chestnutRegion
+    region: this.region,
   }
 }
 

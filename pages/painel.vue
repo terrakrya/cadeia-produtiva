@@ -10,7 +10,7 @@
               >para<b> {{ productFilter }}</b></span
             >
             da região
-            {{ this.$auth.user.chestnutRegion }}
+            {{ this.$auth.user.region }}
           </h6>
         </div>
         <div class="info-content">
@@ -38,8 +38,35 @@
                   <div
                     class="date-box d-flex flex-column justify-content-center align-items-center"
                   >
-                    <span>Safra</span>
-                    <span>{{ formattedPeriod }}</span>
+                    <div
+                      class="d-flex flex-column align-items-center"
+                      v-if="!filters.from && !filters.to"
+                    >
+                      <span>Histórico</span>
+                    </div>
+                    <div
+                      class="d-flex flex-column align-items-center"
+                      v-if="filters.from && filters.to"
+                    >
+                      <span>{{ filters.from | moment('DD/MM/YYYY') }}</span>
+                      <span>↓</span>
+                      <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+                    </div>
+                    <div
+                      class="d-flex flex-column align-items-center"
+                      v-if="filters.from && !filters.to"
+                    >
+                      <span>{{ filters.from | moment('DD/MM/YYYY') }}</span>
+                      <span>↓</span>
+                      <span>Hoje</span>
+                    </div>
+                    <div
+                      class="d-flex flex-column align-items-center"
+                      v-if="!filters.from && filters.to"
+                    >
+                      <span>Início</span> <span>↓</span>
+                      <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+                    </div>
                   </div>
                 </div>
                 <div class="prices-container">
@@ -89,13 +116,10 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div>
                   <h4 class="form-title">Outras regiões</h4>
-                  <h6 class="form-subtitle">
-                    Mostrando preços médios de outras regiões
-                  </h6>
                   <div
                     v-if="!showFilters"
                     class="text-muted pointer"
-                    style="font-size: 11px"
+                    style="font-size: 14px"
                     @click="showFilters = true"
                   >
                     <div v-if="productFilter">
@@ -123,7 +147,7 @@
                 </div>
                 <div>
                   <b-btn @click="showFilters = !showFilters">
-                    <b-icon icon="filter"></b-icon>
+                    <b-icon icon="filter" font-scale="3"></b-icon>
                   </b-btn>
                 </div>
               </div>
@@ -192,9 +216,17 @@
                   class="mb-3"
                 >
                   <div
-                    class="px-3 py-2 square-summary d-flex justify-content-between align-items-center"
+                    class="px-3 py-2 square-summary d-flex flex-column"
+                    :style="
+                      'background-color: ' +
+                      (squareIsUserRegion(square.name) ? '#e5e7eb' : 'white') +
+                      ';'
+                    "
                   >
-                    <div>
+                    <div class="mb-3">
+                      <strong>{{ square.name }}</strong>
+                    </div>
+                    <div style="font-size: 16px">
                       {{ square.averagePrice | moeda }}
                       <span
                         v-if="
@@ -226,9 +258,6 @@
                           ) | percentage
                         }}
                       </span>
-                    </div>
-                    <div class="ml-3">
-                      <strong>{{ square.name }}</strong>
                     </div>
                   </div>
                 </div>
@@ -270,7 +299,7 @@ export default {
         buyerPosition: '',
         from: '',
         to: '',
-        chestnutRegions: [],
+        regions: [],
       },
       buyerPositions,
       priceInformations: [],
@@ -305,12 +334,6 @@ export default {
         `${new Date().getFullYear() + 1}-09-30`,
       ]
     },
-    formattedPeriod() {
-      return `${this.currentHarvestPeriod[0].slice(
-        0,
-        4
-      )}/${this.currentHarvestPeriod[1].slice(0, 4)}`
-    },
   },
 
   async created() {
@@ -322,7 +345,7 @@ export default {
         !this.$auth.user.city ||
         !this.$auth.user.currency ||
         !this.$auth.user.country ||
-        !this.$auth.user.chestnutRegion
+        !this.$auth.user.region
       ) {
         this.$router.push(
           '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
@@ -341,6 +364,9 @@ export default {
     }
   },
   methods: {
+    squareIsUserRegion(name) {
+      return name == this.$auth.user.region
+    },
     priceDiffFromUserRegion(basePrice, priceToCompare) {
       return (priceToCompare - basePrice) / basePrice
     },
@@ -369,9 +395,9 @@ export default {
           params: {
             product: this.filters.product,
             unitOfMeasurement: this.$auth.user.unitOfMeasurement,
-            chestnutRegions: [this.$auth.user.chestnutRegion],
-            from: this.currentHarvestPeriod[0],
-            to: this.currentHarvestPeriod[1],
+            regions: [this.$auth.user.region],
+            from: this.filters.from,
+            to: this.filters.to,
           },
         }
       )
