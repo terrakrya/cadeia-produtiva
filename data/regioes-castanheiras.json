@@ -1,1642 +1,1970 @@
 [
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Acrelândia"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Assis Brasil"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Amazonas",
-  "municipio": "Boca do Acre"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Brasiléia"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Bujari"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Capixaba"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Epitaciolândia"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Amazonas",
-  "municipio": "Pauini"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Plácido de Castro"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Porto Acre"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Rio Branco"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Santa Rosa do Purus"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Sena Madureira"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Senador Guiomard"
- },
- {
-  "regiaoCastanheira": "Alto Purus",
-  "estado": "Acre",
-  "municipio": "Xapuri"
- },
- {
-  "regiaoCastanheira": "Alto Solimões",
-  "estado": "Amazonas",
-  "municipio": "Amaturá"
- },
- {
-  "regiaoCastanheira": "Alto Solimões",
-  "estado": "Amazonas",
-  "municipio": "Atalaia do Norte"
- },
- {
-  "regiaoCastanheira": "Alto Solimões",
-  "estado": "Amazonas",
-  "municipio": "Benjamin Constant"
- },
- {
-  "regiaoCastanheira": "Alto Solimões",
-  "estado": "Amazonas",
-  "municipio": "Jutaí"
- },
- {
-  "regiaoCastanheira": "Alto Solimões",
-  "estado": "Amazonas",
-  "municipio": "Santo Antônio do Içá"
- },
- {
-  "regiaoCastanheira": "Alto Solimões",
-  "estado": "Amazonas",
-  "municipio": "São Paulo de Olivença"
- },
- {
-  "regiaoCastanheira": "Alto Solimões",
-  "estado": "Amazonas",
-  "municipio": "Tabatinga"
- },
- {
-  "regiaoCastanheira": "Alto Solimões",
-  "estado": "Amazonas",
-  "municipio": "Tonantins"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Abaetetuba"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Afuá"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Alenquer"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Almeirim"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Anajás"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Bagre"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Baião"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Belterra"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Breves"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Cachoeira do Arari"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Cametá"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Chaves"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Curralinho"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Gurupá"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Igarapé-Miri"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Juruti"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Amapá",
-  "municipio": "Laranjal do Jari"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Limoeiro do Ajuru"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Amapá",
-  "municipio": "Macapá"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Amapá",
-  "municipio": "Mazagão"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Melgaço"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Mocajuba"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Mojuí dos Campos"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Monte Alegre"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Muaná"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Oeiras do Pará"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Amapá",
-  "municipio": "Oiapoque"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Amapá",
-  "municipio": "Pedra Branca do Amapari"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Ponta de Pedras"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Portel"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Porto de Moz"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Amapá",
-  "municipio": "Porto Grande"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Prainha"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Salvaterra"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Santa Cruz do Arari"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Santarém"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "São Sebastião da Boa Vista"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Amapá",
-  "municipio": "Serra do Navio"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Pará",
-  "municipio": "Soure"
- },
- {
-  "regiaoCastanheira": "Amapará",
-  "estado": "Amapá",
-  "municipio": "Vitória do Jari"
- },
- {
-  "regiaoCastanheira": "Baixo Solimões",
-  "estado": "Amazonas",
-  "municipio": "Anori"
- },
- {
-  "regiaoCastanheira": "Baixo Solimões",
-  "estado": "Amazonas",
-  "municipio": "Coari"
- },
- {
-  "regiaoCastanheira": "Baixo Solimões",
-  "estado": "Amazonas",
-  "municipio": "Codajás"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Alto Paraíso"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Amazonas",
-  "municipio": "Apuí"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Ariquemes"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Amazonas",
-  "municipio": "Beruri"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Buritis"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Cacaulândia"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Campo Novo de Rondônia"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Candeias do Jamari"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Amazonas",
-  "municipio": "Canutama"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Cujubim"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Amazonas",
-  "municipio": "Humaitá"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Itapuã do Oeste"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Amazonas",
-  "municipio": "Lábrea"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Monte Negro"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Porto Velho"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Rondônia",
-  "municipio": "Rio Crespo"
- },
- {
-  "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
-  "estado": "Amazonas",
-  "municipio": "Tapauá"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Alvorada D'Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Cacoal"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Castanheiras"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Chupinguaia"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Colorado do Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Corumbiara"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Espigão D'Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Governador Jorge Teixeira"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Jaru"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Ji-Paraná"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Machadinho D'Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Ministro Andreazza"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Mirante da Serra"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Nova Brasilândia D'Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Nova União"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Novo Horizonte do Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Ouro Preto do Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Parecis"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Pimenta Bueno"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Presidente Médici"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Primavera de Rondônia"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Rolim de Moura"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Mato Grosso",
-  "municipio": "Rondolândia"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Santa Luzia D'Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "São Felipe D'Oeste"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Teixeirópolis"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Theobroma"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Urupá"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Vale do Anari"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Vale do Paraíso"
- },
- {
-  "regiaoCastanheira": "Corredor Tupi-Mondé",
-  "estado": "Rondônia",
-  "municipio": "Vilhena"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Alta Floresta"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Apiacás"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Aripuanã"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Brasnorte"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Carlinda"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Castanheira"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Colniza"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Cotriguaçu"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Diamantino"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Guarantã do Norte"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Ipiranga do Norte"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Itanhangá"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Juara"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Juína"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Juruena"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Lucas do Rio Verde"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Matupá"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Nova Bandeirantes"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Nova Maringá"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Nova Monte Verde"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Nova Mutum"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Nova Ubiratã"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Novo Horizonte do Norte"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Novo Mundo"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Paranaíta"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Paranatinga"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Peixoto de Azevedo"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Porto dos Gaúchos"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Santa Rita do Trivelato"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "São José do Rio Claro"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Sorriso"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Tabaporã"
- },
- {
-  "regiaoCastanheira": "Juruena",
-  "estado": "Mato Grosso",
-  "municipio": "Tapurah"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Abel Figueiredo"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Bom Jesus do Tocantins"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Brejo Grande do Araguaia"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Breu Branco"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Canaã dos Carajás"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Curionópolis"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Eldorado do Carajás"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Goianésia do Pará"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Itupiranga"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Jacundá"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Marabá"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Nova Ipixuna"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Novo Repartimento"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Palestina do Pará"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Parauapebas"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Piçarra"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Rondon do Pará"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "São Domingos do Araguaia"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "São Geraldo do Araguaia"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "São João do Araguaia"
- },
- {
-  "regiaoCastanheira": "Marabá",
-  "estado": "Pará",
-  "municipio": "Tucuruí"
- },
- {
-  "regiaoCastanheira": "Médio Baixo Madeira",
-  "estado": "Amazonas",
-  "municipio": "Borba"
- },
- {
-  "regiaoCastanheira": "Médio Baixo Madeira",
-  "estado": "Amazonas",
-  "municipio": "Manicoré"
- },
- {
-  "regiaoCastanheira": "Médio Baixo Madeira",
-  "estado": "Amazonas",
-  "municipio": "Nova Olinda do Norte"
- },
- {
-  "regiaoCastanheira": "Médio Baixo Madeira",
-  "estado": "Amazonas",
-  "municipio": "Novo Aripuanã"
- },
- {
-  "regiaoCastanheira": "Médio Solimões",
-  "estado": "Amazonas",
-  "municipio": "Alvarães"
- },
- {
-  "regiaoCastanheira": "Médio Solimões",
-  "estado": "Amazonas",
-  "municipio": "Carauari"
- },
- {
-  "regiaoCastanheira": "Médio Solimões",
-  "estado": "Amazonas",
-  "municipio": "Fonte Boa"
- },
- {
-  "regiaoCastanheira": "Médio Solimões",
-  "estado": "Amazonas",
-  "municipio": "Japurá"
- },
- {
-  "regiaoCastanheira": "Médio Solimões",
-  "estado": "Amazonas",
-  "municipio": "Juruá"
- },
- {
-  "regiaoCastanheira": "Médio Solimões",
-  "estado": "Amazonas",
-  "municipio": "Maraã"
- },
- {
-  "regiaoCastanheira": "Médio Solimões",
-  "estado": "Amazonas",
-  "municipio": "Tefé"
- },
- {
-  "regiaoCastanheira": "Médio Solimões",
-  "estado": "Amazonas",
-  "municipio": "Uarini"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Ananindeua"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Barcarena"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Belém"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Benevides"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Bujaru"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Castanhal"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Colares"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Concórdia do Pará"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Marituba"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Santa Bárbara do Pará"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Santa Izabel do Pará"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Santo Antônio do Tauá"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "São Caetano de Odivelas"
- },
- {
-  "regiaoCastanheira": "Metropolitana Belém",
-  "estado": "Pará",
-  "municipio": "Vigia"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Anamã"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Autazes"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Caapiranga"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Careiro"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Careiro da Várzea"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Iranduba"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Itacoatiara"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Itapiranga"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Manacapuru"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Manaquiri"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Manaus"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Presidente Figueiredo"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Rio Preto da Eva"
- },
- {
-  "regiaoCastanheira": "Metropolitana Manaus",
-  "estado": "Amazonas",
-  "municipio": "Silves"
- },
- {
-  "regiaoCastanheira": "Negro",
-  "estado": "Amazonas",
-  "municipio": "Barcelos"
- },
- {
-  "regiaoCastanheira": "Negro",
-  "estado": "Amazonas",
-  "municipio": "Novo Airão"
- },
- {
-  "regiaoCastanheira": "Negro",
-  "estado": "Amazonas",
-  "municipio": "Santa Isabel do Rio Negro"
- },
- {
-  "regiaoCastanheira": "Negro",
-  "estado": "Amazonas",
-  "municipio": "São Gabriel da Cachoeira"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Acará"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Augusto Corrêa"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Aurora do Pará"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Bonito"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Bragança"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Cachoeira do Piriá"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Capanema"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Capitão Poço"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Curuçá"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Dom Eliseu"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Garrafão do Norte"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Igarapé-Açu"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Inhangapi"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Ipixuna do Pará"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Irituia"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Mãe do Rio"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Magalhães Barata"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Maracanã"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Marapanim"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Moju"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Nova Esperança do Piriá"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Nova Timboteua"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Ourém"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Paragominas"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Peixe-Boi"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Primavera"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Quatipuru"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Salinópolis"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Santa Luzia do Pará"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Santa Maria do Pará"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Santarém Novo"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "São Domingos do Capim"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "São Francisco do Pará"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "São João da Ponta"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "São João de Pirabas"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "São Miguel do Guamá"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Tailândia"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Terra Alta"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Tomé-Açu"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Tracuateua"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Ulianópolis"
- },
- {
-  "regiaoCastanheira": "Nordeste Paraense",
-  "estado": "Pará",
-  "municipio": "Viseu"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Amazonas",
-  "municipio": "Barreirinha"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Amazonas",
-  "municipio": "Boa Vista do Ramos"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Pará",
-  "municipio": "Curuá"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Pará",
-  "municipio": "Faro"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Amazonas",
-  "municipio": "Maués"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Amazonas",
-  "municipio": "Nhamundá"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Pará",
-  "municipio": "Óbidos"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Pará",
-  "municipio": "Oriximiná"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Amazonas",
-  "municipio": "Parintins"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Amazonas",
-  "municipio": "São Sebastião do Uatumã"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Pará",
-  "municipio": "Terra Santa"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Amazonas",
-  "municipio": "Urucará"
- },
- {
-  "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
-  "estado": "Amazonas",
-  "municipio": "Urucurituba"
- },
- {
-  "regiaoCastanheira": "Roraima",
-  "estado": "Roraima",
-  "municipio": "Caracaraí"
- },
- {
-  "regiaoCastanheira": "Roraima",
-  "estado": "Roraima",
-  "municipio": "Caroebe"
- },
- {
-  "regiaoCastanheira": "Roraima",
-  "estado": "Roraima",
-  "municipio": "Mucajaí"
- },
- {
-  "regiaoCastanheira": "Roraima",
-  "estado": "Roraima",
-  "municipio": "Rorainópolis"
- },
- {
-  "regiaoCastanheira": "Roraima",
-  "estado": "Roraima",
-  "municipio": "São João da Baliza"
- },
- {
-  "regiaoCastanheira": "Roraima",
-  "estado": "Roraima",
-  "municipio": "São Luiz"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Água Azul do Norte"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Altamira"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Anapu"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Aveiro"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Bannach"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Brasil Novo"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Cláudia"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Colíder"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Conceição do Araguaia"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Cumaru do Norte"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Feliz Natal"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Floresta do Araguaia"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Gaúcha do Norte"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Itaituba"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Itaúba"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Jacareacanga"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Marcelândia"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Medicilândia"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Nova Canaã do Norte"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Nova Guarita"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Nova Santa Helena"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Novo Progresso"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Ourilândia do Norte"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Pacajá"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Pau D'Arco"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Placas"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Redenção"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Rio Maria"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Rurópolis"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Santa Carmem"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Santa Maria das Barreiras"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Santana do Araguaia"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "São Félix do Xingu"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Sapucaia"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Senador José Porfírio"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Sinop"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Terra Nova do Norte"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Trairão"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Tucumã"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "União do Sul"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Uruará"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Mato Grosso",
-  "municipio": "Vera"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Vitória do Xingu"
- },
- {
-  "regiaoCastanheira": "Xingú Iriri",
-  "estado": "Pará",
-  "municipio": "Xinguara"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Alta Floresta D'Oeste"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Alto Alegre dos Parecis"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Cabixi"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Cerejeiras"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Costa Marques"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Guajará-Mirim"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Nova Mamoré"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Pimenteiras do Oeste"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "São Francisco do Guaporé"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "São Miguel do Guaporé"
- },
- {
-  "regiaoCastanheira": "Guaporé",
-  "estado": "Rondônia",
-  "municipio": "Seringueiras"
- }
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Acrelândia"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Assis Brasil"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Boca do Acre"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Brasiléia"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Bujari"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Capixaba"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Epitaciolândia"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Pauini"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Plácido de Castro"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Porto Acre"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Rio Branco"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Santa Rosa do Purus"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Sena Madureira"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Senador Guiomard"
+  },
+  {
+    "regiaoCastanheira": "Alto Purus",
+    "estado": "Acre",
+    "uf": "AC",
+    "municipio": "Xapuri"
+  },
+  {
+    "regiaoCastanheira": "Alto Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Amaturá"
+  },
+  {
+    "regiaoCastanheira": "Alto Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Atalaia do Norte"
+  },
+  {
+    "regiaoCastanheira": "Alto Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Benjamin Constant"
+  },
+  {
+    "regiaoCastanheira": "Alto Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Jutaí"
+  },
+  {
+    "regiaoCastanheira": "Alto Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Santo Antônio do Içá"
+  },
+  {
+    "regiaoCastanheira": "Alto Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "São Paulo de Olivença"
+  },
+  {
+    "regiaoCastanheira": "Alto Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Tabatinga"
+  },
+  {
+    "regiaoCastanheira": "Alto Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Tonantins"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Abaetetuba"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Afuá"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Alenquer"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Almeirim"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Anajás"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Bagre"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Baião"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Belterra"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Breves"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Cachoeira do Arari"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Cametá"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Chaves"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Curralinho"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Gurupá"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Igarapé-Miri"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Juruti"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Amapá",
+    "uf": "AP",
+    "municipio": "Laranjal do Jari"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Limoeiro do Ajuru"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Amapá",
+    "uf": "AP",
+    "municipio": "Macapá"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Amapá",
+    "uf": "AP",
+    "municipio": "Mazagão"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Melgaço"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Mocajuba"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Mojuí dos Campos"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Monte Alegre"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Muaná"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Oeiras do Pará"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Amapá",
+    "uf": "AP",
+    "municipio": "Oiapoque"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Amapá",
+    "uf": "AP",
+    "municipio": "Pedra Branca do Amapari"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Ponta de Pedras"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Portel"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Porto de Moz"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Amapá",
+    "uf": "AP",
+    "municipio": "Porto Grande"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Prainha"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Salvaterra"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santa Cruz do Arari"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santarém"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São Sebastião da Boa Vista"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Amapá",
+    "uf": "AP",
+    "municipio": "Serra do Navio"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Soure"
+  },
+  {
+    "regiaoCastanheira": "Amapará",
+    "estado": "Amapá",
+    "uf": "AP",
+    "municipio": "Vitória do Jari"
+  },
+  {
+    "regiaoCastanheira": "Baixo Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Anori"
+  },
+  {
+    "regiaoCastanheira": "Baixo Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Coari"
+  },
+  {
+    "regiaoCastanheira": "Baixo Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Codajás"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Alto Paraíso"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Apuí"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Ariquemes"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Beruri"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Buritis"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Cacaulândia"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Campo Novo de Rondônia"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Candeias do Jamari"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Canutama"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Cujubim"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Humaitá"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Itapuã do Oeste"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Lábrea"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Monte Negro"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Porto Velho"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Rio Crespo"
+  },
+  {
+    "regiaoCastanheira": "Centro-Sul Amazonense e Norte de Rondônia",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Tapauá"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Alvorada D'Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Cacoal"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Castanheiras"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Chupinguaia"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Colorado do Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Corumbiara"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Espigão D'Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Governador Jorge Teixeira"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Jaru"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Ji-Paraná"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Machadinho D'Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Ministro Andreazza"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Mirante da Serra"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Nova Brasilândia D'Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Nova União"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Novo Horizonte do Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Ouro Preto do Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Parecis"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Pimenta Bueno"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Presidente Médici"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Primavera de Rondônia"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Rolim de Moura"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Rondolândia"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Santa Luzia D'Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "São Felipe D'Oeste"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Teixeirópolis"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Theobroma"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Urupá"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Vale do Anari"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Vale do Paraíso"
+  },
+  {
+    "regiaoCastanheira": "Corredor Tupi-Mondé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Vilhena"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Alta Floresta"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Apiacás"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Aripuanã"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Brasnorte"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Carlinda"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Castanheira"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Colniza"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Cotriguaçu"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Diamantino"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Guarantã do Norte"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Ipiranga do Norte"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Itanhangá"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Juara"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Juína"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Juruena"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Lucas do Rio Verde"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Matupá"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Nova Bandeirantes"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Nova Maringá"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Nova Monte Verde"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Nova Mutum"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Nova Ubiratã"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Novo Horizonte do Norte"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Novo Mundo"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Paranaíta"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Paranatinga"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Peixoto de Azevedo"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Porto dos Gaúchos"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Santa Rita do Trivelato"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "São José do Rio Claro"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Sorriso"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Tabaporã"
+  },
+  {
+    "regiaoCastanheira": "Juruena",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Tapurah"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Abel Figueiredo"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Bom Jesus do Tocantins"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Brejo Grande do Araguaia"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Breu Branco"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Canaã dos Carajás"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Curionópolis"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Eldorado do Carajás"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Goianésia do Pará"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Itupiranga"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Jacundá"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Marabá"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Nova Ipixuna"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Novo Repartimento"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Palestina do Pará"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Parauapebas"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Piçarra"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Rondon do Pará"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São Domingos do Araguaia"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São Geraldo do Araguaia"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São João do Araguaia"
+  },
+  {
+    "regiaoCastanheira": "Marabá",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Tucuruí"
+  },
+  {
+    "regiaoCastanheira": "Médio Baixo Madeira",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Borba"
+  },
+  {
+    "regiaoCastanheira": "Médio Baixo Madeira",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Manicoré"
+  },
+  {
+    "regiaoCastanheira": "Médio Baixo Madeira",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Nova Olinda do Norte"
+  },
+  {
+    "regiaoCastanheira": "Médio Baixo Madeira",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Novo Aripuanã"
+  },
+  {
+    "regiaoCastanheira": "Médio Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Alvarães"
+  },
+  {
+    "regiaoCastanheira": "Médio Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Carauari"
+  },
+  {
+    "regiaoCastanheira": "Médio Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Fonte Boa"
+  },
+  {
+    "regiaoCastanheira": "Médio Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Japurá"
+  },
+  {
+    "regiaoCastanheira": "Médio Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Juruá"
+  },
+  {
+    "regiaoCastanheira": "Médio Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Maraã"
+  },
+  {
+    "regiaoCastanheira": "Médio Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Tefé"
+  },
+  {
+    "regiaoCastanheira": "Médio Solimões",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Uarini"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Ananindeua"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Barcarena"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Belém"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Benevides"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Bujaru"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Castanhal"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Colares"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Concórdia do Pará"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Marituba"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santa Bárbara do Pará"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santa Izabel do Pará"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santo Antônio do Tauá"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São Caetano de Odivelas"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Belém",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Vigia"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Anamã"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Autazes"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Caapiranga"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Careiro"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Careiro da Várzea"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Iranduba"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Itacoatiara"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Itapiranga"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Manacapuru"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Manaquiri"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Manaus"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Presidente Figueiredo"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Rio Preto da Eva"
+  },
+  {
+    "regiaoCastanheira": "Metropolitana Manaus",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Silves"
+  },
+  {
+    "regiaoCastanheira": "Negro",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Barcelos"
+  },
+  {
+    "regiaoCastanheira": "Negro",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Novo Airão"
+  },
+  {
+    "regiaoCastanheira": "Negro",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Santa Isabel do Rio Negro"
+  },
+  {
+    "regiaoCastanheira": "Negro",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "São Gabriel da Cachoeira"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Acará"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Augusto Corrêa"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Aurora do Pará"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Bonito"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Bragança"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Cachoeira do Piriá"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Capanema"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Capitão Poço"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Curuçá"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Dom Eliseu"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Garrafão do Norte"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Igarapé-Açu"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Inhangapi"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Ipixuna do Pará"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Irituia"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Mãe do Rio"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Magalhães Barata"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Maracanã"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Marapanim"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Moju"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Nova Esperança do Piriá"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Nova Timboteua"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Ourém"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Paragominas"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Peixe-Boi"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Primavera"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Quatipuru"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Salinópolis"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santa Luzia do Pará"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santa Maria do Pará"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santarém Novo"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São Domingos do Capim"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São Francisco do Pará"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São João da Ponta"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São João de Pirabas"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São Miguel do Guamá"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Tailândia"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Terra Alta"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Tomé-Açu"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Tracuateua"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Ulianópolis"
+  },
+  {
+    "regiaoCastanheira": "Nordeste Paraense",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Viseu"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Barreirinha"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Boa Vista do Ramos"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Curuá"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Faro"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Maués"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Nhamundá"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Óbidos"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Oriximiná"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Parintins"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "São Sebastião do Uatumã"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Terra Santa"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Urucará"
+  },
+  {
+    "regiaoCastanheira": "Norte do Pará e Leste do Amazonas",
+    "estado": "Amazonas",
+    "uf": "AM",
+    "municipio": "Urucurituba"
+  },
+  {
+    "regiaoCastanheira": "Roraima",
+    "estado": "Roraima",
+    "uf": "RR",
+    "municipio": "Caracaraí"
+  },
+  {
+    "regiaoCastanheira": "Roraima",
+    "estado": "Roraima",
+    "uf": "RR",
+    "municipio": "Caroebe"
+  },
+  {
+    "regiaoCastanheira": "Roraima",
+    "estado": "Roraima",
+    "uf": "RR",
+    "municipio": "Mucajaí"
+  },
+  {
+    "regiaoCastanheira": "Roraima",
+    "estado": "Roraima",
+    "uf": "RR",
+    "municipio": "Rorainópolis"
+  },
+  {
+    "regiaoCastanheira": "Roraima",
+    "estado": "Roraima",
+    "uf": "RR",
+    "municipio": "São João da Baliza"
+  },
+  {
+    "regiaoCastanheira": "Roraima",
+    "estado": "Roraima",
+    "uf": "RR",
+    "municipio": "São Luiz"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Água Azul do Norte"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Altamira"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Anapu"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Aveiro"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Bannach"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Brasil Novo"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Cláudia"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Colíder"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Conceição do Araguaia"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Cumaru do Norte"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Feliz Natal"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Floresta do Araguaia"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Gaúcha do Norte"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Itaituba"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Itaúba"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Jacareacanga"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Marcelândia"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Medicilândia"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Nova Canaã do Norte"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Nova Guarita"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Nova Santa Helena"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Novo Progresso"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Ourilândia do Norte"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Pacajá"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Pau D'Arco"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Placas"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Redenção"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Rio Maria"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Rurópolis"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Santa Carmem"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santa Maria das Barreiras"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Santana do Araguaia"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "São Félix do Xingu"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Sapucaia"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Senador José Porfírio"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Sinop"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Terra Nova do Norte"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Trairão"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Tucumã"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "União do Sul"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Uruará"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Mato Grosso",
+    "uf": "MT",
+    "municipio": "Vera"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Vitória do Xingu"
+  },
+  {
+    "regiaoCastanheira": "Xingú Iriri",
+    "estado": "Pará",
+    "uf": "PA",
+    "municipio": "Xinguara"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Alta Floresta D'Oeste"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Alto Alegre dos Parecis"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Cabixi"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Cerejeiras"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Costa Marques"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Guajará-Mirim"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Nova Mamoré"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Pimenteiras do Oeste"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "São Francisco do Guaporé"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "São Miguel do Guaporé"
+  },
+  {
+    "regiaoCastanheira": "Guaporé",
+    "estado": "Rondônia",
+    "uf": "RO",
+    "municipio": "Seringueiras"
+  }
 ]

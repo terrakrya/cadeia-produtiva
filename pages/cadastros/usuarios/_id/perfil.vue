@@ -139,6 +139,7 @@
                       class="form-control"
                       :options="cidades"
                       name="city"
+                      @input="loadregions()"
                     />
                     <field-error :msg="veeErrors" field="city" />
                   </b-form-group>
@@ -146,12 +147,12 @@
                 <b-col sm="3">
                   <b-form-group label="Região Castanheira">
                     <b-form-select
-                      v-model="form.chestnutRegion"
+                      v-model="form.region"
                       class="form-control"
-                      :options="chestnutRegions"
-                      name="chestnutRegion"
+                      :options="regions"
+                      name="region"
                     />
-                    <field-error :msg="veeErrors" field="chestnutRegion" />
+                    <field-error :msg="veeErrors" field="region" />
                   </b-form-group>
                 </b-col>
               </div>
@@ -246,9 +247,9 @@ export default {
       estados,
       cidades,
       regioes,
-      chestnutRegions: [],
+      regions: [],
       form: {
-        chestnutRegion: '',
+        region: '',
         unitOfMeasurement: '',
         name: '',
         email: '',
@@ -289,17 +290,19 @@ export default {
         }
       }
     },
-    loadChestnutRegions() {
-      this.chestnutRegions = [
-        { value: '', text: 'Selecione a região', selected: true },
-      ]
+    loadregions() {
+      this.regions = [{ value: '', text: 'Selecione a região', selected: true }]
       const regionsNames = [
-        ...new Set(regioes.map((item) => item.regiaoCastanheira)),
+        ...new Set(
+          regioes
+            .filter((item) => item.municipio == this.form.city)
+            .map((item) => item.regiaoCastanheira)
+        ),
       ]
 
       regionsNames.forEach(
         (regionName) =>
-          (this.chestnutRegions = this.chestnutRegions.concat({
+          (this.regions = this.regions.concat({
             value: regionName,
             text: regionName,
           }))
@@ -331,8 +334,8 @@ export default {
         this.form.uf = dados.uf
         this.loadCities()
         this.form.city = dados.city
-        this.loadChestnutRegions()
-        this.form.chestnutRegion = dados.chestnutRegion
+        this.loadregions()
+        this.form.region = dados.region
         this.form.identity = dados.identity
         this.form.gender = dados.gender
         this.form.birthDate = dados.birthDate

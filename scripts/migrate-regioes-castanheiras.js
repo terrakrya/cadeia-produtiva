@@ -5,17 +5,16 @@ const mongoose = require('mongoose')
 const User = mongoose.model('User')
 
 const migrateDocuments = async () => {
-  const users = await User.find({ chestnutRegion: null })
+  const users = await User.find({ region: null })
 
   for (const user of users) {
-
     const [regiaoUser] = regiao.filter(function (item) {
       return item.municipio === user.city
     })
 
     if (regiaoUser) {
       await user.updateOne({
-        $set: { chestnutRegion: regiaoUser.regiaoCastanheira },
+        $set: { region: regiaoUser.regiaoCastanheira },
       })
     }
   }

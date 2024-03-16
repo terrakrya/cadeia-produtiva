@@ -41,16 +41,12 @@ router.get('/summary', auth.authenticated, async (req, res) => {
     query.product = filters.product
   }
 
-  if (filters.chestnutRegions) {
-    query.region = filters.chestnutRegions
+  if (filters.regions) {
+    query.region = filters.regions
   }
 
   if (filters.buyerPosition) {
     query.buyerPositionBuyer = filters.buyerPosition
-  }
-
-  if (filters.unitOfMeasurement) {
-    query.measure = filters.unitOfMeasurement
   }
 
   if (filters.from && !filters.to) {
@@ -79,41 +75,55 @@ router.get('/summary', auth.authenticated, async (req, res) => {
 
   if (prices && prices.length) {
     summary = {
-      minimumPrice: prices[0].minimumPrice,
-      maximumPrice: prices[0].maximumPrice,
+      minimumPrice: convertUnit(
+        prices[0].minimumPrice,
+        filters.unitOfMeasurement
+      ),
+      maximumPrice: convertUnit(
+        prices[0].maximumPrice,
+        filters.unitOfMeasurement
+      ),
       averagePrice: 0,
       squares: {},
     }
 
     prices.forEach((price) => {
-      if (summary.minimumPrice > price.minimumPrice) {
-        summary.minimumPrice = price.minimumPrice
+      const minimumPrice = convertUnit(
+        price.minimumPrice,
+        filters.unitOfMeasurement
+      )
+      const maximumPrice = convertUnit(
+        price.maximumPrice,
+        filters.unitOfMeasurement
+      )
+
+      if (summary.minimumPrice > minimumPrice) {
+        summary.minimumPrice = minimumPrice
       }
 
-      if (summary.maximumPrice < price.maximumPrice) {
-        summary.maximumPrice = price.maximumPrice
+      if (summary.maximumPrice < maximumPrice) {
+        summary.maximumPrice = maximumPrice
       }
 
       const squareName = price.region
+
       if (!summary.squares[squareName]) {
         summary.squares[squareName] = {
-          minimumPrice: price.minimumPrice,
-          maximumPrice: price.maximumPrice,
-          averagePrices: [
-            new Decimal(price.minimumPrice).plus(price.maximumPrice).div(2),
-          ],
+          minimumPrice: minimumPrice,
+          maximumPrice: maximumPrice,
+          averagePrices: [new Decimal(minimumPrice).plus(maximumPrice).div(2)],
         }
       } else {
         summary.squares[squareName].minimumPrice =
-          summary.squares[squareName].minimumPrice < price.minimumPrice
+          summary.squares[squareName].minimumPrice < minimumPrice
             ? summary.squares[squareName].minimumPrice
-            : price.minimumPrice
+            : minimumPrice
         summary.squares[squareName].maximumPrice =
-          summary.squares[squareName].maximumPrice > price.maximumPrice
+          summary.squares[squareName].maximumPrice > maximumPrice
             ? summary.squares[squareName].maximumPrice
-            : price.maximumPrice
+            : maximumPrice
         summary.squares[squareName].averagePrices.push(
-          new Decimal(price.minimumPrice).plus(price.maximumPrice).div(2)
+          new Decimal(minimumPrice).plus(maximumPrice).div(2)
         )
       }
     })
@@ -364,5 +374,24 @@ router.delete('/:id', auth.authenticated, (req, res) => {
     }
   })
 })
+
+// Prices are stored always in Kg, regardless of what measure is
+const conversionTable = {
+  Lata: 1 / 12,
+  Kg: 1,
+  Caixa: 1 / 24,
+  Saca: 1 / 48,
+  Hectolitro: 1 / 60,
+  Barrica: 1 / 72,
+  Tonelada: 1 / 1000,
+}
+
+function convertUnit(value, toUnit) {
+  if (!(toUnit in conversionTable)) {
+    return null
+  }
+
+  return new Decimal(value * conversionTable[toUnit]).toFixed(2)
+}
 
 module.exports = router

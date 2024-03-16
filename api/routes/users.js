@@ -127,7 +127,7 @@ router.post('/', auth.manager, async (req, res) => {
     user.city = req.body.city
     user.birthDate = req.body.birthDate
     user.gender = req.body.gender
-    user.chestnutRegion = req.body.chestnutRegion
+    user.region = req.body.region
 
     if (userRole === 'gestor') {
       user.role = 'mensageiro'
@@ -180,7 +180,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.birthDate = req.body.birthDate
       user.gender = req.body.gender
       user.identity = req.body.identity
-      user.chestnutRegion = req.body.chestnutRegion
+      user.region = req.body.region
 
       if (userRole === 'gestor' || userRole === 'mensageiro') {
         user.role = 'mensageiro'
@@ -234,7 +234,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.birthDate = req.body.birthDate
       user.gender = req.body.gender
       user.identity = req.body.identity
-      user.chestnutRegion = req.body.chestnutRegion
+      user.region = req.body.region
 
       if (userRole === 'gestor' || userRole === 'mensageiro') {
         user.role = 'mensageiro'
