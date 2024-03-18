@@ -377,13 +377,13 @@ router.delete('/:id', auth.authenticated, (req, res) => {
 
 // Prices are stored always in Kg, regardless of what measure is
 const conversionTable = {
-  Lata: 1 / 12,
+  Lata: 12,
   Kg: 1,
-  Caixa: 1 / 24,
-  Saca: 1 / 48,
-  Hectolitro: 1 / 60,
-  Barrica: 1 / 72,
-  Tonelada: 1 / 1000,
+  Caixa: 24,
+  Saca: 48,
+  Hectolitro: 60,
+  Barrica: 72,
+  Tonelada: 1000,
 }
 
 function convertUnit(value, toUnit) {
