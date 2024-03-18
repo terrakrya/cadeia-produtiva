@@ -146,11 +146,12 @@
                 </b-col>
                 <b-col sm="3">
                   <b-form-group label="Região Castanheira">
-                    <b-form-select
+                    <input
                       v-model="form.region"
+                      type="text"
+                      readonly
                       class="form-control"
-                      :options="regions"
-                      name="region"
+                      text-field="region"
                     />
                     <field-error :msg="veeErrors" field="region" />
                   </b-form-group>
@@ -291,8 +292,7 @@ export default {
       }
     },
     loadregions() {
-      this.regions = [{ value: '', text: 'Selecione a região', selected: true }]
-      const regionsNames = [
+      const [regionName] = [
         ...new Set(
           regioes
             .filter((item) => item.municipio == this.form.city)
@@ -300,13 +300,7 @@ export default {
         ),
       ]
 
-      regionsNames.forEach(
-        (regionName) =>
-          (this.regions = this.regions.concat({
-            value: regionName,
-            text: regionName,
-          }))
-      )
+      this.form.region = regionName
     },
     async edit(id) {
       this.is_loading = true
