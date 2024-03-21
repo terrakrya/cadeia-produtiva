@@ -29,8 +29,11 @@
               <Loading loading />
             </div>
             <div v-else>
-              <b-row v-if="userRegionSummary" class="price-summary-box">
-                <div class="date-box-wrapper">
+              <b-row
+                v-if="userRegionSummary"
+                class="price-summary-box d-flex flex-column flex-sm-row"
+              >
+                <div class="date-box-wrapper w-100 mb-3">
                   <font-awesome-icon
                     icon="fa-solid fa-calendar-days"
                     size="lg"
@@ -69,7 +72,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="prices-container">
+                <div class="prices-container w-100">
                   <div class="price-row">
                     <div class="price-label">Mínimo</div>
                     <div class="price-value">
