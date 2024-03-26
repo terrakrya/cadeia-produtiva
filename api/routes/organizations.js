@@ -33,18 +33,30 @@ router.get('/:id', auth.authenticated, async (req, res) => {
     res.sendStatus(422)
   }
 })
-router.get('/edit/:id', auth.globalManager, async (req, res) => {
+router.get('/edit/:id', auth.manager, async (req, res) => {
   const query = { _id: req.params.id }
+  const userOrganization = req.user.organization
+  const isGlobalManager = auth.isGlobalManager(req)
+
+  if (userOrganization != query._id && !isGlobalManager) {
+    return res.status(403).json({ message: 'Você não possui permissão para Editar essa Organização' });
+  }
 
   try {
-    const organizations = await Organization.findOne(query).populate('product')
-    return res.json(organizations)
-  } catch (err) {
-    res.sendStatus(422)
-  }
-})
+    const organization = await Organization.findOne(query).populate('product');
+    if (!organization) {
+      return res.status(404).json({ message: 'Organização não encontrada.' });
+    }
 
-router.post('/', auth.manager, async (req, res) => {
+    return res.json(organization);
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(422);
+  }
+});
+
+
+router.post('/', auth.globalManager, async (req, res) => {
   try {
     const organizations = new Organization()
 
@@ -80,7 +92,7 @@ router.post('/', auth.manager, async (req, res) => {
   }
 })
 // altera um produto
-router.put('/:id', auth.globalManager, async (req, res) => {
+router.put('/:id', auth.manager, async (req, res) => {
   try {
     const query = { _id: req.params.id }
 
