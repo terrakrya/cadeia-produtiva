@@ -31,7 +31,7 @@
             <div v-else>
               <b-row
                 v-if="userRegionSummary"
-                class="price-summary-box d-flex flex-column flex-sm-row"
+                class="price-summary-box d-flex flex-column flex-md-row"
               >
                 <div class="date-box-wrapper w-100 mb-3">
                   <font-awesome-icon
