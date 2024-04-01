@@ -182,11 +182,6 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.identity = req.body.identity
       user.region = req.body.region
 
-      if (userRole === 'gestor' || userRole === 'mensageiro') {
-        user.role = 'mensageiro'
-        user.organization = req.user.organization
-      }
-
       if (req.body.password) {
         user.setPassword(req.body.password)
       }
@@ -235,11 +230,6 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.gender = req.body.gender
       user.identity = req.body.identity
       user.region = req.body.region
-
-      if (userRole === 'gestor' || userRole === 'mensageiro') {
-        user.role = 'mensageiro'
-        user.organization = req.user.organization
-      }
 
       if (req.body.password) {
         user.setPassword(req.body.password)
