@@ -116,8 +116,19 @@ th.actions, td.actions
   letter-spacing: 1px
 
 .price-measure
+  display: none
   font-size: 16px
   text-transform: uppercase
+
+.measure-row
+  font-size: 14px
+
+@media (min-width: 480px)
+  .price-measure
+    display: inline-flex
+
+  .measure-row
+    display: none
 
 .price-summary-box
   display: flex
@@ -133,7 +144,7 @@ th.actions, td.actions
 
 @media (min-width: 768px)
   .price-summary-box
-    height: 144px
+    height: 164px
 
 .date-box-wrapper
   flex: 0 1 25%

@@ -11,6 +11,21 @@
             >
             da região
             {{ this.$auth.user.region }}
+
+            <span v-if="filters.from && filters.to">
+              <span>de {{ filters.from | moment('DD/MM/YYYY') }}</span>
+              <span>até</span>
+              <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+            </span>
+            <span v-if="filters.from && !filters.to">
+              <span>de {{ filters.from | moment('DD/MM/YYYY') }}</span>
+              <span>até</span>
+              <span>Hoje</span>
+            </span>
+            <span v-if="!filters.from && filters.to">
+              <span>até</span>
+              <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+            </span>
           </h6>
         </div>
         <div class="info-content">
@@ -37,24 +52,26 @@
                     class="d-flex flex-column align-items-center"
                     v-if="filters.from && filters.to"
                   >
-                    <span>{{ filters.from | moment('DD/MM/YYYY') }}</span>
-                    <span>↓</span>
-                    <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+                    <span>Safra</span>
+                    <span
+                      >{{ filters.from | moment('YYYY') }}/{{
+                        filters.to | moment('YYYY')
+                      }}</span
+                    >
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
                     v-if="filters.from && !filters.to"
                   >
-                    <span>{{ filters.from | moment('DD/MM/YYYY') }}</span>
-                    <span>↓</span>
-                    <span>Hoje</span>
+                    <span>Safra</span>
+                    <span>{{ filters.from | moment('YYYY') }}/-</span>
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
                     v-if="!filters.from && filters.to"
                   >
-                    <span>Início</span> <span>↓</span>
-                    <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+                    <span>Safra</span>
+                    <span>-/{{ filters.to | moment('YYYY') }}</span>
                   </div>
                 </div>
               </div>
@@ -88,6 +105,11 @@
                     }}</span>
                   </div>
                 </div>
+                <div class="measure-row mt-2">
+                  <span>
+                    * Preços de 1 {{ this.$auth.user.unitOfMeasurement }}
+                  </span>
+                </div>
               </div>
             </b-row>
 
@@ -113,24 +135,22 @@
                 >
                   <div v-if="productFilter">
                     {{ productFilter }}
-                    <b-icon icon="pencil" class="ml-1" />
                   </div>
                   <div v-if="filters.buyerPosition">
                     {{ filters.buyerPosition }}
-                    <b-icon icon="pencil" class="ml-1" />
                   </div>
-                  <div v-if="filters.from && filters.to">
+                  <div
+                    v-if="filters.from && filters.to"
+                    class="d-flex flex-column"
+                  >
                     De {{ filters.from | moment('DD/MM/YYYY') }} até
                     {{ filters.to | moment('DD/MM/YYYY') }}
-                    <b-icon icon="pencil" class="ml-1" />
                   </div>
                   <div v-if="filters.from && !filters.to">
                     De {{ filters.from | moment('DD/MM/YYYY') }} até Hoje
-                    <b-icon icon="pencil" class="ml-1" />
                   </div>
                   <div v-if="!filters.from && filters.to">
                     Até {{ filters.to | moment('DD/MM/YYYY') }}
-                    <b-icon icon="pencil" class="ml-1" />
                   </div>
                 </div>
               </div>
@@ -320,29 +340,29 @@ export default {
   },
 
   async created() {
-      if (
-        !this.$auth.user.unitOfMeasurement ||
-        !this.$auth.user.buyerPosition ||
-        !this.$auth.user.uf ||
-        !this.$auth.user.city ||
-        !this.$auth.user.currency ||
-        !this.$auth.user.country ||
-        !this.$auth.user.region
-      ) {
-        this.$router.push(
-          '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
-        )
-      } else {
-        this.loading = true
-        await this.loadProducts()
-        this.filters = {
-          ...this.filters,
-          from: this.currentHarvestPeriod[0],
-          to: this.currentHarvestPeriod[1],
-        }
-        await this.load()
-        this.loading = false
+    if (
+      !this.$auth.user.unitOfMeasurement ||
+      !this.$auth.user.buyerPosition ||
+      !this.$auth.user.uf ||
+      !this.$auth.user.city ||
+      !this.$auth.user.currency ||
+      !this.$auth.user.country ||
+      !this.$auth.user.region
+    ) {
+      this.$router.push(
+        '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
+      )
+    } else {
+      this.loading = true
+      await this.loadProducts()
+      this.filters = {
+        ...this.filters,
+        from: this.currentHarvestPeriod[0],
+        to: this.currentHarvestPeriod[1],
       }
+      await this.load()
+      this.loading = false
+    }
   },
   methods: {
     squareIsUserRegion(name) {
