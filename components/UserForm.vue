@@ -134,6 +134,7 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import genero from '@/data/generos.json'
+
 export default {
   components: {
     Breadcrumb,

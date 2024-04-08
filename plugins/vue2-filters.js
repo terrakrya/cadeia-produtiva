@@ -33,3 +33,10 @@ Vue.filter('qtd', (value) => {
     .replace('.', ',')
   return kg
 })
+
+Vue.filter('percentage', (value) => {
+  return Number(value).toLocaleString(undefined, {
+    style: 'percent',
+    minimumFractionDigits: 2,
+  })
+})

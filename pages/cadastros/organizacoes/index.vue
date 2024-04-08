@@ -9,10 +9,10 @@
           </div>
           <div class="col-sm-6 main-actions">
             <n-link
-              to="/cadastros/organizacoes/cadastrar"
+              :to="'/cadastros/organizacoes/' + currentUser.organization + '/editar'"
               class="btn btn-primary"
             >
-              <b-icon-plus /> {{ 'Cadastrar' }}
+            <b-icon-pencil /> {{ 'Editar' }}
             </n-link>
           </div>
         </div>

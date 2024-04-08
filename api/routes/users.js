@@ -127,6 +127,7 @@ router.post('/', auth.manager, async (req, res) => {
     user.city = req.body.city
     user.birthDate = req.body.birthDate
     user.gender = req.body.gender
+    user.region = req.body.region
 
     if (userRole === 'gestor') {
       user.role = 'mensageiro'
@@ -179,11 +180,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.birthDate = req.body.birthDate
       user.gender = req.body.gender
       user.identity = req.body.identity
-
-      if (userRole === 'gestor' || userRole === 'mensageiro') {
-        user.role = 'mensageiro'
-        user.organization = req.user.organization
-      }
+      user.region = req.body.region
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -232,11 +229,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.birthDate = req.body.birthDate
       user.gender = req.body.gender
       user.identity = req.body.identity
-
-      if (userRole === 'gestor' || userRole === 'mensageiro') {
-        user.role = 'mensageiro'
-        user.organization = req.user.organization
-      }
+      user.region = req.body.region
 
       if (req.body.password) {
         user.setPassword(req.body.password)
@@ -290,7 +283,7 @@ router.post('/forgot-password', async (req, res) => {
       const token = Buffer.from(tokenData).toString('base64')
       const pathLink = path.posix.join(
         path.posix.sep,
-        `trocar-senha?token=${token}`,
+        `trocar-senha?token=${token}`
       )
       const host = 'https://' + req.headers.host
       const link = new URL(pathLink, host).toString()
@@ -359,7 +352,10 @@ router.post('/password-reset/:token', async (req, res) => {
     const token = req.params.token
     const tokenData = await getTokenData(token)
 
-    if (!req.body.password || !(req.body.password == req.body.password_confirmation)) {
+    if (
+      !req.body.password ||
+      !(req.body.password == req.body.password_confirmation)
+    ) {
       return res.status(422).send('Confira as senhas informadas')
     } else if (tokenData.valid) {
       const query = { _id: tokenData.userId }
@@ -374,7 +370,6 @@ router.post('/password-reset/:token', async (req, res) => {
     } else {
       return res.status(422).send('Link expirado')
     }
-
   } catch (err) {
     res
       .status(422)

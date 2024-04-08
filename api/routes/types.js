@@ -4,7 +4,7 @@ const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const Type = mongoose.model('Type')
 
-router.get('/', auth.globalManager, async (req, res) => {
+router.get('/', auth.manager, async (req, res) => {
   const query = {}
 
   // ***** monta os filtros *****

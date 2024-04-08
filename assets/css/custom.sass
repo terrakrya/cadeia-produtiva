@@ -116,7 +116,19 @@ th.actions, td.actions
   letter-spacing: 1px
 
 .price-measure
-  font-size: 12px
+  display: none
+  font-size: 16px
+  text-transform: uppercase
+
+.measure-row
+  font-size: 14px
+
+@media (min-width: 480px)
+  .price-measure
+    display: inline-flex
+
+  .measure-row
+    display: none
 
 .price-summary-box
   display: flex
@@ -126,13 +138,15 @@ th.actions, td.actions
   border-radius: 20px
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
   margin: auto
-  max-height: 144px
   width: 100%
-  height: 144px
   padding: 10px
   overflow: hidden
 
-.date-box-wrapper 
+@media (min-width: 768px)
+  .price-summary-box
+    height: 164px
+
+.date-box-wrapper
   flex: 0 1 25%
   background-color: #F9F9FB
   border-radius: 20px
@@ -149,7 +163,7 @@ th.actions, td.actions
   font-size: 16px
   font-weight: 700
 
-.prices-container 
+.prices-container
   flex: 0 1 70%
   display: flex
   flex-direction: column
@@ -157,7 +171,7 @@ th.actions, td.actions
   padding-left: 5px
   overflow: hidden
 
-.price-row 
+.price-row
   display: flex
   justify-content: space-between
   align-items: center
@@ -181,7 +195,7 @@ th.actions, td.actions
   border-color: $gray2
   border-radius: 50px
 
-.btn-panel, .btn-panel:hover, .btn-panel:active, .btn-panel:focus, .btn-panel:visited 
+.btn-panel, .btn-panel:hover, .btn-panel:active, .btn-panel:focus, .btn-panel:visited
   color: $brown1
   background-color: $white
   border-color: $white
@@ -262,8 +276,8 @@ th.actions, td.actions
   border-radius: 16px
   box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.5)
   font-weight: bold
-  color: #fff
-  
+  background-color: #fff
+
 
 .nuxt-link-exact-active
   font-weight: bold
@@ -365,7 +379,7 @@ th.actions, td.actions
     content: "\A0/\A0"
   a
     color: $orange2
-  
+
 .table
   th, td
     font-size: 13px !important
@@ -639,9 +653,10 @@ form
     background: #006400
 
 .search-input
-  background: url("~assets/img/search.png") no-repeat scroll 4px 4px
+  background: url("~assets/img/search.png") no-repeat scroll 4px 7px
   background-size: 24px
   padding-left: 35px
+  border-radius: 90px
 
 .years-filter
   max-width: 100px
@@ -857,7 +872,7 @@ form
   justify-content: center
   align-items: center
   margin: 0 auto
-        
+
 @media print
   .sidebar-wrapper, .breadcrumb, .main-actions
     display: none !important
@@ -873,6 +888,6 @@ form
     max-width: 35%
   .col-sm-9
     margin-right:5.9rem
-  form 
+  form
     legend
       white-space: nowrap

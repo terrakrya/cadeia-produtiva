@@ -139,8 +139,21 @@
                       class="form-control"
                       :options="cidades"
                       name="city"
+                      @input="loadregions()"
                     />
                     <field-error :msg="veeErrors" field="city" />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="3">
+                  <b-form-group label="Região Castanheira">
+                    <input
+                      v-model="form.region"
+                      type="text"
+                      readonly
+                      class="form-control"
+                      text-field="region"
+                    />
+                    <field-error :msg="veeErrors" field="region" />
                   </b-form-group>
                 </b-col>
               </div>
@@ -218,6 +231,7 @@ import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import genero from '@/data/generos.json'
 import identidade from '@/data/identidade-cultural.json'
+import regioes from '@/data/regioes-castanheiras.json'
 
 export default {
   components: {
@@ -233,7 +247,10 @@ export default {
       moeda,
       estados,
       cidades,
+      regioes,
+      regions: [],
       form: {
+        region: '',
         unitOfMeasurement: '',
         name: '',
         email: '',
@@ -274,6 +291,17 @@ export default {
         }
       }
     },
+    loadregions() {
+      const [regionName] = [
+        ...new Set(
+          regioes
+            .filter((item) => item.municipio == this.form.city)
+            .map((item) => item.regiaoCastanheira)
+        ),
+      ]
+
+      this.form.region = regionName
+    },
     async edit(id) {
       this.is_loading = true
       try {
@@ -300,6 +328,8 @@ export default {
         this.form.uf = dados.uf
         this.loadCities()
         this.form.city = dados.city
+        this.loadregions()
+        this.form.region = dados.region
         this.form.identity = dados.identity
         this.form.gender = dados.gender
         this.form.birthDate = dados.birthDate

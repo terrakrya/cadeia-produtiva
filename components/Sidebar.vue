@@ -39,6 +39,12 @@ import { isGlobalManager } from '~/api/config/auth';
             >Usuários</b-nav-item
           >
         </b-nav>
+        <b-nav>
+          <b-nav-item class="text-white" to="/bi">
+            BI
+          </b-nav-item>
+        </b-nav>
+      </b-list-group-item>
         <!-- <b-nav v-if="isAdmin || isGlobalManager || isManager">
           <b-nav-item class="text-white" to="/cadastros/areas-geograficas"
             >Áreas geográficas</b-nav-item

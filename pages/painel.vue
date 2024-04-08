@@ -3,227 +3,271 @@
     <div class="panel">
       <div class="panel-body">
         <div>
-          <h4 class="form-title">Dados publicados</h4>
-          <h6 class="form-subtitle">Mostrando preços da sua região</h6>
-          <!-- <div>
-            <div class="d-flex justify-content-between">
-              <div>
-                <b-button
-                  id="show-btn"
-                  variant="secondary"
-                  size="sm"
-                  class="mb-1"
-                  @click="$bvModal.show('bv-modal')"
-                  >Medidas</b-button
-                >
-                <b-button
-                  id="show-btn"
-                  variant="secondary"
-                  size="sm"
-                  class="mb-1"
-                  @click="$bvModal.show('bv-modal-1')"
-                  >Regiões</b-button
-                >
-                <b-button
-                  id="show-btn"
-                  size="sm"
-                  class="mb-1"
-                  variant="secondary"
-                  @click="$bvModal.show('bv-modal-2')"
-                  >Metodologia</b-button
-                >
+          <h4 class="form-title">Painel</h4>
+          <h6 class="form-subtitle">
+            Mostrando preços
+            <span v-if="productFilter"
+              >para<b> {{ productFilter }}</b></span
+            >
+            da região
+            {{ this.$auth.user.region }}
 
-                <FormRegionsTranslator id="bv-modal-1" />
-                <FormMeasureTranslator id="bv-modal" />
-                <FormMetodologia id="bv-modal-2" />
-              </div>
-            </div>
-          </div> -->
+            <span v-if="filters.from && filters.to">
+              <span>de {{ filters.from | moment('DD/MM/YYYY') }}</span>
+              <span>até</span>
+              <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+            </span>
+            <span v-if="filters.from && !filters.to">
+              <span>de {{ filters.from | moment('DD/MM/YYYY') }}</span>
+              <span>até</span>
+              <span>Hoje</span>
+            </span>
+            <span v-if="!filters.from && filters.to">
+              <span>até</span>
+              <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+            </span>
+          </h6>
         </div>
         <div class="info-content">
-          <iframe
-            v-if="!isMessenger"
-            title="Report Section"
-            width="100%"
-            min-height="500px"
-            src="https://app.powerbi.com/view?r=eyJrIjoiZjkwMzE2YzQtYTMxNy00MjZlLWE1YmQtMDAxYzViMjhhMDAyIiwidCI6ImZmMjIxZjk2LTI1NGUtNDFlYy1iMTUwLWI5ZmExZDBkMDNjNCJ9"
-            frameborder="0"
-            allowFullScreen="true"
-            style="min-height: 1500px; margin-bottom: 32px"
-          ></iframe>
+          <div v-if="loading" class="text-center">
+            <Loading loading />
+          </div>
           <div v-else>
-            <div v-if="loading" class="text-center">
-              <Loading loading />
-            </div>
-            <div v-else>
-              <b-row v-if="summary" class="price-summary-box">
-                <div class="date-box-wrapper">
-                  <font-awesome-icon
-                    icon="fa-solid fa-calendar-days"
-                    size="lg"
-                  />
-                  <div class="date-box">{{ currentDate }}</div>
-                </div>
-                <div class="prices-container">
-                  <div class="price-row">
-                    <div class="price-label">Mínimo</div>
-                    <div class="price-value">
-                      {{ summary.minimumPrice | moeda }}
-                      <span class="price-measure">KG</span>
-                    </div>
-                  </div>
-                  <hr />
-                  <div class="price-row">
-                    <div class="price-label">Médio</div>
-                    <div class="price-value">
-                      {{ summary.averagePrice | moeda }}
-                      <span class="price-measure">KG</span>
-                    </div>
-                  </div>
-                  <hr />
-                  <div class="price-row">
-                    <div class="price-label">Máximo</div>
-                    <div class="price-value">
-                      {{ summary.maximumPrice | moeda }}
-                      <span class="price-measure">KG</span>
-                    </div>
-                  </div>
-                </div>
-              </b-row>
-
-              <div class="text-right">
-                <b-button
-                  id="show-btn"
-                  class="btn mb-1 mt-5"
-                  variant="panel"
-                  to="/operacional/informacao-preco/cadastrar"
-                  >Informar Preço</b-button
-                >
-              </div>
-
-              <hr />
-              <div class="d-flex justify-content-between align-items-center">
-                <div>
-                  <h5 class="text-left">Preço médio por região</h5>
-                  <div
-                    v-if="!showFilters"
-                    class="text-muted pointer"
-                    style="font-size: 11px"
-                    @click="showFilters = true"
-                  >
-                    <div v-if="productFilter">
-                      {{ productFilter }}
-                      <b-icon icon="pencil" class="ml-1" />
-                    </div>
-                    <div v-if="filters.buyerPosition">
-                      {{ filters.buyerPosition }}
-                      <b-icon icon="pencil" class="ml-1" />
-                    </div>
-                    <div v-if="filters.from && filters.to">
-                      De {{ filters.from | moment('DD/MM/YYYY') }} até
-                      {{ filters.to | moment('DD/MM/YYYY') }}
-                      <b-icon icon="pencil" class="ml-1" />
-                    </div>
-                    <div v-if="filters.from && !filters.to">
-                      De {{ filters.from | moment('DD/MM/YYYY') }} até Hoje
-                      <b-icon icon="pencil" class="ml-1" />
-                    </div>
-                    <div v-if="!filters.from && filters.to">
-                      Até {{ filters.to | moment('DD/MM/YYYY') }}
-                      <b-icon icon="pencil" class="ml-1" />
-                    </div>
-                  </div>
-                </div>
-                <div>
-                  <b-btn @click="showFilters = !showFilters">
-                    <b-icon icon="filter"></b-icon>
-                  </b-btn>
-                </div>
-              </div>
-              <div v-if="showFilters" class="py-4">
-                <div class="row">
-                  <div class="col-md-6">
-                    <b-form-group label="Produto">
-                      <b-form-select
-                        v-model="filters.product"
-                        class="form-control"
-                        :options="products"
-                        value-field="_id"
-                        text-field="name"
-                      />
-                    </b-form-group>
-                  </div>
-                  <div class="col-md-6">
-                    <b-form-group label="Tipo de comprador">
-                      <b-form-select
-                        v-model="filters.buyerPosition"
-                        class="form-control"
-                        :options="buyerPositions"
-                      />
-                    </b-form-group>
-                  </div>
-                </div>
-                <div class="row">
-                  <b-col cols="6">
-                    <b-form-group label="Data inicial">
-                      <b-form-input
-                        v-model="filters.from"
-                        type="date"
-                        name="date_time"
-                        locale="pt-BR"
-                        placeholder="DD/MM/AAAA"
-                      />
-                    </b-form-group>
-                  </b-col>
-                  <b-col cols="6">
-                    <b-form-group label="Data final">
-                      <b-form-input
-                        v-model="filters.to"
-                        type="date"
-                        name="date_time"
-                        locale="pt-BR"
-                        placeholder="DD/MM/AAAA"
-                        clearable
-                      />
-                    </b-form-group>
-                  </b-col>
-                </div>
-                <b-button
-                  variant="primary"
-                  size="lg"
-                  block
-                  @click="applyFilters"
-                >
-                  Filtrar
-                </b-button>
-              </div>
-              <div v-if="summary" class="pt-4">
+            <b-row
+              v-if="userRegionSummary"
+              class="price-summary-box d-flex flex-column flex-md-row"
+            >
+              <div class="date-box-wrapper w-100 mb-3">
+                <font-awesome-icon icon="fa-solid fa-calendar-days" size="lg" />
                 <div
-                  v-for="(square, squareIndex) in summary.squares"
-                  :key="square.name"
-                  class="mb-3"
+                  class="date-box d-flex flex-column justify-content-center align-items-center"
                 >
-                  <div class="ml-3">
+                  <div
+                    class="d-flex flex-column align-items-center"
+                    v-if="!filters.from && !filters.to"
+                  >
+                    <span>Histórico</span>
+                  </div>
+                  <div
+                    class="d-flex flex-column align-items-center"
+                    v-if="filters.from && filters.to"
+                  >
+                    <span>Safra</span>
+                    <span
+                      >{{ filters.from | moment('YYYY') }}/{{
+                        filters.to | moment('YYYY')
+                      }}</span
+                    >
+                  </div>
+                  <div
+                    class="d-flex flex-column align-items-center"
+                    v-if="filters.from && !filters.to"
+                  >
+                    <span>Safra</span>
+                    <span>{{ filters.from | moment('YYYY') }}/-</span>
+                  </div>
+                  <div
+                    class="d-flex flex-column align-items-center"
+                    v-if="!filters.from && filters.to"
+                  >
+                    <span>Safra</span>
+                    <span>-/{{ filters.to | moment('YYYY') }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="prices-container w-100">
+                <div class="price-row">
+                  <div class="price-label">Mínimo</div>
+                  <div class="price-value">
+                    {{ userRegionSummary.minimumPrice | moeda }}
+                    <span class="price-measure">{{
+                      this.$auth.user.unitOfMeasurement
+                    }}</span>
+                  </div>
+                </div>
+                <hr />
+                <div class="price-row">
+                  <div class="price-label">Médio</div>
+                  <div class="price-value">
+                    {{ userRegionSummary.averagePrice | moeda }}
+                    <span class="price-measure">{{
+                      this.$auth.user.unitOfMeasurement
+                    }}</span>
+                  </div>
+                </div>
+                <hr />
+                <div class="price-row">
+                  <div class="price-label">Máximo</div>
+                  <div class="price-value">
+                    {{ userRegionSummary.maximumPrice | moeda }}
+                    <span class="price-measure">{{
+                      this.$auth.user.unitOfMeasurement
+                    }}</span>
+                  </div>
+                </div>
+                <div class="measure-row mt-2">
+                  <span>
+                    * Preços de 1 {{ this.$auth.user.unitOfMeasurement }}
+                  </span>
+                </div>
+              </div>
+            </b-row>
+
+            <div class="text-right">
+              <b-button
+                id="show-btn"
+                class="btn mb-1 mt-5"
+                variant="panel"
+                to="/operacional/informacao-preco/cadastrar"
+                >Informar Preço</b-button
+              >
+            </div>
+
+            <hr />
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <h4 class="form-title">Outras regiões</h4>
+                <div
+                  v-if="!showFilters"
+                  class="text-muted pointer"
+                  style="font-size: 14px"
+                  @click="showFilters = true"
+                >
+                  <div v-if="productFilter">
+                    {{ productFilter }}
+                  </div>
+                  <div v-if="filters.buyerPosition">
+                    {{ filters.buyerPosition }}
+                  </div>
+                  <div
+                    v-if="filters.from && filters.to"
+                    class="d-flex flex-column"
+                  >
+                    De {{ filters.from | moment('DD/MM/YYYY') }} até
+                    {{ filters.to | moment('DD/MM/YYYY') }}
+                  </div>
+                  <div v-if="filters.from && !filters.to">
+                    De {{ filters.from | moment('DD/MM/YYYY') }} até Hoje
+                  </div>
+                  <div v-if="!filters.from && filters.to">
+                    Até {{ filters.to | moment('DD/MM/YYYY') }}
+                  </div>
+                </div>
+              </div>
+              <div>
+                <b-btn @click="showFilters = !showFilters">
+                  <b-icon icon="filter" font-scale="3"></b-icon>
+                </b-btn>
+              </div>
+            </div>
+            <div v-if="showFilters" class="py-4">
+              <div class="row">
+                <div class="col-md-6">
+                  <b-form-group label="Produto">
+                    <b-form-select
+                      v-model="filters.product"
+                      class="form-control"
+                      :options="products"
+                      value-field="_id"
+                      text-field="name"
+                    />
+                  </b-form-group>
+                </div>
+                <div class="col-md-6">
+                  <b-form-group label="Tipo de comprador">
+                    <b-form-select
+                      v-model="filters.buyerPosition"
+                      class="form-control"
+                      :options="buyerPositions"
+                    />
+                  </b-form-group>
+                </div>
+              </div>
+              <div class="row">
+                <b-col cols="6">
+                  <b-form-group label="Data inicial">
+                    <b-form-input
+                      v-model="filters.from"
+                      type="date"
+                      name="date_time"
+                      locale="pt-BR"
+                      formatter="{}"
+                      placeholder="DD/MM/AAAA"
+                    />
+                  </b-form-group>
+                </b-col>
+                <b-col cols="6">
+                  <b-form-group label="Data final">
+                    <b-form-input
+                      v-model="filters.to"
+                      type="date"
+                      name="date_time"
+                      locale="pt-BR"
+                      placeholder="DD/MM/AAAA"
+                      clearable
+                    />
+                  </b-form-group>
+                </b-col>
+              </div>
+              <b-button variant="primary" size="lg" block @click="applyFilters">
+                Filtrar
+              </b-button>
+            </div>
+            <div v-if="summary" class="pt-4">
+              <div
+                v-for="(square, squareIndex) in summary.squares"
+                :key="square.name"
+                class="mb-3"
+              >
+                <div
+                  class="px-3 py-2 square-summary d-flex flex-column"
+                  :style="
+                    'background-color: ' +
+                    (squareIsUserRegion(square.name) ? '#e5e7eb' : 'white') +
+                    ';'
+                  "
+                >
+                  <div class="mb-3">
                     <strong>{{ square.name }}</strong>
                   </div>
-                  <div
-                    class="px-3 py-1 square-summary"
-                    :style="
-                      'width: ' +
-                      (square.percentAveragePrice > 40
-                        ? square.percentAveragePrice
-                        : 40) +
-                      '%; background-color: ' +
-                      generateGradientColors[squareIndex]
-                    "
-                  >
+                  <div style="font-size: 16px">
                     {{ square.averagePrice | moeda }}
+                    <span
+                      v-if="
+                        userRegionSummary.averagePrice &&
+                        square.averagePrice > userRegionSummary.averagePrice
+                      "
+                      class="text-success"
+                    >
+                      ↑
+                      {{
+                        priceDiffFromUserRegion(
+                          userRegionSummary.averagePrice,
+                          square.averagePrice
+                        ) | percentage
+                      }}
+                    </span>
+                    <span
+                      v-if="
+                        userRegionSummary.averagePrice &&
+                        square.averagePrice < userRegionSummary.averagePrice
+                      "
+                      class="text-danger"
+                    >
+                      ↓
+                      {{
+                        priceDiffFromUserRegion(
+                          userRegionSummary.averagePrice,
+                          square.averagePrice
+                        ) | percentage
+                      }}
+                    </span>
                   </div>
                 </div>
               </div>
-              <div v-else class="text-center pt-4">
-                <NoItem :list="[]" />
-              </div>
+            </div>
+            <div v-else class="text-center pt-4">
+              <NoItem :list="[]" />
             </div>
           </div>
         </div>
@@ -237,12 +281,8 @@ import Breadcrumb from '@/components/Breadcrumb'
 import FormRegionsTranslator from '@/components/FormRegionsTranslator'
 import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
-import estados from '@/data/estados.json'
-import cidades from '@/data/cidades.json'
-import squares from '@/data/praca.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 import NoItem from '~/components/NoItem.vue'
-import regiao from '@/data/regioes-castanheiras.json'
 export default {
   components: {
     Breadcrumb,
@@ -253,22 +293,23 @@ export default {
   },
   data() {
     return {
-      regiao,
+      regiao: null,
       loading: false,
       showFilters: false,
       filters: {
+        unitOfMeasurement: '',
         product: '',
-        buyerPosition: 'Cooperativa (não beneficia)',
+        buyerPosition: '',
         from: '',
         to: '',
+        regions: [],
       },
       buyerPositions,
-      estados,
-      cidades,
-      squares,
       priceInformations: [],
       products: [],
       summary: null,
+      userRegionSummary: null,
+      gradientColors: [],
     }
   },
   computed: {
@@ -281,64 +322,56 @@ export default {
       }
       return ''
     },
-    generateGradientColors() {
-      const arr = this.summary.squares
-      const startColor = [32, 153, 104] // RGB values for #209968
-      const endColor = [153, 125, 32] // RGB values for #997D20
-      const colorRange = [
-        endColor[0] - startColor[0],
-        endColor[1] - startColor[1],
-        endColor[2] - startColor[2],
-      ]
-      const colorStep = 1 / (arr.length - 1)
-      const gradientColors = []
+    currentHarvestPeriod() {
+      const today = this.$moment(new Date())
 
-      for (let i = 0; i < arr.length; i++) {
-        const r = Math.round(startColor[0] + colorRange[0] * (i * colorStep))
-        const g = Math.round(startColor[1] + colorRange[1] * (i * colorStep))
-        const b = Math.round(startColor[2] + colorRange[2] * (i * colorStep))
-        const color = `#${r.toString(16)}${g.toString(16)}${b.toString(16)}`
-        gradientColors.push(color)
+      if (today.isBefore(`${today.year()}-10-01`)) {
+        return [
+          `${new Date().getFullYear() - 1}-10-01`,
+          `${new Date().getFullYear()}-09-30`,
+        ]
       }
 
-      return gradientColors
-    },
-
-    currentDate() {
-      const today = new Date()
-      const day = String(today.getDate()).padStart(2, '0')
-      const month = String(today.getMonth() + 1).padStart(2, '0')
-      return `${day}/${month}`
+      return [
+        `${new Date().getFullYear()}-10-01`,
+        `${new Date().getFullYear() + 1}-09-30`,
+      ]
     },
   },
 
   async created() {
-    if (this.$auth.user.role === 'mensageiro') {
-      if (
-        !this.$auth.user.unitOfMeasurement ||
-        !this.$auth.user.buyerPosition ||
-        !this.$auth.user.uf ||
-        !this.$auth.user.city ||
-        !this.$auth.user.currency ||
-        !this.$auth.user.country
-      ) {
-        this.$router.push(
-          '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
-        )
-      } else {
-        this.loading = true
-        await this.loadProducts()
-        await this.load()
-        this.loading = false
+    if (
+      !this.$auth.user.unitOfMeasurement ||
+      !this.$auth.user.buyerPosition ||
+      !this.$auth.user.uf ||
+      !this.$auth.user.city ||
+      !this.$auth.user.currency ||
+      !this.$auth.user.country ||
+      !this.$auth.user.region
+    ) {
+      this.$router.push(
+        '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
+      )
+    } else {
+      this.loading = true
+      await this.loadProducts()
+      this.filters = {
+        ...this.filters,
+        from: this.currentHarvestPeriod[0],
+        to: this.currentHarvestPeriod[1],
       }
+      await this.load()
+      this.loading = false
     }
-    const user = await this.$axios.$get('user/' + this.$auth.user._id)
-    this.regiao = this.regiao.filter(function (item) {
-      return item.municipio === user.city
-    })
-    console.log(user.city)
   },
   methods: {
+    squareIsUserRegion(name) {
+      return name == this.$auth.user.region
+    },
+    priceDiffFromUserRegion(basePrice, priceToCompare) {
+      return (priceToCompare - basePrice) / basePrice
+    },
+
     async loadProducts() {
       const products = await this.$axios.$get('products')
       this.products = products
@@ -348,10 +381,30 @@ export default {
     },
 
     async load() {
+      this.filters = {
+        ...this.filters,
+        unitOfMeasurement: this.$auth.user.unitOfMeasurement,
+      }
+
       const summary = await this.$axios.$get('price-informations/summary', {
         params: this.filters,
       })
+
+      const userRegionSummary = await this.$axios.$get(
+        'price-informations/summary',
+        {
+          params: {
+            product: this.filters.product,
+            unitOfMeasurement: this.$auth.user.unitOfMeasurement,
+            regions: [this.$auth.user.region],
+            from: this.filters.from,
+            to: this.filters.to,
+          },
+        }
+      )
+
       this.summary = summary
+      this.userRegionSummary = userRegionSummary
     },
 
     applyFilters() {
