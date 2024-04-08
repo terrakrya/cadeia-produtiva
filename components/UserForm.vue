@@ -54,7 +54,11 @@
             </div>
             <div class="col-sm-2">
               <b-form-group label="Gênero ">
-                <b-form-select v-model="form.gender" :options="genero" />
+                <b-form-select
+                  v-model="form.gender"
+                  class="form-control"
+                  :options="genero"
+                />
               </b-form-group>
             </div>
             <div class="col-sm-2">
@@ -97,10 +101,12 @@
                 <field-error :msg="veeErrors" field="cpf" />
               </b-form-group>
             </div>
-            <div v-if="isEditing()" class="text-right">
-              <a class="pointer" @click="changePassword">{{
-                'Mude sua senha'
-              }}</a>
+            <div
+              v-if="isEditing()"
+              class="btn-change-password"
+              @click="changePassword"
+            >
+              Mude sua senha
             </div>
           </div>
           <div v-if="showPasswordFields" class="row">
