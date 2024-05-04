@@ -1,27 +1,29 @@
-/* eslint-disable no-constant-condition */
-require('./models/User')
-require('./models/Category')
-require('./models/Type')
-require('./models/Organization')
-require('./models/PriceInformation')
-require('./models/SpeciesProduct')
-require('./models/Specie')
-require('./models/Product')
-require('./models/GeographicArea')
-require('./config/passport')
+import './models/User'
+import './models/Category'
+import './models/Type'
+import './models/Organization'
+import './models/PriceInformation'
+import './models/SpeciesProduct'
+import './models/Specie'
+import './models/Product'
+import './models/GeographicArea'
+import './config/passport'
+import './models/Map'
+import './models/Layer'
+import './models/Shape'
 
-const fs = require('fs')
+import { writeFileSync } from 'fs'
 
-const mongoose = require('mongoose')
-mongoose.set('useCreateIndex', true)
+import { set, connect } from 'mongoose'
+set('useCreateIndex', true)
 
 const isProduction = process.env.NODE_ENV === 'production'
 
 if (isProduction) {
   // Create certificate file from env var (because mongoose doesnt accept cert data directly)
-  fs.writeFileSync('./api/config/mongodb.ca.crt', process.env.MONGO_CA_CERT)
+  writeFileSync('./api/config/mongodb.ca.crt', process.env.MONGO_CA_CERT)
 
-  mongoose.connect(process.env.MONGODB_URI, {
+  connect(process.env.MONGODB_URI, {
     keepAlive: 1,
     connectTimeoutMS: 30000,
     reconnectTries: Number.MAX_VALUE,
@@ -30,10 +32,10 @@ if (isProduction) {
     useUnifiedTopology: true,
   })
 } else {
-  mongoose.connect('mongodb://localhost/' + process.env.npm_package_name, {
+  connect('mongodb://localhost/' + process.env.npm_package_name, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true,
   })
-  mongoose.set('debug', true)
+  set('debug', true)
 }

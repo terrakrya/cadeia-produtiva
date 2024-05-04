@@ -1,4 +1,3 @@
-
 import { isGlobalManager } from '~/api/config/auth';
 <template>
   <div>
@@ -40,16 +39,8 @@ import { isGlobalManager } from '~/api/config/auth';
           >
         </b-nav>
         <b-nav>
-          <b-nav-item class="text-white" to="/bi">
-            BI
-          </b-nav-item>
+          <b-nav-item class="text-white" to="/bi"> BI </b-nav-item>
         </b-nav>
-      </b-list-group-item>
-        <!-- <b-nav v-if="isAdmin || isGlobalManager || isManager">
-          <b-nav-item class="text-white" to="/cadastros/areas-geograficas"
-            >Áreas geográficas</b-nav-item
-          >
-        </b-nav> -->
       </b-list-group-item>
       <b-list-group-item>
         <b-nav v-if="!isGlobalManager">
@@ -75,7 +66,11 @@ import { isGlobalManager } from '~/api/config/auth';
           </b-nav-item>
         </b-nav>
       </b-list-group-item>
-
+      <b-list-group-item>
+        <b-nav>
+          <b-nav-item class="text-white" to="/mapa"> Mapa </b-nav-item>
+        </b-nav>
+      </b-list-group-item>
       <b-list-group-item>
         <b-nav>
           <b-nav-item class="text-white" @click="$auth.logout()"
