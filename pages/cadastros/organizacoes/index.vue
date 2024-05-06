@@ -9,6 +9,13 @@
           </div>
           <div class="col-sm-6 main-actions">
             <n-link
+              v-if=" isAdmin || isGlobalManager "
+              :to="'/cadastros/organizacoes/cadastrar'"
+              class="btn btn-primary"
+            >
+            <b-icon-plus /> {{ 'Cadastrar' }}
+            </n-link>
+            <n-link v-else
               :to="'/cadastros/organizacoes/' + currentUser.organization + '/editar'"
               class="btn btn-primary"
             >
@@ -63,7 +70,7 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import { isManager } from '~/api/config/auth'
+import { isAdmin, isGlobalManager } from '~/api/config/auth'
 export default {
   components: {
     Breadcrumb,
