@@ -66,11 +66,11 @@ import { isGlobalManager } from '~/api/config/auth';
           </b-nav-item>
         </b-nav>
       </b-list-group-item>
-      <b-list-group-item>
+      <!-- <b-list-group-item>
         <b-nav>
           <b-nav-item class="text-white" to="/mapa"> Mapa </b-nav-item>
         </b-nav>
-      </b-list-group-item>
+      </b-list-group-item> -->
       <b-list-group-item>
         <b-nav>
           <b-nav-item class="text-white" @click="$auth.logout()"

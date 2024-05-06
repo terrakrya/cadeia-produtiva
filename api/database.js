@@ -32,7 +32,7 @@ if (isProduction) {
     useUnifiedTopology: true,
   })
 } else {
-  mongoose.connect('mongodb://127.0.0.1/' + process.env.npm_package_name, {
+  connect('mongodb://127.0.0.1/' + process.env.npm_package_name, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useFindAndModify: true,
