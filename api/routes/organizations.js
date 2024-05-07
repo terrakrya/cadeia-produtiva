@@ -36,9 +36,8 @@ router.get('/:id', auth.authenticated, async (req, res) => {
 router.get('/edit/:id', auth.manager, async (req, res) => {
   const query = { _id: req.params.id }
   const userOrganization = req.user.organization
-  const isGlobalManager = auth.isGlobalManager(req)
 
-  if (userOrganization != query._id && !isGlobalManager) {
+  if (userOrganization != query._id && !auth.manager ) {
     return res.status(403).json({ message: 'Você não possui permissão para Editar essa Organização' });
   }
 
