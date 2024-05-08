@@ -63,13 +63,13 @@
                   variant="form"
                   @click="form.transaction = true"
                   :class="{'selected-button': form.transaction, 'mr-3': true}"
-                  >Preço Ofertado
+                  >Oferta de Preços
                 </b-button>
                 <b-button
                   variant="form"
                   @click="form.transaction = false"
                   :class="{'selected-button': !form.transaction}"
-                  >Preço Vendido
+                  >Preço da Venda
                 </b-button>
               </div>
             </div>
