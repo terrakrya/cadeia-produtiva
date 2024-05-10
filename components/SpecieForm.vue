@@ -11,16 +11,6 @@
         <b-form @submit.prevent="save">
           <div class="row">
             <div class="col-sm-6">
-              <b-form-group label="Código *">
-                <b-form-input
-                  v-model="form.code"
-                  v-validate="'required'"
-                  name="code"
-                />
-                <field-error :msg="veeErrors" field="code" />
-              </b-form-group>
-            </div>
-            <div class="col-sm-6">
               <b-form-group label="Nome científico *">
                 <b-form-input
                   v-model="form.scientificName"
@@ -30,8 +20,6 @@
                 <field-error :msg="veeErrors" field="scientificName" />
               </b-form-group>
             </div>
-          </div>
-          <div class="row">
             <b-col sm="6">
               <b-form-group label="Nome popular">
                 <b-form-input
@@ -42,13 +30,13 @@
                 <field-error :msg="veeErrors" field="popularName" />
               </b-form-group>
             </b-col>
+          </div>
+          <div class="row">
             <div class="col-sm-6">
               <b-form-group label="Descrição">
                 <b-form-input v-model="form.description" name="description" />
               </b-form-group>
             </div>
-          </div>
-          <div class="row">
             <div class="col-md-6">
               <Upload
                 v-model="form.images"
@@ -75,7 +63,6 @@ export default {
   data() {
     return {
       form: {
-        code: '',
         description: '',
         scientificName: '',
         popularName: '',
@@ -105,39 +92,6 @@ export default {
     },
     save() {
       this.$validator.validate().then(async (isValid) => {
-        // valida a code
-        if (this.form.code) {
-          const id = this.isEditing() ? this.$route.params.id : null
-          // unicidade do code
-          if (await this.isNotUniqueCode(id, this.form.code)) {
-            this.veeErrors.items.push({
-              id: 102,
-              vmId: this.veeErrors.vmId,
-              field: 'code',
-              msg: 'Este código já existe.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-          } else if (
-            await this.isNotUniqueScientificName(id, this.form.scientificName)
-          ) {
-            this.veeErrors.items.push({
-              id: 103,
-              vmId: this.veeErrors.vmId,
-              field: 'code',
-              msg: 'Este nome científico já existe.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-          } else {
-            this.veeErrors.items = this.veeErrors.items.filter(
-              (error) => error.id !== 102 && error.id !== 103
-            )
-          }
-        }
-
         if (isValid) {
           this.is_sending = true
 
@@ -162,18 +116,6 @@ export default {
             .catch(this.showError)
         }
       })
-    },
-    async isNotUniqueCode(id, code) {
-      return !(await this.$axios.$post('species/unique-code', {
-        id,
-        code,
-      }))
-    },
-    async isNotUniqueScientificName(id, scientificName) {
-      return !(await this.$axios.$post('species/unique-code', {
-        id,
-        scientificName,
-      }))
     },
   },
 }

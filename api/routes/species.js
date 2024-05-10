@@ -15,10 +15,6 @@ router.get('/', auth.globalManager, async (req, res) => {
     query._id = filters.id
   }
 
-  if (filters.code) {
-    query.code = filters.code
-  }
-
   if (filters.scientificName) {
     query.scientificName = filters.scientificName
   }
@@ -31,7 +27,6 @@ router.get('/', auth.globalManager, async (req, res) => {
 
     const species = await Specie.find(query)
       .populate(populate(req))
-      .sort('code')
 
     res.json(species)
   } catch (err) {
@@ -52,26 +47,10 @@ router.get('/:id', auth.globalManager, async (req, res) => {
   }
 })
 
-router.post('/unique-code', auth.authenticated, async (req, res) => {
-  const query = { code: req.body.code }
-
-  if (req.body.id) {
-    query._id = { $ne: req.body.id }
-  }
-
-  try {
-    const found = await Specie.exists(query)
-    return res.json(!found)
-  } catch (err) {
-    res.sendStatus(422)
-  }
-})
-
 router.post('/', auth.globalManager, async (req, res) => {
   try {
     const species = new Specie()
 
-    species.code = req.body.code
     species.scientificName = req.body.scientificName
     species.description = req.body.description
     species.popularName = req.body.popularName
@@ -92,7 +71,6 @@ router.put('/:id', auth.globalManager, async (req, res) => {
     const species = await Specie.findOne(query)
 
     if (species) {
-      species.code = req.body.code
       species.scientificName = req.body.scientificName
       species.description = req.body.description
       species.popularName = req.body.popularName

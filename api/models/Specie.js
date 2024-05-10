@@ -5,11 +5,6 @@ const secret = process.env.SECRET || 'cadeia-produtiva'
 
 const SpecieSchema = new mongoose.Schema(
   {
-    code: {
-      type: String,
-      unique: true,
-      required: true,
-    },
     scientificName: {
       type: String,
       unique: true,
@@ -33,7 +28,6 @@ SpecieSchema.methods.data = function () {
   return {
     _id: this._id,
     id: this.id,
-    code: this.code,
     scientificName: this.scientificName,
     popularName: this.popularName,
     description: this.description,
