@@ -28,14 +28,14 @@
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
             :items="products"
-            :sort-by="'code'"
+            :sort-by="'name'"
             :filter="filters.search"
           >
             <template #cell(name)="data">
               {{ data.item.name }}
             </template>
-            <template #cell(code)="data">
-              {{ data.item.code }}
+            <template #cell(description)="data">
+              {{ data.item.description }}
             </template>
             <template #cell(actions)="data">
               <n-link
@@ -71,8 +71,8 @@ export default {
           sortable: true,
         },
         {
-          key: 'code',
-          label: 'Código',
+          key: 'description',
+          label: 'Descrição',
           sortable: true,
         },
         {

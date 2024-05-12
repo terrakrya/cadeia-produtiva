@@ -11,11 +11,7 @@ const ProductSchema = new mongoose.Schema(
       unique: true,
       required: true,
     },
-    code: {
-      type: String,
-      unique: true,
-      required: true,
-    },
+
     description: String,
 
     specieProduct: {
@@ -46,7 +42,6 @@ ProductSchema.methods.data = function () {
   return {
     _id: this._id,
     id: this.id,
-    code: this.code,
     description: this.description,
     specieProduct: this.specieProduct,
     name: this.name,

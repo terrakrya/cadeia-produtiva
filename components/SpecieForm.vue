@@ -21,7 +21,7 @@
               </b-form-group>
             </div>
             <b-col sm="6">
-              <b-form-group label="Nome popular">
+              <b-form-group label="Nome popular *">
                 <b-form-input
                   v-model="form.popularName"
                   v-validate="'required'"

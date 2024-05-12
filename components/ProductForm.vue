@@ -20,21 +20,10 @@
                 <field-error :msg="veeErrors" field="name" />
               </b-form-group>
             </div>
-            <div class="col-sm-3">
-              <b-form-group label="Código *">
-                <b-form-input
-                  v-model="form.code"
-                  v-validate="'required'"
-                  name="code"
-                />
-                <field-error :msg="veeErrors" field="code" />
-              </b-form-group>
-            </div>
             <div class="col-sm-6">
-              <b-form-group label="Descrição *">
+              <b-form-group label="Descrição">
                 <b-form-input
                   v-model="form.description"
-                  v-validate="'required'"
                   name="description"
                 />
               </b-form-group>
@@ -91,7 +80,6 @@ export default {
     return {
       form: {
         name: '',
-        code: '',
         description: '',
         specieProduct: '',
         bestPractices: [],
@@ -115,7 +103,6 @@ export default {
         const dados = await this.$axios.$get('products/' + id)
 
         this.form.name = dados.name
-        this.form.code = dados.code
         this.form.description = dados.description
         this.form.specieProduct = dados.specieProduct
         this.form.bestPractices = dados.bestPractices
@@ -137,36 +124,22 @@ export default {
     },
     save() {
       this.$validator.validate().then(async (isValid) => {
-        // valida a code
-        if (this.form.code) {
-          const id = this.isEditing() ? this.$route.params.id : null
-          // unicidade do code
-          if (await this.isNotUniqueCode(id, this.form.code)) {
-            this.veeErrors.items.push({
-              id: 102,
-              vmId: this.veeErrors.vmId,
-              field: 'code',
-              msg: 'Este código já existe.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-          }
-          if (await this.isNotUniqueName(id, this.form.name)) {
-            this.veeErrors.items.push({
-              id: 103,
-              vmId: this.veeErrors.vmId,
-              field: 'name',
-              msg: 'Este código já existe.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-          } else {
-            this.veeErrors.items = this.veeErrors.items.filter(
-              (error) => error.id !== 102 && error.id !== 103
-            )
-          }
+        const id = this.isEditing() ? this.$route.params.id : null
+
+        if (await this.isNotUniqueName(id, this.form.name)) {
+          this.veeErrors.items.push({
+            id: 103,
+            vmId: this.veeErrors.vmId,
+            field: 'name',
+            msg: 'Este código já existe.',
+            rule: 'required',
+            scope: null,
+          })
+          isValid = false
+        } else {
+          this.veeErrors.items = this.veeErrors.items.filter(
+            (error) => error.id !== 102 && error.id !== 103
+          )
         }
 
         if (isValid) {
@@ -190,12 +163,6 @@ export default {
             .catch(this.showError)
         }
       })
-    },
-    async isNotUniqueCode(id, code) {
-      return !(await this.$axios.$post('products/unique-code', {
-        id,
-        code,
-      }))
     },
     async isNotUniqueName(id, name) {
       return !(await this.$axios.$post('products/unique-name', {
