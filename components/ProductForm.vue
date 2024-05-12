@@ -29,14 +29,12 @@
               </b-form-group>
             </div>
             <div class="col-sm-6">
-              <b-form-group label="Selecionar uma classe de espécie/produto *">
-                <form-entity-select
+                <b-form-group label="Selecionar uma classe de espécie/produto *">
+                <b-form-select
                   v-model="form.specieProduct"
-                  v-validate="'required'"
-                  type="speciesProducts"
-                  name="specieProduct"
+                  class="form-control"
+                  :options="speciesProductsOptions"
                 />
-                <field-error :msg="veeErrors" field="specieProduct" />
               </b-form-group>
             </div>
           </div>
@@ -70,11 +68,9 @@
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import FormEntitySelect from '@/components/FormEntitySelect'
 export default {
   components: {
     Breadcrumb,
-    FormEntitySelect,
   },
   data() {
     return {
@@ -87,6 +83,7 @@ export default {
       },
       bestPractices: [],
       certifications: [],
+      speciesProductsOptions: []
     }
   },
   async created() {
@@ -121,6 +118,19 @@ export default {
       this.certifications = tipos.filter((i) => {
         return i.type === 'Certificação'
       })
+      try {
+        const speciesProductsData = await this.$axios.$get('species-products')
+        this.speciesProductsOptions = [
+          { value: '', text: 'Selecione uma classe de espécie/produto'},
+        ].concat(
+          speciesProductsData.map((specieProduct) => ({
+            value: specieProduct._id,
+            text: specieProduct.name,
+          }))
+        )
+      } catch (error) {
+        console.error('Erro ao carregar espécies:', error)
+      }
     },
     save() {
       this.$validator.validate().then(async (isValid) => {
