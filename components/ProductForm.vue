@@ -129,7 +129,7 @@ export default {
           }))
         )
       } catch (error) {
-        console.error('Erro ao carregar espécies:', error)
+        console.error('Erro ao carregar espécie/produto:', error)
       }
     },
     save() {

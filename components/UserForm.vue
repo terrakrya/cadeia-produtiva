@@ -32,12 +32,11 @@
               class="col-sm-6"
             >
               <b-form-group label="Selecionar uma organização *">
-                <form-entity-select
+                <b-form-select
                   v-model="form.organization"
-                  v-validate="'required'"
-                  type="organizations"
+                  class="form-control"
+                  :options="organizationsOptions"
                 />
-                <field-error :msg="veeErrors" field="organization" />
               </b-form-group>
             </div>
           </div>
@@ -150,6 +149,7 @@ export default {
       genero,
       show_password: false,
       tiposDeUsuarioPermitidos: [],
+      organizationsOptions: [],
       form: {
         username: '',
         name: '',
@@ -170,7 +170,7 @@ export default {
       return !this.isEditing() || this.show_password
     },
   },
-  created() {
+  async created() {
     this.tiposDeUsuarioPermitidos = [
       { text: 'Gestor', value: 'gestor' },
       { text: 'Mensageiro', value: 'mensageiro' },
@@ -186,8 +186,25 @@ export default {
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
+
+    await this.list()
   },
   methods: {
+    async list() {
+      try {
+      const organizationsData = await this.$axios.$get('organizations')
+        this.organizationsOptions = [
+          { value: '', text: 'Selecione uma organização'},
+        ].concat(
+          organizationsData.map((organization) => ({
+            value: organization._id,
+            text: organization.name,
+          }))
+        )
+      } catch (error) {
+        console.error('Erro ao carregar organização:', error)
+      }
+    },
     edit(id) {
       this.is_loading = true
       this.$axios
