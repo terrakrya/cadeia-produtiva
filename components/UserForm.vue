@@ -192,9 +192,9 @@ export default {
   methods: {
     async list() {
       try {
-      const organizationsData = await this.$axios.$get('organizations')
+        const organizationsData = await this.$axios.$get('organizations')
         this.organizationsOptions = [
-          { value: '', text: 'Selecione uma organização'},
+          { value: '', text: 'Selecione uma organização' },
         ].concat(
           organizationsData.map((organization) => ({
             value: organization._id,

@@ -13,10 +13,10 @@
           <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-8">
               <b-form-group label="Organização">
-                <form-entity-select
+                <b-form-select
                   v-model="form.organization"
-                  type="organizations"
-                  @input="loadOrganization()"
+                  class="form-control"
+                  :options="organizationsOptions"
                 />
               </b-form-group>
             </div>
@@ -38,16 +38,16 @@
           </div>
           <div class="row">
             <div class="col-sm-6 mb-4">
-                <b-form-select
-                  v-model="form.product"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="products"
-                  value-field="id"
-                  text-field="name"
-                  name="product"
-                />
-                <field-error :msg="veeErrors" field="product" />
+              <b-form-select
+                v-model="form.product"
+                v-validate="'required'"
+                class="form-control"
+                :options="products"
+                value-field="id"
+                text-field="name"
+                name="product"
+              />
+              <field-error :msg="veeErrors" field="product" />
             </div>
           </div>
           <div class="row">
@@ -62,13 +62,13 @@
                 <b-button
                   variant="form"
                   @click="form.transaction = true"
-                  :class="{'selected-button': form.transaction, 'mr-3': true}"
+                  :class="{ 'selected-button': form.transaction, 'mr-3': true }"
                   >Oferta de Preços
                 </b-button>
                 <b-button
                   variant="form"
                   @click="form.transaction = false"
-                  :class="{'selected-button': !form.transaction}"
+                  :class="{ 'selected-button': !form.transaction }"
                   >Preço da Venda
                 </b-button>
               </div>
@@ -292,6 +292,7 @@ export default {
         squareid: '',
         region: '',
       },
+      organizationsOptions: [],
       products: [],
       messengers: [],
       creating: true,
@@ -305,6 +306,7 @@ export default {
     await this.loadOrganization()
     await this.preSetDados()
     await this.setMessenger()
+    await this.listOrganizations()
 
     this.creating = false
 
@@ -315,6 +317,21 @@ export default {
     this.form.transaction = this.form.transactedQuantity ? false : true
   },
   methods: {
+    async listOrganizations() {
+      try {
+        const organizationsData = await this.$axios.$get('organizations')
+        this.organizationsOptions = [
+          { value: '', text: 'Selecione uma organização' },
+        ].concat(
+          organizationsData.map((organization) => ({
+            value: organization._id,
+            text: organization.name,
+          }))
+        )
+      } catch (error) {
+        console.error('Erro ao carregar organização:', error)
+      }
+    },
     setMessenger() {
       if (this.isAdmin || this.isGlobalManager || this.isManager) {
         this.form.messenger = this.currentUser._id
