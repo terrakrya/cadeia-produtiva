@@ -269,11 +269,11 @@ export default {
           .tz('America/Sao_Paulo')
           .format('YYYY-MM-DD'),
         buyerPositionBuyer: '',
-        minimumPrice: '',
-        maximumPrice: '',
-        originalMinimumPrice: '',
-        originalMaximumPrice: '',
-        originalPrice: '',
+        minimumPrice: 0,
+        maximumPrice: 0,
+        originalMinimumPrice: 0,
+        originalMaximumPrice: 0,
+        originalPrice: 0,
         currency: '',
         country: '',
         measure: '',
@@ -281,7 +281,7 @@ export default {
         uf: '',
         city: '',
         transaction: true,
-        transactedQuantity: '',
+        transactedQuantity: 0,
         organization: '',
         buyerPositionSeller: '',
         square: '',
@@ -304,7 +304,9 @@ export default {
       await this.edit(this.$route.params.id)
     }
 
-    await this.listOrganizations()
+    if (!this.isMessenger) {
+      await this.listOrganizations()
+    }
     await this.loadOrganization()
     await this.preSetDados()
     await this.setMessenger()
@@ -461,9 +463,9 @@ export default {
         this.form.organization = dados.organization
         this.form.messenger = dados.messenger
         this.form.transaction = dados.transaction
-        this.form.originalMinimumPrice = dados.originalMinimumPrice
-        this.form.originalMaximumPrice = dados.originalMaximumPrice
-        this.form.transactedQuantity = dados.transactedQuantity
+        this.form.originalMinimumPrice = dados.originalMinimumPrice || 0
+        this.form.originalMaximumPrice = dados.originalMaximumPrice || 0
+        this.form.transactedQuantity = dados.transactedQuantity || 0
         this.form.measure = dados.measure
         this.form.product = dados.product
         this.form.buyerPositionBuyer = dados.buyerPositionBuyer
@@ -473,7 +475,7 @@ export default {
         this.form.currency = dados.currency
         this.form.country = dados.country
         this.form.buyerPositionSeller = dados.buyerPositionSeller
-        this.form.originalPrice = dados.originalPrice
+        this.form.originalPrice = dados.originalPrice || 0
       } catch (e) {
         this.showError(e)
       }
