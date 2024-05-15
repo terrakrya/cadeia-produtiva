@@ -1,6 +1,5 @@
 <template>
   <div class="type">
-    <!-- <Breadcrumb active="Coleta de preços" /> -->
     <div class="panel">
       <div class="panel-body">
         <div>
@@ -74,24 +73,23 @@
               </div>
             </div>
           </div>
-          <!--<div class="row">
-            <h5>Preço por {{ form.measure }}</h5>
-          </div>-->
           <div class="row">
             <div v-if="!form.transaction" class="col-sm-4">
               <b-form-group label="Quantidade Vendida">
-                <money
+                <b-form-input
                   v-model="form.transactedQuantity"
+                  type="number"
                   :required="!form.transaction"
-                  prefix=""
                   class="form-control"
-                  nome="transactedQuantity"
-                ></money>
+                  name="transactedQuantity"
+                  min="0"
+                  step="1"
+                ></b-form-input>
                 <field-error :msg="veeErrors" field="transactedQuantity" />
               </b-form-group>
             </div>
             <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Preço">
+              <b-form-group :label="`Preço por ${form.measure}`">
                 <money
                   v-model="form.originalPrice"
                   :required="!form.transaction"
@@ -103,7 +101,6 @@
             </div>
           </div>
           <div class="row">
-            <!--<div>-->
             <div v-if="form.transaction" class="col-sm-4">
               <b-form-group label="Informe o menor preço">
                 <money
@@ -125,7 +122,6 @@
                 <field-error :msg="veeErrors" field="originalMaximumPrice" />
               </b-form-group>
             </div>
-            <!--</div>-->
             <div class="col-sm-4">
               <b-form-group label="Unidade de Medida da Venda">
                 <b-form-select
@@ -137,12 +133,11 @@
               </b-form-group>
             </div>
             <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Unidade de Medida do Preço">
-                <b-form-select
-                  v-model="form.measurePrice"
-                  :required="!form.transaction"
+              <b-form-group label="Valor Total da Transação">
+                <b-form-input
+                  :value="totalTransactionValue"
+                  readonly
                   class="form-control"
-                  :options="medidasPreco"
                 />
               </b-form-group>
             </div>
@@ -235,6 +230,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import Decimal from 'decimal.js'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -249,6 +245,7 @@ import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
 import transacao from '@/data/transacionada.json'
 import regiao from '@/data/regioes-castanheiras.json'
+
 export default {
   components: {
     Breadcrumb,
@@ -280,7 +277,6 @@ export default {
         currency: '',
         country: '',
         measure: '',
-        measurePrice: '',
         product: '63ff4160ff65e9001b61c6af',
         uf: '',
         city: '',
@@ -298,15 +294,20 @@ export default {
       creating: true,
     }
   },
+  computed: {
+    totalTransactionValue() {
+      return (this.form.transactedQuantity * this.form.originalPrice).toFixed(2)
+    },
+  },
   async created() {
     if (this.isEditing()) {
       await this.edit(this.$route.params.id)
     }
 
+    await this.listOrganizations()
     await this.loadOrganization()
     await this.preSetDados()
     await this.setMessenger()
-    await this.listOrganizations()
 
     this.creating = false
 
@@ -343,7 +344,6 @@ export default {
         this.form.currency = this.currentUser.currency
         this.form.country = this.currentUser.country
         this.form.measure = this.currentUser.unitOfMeasurement
-        this.form.measurePrice = this.currentUser.unitOfMeasurement
         this.form.uf = this.currentUser.uf
         this.form.city = this.currentUser.city
         this.form.buyerPositionSeller = this.currentUser.buyerPosition
@@ -388,7 +388,6 @@ export default {
         this.form.currency = selectedMessenger.currency
         this.form.country = selectedMessenger.country
         this.form.measure = selectedMessenger.unitOfMeasurement
-        this.form.measurePrice = selectedMessenger.unitOfMeasurement
         this.form.uf = selectedMessenger.uf
         this.form.city = selectedMessenger.city
         this.form.buyerPositionSeller = selectedMessenger.buyerPosition
@@ -424,12 +423,10 @@ export default {
     },
     transactedQuantity() {
       const multiplyer = this.getMultiplyer(this.form.measure)
-      const multiplyerPrice = this.getMultiplyer(this.form.measurePrice)
       let min = this.form.originalMinimumPrice
       let max = this.form.originalMaximumPrice
       if (!this.form.transaction) {
-        const finalValue =
-          (this.form.originalPrice * multiplyer) / multiplyerPrice
+        const finalValue = this.form.originalPrice * multiplyer
         this.form.originalMinimumPrice = finalValue
         this.form.originalMaximumPrice = finalValue
       } else {
@@ -468,7 +465,6 @@ export default {
         this.form.originalMaximumPrice = dados.originalMaximumPrice
         this.form.transactedQuantity = dados.transactedQuantity
         this.form.measure = dados.measure
-        this.form.measurePrice = dados.measurePrice
         this.form.product = dados.product
         this.form.buyerPositionBuyer = dados.buyerPositionBuyer
         this.form.createdAt = dados.createdAt
