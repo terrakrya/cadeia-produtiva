@@ -134,7 +134,7 @@
             </div>
             <div v-if="!form.transaction" class="col-sm-4">
               <b-form-group label="Valor Total da Transação">
-                <b-form-input
+                <money
                   :value="totalTransactionValue"
                   readonly
                   class="form-control"
