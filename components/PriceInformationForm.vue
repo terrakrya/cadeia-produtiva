@@ -75,6 +75,17 @@
           </div>
           <div class="row">
             <div v-if="!form.transaction" class="col-sm-4">
+              <b-form-group :label="`Preço por ${form.measure}`">
+                <money
+                  v-model="form.originalPrice"
+                  :required="!form.transaction"
+                  class="form-control"
+                  name="originalPrice"
+                ></money>
+                <field-error :msg="veeErrors" field="originalPrice" />
+              </b-form-group>
+            </div>
+            <div v-if="!form.transaction" class="col-sm-4">
               <b-form-group label="Quantidade Vendida">
                 <b-form-input
                   v-model="form.transactedQuantity"
@@ -84,19 +95,9 @@
                   name="transactedQuantity"
                   min="0"
                   step="1"
+                  placeholder="0"
                 ></b-form-input>
                 <field-error :msg="veeErrors" field="transactedQuantity" />
-              </b-form-group>
-            </div>
-            <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group :label="`Preço por ${form.measure}`">
-                <money
-                  v-model="form.originalPrice"
-                  :required="!form.transaction"
-                  class="form-control"
-                  name="originalPrice"
-                ></money>
-                <field-error :msg="veeErrors" field="originalPrice" />
               </b-form-group>
             </div>
           </div>
@@ -281,7 +282,7 @@ export default {
         uf: '',
         city: '',
         transaction: true,
-        transactedQuantity: 0,
+        transactedQuantity: '',
         organization: '',
         buyerPositionSeller: '',
         square: '',
