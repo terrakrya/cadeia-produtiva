@@ -33,124 +33,139 @@ router.get('/', auth.authenticated, async (req, res) => {
   }
 })
 
-router.get('/summary', auth.authenticated, async (req, res) => {
-  const query = {}
+const getModa = (arr) => {
+  const frequency = {};
+  let maxFreq = 0;
+  let moda = [];
 
-  const filters = req.query
+  arr.forEach(item => {
+    frequency[item] = (frequency[item] || 0) + 1;
+    if (frequency[item] > maxFreq) {
+      maxFreq = frequency[item];
+      moda = [item];
+    } else if (frequency[item] === maxFreq) {
+      moda.push(item);
+    }
+  });
+
+  return moda[0];
+};
+
+router.get('/summary', auth.authenticated, async (req, res) => {
+  const query = {};
+
+  const filters = req.query;
   if (filters.product) {
-    query.product = filters.product
+    query.product = filters.product;
   }
 
   if (filters.regions) {
-    query.region = filters.regions
+    query.region = filters.regions;
   }
 
   if (filters.buyerPosition) {
-    query.buyerPositionBuyer = filters.buyerPosition
+    query.buyerPositionBuyer = filters.buyerPosition;
   }
 
   if (filters.from && !filters.to) {
     query.createdAt = {
       $gte: new Date(filters.from),
-    }
+    };
   } else if (filters.to && !filters.from) {
     query.createdAt = {
       $lte: new Date(filters.to),
-    }
+    };
   } else if (filters.from && filters.to) {
     query.createdAt = {
       $gte: new Date(filters.from),
       $lte: new Date(filters.to),
-    }
+    };
   }
 
-  const prices = await Price.find(query)
+  const prices = await Price.find(query);
 
   let summary = {
     minimumPrice: null,
     maximumPrice: null,
     averagePrice: null,
+    moda: null,
     squares: {},
-  }
+  };
 
   if (prices && prices.length) {
     summary = {
-      minimumPrice: convertUnit(
-        prices[0].minimumPrice,
-        filters.unitOfMeasurement
-      ),
-      maximumPrice: convertUnit(
-        prices[0].maximumPrice,
-        filters.unitOfMeasurement
-      ),
+      minimumPrice: convertUnit(prices[0].minimumPrice, filters.unitOfMeasurement),
+      maximumPrice: convertUnit(prices[0].maximumPrice, filters.unitOfMeasurement),
       averagePrice: 0,
+      moda: 0,
       squares: {},
-    }
+    };
+
+    const priceValues = [];
 
     prices.forEach((price) => {
-      const minimumPrice = convertUnit(
-        price.minimumPrice,
-        filters.unitOfMeasurement
-      )
-      const maximumPrice = convertUnit(
-        price.maximumPrice,
-        filters.unitOfMeasurement
-      )
+      const minimumPrice = convertUnit(price.minimumPrice, filters.unitOfMeasurement);
+      const maximumPrice = convertUnit(price.maximumPrice, filters.unitOfMeasurement);
+
+      priceValues.push(minimumPrice);
+      priceValues.push(maximumPrice); 
 
       if (summary.minimumPrice > minimumPrice) {
-        summary.minimumPrice = minimumPrice
+        summary.minimumPrice = minimumPrice;
       }
 
       if (summary.maximumPrice < maximumPrice) {
-        summary.maximumPrice = maximumPrice
+        summary.maximumPrice = maximumPrice;
       }
 
-      const squareName = price.region
+      const squareName = price.region;
 
       if (!summary.squares[squareName]) {
         summary.squares[squareName] = {
           minimumPrice: minimumPrice,
           maximumPrice: maximumPrice,
           averagePrices: [new Decimal(minimumPrice).plus(maximumPrice).div(2)],
-        }
+        };
       } else {
         summary.squares[squareName].minimumPrice =
           summary.squares[squareName].minimumPrice < minimumPrice
             ? summary.squares[squareName].minimumPrice
-            : minimumPrice
+            : minimumPrice;
         summary.squares[squareName].maximumPrice =
           summary.squares[squareName].maximumPrice > maximumPrice
             ? summary.squares[squareName].maximumPrice
-            : maximumPrice
+            : maximumPrice;
         summary.squares[squareName].averagePrices.push(
           new Decimal(minimumPrice).plus(maximumPrice).div(2)
-        )
+        );
       }
-    })
+    });
 
-    summary.minimumAveragePrice = 0
-    summary.maximumAveragePrice = 0
+    summary.moda = getModa(priceValues);
+
+    summary.minimumAveragePrice = 0;
+    summary.maximumAveragePrice = 0;
     summary.squares = Object.keys(summary.squares).map((key) => {
-      const square = summary.squares[key]
+      const square = summary.squares[key];
 
       const averagePrice = new Decimal(
         square.averagePrices.reduce((a, b) => new Decimal(a).plus(b), 0)
       )
         .div(square.averagePrices.length)
-        .toNumber()
+        .toNumber();
 
       if (
         summary.minimumAveragePrice === 0 ||
         summary.minimumAveragePrice > averagePrice
       ) {
-        summary.minimumAveragePrice = averagePrice
+        summary.minimumAveragePrice = averagePrice;
       }
 
       if (
         summary.maximumAveragePrice === 0 ||
         summary.maximumAveragePrice < averagePrice
       ) {
-        summary.maximumAveragePrice = averagePrice
+        summary.maximumAveragePrice = averagePrice;
       }
 
       return {
@@ -158,18 +173,18 @@ router.get('/summary', auth.authenticated, async (req, res) => {
         minimumPrice: square.minimumPrice,
         maximumPrice: square.maximumPrice,
         averagePrice,
-      }
-    })
+      };
+    });
 
     summary.squares = summary.squares.sort((a, b) => {
       if (a.averagePrice > b.averagePrice) {
-        return -1
+        return -1;
       }
       if (a.averagePrice < b.averagePrice) {
-        return 1
+        return 1;
       }
-      return 0
-    })
+      return 0;
+    });
 
     summary.squares = summary.squares.map((square) => {
       return {
@@ -178,18 +193,18 @@ router.get('/summary', auth.authenticated, async (req, res) => {
           .times(100)
           .div(summary.maximumAveragePrice)
           .toNumber(),
-      }
-    })
+      };
+    });
 
     summary.averagePrice = new Decimal(
       summary.squares.reduce((a, b) => new Decimal(a).plus(b.averagePrice), 0)
     )
       .div(summary.squares.length)
-      .toNumber()
+      .toNumber();
   }
 
-  res.json(summary)
-})
+  res.json(summary);
+});
 
 router.get('/data-published', auth.authenticated, async (req, res) => {
   const query = {}

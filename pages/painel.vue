@@ -87,6 +87,16 @@
                 </div>
                 <hr />
                 <div class="price-row">
+                  <div class="price-label">Máximo</div>
+                  <div class="price-value">
+                    {{ userRegionSummary.maximumPrice | moeda }}
+                    <span class="price-measure">{{
+                      this.$auth.user.unitOfMeasurement
+                    }}</span>
+                  </div>
+                </div>
+                <hr />
+                <div class="price-row">
                   <div class="price-label">Médio</div>
                   <div class="price-value">
                     {{ userRegionSummary.averagePrice | moeda }}
@@ -97,14 +107,15 @@
                 </div>
                 <hr />
                 <div class="price-row">
-                  <div class="price-label">Máximo</div>
+                  <div class="price-label">Preço mais comum</div>
                   <div class="price-value">
-                    {{ userRegionSummary.maximumPrice | moeda }}
+                    {{ userRegionSummary.moda | moeda }}
                     <span class="price-measure">{{
                       this.$auth.user.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
+                <hr />
                 <div class="measure-row mt-2">
                   <span>
                     * Preços de 1 {{ this.$auth.user.unitOfMeasurement }}
