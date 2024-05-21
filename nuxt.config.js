@@ -88,6 +88,9 @@ export default {
       config: {
         debug: true,
       },
+      clientsClaim: true,
+      skipWaiting: true,
+      importScripts: ['./scripts/service-worker.js'],
       // runtimeCaching: [
       //   {
       //     urlPattern: '.*/api/.*',
