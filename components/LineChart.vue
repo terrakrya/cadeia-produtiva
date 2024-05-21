@@ -16,6 +16,33 @@ export default {
       default: () => ({
         responsive: true,
         maintainAspectRatio: false,
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          ],
+        },
+        legend: {
+          labels: {
+            fontSize: 12, // Tamanho da fonte das labels da legenda
+          },
+        },
+        tooltips: {
+          titleFontSize: 10, // Tamanho da fonte do título do tooltip
+          bodyFontSize: 10, // Tamanho da fonte do corpo do tooltip
+        },
+        plugins: {
+          datalabels: {
+            anchor: 'end',
+            align: 'top',
+            font: {
+              size: 10, // Tamanho da fonte das labels dos dados
+            },
+          },
+        },
       }),
     },
   },

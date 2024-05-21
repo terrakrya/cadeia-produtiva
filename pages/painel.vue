@@ -133,11 +133,11 @@
                 >Informar Preço</b-button
               >
             </div>
+            <hr />
             <div>
-              <h2>Preço da Safra</h2>
-              <line-chart :chart-data="chartData" :options="chartOptions" />
+              <h4 class="form-title">Preço da Safra</h4>
+              <line-chart :chart-data="chartData" />
             </div>
-
             <hr />
             <div class="d-flex justify-content-between align-items-center">
               <div>
@@ -315,19 +315,7 @@ export default {
       showFilters: false,
       chartData: {
         labels: [],
-        datasets: [
-          {
-            label: 'Preço Moda Semanal',
-            backgroundColor: '#6DC5D1',
-            borderColor: '#6DC5D1',
-            fill: false,
-            data: [],
-          },
-        ],
-      },
-      chartOptions: {
-        responsive: true,
-        maintainAspectRatio: false,
+        datasets: [],
       },
       filters: {
         unitOfMeasurement: '',
@@ -396,29 +384,6 @@ export default {
       await this.load()
       this.loading = false
     }
-
-    try {
-      const response = await this.$axios.$get('price-informations/harvest-mode');
-      const data = response;
-      if (Array.isArray(data)) {
-        this.chartData = {
-          labels: data.map(item => item.week),
-          datasets: [
-            {
-              label: 'Preço Moda Semanal',
-              backgroundColor: '#6DC5D1',
-              borderColor: '#6DC5D1',
-              fill: false,
-              data: data.map(item => item.moda)
-            }
-          ]
-        };
-      } else {
-        console.error('Dados retornados não são um array:', data);
-      }
-    } catch (error) {
-      console.error('Erro ao buscar os dados da safra:', error);
-    }
   },
   methods: {
     squareIsUserRegion(name) {
@@ -458,6 +423,39 @@ export default {
           },
         }
       )
+
+      try {
+        const response = await this.$axios.$get(
+          'price-informations/harvest-mode',
+          {
+            params: {
+              from: this.filters.from,
+              to: this.filters.to,
+              unitOfMeasurement: this.$auth.user.unitOfMeasurement,
+              product: this.filters.product
+            },
+          }
+        )
+        const data = response
+        if (Array.isArray(data)) {
+          this.chartData = {
+            labels: data.map((item) => item.week),
+            datasets: [
+              {
+                label: 'Preço Mais Comum por Semana',
+                backgroundColor: '#6DC5D1',
+                borderColor: '#6DC5D1',
+                fill: false,
+                data: data.map((item) => item.moda),
+              },
+            ],
+          }
+        } else {
+          console.error('Dados retornados não são um array:', data)
+        }
+      } catch (error) {
+        console.error('Erro ao buscar os dados da safra:', error)
+      }
 
       this.summary = summary
       this.userRegionSummary = userRegionSummary
