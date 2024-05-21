@@ -51,6 +51,57 @@ const getModa = (arr) => {
   return moda[0];
 };
 
+router.get('/harvest-mode', async (req, res) => {
+  try {
+    const query = {};
+
+    const filters = req.query;
+    if (filters.product) {
+      query.product = filters.product;
+    }
+
+    if (filters.regions) {
+      query.region = filters.regions;
+    }
+
+    if (filters.buyerPosition) {
+      query.buyerPositionBuyer = filters.buyerPosition;
+    }
+
+    if (filters.from && filters.to) {
+      query.createdAt = {
+        $gte: new Date(filters.from),
+        $lte: new Date(filters.to),
+      };
+    }
+
+    const prices = await Price.find(query).sort({ createdAt: 1 });
+
+    if (!prices.length) {
+      return res.json([]);
+    }
+
+    const modaWeekly = {};
+    prices.forEach((price) => {
+      const week = `${price.createdAt.getFullYear()}-${Math.ceil(
+        (price.createdAt.getTime() - new Date(price.createdAt.getFullYear(), 0, 1).getTime()) / (7 * 24 * 60 * 60 * 1000)
+      )}`;
+      if (!modaWeekly[week]) {
+        modaWeekly[week] = [];
+      }
+      modaWeekly[week].push(price.minimumPrice, price.maximumPrice);
+    });
+
+    const modaByWeek = Object.keys(modaWeekly).map((week) => {
+      return { week, moda: getModa(modaWeekly[week]) };
+    });
+
+    res.json(modaByWeek);
+  } catch (err) {
+    res.status(500).send('Ocorreu um erro ao carregar a lista de preço: ' + err.message);
+  }
+});
+
 router.get('/summary', auth.authenticated, async (req, res) => {
   const query = {};
 

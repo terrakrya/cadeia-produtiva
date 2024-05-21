@@ -133,6 +133,10 @@
                 >Informar Preço</b-button
               >
             </div>
+            <div>
+              <h2>Preço da Safra</h2>
+              <line-chart :chart-data="chartData" :options="chartOptions" />
+            </div>
 
             <hr />
             <div class="d-flex justify-content-between align-items-center">
@@ -294,6 +298,7 @@ import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 import NoItem from '~/components/NoItem.vue'
+import LineChart from '@/components/LineChart.vue'
 export default {
   components: {
     Breadcrumb,
@@ -301,12 +306,29 @@ export default {
     FormMeasureTranslator,
     FormMetodologia,
     NoItem,
+    LineChart,
   },
   data() {
     return {
       regiao: null,
       loading: false,
       showFilters: false,
+      chartData: {
+        labels: [],
+        datasets: [
+          {
+            label: 'Preço Moda Semanal',
+            backgroundColor: '#6DC5D1',
+            borderColor: '#6DC5D1',
+            fill: false,
+            data: [],
+          },
+        ],
+      },
+      chartOptions: {
+        responsive: true,
+        maintainAspectRatio: false,
+      },
       filters: {
         unitOfMeasurement: '',
         product: '',
@@ -373,6 +395,29 @@ export default {
       }
       await this.load()
       this.loading = false
+    }
+
+    try {
+      const response = await this.$axios.$get('price-informations/harvest-mode');
+      const data = response;
+      if (Array.isArray(data)) {
+        this.chartData = {
+          labels: data.map(item => item.week),
+          datasets: [
+            {
+              label: 'Preço Moda Semanal',
+              backgroundColor: '#6DC5D1',
+              borderColor: '#6DC5D1',
+              fill: false,
+              data: data.map(item => item.moda)
+            }
+          ]
+        };
+      } else {
+        console.error('Dados retornados não são um array:', data);
+      }
+    } catch (error) {
+      console.error('Erro ao buscar os dados da safra:', error);
     }
   },
   methods: {
