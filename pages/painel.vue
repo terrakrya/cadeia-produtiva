@@ -135,7 +135,7 @@
             </div>
             <hr />
             <div>
-              <h4 class="form-title">Preço da Safra</h4>
+              <h4 class="form-title">Preço da Safra em {{ filters.unitOfMeasurement }}</h4>
               <line-chart :chart-data="chartData" />
             </div>
             <hr />
