@@ -83,40 +83,43 @@ const PriceSchema = new mongoose.Schema(
 )
 
 const getConversion = (measure) => {
-  if (measure === 'Kg') {
-    return 1
-  } else if (measure === 'Tonelada') {
-    return 1000
-  } else if (measure === 'Lata') {
-    return 12
-  } else if (measure === 'Caixa') {
-    return 24
-  } else if (measure === 'Hectolitro') {
-    return 60
-  } else if (measure === 'Saca') {
-    return 48
-  } else if (measure === 'Barrica') {
-    return 72
+  switch (measure) {
+    case 'Kg':
+      return 1;
+    case 'Tonelada':
+      return 1000;
+    case 'Lata':
+      return 12;
+    case 'Caixa':
+      return 24;
+    case 'Hectolitro':
+      return 60;
+    case 'Saca':
+      return 48;
+    case 'Barrica':
+      return 72;
+    default:
+      return 1;
   }
 }
 
 // pre save middleware
 PriceSchema.pre('save', function (next) {
-  const conversion = getConversion(this.measure)
-  const min = this.originalMinimumPrice
-  const max = this.originalMaximumPrice
+  const conversion = getConversion(this.measure);
+  const min = new Decimal(this.originalMinimumPrice);
+  const max = new Decimal(this.originalMaximumPrice);
 
-  let quant = 1
-  if (!this.transaction) {
-    quant = this.transactedQuantity
+  let quant = 1;
+  if (this.transactedQuantity) {
+    quant = this.transactedQuantity;
   }
 
-  this.minimumPrice = new Decimal(min).div(conversion).div(quant).toFixed(2)
-  this.maximumPrice = new Decimal(max).div(conversion).div(quant).toFixed(2)
-  this.averagePrice = (this.minimumPrice + this.maximumPrice) / 2
+  this.minimumPrice = min.div(conversion).div(quant).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
+  this.maximumPrice = max.div(conversion).div(quant).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
+  this.averagePrice = new Decimal(this.minimumPrice).plus(this.maximumPrice).div(2).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
 
-  next()
-})
+  next();
+});
 
 PriceSchema.methods.data = function () {
   return {

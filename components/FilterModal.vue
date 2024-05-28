@@ -71,8 +71,6 @@ export default {
       this.$emit('update:isActive', false)
     },
     applyFilter(filter) {
-      // Lógica para aplicar o filtro específico
-      console.log('Aplicando filtro', filter)
       this.$emit('apply-filter', filter)
       this.closeModal()
     },

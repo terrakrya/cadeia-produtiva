@@ -1,143 +1,91 @@
-const Decimal = require('decimal.js')
-const mongoose = require('mongoose')
-const router = require('express').Router()
-const auth = require('../config/auth')
-const populate = require('../config/utils').populate
-const moment = require('moment')
-require('moment/locale/pt-br')
-moment.locale('pt-br')
-const Price = mongoose.model('PriceInformation')
-const ObjectId = mongoose.Types.ObjectId
+const Decimal = require('decimal.js');
+const mongoose = require('mongoose');
+const router = require('express').Router();
+const auth = require('../config/auth');
+const populate = require('../config/utils').populate;
+const moment = require('moment');
+const convertUnit = require('../utils/convertUnit');
+const getModa = require('../utils/moda');
 
+moment.locale('pt-br');
+const Price = mongoose.model('PriceInformation');
+const ObjectId = mongoose.Types.ObjectId;
 
+// Helper function for building query filters
+const buildFilters = (filters) => {
+  const query = {};
+
+  if (filters.product) query.product = filters.product;
+  if (filters.regions) query.region = filters.regions;
+  if (filters.buyerPosition) query.buyerPositionBuyer = filters.buyerPosition;
+  if (filters.from || filters.to) {
+    query.createdAt = {};
+    if (filters.from) query.createdAt.$gte = new Date(filters.from);
+    if (filters.to) query.createdAt.$lte = new Date(filters.to);
+  }
+
+  return query;
+};
+
+// Route for getting price information
 router.get('/', auth.authenticated, async (req, res) => {
-  const query = {}
+  const query = {};
 
-  // ***** monta os filtros *****
   if (req.user.role === 'gestor') {
-    query.organization = req.user.organization
+    query.organization = req.user.organization;
   } else if (req.user.role === 'mensageiro') {
-    query.messenger = req.user.id
+    query.messenger = req.user.id;
   }
 
   try {
-    // ***** executa a query *****
-
     const price = await Price.find(query)
       .populate('product')
       .populate('messenger')
       .populate('organization')
-      .sort('price')
-
-    res.json(price)
+      .sort('price');
+    res.json(price);
   } catch (err) {
-    res
-      .status(422)
-      .send('Ocorreu um erro ao carregar a lista de preço: ' + err.message)
+    res.status(422).send(`Ocorreu um erro ao carregar a lista de preço: ${err.message}`);
   }
-})
+});
 
-const getModa = (arr) => {
-  const frequency = {};
-  let maxFreq = 0;
-  let moda = [];
-
-  arr.forEach(item => {
-    frequency[item] = (frequency[item] || 0) + 1;
-    if (frequency[item] > maxFreq) {
-      maxFreq = frequency[item];
-      moda = [item];
-    } else if (frequency[item] === maxFreq) {
-      moda.push(item);
-    }
-  });
-
-  return moda[0];
-};
-
+// Route for getting harvest mode data
 router.get('/harvest-mode', auth.authenticated, async (req, res) => {
   try {
-    const query = {};
-    const filters = req.query;
-
-    if (filters.product) {
-      query.product = filters.product;
-    }
-    if (filters.regions) {
-      query.region = filters.regions;
-    }
-    if (filters.buyerPosition) {
-      query.buyerPositionBuyer = filters.buyerPosition;
-    }
-    if (filters.from && filters.to) {
-      query.createdAt = {
-        $gte: new Date(filters.from),
-        $lte: new Date(filters.to),
-      };
-    }
-
+    const query = buildFilters(req.query);
     const prices = await Price.find(query).sort({ createdAt: 1 });
 
-    if (!prices.length) {
-      return res.json([]);
-    }
+    if (!prices.length) return res.json([]);
 
     const modaWeekly = {};
+
     prices.forEach((price) => {
       const startOfMonth = moment(price.createdAt).startOf('month');
       const weekOfMonth = Math.ceil(moment(price.createdAt).diff(startOfMonth, 'days') / 7) + 1;
       const formattedWeek = `${moment(price.createdAt).format('MMM/YY').toUpperCase()} - Semana ${weekOfMonth}`;
 
-      if (!modaWeekly[formattedWeek]) {
-        modaWeekly[formattedWeek] = [];
-      }
+      if (!modaWeekly[formattedWeek]) modaWeekly[formattedWeek] = [];
       modaWeekly[formattedWeek].push(
-        convertUnit(price.minimumPrice, filters.unitOfMeasurement),
-        convertUnit(price.maximumPrice, filters.unitOfMeasurement)
+        convertUnit(price.minimumPrice, req.query.unitOfMeasurement),
+        convertUnit(price.maximumPrice, req.query.unitOfMeasurement)
       );
     });
 
-    const modaByWeek = Object.keys(modaWeekly).map((week) => {
-      return { week, moda: getModa(modaWeekly[week]) };
-    });
+    const modaByWeek = Object.keys(modaWeekly).map((week) => ({
+      week,
+      moda: getModa(modaWeekly[week]),
+    }));
 
     res.json(modaByWeek);
   } catch (err) {
     console.error('Erro ao carregar a lista de preço:', err);
-    res.status(500).send('Ocorreu um erro ao carregar a lista de preço: ' + err.message);
+    res.status(500).send(`Ocorreu um erro ao carregar a lista de preço: ${err.message}`);
   }
 });
+
+// Route for getting summary data
 router.get('/summary', auth.authenticated, async (req, res) => {
-  const query = {};
-
-  const filters = req.query;
-  if (filters.product) {
-    query.product = filters.product;
-  }
-
-  if (filters.regions) {
-    query.region = filters.regions;
-  }
-
-  if (filters.buyerPosition) {
-    query.buyerPositionBuyer = filters.buyerPosition;
-  }
-
-  if (filters.from && !filters.to) {
-    query.createdAt = {
-      $gte: new Date(filters.from),
-    };
-  } else if (filters.to && !filters.from) {
-    query.createdAt = {
-      $lte: new Date(filters.to),
-    };
-  } else if (filters.from && filters.to) {
-    query.createdAt = {
-      $gte: new Date(filters.from),
-      $lte: new Date(filters.to),
-    };
-  }
-
+  const query = buildFilters(req.query);
   const prices = await Price.find(query);
 
   let summary = {
@@ -150,8 +98,8 @@ router.get('/summary', auth.authenticated, async (req, res) => {
 
   if (prices && prices.length) {
     summary = {
-      minimumPrice: convertUnit(prices[0].minimumPrice, filters.unitOfMeasurement),
-      maximumPrice: convertUnit(prices[0].maximumPrice, filters.unitOfMeasurement),
+      minimumPrice: convertUnit(prices[0].minimumPrice, req.query.unitOfMeasurement),
+      maximumPrice: convertUnit(prices[0].maximumPrice, req.query.unitOfMeasurement),
       averagePrice: 0,
       moda: 0,
       squares: {},
@@ -160,11 +108,11 @@ router.get('/summary', auth.authenticated, async (req, res) => {
     const priceValues = [];
 
     prices.forEach((price) => {
-      const minimumPrice = convertUnit(price.minimumPrice, filters.unitOfMeasurement);
-      const maximumPrice = convertUnit(price.maximumPrice, filters.unitOfMeasurement);
+      const minimumPrice = convertUnit(price.minimumPrice, req.query.unitOfMeasurement);
+      const maximumPrice = convertUnit(price.maximumPrice, req.query.unitOfMeasurement);
 
       priceValues.push(minimumPrice);
-      priceValues.push(maximumPrice); 
+      priceValues.push(maximumPrice);
 
       if (summary.minimumPrice > minimumPrice) {
         summary.minimumPrice = minimumPrice;
@@ -262,58 +210,14 @@ router.get('/summary', auth.authenticated, async (req, res) => {
   res.json(summary);
 });
 
+// Route for getting data published
 router.get('/data-published', auth.authenticated, async (req, res) => {
-  const query = {}
-
-  // ***** monta os filtros *****
-
-  // TODO: filtrar pelo usuário logado (quando está logado no sistema) ou sem usuário (quando está fora)
-
-  if (req.query.filters) {
-    const filters = JSON.parse(req.query.filters || '{}')
-
-    if (filters.product) {
-      query.product = ObjectId(filters.product)
-    }
-
-    if (filters.uf) {
-      query.uf = filters.uf
-    }
-
-    if (filters.city) {
-      query.city = filters.city
-    }
-
-    if (filters.from && !filters.to) {
-      query.createdAt = {
-        $gte: new Date(filters.from),
-      }
-    } else if (filters.to && !filters.from) {
-      query.createdAt = {
-        $lte: new Date(filters.to),
-      }
-    } else if (filters.from && filters.to) {
-      query.createdAt = {
-        $gte: new Date(filters.from),
-        $lte: new Date(filters.to),
-      }
-    }
-  }
+  const query = buildFilters(JSON.parse(req.query.filters || '{}'));
 
   try {
-    // ***** executa a query *****
-
     const priceListAgr = await Price.aggregate([
       { $match: query },
       { $sort: { createdAt: -1 } },
-      // {
-      //   "$lookup": {
-      //     from: "users",
-      //     localField: "messenger",
-      //     foreignField: "_id",
-      //     as: "from"
-      //   }
-      // },
       {
         $group: {
           _id: {
@@ -325,142 +229,86 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
           maximumPrice: { $max: '$maximumPrice' },
         },
       },
-    ])
+    ]);
 
-    const priceList = priceListAgr.map(function (obj) {
-      return {
-        date: obj._id.date,
-        from: obj._id.from,
-        to: obj._id.to,
-        minimumPrice: obj.minimumPrice,
-        maximumPrice: obj.maximumPrice,
-        averagePrice: (obj.minimumPrice + obj.maximumPrice) / 2,
-      }
-    })
+    const priceList = priceListAgr.map((obj) => ({
+      date: obj._id.date,
+      from: obj._id.from,
+      to: obj._id.to,
+      minimumPrice: obj.minimumPrice,
+      maximumPrice: obj.maximumPrice,
+      averagePrice: (obj.minimumPrice + obj.maximumPrice) / 2,
+    }));
 
-    res.json(priceList)
+    res.json(priceList);
   } catch (err) {
-    res
-      .status(422)
-      .send('Ocorreu um erro ao carregar a lista de preço: ' + err.message)
+    res.status(422).send(`Ocorreu um erro ao carregar a lista de preço: ${err.message}`);
   }
-})
+});
 
+// Route for getting price by id
 router.get('/:id', auth.authenticated, async (req, res) => {
-  const query = { _id: req.params.id }
+  const query = { _id: req.params.id };
 
   try {
-    const price = await Price.findOne(query).populate(populate(req))
-    return res.json(price)
+    const price = await Price.findOne(query).populate(populate(req));
+    return res.json(price);
   } catch (err) {
-    res.sendStatus(422)
+    res.sendStatus(422);
   }
-})
+});
 
+// Route for creating new price
 router.post('/', auth.authenticated, async (req, res) => {
   try {
-    const price = new Price()
+    const price = new Price();
 
-    price.createdAt = req.body.createdAt
-    price.buyerPositionBuyer = req.body.buyerPositionBuyer
-    price.minimumPrice = req.body.minimumPrice
-    price.maximumPrice = req.body.maximumPrice
-    price.originalMinimumPrice = req.body.originalMinimumPrice
-    price.originalMaximumPrice = req.body.originalMaximumPrice
-    price.currency = req.body.currency
-    price.country = req.body.country
-    price.measure = req.body.measure
-    price.product = req.body.product
-    price.messenger = req.body.messenger
-    price.uf = req.body.uf
-    price.city = req.body.city
-    price.square = req.body.square
-    price.squareid = req.body.squareid
-    price.organization = req.body.organization
-    price.transaction = req.body.transaction
-    price.transactedQuantity = req.body.transactedQuantity
-    price.buyerPositionSeller = req.body.buyerPositionSeller
-    price.originalPrice = req.body.originalPrice
-    price.region = req.body.region
+    Object.assign(price, req.body);
 
-    await price.save()
+    await price.save();
 
-    return res.send(price)
+    return res.send(price);
   } catch (err) {
-    res.status(422).send('Ocorreu um erro ao incluir o preço: ' + err.message)
+    res.status(422).send(`Ocorreu um erro ao incluir o preço: ${err.message}`);
   }
-})
+});
 
-// altera um produto
+// Route for updating price by id
 router.put('/:id', auth.authenticated, async (req, res) => {
   try {
-    const query = { _id: req.params.id }
+    const query = { _id: req.params.id };
 
-    const price = await Price.findOne(query)
+    const price = await Price.findOne(query);
 
     if (price) {
-      price.createdAt = req.body.createdAt
-      price.buyerPositionBuyer = req.body.buyerPositionBuyer
-      price.minimumPrice = req.body.minimumPrice
-      price.maximumPrice = req.body.maximumPrice
-      price.originalMinimumPrice = req.body.originalMinimumPrice
-      price.originalMaximumPrice = req.body.originalMaximumPrice
-      price.currency = req.body.currency
-      price.country = req.body.country
-      price.measure = req.body.measure
-      price.product = req.body.product
-      price.messenger = req.body.messenger
-      price.uf = req.body.uf
-      price.city = req.body.city
-      price.square = req.body.square
-      price.squareid = req.body.squareid
-      price.transaction = req.body.transaction
-      price.transactedQuantity = req.body.transactedQuantity
-      price.buyerPositionSeller = req.body.buyerPositionSeller
-      price.originalPrice = req.body.originalPrice
-      price.region = req.body.region
+      Object.assign(price, req.body);
 
-      await price.save()
+      await price.save();
 
-      return res.send(price)
+      return res.send(price);
     } else {
-      res.status(422).send('Preço não encontrado')
+      res.status(422).send('Preço não encontrado');
     }
   } catch (err) {
-    res.status(422).send('Ocorreu um erro ao atualizar o preço: ' + err.message)
+    res.status(422).send(`Ocorreu um erro ao atualizar o preço: ${err.message}`);
   }
-})
+});
 
-router.delete('/:id', auth.authenticated, (req, res) => {
-  const query = { _id: req.params.id }
+// Route for deleting price by id
+router.delete('/:id', auth.authenticated, async (req, res) => {
+  const query = { _id: req.params.id };
 
-  Price.findOne(query).exec(function (err, price) {
-    if (err) {
-      res.status(422).send('Ocorreu um erro ao excluir o preço: ' + err.message)
+  try {
+    const price = await Price.findOne(query);
+    if (price) {
+      await price.remove();
+      res.send(price);
     } else {
-      price.remove()
-      res.send(price)
+      res.status(422).send('Preço não encontrado');
     }
-  })
-})
-
-// Prices are stored always in Kg, regardless of what measure is
-const conversionTable = {
-  Lata: 12,
-  Kg: 1,
-  Caixa: 24,
-  Saca: 48,
-  Hectolitro: 60,
-  Barrica: 72,
-  Tonelada: 1000,
-}
-
-function convertUnit(value, toUnit) {
-  if (!(toUnit in conversionTable)) {
-    return null
+  } catch (err) {
+    res.status(422).send(`Ocorreu um erro ao excluir o preço: ${err.message}`);
   }
+});
 
-  return new Decimal(value * conversionTable[toUnit]).toFixed(2)
-}
-
-module.exports = router
+module.exports = router;
