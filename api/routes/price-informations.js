@@ -55,7 +55,7 @@ const getModa = (arr) => {
   return moda[0];
 };
 
-router.get('/harvest-mode', async (req, res) => {
+router.get('/harvest-mode', auth.authenticated, async (req, res) => {
   try {
     const query = {};
     const filters = req.query;
@@ -86,7 +86,7 @@ router.get('/harvest-mode', async (req, res) => {
     prices.forEach((price) => {
       const startOfMonth = moment(price.createdAt).startOf('month');
       const weekOfMonth = Math.ceil(moment(price.createdAt).diff(startOfMonth, 'days') / 7) + 1;
-      const formattedWeek = `${moment(price.createdAt).format('MMM/YY').toUpperCase()}/${weekOfMonth}`;
+      const formattedWeek = `${moment(price.createdAt).format('MMM/YY').toUpperCase()} - Semana ${weekOfMonth}`;
 
       if (!modaWeekly[formattedWeek]) {
         modaWeekly[formattedWeek] = [];

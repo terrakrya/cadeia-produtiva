@@ -24,6 +24,14 @@ export default {
               },
             },
           ],
+          xAxes: [
+            {
+              ticks: {
+                maxRotation: 90,
+                minRotation: 90,
+              },
+            },
+          ],
         },
         legend: {
           labels: {
@@ -31,8 +39,8 @@ export default {
           },
         },
         tooltips: {
-          titleFontSize: 10, // Tamanho da fonte do título do tooltip
-          bodyFontSize: 10, // Tamanho da fonte do corpo do tooltip
+          titleFontSize: 12, // Tamanho da fonte do título do tooltip
+          bodyFontSize: 12, // Tamanho da fonte do corpo do tooltip
         },
         plugins: {
           datalabels: {

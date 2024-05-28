@@ -510,7 +510,7 @@ export default {
             id: 102,
             vmId: this.veeErrors.vmId,
             field: 'originalMaximumPrice',
-            msg: 'o preço máximo tem que ser maior ou igual ao preço mínimo .',
+            msg: 'O preço máximo deve ser maior ou igual ao preço mínimo.',
             rule: 'required',
             scope: null,
           })

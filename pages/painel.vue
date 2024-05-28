@@ -5,9 +5,9 @@
         <div>
           <h4 class="form-title">Painel</h4>
           <h6 class="form-subtitle">
-            Mostrando preços
+            Preços de
             <span v-if="productFilter"
-              >para<b> {{ productFilter }}</b></span
+              ><b> {{ productFilter }}</b></span
             >
             da região
             {{ this.$auth.user.region }}
@@ -44,14 +44,8 @@
                 >
                   <div
                     class="d-flex flex-column align-items-center"
-                    v-if="!filters.from && !filters.to"
-                  >
-                    <span>Histórico</span>
-                  </div>
-                  <div
-                    class="d-flex flex-column align-items-center"
-                    v-if="filters.from && filters.to"
-                  >
+                    v-if="filters.name == 'safra'"
+                    >
                     <span>Safra</span>
                     <span
                       >{{ filters.from | moment('YYYY') }}/{{
@@ -61,17 +55,36 @@
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
-                    v-if="filters.from && !filters.to"
-                  >
-                    <span>Safra</span>
-                    <span>{{ filters.from | moment('YYYY') }}/-</span>
+                    v-if="filters.name == 'mes'"
+                    >
+                    <span>Mês</span>
+                    <span
+                      >{{ filters.from | moment('DD/MM ') }}a{{
+                        filters.to | moment(' DD/MM')
+                      }}</span
+                    >
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
-                    v-if="!filters.from && filters.to"
-                  >
-                    <span>Safra</span>
-                    <span>-/{{ filters.to | moment('YYYY') }}</span>
+                    v-if="filters.name == 'quinzena'"
+                    >
+                    <span>Quinzena</span>
+                    <span
+                      >{{ filters.from | moment('DD/MM ') }}a{{
+                        filters.to | moment(' DD/MM')
+                      }}</span
+                    >
+                  </div>
+                  <div
+                    class="d-flex flex-column align-items-center"
+                    v-if="filters.name == 'semana'"
+                    >
+                    <span>Semana</span>
+                    <span
+                      >{{ filters.from | moment('DD/MM ') }}a{{
+                        filters.to | moment(' DD/MM')
+                      }}</span
+                    >
                   </div>
                 </div>
               </div>
@@ -124,10 +137,24 @@
               </div>
             </b-row>
 
+            <b-button
+              @click="isModalActive = true"
+              id="show-btn"
+              class="btn mb-1 mt-4"
+              variant="panel"
+            >
+              Filtrar Dados
+            </b-button>
+
+            <FilterModal
+              :isActive.sync="isModalActive"
+              @apply-filter="applyFilter"
+            />
+
             <div class="text-right">
               <b-button
                 id="show-btn"
-                class="btn mb-1 mt-5"
+                class="btn mb-1 mt-3"
                 variant="panel"
                 to="/operacional/informacao-preco/cadastrar"
                 >Informar Preço</b-button
@@ -135,7 +162,9 @@
             </div>
             <hr />
             <div>
-              <h4 class="form-title">Preço da Safra em {{ filters.unitOfMeasurement }}</h4>
+              <h4 class="form-title">
+                Preço da Safra em {{ filters.unitOfMeasurement }}
+              </h4>
               <line-chart :chart-data="chartData" />
             </div>
             <hr />
@@ -169,13 +198,13 @@
                   </div>
                 </div>
               </div>
-              <div>
+              <!-- <div>
                 <b-btn @click="showFilters = !showFilters">
                   <b-icon icon="filter" font-scale="3"></b-icon>
                 </b-btn>
-              </div>
+              </div> -->
             </div>
-            <div v-if="showFilters" class="py-4">
+            <!-- <div v-if="showFilters" class="py-4">
               <div class="row">
                 <div class="col-md-6">
                   <b-form-group label="Produto">
@@ -227,7 +256,7 @@
               <b-button variant="primary" size="lg" block @click="applyFilters">
                 Filtrar
               </b-button>
-            </div>
+            </div> -->
             <div v-if="summary" class="pt-4">
               <div
                 v-for="(square, squareIndex) in summary.squares"
@@ -299,6 +328,7 @@ import FormMetodologia from '@/components/FormMetodologia.vue'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 import NoItem from '~/components/NoItem.vue'
 import LineChart from '@/components/LineChart.vue'
+import FilterModal from '@/components/FilterModal.vue'
 export default {
   components: {
     Breadcrumb,
@@ -313,12 +343,14 @@ export default {
       regiao: null,
       loading: false,
       showFilters: false,
+      isModalActive: false,
       chartData: {
         labels: [],
         datasets: [],
       },
       filters: {
         unitOfMeasurement: '',
+        name: 'safra',
         product: '',
         buyerPosition: '',
         from: '',
@@ -343,21 +375,6 @@ export default {
       }
       return ''
     },
-    currentHarvestPeriod() {
-      const today = this.$moment(new Date())
-
-      if (today.isBefore(`${today.year()}-10-01`)) {
-        return [
-          `${new Date().getFullYear() - 1}-10-01`,
-          `${new Date().getFullYear()}-09-30`,
-        ]
-      }
-
-      return [
-        `${new Date().getFullYear()}-10-01`,
-        `${new Date().getFullYear() + 1}-09-30`,
-      ]
-    },
   },
 
   async created() {
@@ -376,10 +393,11 @@ export default {
     } else {
       this.loading = true
       await this.loadProducts()
+      const harvestPeriod = await this.currentHarvestPeriod()
       this.filters = {
         ...this.filters,
-        from: this.currentHarvestPeriod[0],
-        to: this.currentHarvestPeriod[1],
+        from: harvestPeriod[0],
+        to: harvestPeriod[1],
       }
       await this.load()
       this.loading = false
@@ -406,6 +424,7 @@ export default {
         ...this.filters,
         unitOfMeasurement: this.$auth.user.unitOfMeasurement,
       }
+      const harvestPeriod = this.currentHarvestPeriod()
 
       const summary = await this.$axios.$get('price-informations/summary', {
         params: this.filters,
@@ -429,10 +448,10 @@ export default {
           'price-informations/harvest-mode',
           {
             params: {
-              from: this.filters.from,
-              to: this.filters.to,
+              from: harvestPeriod[0],
+              to: harvestPeriod[1],
               unitOfMeasurement: this.$auth.user.unitOfMeasurement,
-              product: this.filters.product
+              product: this.filters.product,
             },
           }
         )
@@ -464,6 +483,57 @@ export default {
     applyFilters() {
       this.showFilters = false
       this.load()
+    },
+
+    applyFilter(period) {
+      let fromDate, toDate
+      this.filters.name = period
+      const currentDate = new Date()
+
+      switch (period) {
+        case 'safra':
+          ;[fromDate, toDate] = this.currentHarvestPeriod()
+          break
+        case 'semana':
+          fromDate = new Date(currentDate.setDate(currentDate.getDate() - 7))
+          toDate = new Date()
+          break
+        case 'quinzena':
+          fromDate = new Date(currentDate.setDate(currentDate.getDate() - 15))
+          toDate = new Date()
+          break
+        case 'mes':
+          fromDate = new Date(currentDate.setMonth(currentDate.getMonth() - 1))
+          toDate = new Date()
+          break
+        default:
+          fromDate = null
+          toDate = null
+      }
+
+      this.applyDateFilter(fromDate, toDate)
+    },
+
+    applyDateFilter(from, to) {
+      // Implementação do filtro de data
+      this.filters.from = from
+      this.filters.to = to
+      this.load()
+    },
+    currentHarvestPeriod() {
+      const today = this.$moment(new Date())
+
+      if (today.isBefore(`${today.year()}-10-01`)) {
+        return [
+          `${new Date().getFullYear() - 1}-10-01`,
+          `${new Date().getFullYear()}-09-30`,
+        ]
+      }
+
+      return [
+        `${new Date().getFullYear()}-10-01`,
+        `${new Date().getFullYear() + 1}-09-30`,
+      ]
     },
   },
 }
