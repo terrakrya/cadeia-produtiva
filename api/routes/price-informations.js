@@ -9,7 +9,6 @@ const getModa = require('../utils/moda');
 
 moment.locale('pt-br');
 const Price = mongoose.model('PriceInformation');
-const ObjectId = mongoose.Types.ObjectId;
 
 // Helper function for building query filters
 const buildFilters = (filters) => {
@@ -94,6 +93,7 @@ router.get('/summary', auth.authenticated, async (req, res) => {
     averagePrice: null,
     moda: null,
     squares: {},
+    totalPrices: 0,
   };
 
   if (prices && prices.length) {
@@ -103,6 +103,7 @@ router.get('/summary', auth.authenticated, async (req, res) => {
       averagePrice: 0,
       moda: 0,
       squares: {},
+      totalPrices: prices.length,
     };
 
     const priceValues = [];

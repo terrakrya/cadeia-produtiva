@@ -21,6 +21,7 @@ export default {
             {
               ticks: {
                 beginAtZero: true,
+                suggestedMax: 0, // Será ajustado dinamicamente
               },
             },
           ],
@@ -55,55 +56,38 @@ export default {
     },
   },
   mounted() {
-    this.renderChart(this.chartData, this.options)
+    this.updateChartOptions();
+    this.renderChart();
   },
   watch: {
     chartData: {
       handler(newData, oldData) {
         if (!this.areDataEqual(newData, oldData)) {
-          this.$data._chart.destroy()
-          this.renderChart(newData, this.options)
+          this.$data._chart.destroy();
+          this.updateChartOptions();
+          this.renderChart();
         }
       },
       deep: true,
     },
   },
   methods: {
-    renderChart(data, options) {
+    renderChart() {
       this.$data._chart = new Chart(this.$refs.canvas.getContext('2d'), {
         type: 'line',
-        data,
-        options,
-      })
+        data: this.chartData,
+        options: this.options,
+      });
     },
     areDataEqual(newData, oldData) {
-      if (newData.labels.length !== oldData.labels.length) {
-        return false
-      }
-      if (newData.datasets.length !== oldData.datasets.length) {
-        return false
-      }
-      for (let i = 0; i < newData.labels.length; i++) {
-        if (newData.labels[i] !== oldData.labels[i]) {
-          return false
-        }
-      }
-      for (let i = 0; i < newData.datasets.length; i++) {
-        if (
-          newData.datasets[i].data.length !== oldData.datasets[i].data.length
-        ) {
-          return false
-        }
-        for (let j = 0; j < newData.datasets[i].data.length; j++) {
-          if (newData.datasets[i].data[j] !== oldData.datasets[i].data[j]) {
-            return false
-          }
-        }
-      }
-      return true
+      return JSON.stringify(newData) === JSON.stringify(oldData);
+    },
+    updateChartOptions() {
+      const maxDataValue = Math.max(...this.chartData.datasets.flatMap(dataset => dataset.data));
+      this.options.scales.yAxes[0].ticks.suggestedMax = maxDataValue + 10;
     },
   },
-}
+};
 </script>
 
 <style scoped>

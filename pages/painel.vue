@@ -129,9 +129,12 @@
                   </div>
                 </div>
                 <hr />
-                <div class="measure-row mt-2">
+                <div class="measure-row mt-2 d-flex justify-content-between">
                   <span>
                     * Preços de 1 {{ this.$auth.user.unitOfMeasurement }}
+                  </span>
+                  <span>
+                    Total de Preços: {{ this.userRegionSummary.totalPrices }}
                   </span>
                 </div>
               </div>
@@ -452,6 +455,7 @@ export default {
               to: harvestPeriod[1],
               unitOfMeasurement: this.$auth.user.unitOfMeasurement,
               product: this.filters.product,
+              regions: [this.$auth.user.region]
             },
           }
         )
