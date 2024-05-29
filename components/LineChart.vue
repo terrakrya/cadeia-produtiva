@@ -56,16 +56,16 @@ export default {
     },
   },
   mounted() {
-    this.updateChartOptions();
-    this.renderChart();
+    this.updateChartOptions()
+    this.renderChart()
   },
   watch: {
     chartData: {
       handler(newData, oldData) {
         if (!this.areDataEqual(newData, oldData)) {
-          this.$data._chart.destroy();
-          this.updateChartOptions();
-          this.renderChart();
+          this.$data._chart.destroy()
+          this.updateChartOptions()
+          this.renderChart()
         }
       },
       deep: true,
@@ -77,17 +77,31 @@ export default {
         type: 'line',
         data: this.chartData,
         options: this.options,
-      });
+      })
     },
     areDataEqual(newData, oldData) {
-      return JSON.stringify(newData) === JSON.stringify(oldData);
+      function safeStringify(obj) {
+        const cache = new Set()
+        return JSON.stringify(obj, (key, value) => {
+          if (typeof value === 'object' && value !== null) {
+            if (cache.has(value)) {
+              return // Circular reference found, discard key
+            }
+            cache.add(value) // Store value in our collection
+          }
+          return value
+        })
+      }
+      return safeStringify(newData) === safeStringify(oldData)
     },
     updateChartOptions() {
-      const maxDataValue = Math.max(...this.chartData.datasets.flatMap(dataset => dataset.data));
-      this.options.scales.yAxes[0].ticks.suggestedMax = maxDataValue + 10;
+      const maxDataValue = Math.max(
+        ...this.chartData.datasets.flatMap((dataset) => dataset.data)
+      )
+      this.options.scales.yAxes[0].ticks.suggestedMax = maxDataValue * 1.1
     },
   },
-};
+}
 </script>
 
 <style scoped>

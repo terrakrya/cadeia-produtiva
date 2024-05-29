@@ -131,10 +131,10 @@
                 <hr />
                 <div class="measure-row mt-2 d-flex justify-content-between">
                   <span>
-                    * Preços de 1 {{ this.$auth.user.unitOfMeasurement }}
+                    Preços de 1 {{ this.$auth.user.unitOfMeasurement }}
                   </span>
                   <span>
-                    Total de Preços: {{ this.userRegionSummary.totalPrices }}
+                    Preços Informados: {{ this.userRegionSummary.totalPrices }}
                   </span>
                 </div>
               </div>

@@ -270,6 +270,7 @@ export default {
           .tz('America/Sao_Paulo')
           .format('YYYY-MM-DD'),
         buyerPositionBuyer: '',
+        buyerPositionSeller: '',
         minimumPrice: 0,
         maximumPrice: 0,
         originalMinimumPrice: 0,
@@ -284,7 +285,6 @@ export default {
         transaction: true,
         transactedQuantity: '',
         organization: '',
-        buyerPositionSeller: '',
         square: '',
         squareid: '',
         region: '',
