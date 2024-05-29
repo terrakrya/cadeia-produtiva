@@ -208,7 +208,7 @@
                   name="city"
                   @input="loadPracas()"
                 />
-                <field-error :msg="veeErrors" field="city" />
+                <field-error :msg="veeErrors" field="region" />
               </b-form-group>
             </b-col>
           </div>
@@ -422,6 +422,9 @@ export default {
         if (regiao && regiao.length > 0) {
           this.form.region = regiao[0].regiaoCastanheira
         }
+        else {
+          this.form.region = ''
+        }
       }
     },
     transactedQuantity() {
@@ -527,9 +530,20 @@ export default {
             })
             isValid = false
           }
-        } else {
+        } 
+        else if (!this.form.region) {
+            this.veeErrors.items.push({
+              id: 104,
+              vmId: this.veeErrors.vmId,
+              field: 'region',
+              msg: 'O município selecionado não faz parte de uma Região Castanheira.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+        }else {
           this.veeErrors.items = this.veeErrors.items.filter(
-            (error) => error.id !== 101 && error.id !== 102 && error.id !== 103
+            (error) => error.id !== 101 && error.id !== 102 && error.id !== 103 && error.id !== 104
           )
         }
 
