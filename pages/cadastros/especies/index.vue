@@ -34,8 +34,8 @@
             <template #cell(popularName)="data">
               {{ data.item.popularName }}
             </template>
-            <template #cell(code)="data">
-              {{ data.item.code }}
+            <template #cell(scientificName)="data">
+              {{ data.item.scientificName }}
             </template>
             <template #cell(description)="data">
               {{ data.item.description }}
@@ -74,8 +74,8 @@ export default {
           sortable: true,
         },
         {
-          key: 'code',
-          label: 'Código',
+          key: 'scientificName',
+          label: 'Nome científico',
           sortable: true,
         },
         {

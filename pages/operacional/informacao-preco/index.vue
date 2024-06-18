@@ -54,7 +54,7 @@
                 {{ data.item.createdAt | moment('DD/MM/YYYY') }}
               </template>
               <template #cell(buyerPosition)="data">
-                Preço de {{ data.item.messenger.buyerPosition }} para
+                Preço de {{ data.item.buyerPositionSeller }} para
                 {{ data.item.buyerPositionBuyer }}
               </template>
               <template #cell(messenger)="data">

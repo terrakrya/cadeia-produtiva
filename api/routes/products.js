@@ -13,10 +13,6 @@ router.get('/', auth.authenticated, async (req, res) => {
     query._id = filters.id
   }
 
-  if (filters.code) {
-    query.code = filters.code
-  }
-
   if (filters.description) {
     query.description = filters.description
   }
@@ -27,7 +23,6 @@ router.get('/', auth.authenticated, async (req, res) => {
     const product = await Product.find(query)
       .populate('specieProduct')
       .populate('type')
-      .sort('code')
 
     res.json(product)
   } catch (err) {
@@ -48,10 +43,6 @@ router.get('/cadastro-de-produtos', auth.globalManager, async (req, res) => {
     query._id = filters.id
   }
 
-  if (filters.code) {
-    query.code = filters.code
-  }
-
   if (filters.description) {
     query.description = filters.description
   }
@@ -62,7 +53,6 @@ router.get('/cadastro-de-produtos', auth.globalManager, async (req, res) => {
     const product = await Product.find(query)
       .populate('specieProduct')
       .populate('type')
-      .sort('code')
 
     res.json(product)
   } catch (err) {
@@ -78,21 +68,6 @@ router.get('/:id', auth.globalManager, async (req, res) => {
   try {
     const product = await Product.findOne(query).populate(populate(req))
     return res.json(product)
-  } catch (err) {
-    res.sendStatus(422)
-  }
-})
-
-router.post('/unique-code', auth.globalManager, async (req, res) => {
-  const query = { code: req.body.code }
-
-  if (req.body.id) {
-    query._id = { $ne: req.body.id }
-  }
-
-  try {
-    const found = await Product.exists(query)
-    return res.json(!found)
   } catch (err) {
     res.sendStatus(422)
   }
@@ -116,7 +91,6 @@ router.post('/', auth.globalManager, async (req, res) => {
   try {
     const product = new Product()
 
-    product.code = req.body.code
     product.description = req.body.description
     product.specieProduct = req.body.specieProduct
     product.name = req.body.name
@@ -138,7 +112,6 @@ router.put('/:id', auth.globalManager, async (req, res) => {
     const product = await Product.findOne(query)
 
     if (product) {
-      product.code = req.body.code
       product.description = req.body.description
       product.specieProduct = req.body.specieProduct
       product.name = req.body.name

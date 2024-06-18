@@ -1,6 +1,5 @@
 <template>
   <div class="type">
-    <!-- <Breadcrumb active="Coleta de preços" /> -->
     <div class="panel">
       <div class="panel-body">
         <div>
@@ -13,10 +12,10 @@
           <div v-if="isAdmin || isGlobalManager" class="row">
             <div class="col-sm-8">
               <b-form-group label="Organização">
-                <form-entity-select
+                <b-form-select
                   v-model="form.organization"
-                  type="organizations"
-                  @input="loadOrganization()"
+                  class="form-control"
+                  :options="organizationsOptions"
                 />
               </b-form-group>
             </div>
@@ -38,16 +37,16 @@
           </div>
           <div class="row">
             <div class="col-sm-6 mb-4">
-                <b-form-select
-                  v-model="form.product"
-                  v-validate="'required'"
-                  class="form-control"
-                  :options="products"
-                  value-field="id"
-                  text-field="name"
-                  name="product"
-                />
-                <field-error :msg="veeErrors" field="product" />
+              <b-form-select
+                v-model="form.product"
+                v-validate="'required'"
+                class="form-control"
+                :options="products"
+                value-field="id"
+                text-field="name"
+                name="product"
+              />
+              <field-error :msg="veeErrors" field="product" />
             </div>
           </div>
           <div class="row">
@@ -62,36 +61,21 @@
                 <b-button
                   variant="form"
                   @click="form.transaction = true"
-                  :class="{'selected-button': form.transaction, 'mr-3': true}"
-                  >Preço Ofertado
+                  :class="{ 'selected-button': form.transaction, 'mr-3': true }"
+                  >Oferta de Preços
                 </b-button>
                 <b-button
                   variant="form"
                   @click="form.transaction = false"
-                  :class="{'selected-button': !form.transaction}"
-                  >Preço Vendido
+                  :class="{ 'selected-button': !form.transaction }"
+                  >Preço da Venda
                 </b-button>
               </div>
             </div>
           </div>
-          <!--<div class="row">
-            <h5>Preço por {{ form.measure }}</h5>
-          </div>-->
           <div class="row">
             <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Quantidade Vendida">
-                <money
-                  v-model="form.transactedQuantity"
-                  :required="!form.transaction"
-                  prefix=""
-                  class="form-control"
-                  nome="transactedQuantity"
-                ></money>
-                <field-error :msg="veeErrors" field="transactedQuantity" />
-              </b-form-group>
-            </div>
-            <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Preço">
+              <b-form-group :label="`Preço por ${form.measure}`">
                 <money
                   v-model="form.originalPrice"
                   :required="!form.transaction"
@@ -101,9 +85,23 @@
                 <field-error :msg="veeErrors" field="originalPrice" />
               </b-form-group>
             </div>
+            <div v-if="!form.transaction" class="col-sm-4">
+              <b-form-group label="Quantidade Vendida">
+                <b-form-input
+                  v-model="form.transactedQuantity"
+                  type="number"
+                  :required="!form.transaction"
+                  class="form-control"
+                  name="transactedQuantity"
+                  min="0"
+                  step="1"
+                  placeholder="0"
+                ></b-form-input>
+                <field-error :msg="veeErrors" field="transactedQuantity" />
+              </b-form-group>
+            </div>
           </div>
           <div class="row">
-            <!--<div>-->
             <div v-if="form.transaction" class="col-sm-4">
               <b-form-group label="Informe o menor preço">
                 <money
@@ -125,7 +123,6 @@
                 <field-error :msg="veeErrors" field="originalMaximumPrice" />
               </b-form-group>
             </div>
-            <!--</div>-->
             <div class="col-sm-4">
               <b-form-group label="Unidade de Medida da Venda">
                 <b-form-select
@@ -137,12 +134,11 @@
               </b-form-group>
             </div>
             <div v-if="!form.transaction" class="col-sm-4">
-              <b-form-group label="Unidade de Medida do Preço">
-                <b-form-select
-                  v-model="form.measurePrice"
-                  :required="!form.transaction"
+              <b-form-group label="Valor Total da Transação">
+                <money
+                  :value="totalTransactionValue"
+                  readonly
                   class="form-control"
-                  :options="medidasPreco"
                 />
               </b-form-group>
             </div>
@@ -212,7 +208,7 @@
                   name="city"
                   @input="loadPracas()"
                 />
-                <field-error :msg="veeErrors" field="city" />
+                <field-error :msg="veeErrors" field="region" />
               </b-form-group>
             </b-col>
           </div>
@@ -235,6 +231,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import Decimal from 'decimal.js'
 import Breadcrumb from '@/components/Breadcrumb'
@@ -249,6 +246,7 @@ import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
 import transacao from '@/data/transacionada.json'
 import regiao from '@/data/regioes-castanheiras.json'
+
 export default {
   components: {
     Breadcrumb,
@@ -272,36 +270,44 @@ export default {
           .tz('America/Sao_Paulo')
           .format('YYYY-MM-DD'),
         buyerPositionBuyer: '',
-        minimumPrice: '',
-        maximumPrice: '',
-        originalMinimumPrice: '',
-        originalMaximumPrice: '',
-        originalPrice: '',
+        buyerPositionSeller: '',
+        minimumPrice: 0,
+        maximumPrice: 0,
+        originalMinimumPrice: 0,
+        originalMaximumPrice: 0,
+        originalPrice: 0,
         currency: '',
         country: '',
         measure: '',
-        measurePrice: '',
         product: '63ff4160ff65e9001b61c6af',
         uf: '',
         city: '',
         transaction: true,
         transactedQuantity: '',
         organization: '',
-        buyerPositionSeller: '',
         square: '',
         squareid: '',
         region: '',
       },
+      organizationsOptions: [],
       products: [],
       messengers: [],
       creating: true,
     }
+  },
+  computed: {
+    totalTransactionValue() {
+      return (this.form.transactedQuantity * this.form.originalPrice).toFixed(2)
+    },
   },
   async created() {
     if (this.isEditing()) {
       await this.edit(this.$route.params.id)
     }
 
+    if (!this.isMessenger) {
+      await this.listOrganizations()
+    }
     await this.loadOrganization()
     await this.preSetDados()
     await this.setMessenger()
@@ -315,6 +321,21 @@ export default {
     this.form.transaction = this.form.transactedQuantity ? false : true
   },
   methods: {
+    async listOrganizations() {
+      try {
+        const organizationsData = await this.$axios.$get('organizations')
+        this.organizationsOptions = [
+          { value: '', text: 'Selecione uma organização' },
+        ].concat(
+          organizationsData.map((organization) => ({
+            value: organization._id,
+            text: organization.name,
+          }))
+        )
+      } catch (error) {
+        console.error('Erro ao carregar organização:', error)
+      }
+    },
     setMessenger() {
       if (this.isAdmin || this.isGlobalManager || this.isManager) {
         this.form.messenger = this.currentUser._id
@@ -326,7 +347,6 @@ export default {
         this.form.currency = this.currentUser.currency
         this.form.country = this.currentUser.country
         this.form.measure = this.currentUser.unitOfMeasurement
-        this.form.measurePrice = this.currentUser.unitOfMeasurement
         this.form.uf = this.currentUser.uf
         this.form.city = this.currentUser.city
         this.form.buyerPositionSeller = this.currentUser.buyerPosition
@@ -371,7 +391,6 @@ export default {
         this.form.currency = selectedMessenger.currency
         this.form.country = selectedMessenger.country
         this.form.measure = selectedMessenger.unitOfMeasurement
-        this.form.measurePrice = selectedMessenger.unitOfMeasurement
         this.form.uf = selectedMessenger.uf
         this.form.city = selectedMessenger.city
         this.form.buyerPositionSeller = selectedMessenger.buyerPosition
@@ -403,16 +422,17 @@ export default {
         if (regiao && regiao.length > 0) {
           this.form.region = regiao[0].regiaoCastanheira
         }
+        else {
+          this.form.region = ''
+        }
       }
     },
     transactedQuantity() {
       const multiplyer = this.getMultiplyer(this.form.measure)
-      const multiplyerPrice = this.getMultiplyer(this.form.measurePrice)
       let min = this.form.originalMinimumPrice
       let max = this.form.originalMaximumPrice
       if (!this.form.transaction) {
-        const finalValue =
-          (this.form.originalPrice * multiplyer) / multiplyerPrice
+        const finalValue = this.form.originalPrice * multiplyer
         this.form.originalMinimumPrice = finalValue
         this.form.originalMaximumPrice = finalValue
       } else {
@@ -447,11 +467,10 @@ export default {
         this.form.organization = dados.organization
         this.form.messenger = dados.messenger
         this.form.transaction = dados.transaction
-        this.form.originalMinimumPrice = dados.originalMinimumPrice
-        this.form.originalMaximumPrice = dados.originalMaximumPrice
-        this.form.transactedQuantity = dados.transactedQuantity
+        this.form.originalMinimumPrice = dados.originalMinimumPrice || 0
+        this.form.originalMaximumPrice = dados.originalMaximumPrice || 0
+        this.form.transactedQuantity = dados.transactedQuantity || 0
         this.form.measure = dados.measure
-        this.form.measurePrice = dados.measurePrice
         this.form.product = dados.product
         this.form.buyerPositionBuyer = dados.buyerPositionBuyer
         this.form.createdAt = dados.createdAt
@@ -460,7 +479,7 @@ export default {
         this.form.currency = dados.currency
         this.form.country = dados.country
         this.form.buyerPositionSeller = dados.buyerPositionSeller
-        this.form.originalPrice = dados.originalPrice
+        this.form.originalPrice = dados.originalPrice || 0
       } catch (e) {
         this.showError(e)
       }
@@ -494,7 +513,7 @@ export default {
             id: 102,
             vmId: this.veeErrors.vmId,
             field: 'originalMaximumPrice',
-            msg: 'o preço máximo tem que ser maior ou igual ao preço mínimo .',
+            msg: 'O preço máximo deve ser maior ou igual ao preço mínimo.',
             rule: 'required',
             scope: null,
           })
@@ -511,9 +530,20 @@ export default {
             })
             isValid = false
           }
-        } else {
+        } 
+        else if (!this.form.region) {
+            this.veeErrors.items.push({
+              id: 104,
+              vmId: this.veeErrors.vmId,
+              field: 'region',
+              msg: 'O município selecionado não faz parte de uma Região Castanheira.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+        }else {
           this.veeErrors.items = this.veeErrors.items.filter(
-            (error) => error.id !== 101 && error.id !== 102 && error.id !== 103
+            (error) => error.id !== 101 && error.id !== 102 && error.id !== 103 && error.id !== 104
           )
         }
 

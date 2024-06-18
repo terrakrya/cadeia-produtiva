@@ -211,8 +211,13 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
     }
 
     const user = await User.findOne(query)
+    if (!user) {
+      return res.status(404).send('Usuário não encontrado')
+    }
 
-    if (user) {
+    if (req.body.password) {
+      user.setPassword(req.body.password)
+    } else {
       user.name = req.body.name || user.name
       user.email = req.body.email || user.email
       user.username = req.body.username || user.username
@@ -230,17 +235,11 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.gender = req.body.gender
       user.identity = req.body.identity
       user.region = req.body.region
-
-      if (req.body.password) {
-        user.setPassword(req.body.password)
-      }
-
-      await user.save()
-
-      return res.send(user)
-    } else {
-      res.status(422).send('Usuário não encontrado')
     }
+
+    await user.save()
+
+    return res.send(user)
   } catch (err) {
     res
       .status(422)

@@ -4,7 +4,7 @@
     <div class="panel">
       <div class="panel-body">
         <loading :loading="is_loading" />
-        <b-tabs>
+        <b-tabs v-model="activeTabKey">
           <b-tab title="Meu perfil">
             <b-form v-if="!is_loading" @submit.prevent="save">
               <h4 class="mb-4">Complete seu perfil</h4>
@@ -13,7 +13,7 @@
                   <b-form-group label="Nome Completo *">
                     <b-form-input
                       v-model="form.name"
-                      v-validate="'required'"
+                      v-validate="getValidationRules('name')"
                       placeholder="Insira o seu nome completo"
                       name="name"
                     />
@@ -25,7 +25,7 @@
                     <b-form-input
                       v-model="form.birthDate"
                       v-mask="'##/##/####'"
-                      v-validate="'required|min:10'"
+                      v-validate="getValidationRules('birthDate')"
                       placeholder="Insira sua data de nascimento"
                       name="birthDate"
                     />
@@ -75,7 +75,7 @@
                     <b-form-input
                       v-model="form.cellphone"
                       v-mask="['(##) ####-####', '(##) #####-####']"
-                      v-validate="'required|min:14'"
+                      v-validate="getValidationRules('cellphone')"
                       placeholder="Insira seu número de celular"
                       name="cellphone"
                     />
@@ -86,7 +86,7 @@
                     <b-form-input
                       v-model="form.cpf"
                       v-mask="['###.###.###-##']"
-                      v-validate="'required|min:14'"
+                      v-validate="getValidationRules('cpf')"
                       placeholder="Insira seu CPF"
                       name="cpf"
                     />
@@ -98,7 +98,7 @@
                   <b-form-group label="Posição na cadeia de valor *">
                     <b-form-select
                       v-model="form.buyerPosition"
-                      v-validate="'required'"
+                      v-validate="getValidationRules('buyerPosition')"
                       class="form-control"
                       name="buyerPosition"
                       :options="buyerPositions"
@@ -110,7 +110,7 @@
                   <b-form-group label="País *">
                     <b-form-select
                       v-model="form.country"
-                      v-validate="'required'"
+                      v-validate="getValidationRules('country')"
                       class="form-control"
                       :options="pais"
                       name="country"
@@ -122,7 +122,7 @@
                   <b-form-group label="Estado de Atuação *">
                     <b-form-select
                       v-model="form.uf"
-                      v-validate="'required'"
+                      v-validate="getValidationRules('uf')"
                       class="form-control"
                       :options="estados.map((e) => e.uf)"
                       name="uf"
@@ -135,7 +135,7 @@
                   <b-form-group label="Município de Referência *">
                     <b-form-select
                       v-model="form.city"
-                      v-validate="'required'"
+                      v-validate="getValidationRules('city')"
                       class="form-control"
                       :options="cidades"
                       name="city"
@@ -162,7 +162,7 @@
                   <b-form-group label="Unidade de medida mais comum *">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
-                      v-validate="'required'"
+                      v-validate="getValidationRules('unitOfMeasurement')"
                       class="form-control"
                       name="unitOfMeasurement"
                       :options="tipoDeUnidade"
@@ -174,7 +174,7 @@
                   <b-form-group label="Moeda *">
                     <b-form-select
                       v-model="form.currency"
-                      v-validate="'required'"
+                      v-validate="getValidationRules('currency')"
                       false-value="Real"
                       class="form-control"
                       :options="moeda"
@@ -239,6 +239,7 @@ export default {
   },
   data() {
     return {
+      activeTabKey: 0,
       identidade,
       genero,
       tipoDeUnidade,
@@ -302,6 +303,24 @@ export default {
 
       this.form.region = regionName
     },
+    getValidationRules(fieldName) {
+      if (this.activeTabKey !== 0) {
+        return ''
+      }
+
+      const staticRules = {
+        birthDate: 'min:10',
+        cellphone: 'min:14',
+        cpf: 'min:14',
+      }
+
+      const rules = ['required']
+      if (staticRules[fieldName]) {
+        rules.push(staticRules[fieldName])
+      }
+
+      return rules.join('|')
+    },
     async edit(id) {
       this.is_loading = true
       try {
@@ -358,7 +377,7 @@ export default {
     save() {
       this.$validator.validate().then(async (isValid) => {
         // valida a email
-        if (this.form.email) {
+        if (this.form.email && this.activeTabKey === 0) {
           const id = this.isEditing() ? this.$route.params.id : null
 
           // formato do email

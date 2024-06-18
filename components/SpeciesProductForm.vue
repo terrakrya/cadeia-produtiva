@@ -22,13 +22,11 @@
             </div>
             <div class="col-sm-6">
               <b-form-group label="Espécie *">
-                <form-entity-select
+                <b-form-select
                   v-model="form.specie"
-                  v-validate="'required'"
-                  type="species"
-                  name="specie"
+                  class="form-control"
+                  :options="speciesOptions"
                 />
-                <field-error :msg="veeErrors" field="specie" />
               </b-form-group>
             </div>
           </div>
@@ -102,11 +100,9 @@ import tipo from '@/data/tipos-especie_produto.json'
 import grupo from '@/data/grupo.json'
 import industrialized from '@/data/subgrupo.json'
 import classe from '@/data/classe.json'
-import FormEntitySelect from '@/components/FormEntitySelect'
 export default {
   components: {
     Breadcrumb,
-    FormEntitySelect,
     Upload,
   },
   data() {
@@ -115,6 +111,7 @@ export default {
       grupo,
       industrialized,
       classe,
+      speciesOptions: [],
       form: {
         name: '',
         description: '',
@@ -127,12 +124,28 @@ export default {
       },
     }
   },
-  created() {
+  async created() {
     if (this.isEditing()) {
       this.edit(this.$route.params.id)
     }
+    await this.list()
   },
   methods: {
+    async list() {
+      try {
+        const speciesData = await this.$axios.$get('species')
+        this.speciesOptions = [
+          { value: '', text: 'Selecione uma espécie'},
+        ].concat(
+          speciesData.map((specie) => ({
+            value: specie._id,
+            text: specie.popularName,
+          }))
+        )
+      } catch (error) {
+        console.error('Erro ao carregar espécies:', error)
+      }
+    },
     edit(id) {
       this.is_loading = true
       this.$axios
