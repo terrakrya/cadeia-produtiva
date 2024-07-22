@@ -1,0 +1,895 @@
+/* stylelint-disablfffe */
+@import "vue-select/src/scss/vue-select.scss"
+@import "leaflet/dist/leaflet.css"
+
+$brown1: #852E27
+$brown2: #f1f1e9
+$brown3: #fff
+$brown4: #b2e7d8
+$orange: #93312A
+$red: #dc3545
+$gray1: #333
+$gray2: #f1f1e9
+$gray4: #ccc
+$gray5: #f1f1e9
+$gray6: #f2f2f2
+$gray7: #818181
+$white: #ffffff
+
+body
+  overscroll-behavior-y: none
+  background-color: $brown3
+
+#wrapper
+  padding-bottom: 100px
+  padding-top: 80px
+
+.text-primary
+  color: $orange !important
+.panel
+  min-height: calc(100vh - 200px)
+.margem-botao-texto-imagem
+  margin-right: 1em
+
+.numero-a-direita, .texto-a-direita
+  text-align: right !important
+
+.texto-a-esquerda
+  text-align: left !important
+
+.alinha-a-direita
+  float: right
+
+.area-logo-rede
+  text-align: center
+
+.logo-rede
+  height: 10em
+  margin: 2em
+
+.btn-user
+  background-color: white
+  border: none
+  border-radius: 20px
+  padding: 10px 20px
+
+.btn-user-text
+  text-transform: uppercase
+  font-size: 14px
+  font-weight: 700
+  letter-spacing: 0.05em
+  text-align: center
+  color: #641610
+  opacity: 70%
+
+.btn-change-password
+  padding: 10px
+  margin: 13px
+  width: 100%
+  background-color: $orange
+  color: $white
+  text-align: center
+  border-radius: 50px
+  font-size: 18px
+  cursor: pointer
+
+.button-transaction
+  align-self: center
+  margin: 5px
+
+.form-title
+  color: $brown1
+  margin-bottom: 5px
+  margin-top: 25px
+  font-weight: 700
+
+.form-subtitle
+  font-size: 16px
+  font-weight: 500
+  margin-bottom: 0px
+  opacity: 80%
+
+.title-buttons-form
+  margin-bottom: -15px
+
+.custom-select
+  background-color: #64161019 !important
+  color: #93312A
+
+a, a:hover, a:active, a:focus, a:visited
+  text-decoration: none
+  cursor: pointer
+  color: $orange
+
+.b-table tr > .td-lata
+  padding-left:20px
+
+th.actions, td.actions
+  width: auto
+  text-align: center
+  .fa
+    margin-bottom: 5px
+
+.price-label
+  font-size: 14px
+  font-weight: 700
+  line-height: 36px
+  letter-spacing: 0.05em
+  margin-left: 5px
+  text-transform: uppercase
+
+.price-value
+  font-size: 22px
+  font-weight: 700
+  line-height: 12px
+  letter-spacing: 1px
+
+.price-measure
+  display: none
+  font-size: 16px
+  text-transform: uppercase
+
+.measure-row
+  font-size: 14px
+
+@media (min-width: 480px)
+  .price-measure
+    display: inline-flex
+
+  .measure-row
+    display: none
+
+.price-summary-box
+  display: flex
+  flex-direction: row
+  align-items: center
+  background-color: white
+  border-radius: 20px
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1)
+  margin: auto
+  width: 100%
+  padding: 10px
+  overflow: hidden
+
+.date-box-wrapper
+  flex: 0 1 25%
+  background-color: #F9F9FB
+  border-radius: 20px
+  display: flex
+  justify-content: center
+  align-items: center
+  padding: 5px
+  font-size: 0.8rem
+  height: -webkit-fill-available
+  flex-direction: column
+  gap: 10px
+
+.date-box
+  font-size: 16px
+  font-weight: 700
+
+.prices-container
+  flex: 0 1 70%
+  display: flex
+  flex-direction: column
+  justify-content: space-around
+  padding-left: 5px
+  overflow: hidden
+
+.price-row
+  display: flex
+  justify-content: space-between
+  align-items: center
+  font-size: 0.8rem
+
+.prices-container hr
+  margin: 2px 0
+  border: none
+  height: 1px
+  background-color: #e0e0e0
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary:visited
+  background-color: $orange !important
+  border-color: $orange
+  color: $gray5
+  border-radius: 50px
+
+.btn-secondary, .btn-secondary:hover, .btn-secondary:active, .btn-secondary:focus, .btn-secondary:visited
+  color: $brown1
+  background-color: $gray2
+  border-color: $gray2
+  border-radius: 50px
+
+.btn-panel, .btn-panel:hover, .btn-panel:active, .btn-panel:focus, .btn-panel:visited
+  color: $brown1
+  background-color: $white
+  border-color: #ededed
+  border-radius: 50px
+  height: 44px
+  width: 100%
+  font-weight: 700
+  font-size: 18px
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1)
+  text-align: center
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 0
+  letter-spacing: 0.5px
+
+.btn-bottom, .btn-bottom:hover, .btn-bottom:active, .btn-bottom:focus, .btn-bottom:visited
+  color: $gray7
+
+.btn-form
+  color: $brown1
+  background-color: $white
+  border-color: $white
+  border-radius: 99px
+  width: 135px
+  height: 44px
+  font-weight: 700
+  font-size: 13px
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.05)
+.btn-default
+  background-color: transparent !important
+  color: $gray1 !important
+  border-color: $gray1
+.btn-white
+  background-color: #fff !important
+  color: $orange
+  border-color: #fff
+
+.selected-button
+  background-color: $brown1 !important
+  color: white !important
+
+.explanatory-text
+  font-size: 13px
+  margin: 1rem 0
+
+.badge
+  color: $brown1 !important
+.bg-brown-1
+  background-color: $brown1
+.bg-brown-3
+  background-color: $brown3
+.bg-brown-2
+  background-color: $brown2 !important
+.bg-gray
+  background-color: $gray5 !important
+.bg-gray-1
+  background-color: $gray6 !important
+
+.red
+  color: $red !important
+
+.text-gray
+  color: $brown2
+
+.price-info
+  background-color: #fff
+  border: 1px solid rgba(0, 0, 0, 0.1)
+  color: #000
+  border-radius: 16px
+  font-weight: bold
+  text-align: center
+  padding: 10px
+  width: 100%
+  margin-bottom: 8px
+
+.square-summary
+  border-radius: 16px
+  box-shadow: 0px 1px 4px 0 rgba(0, 0, 0, 0.5)
+  font-weight: bold
+  background-color: #fff
+
+
+.nuxt-link-exact-active
+  font-weight: bold
+
+.full-height
+  min-height: 100vh
+// .card
+//   background-color: transparent !important
+.navbar
+  background-color: $brown1
+  // box-shadow: 1px 2px 3px rgba(0,0,0,.1)
+  position: fixed
+  top: 0
+  width: 100%
+  z-index: 1001
+  .logo
+    max-width: 50px
+    // margin-right: 5px
+
+  .navbar-toggler
+    color: #fff
+    border-color: #fff
+    .navbar-toggler-icon
+      color: #fff
+
+.bottom-navbar
+    position: fixed
+    bottom: 0
+    left: 0
+    width: 100%
+    background-color: white
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1)
+    padding: 10px 0
+    z-index: 1000
+    display: flex
+    justify-content: space-around
+    align-items: center
+    border-radius: 20px 20px 0 0
+
+.nav-button
+  display: flex
+  flex-direction: column
+  align-items: center
+  padding: 10px  // Adjust padding as needed
+  border: none  // Optionally remove border
+  background: transparent  // Optionally make background transparent
+
+.button-content
+  display: flex
+  flex-direction: column
+  align-items: center
+
+.nav-icon
+  // Add any specific styles for the icon here (e.g., size, color)
+
+.nav-text
+  // Add any specific styles for the text here (e.g., font size, color)
+  margin-top: 5px  // Adjust space between icon and text
+
+
+.sidebar-wrapper
+  flex-basis: 400px
+  min-height: calc(100vh - 72px)
+.sidebar
+  border-radius: 0
+  color: $gray5
+  font-size: 16px
+  padding-top: 16px
+  overflow-y: auto
+  max-height: 80vh
+
+  a
+    color: #fff !important
+  .fa, .fas, .far
+    margin-right: 10px
+  .fa-chevron-down
+    margin-left: 5px
+  .bi-chevron-down
+    margin-left: 10px
+  .nav-item a
+    padding: 20px
+    // padding-left: 0
+  .list-group-item
+    background: $brown1
+    border: 0
+    padding: 0
+
+.breadcrumb
+  color: $orange
+  background-color: $gray5
+  padding: 20px
+  border-radius: 0
+  & > li + li:before
+    padding: 0 5px
+    color: $gray4
+    content: "\A0/\A0"
+  a
+    color: $orange
+
+.table
+  th, td
+    font-size: 13px !important
+  > thead > tr > th
+    border: 0
+  tr.total
+    td
+      font-weight: bold
+  .item-spacer
+    height: 1em
+    border: none
+
+  .item-edited-top
+    margin-top: 15px
+    border-width: 2px 2px 0 2px
+    border-style: solid
+    border-color: $orange
+    background-color: #fdfdfd
+
+  .item-edited-middle
+    border-width: 0 2px 0 2px
+    border-style: solid
+    border-color: $orange
+    background-color: #fdfdfd
+  &.description-table
+    td, th
+      border-top: none
+      border-bottom: none
+    td
+      font-size: 14px
+    a
+      color: $gray1
+
+  .item-edited-bottom
+    border-width: 0 2px 2px 2px
+    border-style: solid
+    border-color: $orange
+    background-color: #fdfdfd
+  &.description-table
+    td, th
+      border-top: none
+      border-bottom: 1px solid $gray4
+    td
+      font-size: 14px
+    a
+      color: $gray1
+.b-table
+  thead
+    background-color: $gray2
+  tr
+    &.b-table-bottom-row
+      background-color: $gray2 !important
+      color: $brown1
+      font-weight: bold
+    th
+      background-color: $gray2
+      color: $brown1
+    > td, > th
+      vertical-align: middle !important
+      font-size: 15px
+      input
+        font-size: 15px
+      &:last-child
+        @media (min-width: 768px)
+          text-align: right !important
+  a:not(.btn)
+    display: block
+    cursor: pointer
+    &:not([class*="text-"])
+      color: $gray1
+    small
+      color: $gray1
+  @media (max-width: 768px)
+    tfoot, .b-table-bottom-row
+      display: block !important
+      td
+        text-align: center !important
+.panel
+  h1
+    color: $gray1
+    font-size: 30px
+    margin: auto
+  .panel-body
+    padding: 0 20px 20px 20px
+  .tab-content
+    padding-top: 0
+  .nav-tabs
+    // border-bottom: 1px solid $gray5
+    > li
+      margin-right: 1px
+      > a
+        margin-right: 0
+        background: $gray2
+        color: $brown1
+        border-radius: 50px
+        &:hover
+          border: 1px solid transparent
+        &.active
+          background: $orange
+          color: #fff
+          font-weight: bold
+          border: 1px solid transparent
+          border-radius: 50px
+        &:hover
+          // color: $gray1
+  .tab-pane
+    padding: 15px 0
+  .tab-content, .info-content
+    margin-top: 30px
+  .tab-content th i, .info-content th i
+    color: $orange
+  .tab-content td .specie img, .info-content td .specie img
+    height: 20px
+    margin-right: 20px
+  .tab-content td .group-pic img, .info-content td .group-pic img
+    height: 60px
+    margin-right: 20px
+  .main-actions
+    text-align: right
+    .btn
+      margin-bottom: 5px
+  .nav-tabs
+    border-bottom: 1px solid $gray5
+    font-size: 16px
+.input-file
+  font-size: 14px
+.modal-backdrop
+  opacity: 0.9
+.modal-content
+  border-radius: 6px
+  .close
+    color: $brown1
+  .modal-header
+    background-color: $gray2
+    .modal-title
+      text-transform: uppercase
+      font-weight: 400
+      color: $brown1
+      float: left
+.modal-body
+  .breadcrumb
+    margin: -16px
+    margin-bottom: 25px
+    border-top-left-radius: 5px
+    border-top-right-radius: 5px
+.modal-alert p
+  font-weight: 600
+  text-align: center
+  font-size: 18px
+  color: $gray1
+  margin: 50px auto
+
+.modal
+  img
+    border-radius: 4px
+  .panel
+    margin: 0
+    box-shadow: none
+    .panel-body
+      padding: 0
+
+.modal-title
+  text-transform: uppercase
+  font-weight: 400
+  color: $gray1
+  float: left
+
+.modal-alert p
+  font-weight: 600
+  text-align: center
+  font-size: 18px
+  color: $gray1
+  margin: 50px auto
+
+.modal
+  img
+    border-radius: 4px
+  .panel
+    margin: 0
+    box-shadow: none
+    .panel-body
+      padding: 0
+
+.modal-open .modal
+  opacity: 1
+  .modal-content
+    top: 30px
+  &.fade
+    .modal-dialog
+      transform: none
+
+.item-title
+  span:not(.badge)
+    margin-left: 10px
+    &:first-child
+      margin-left: 0
+      margin-right: 10px
+  .badge
+    margin-right: 5px
+    font-size: 14px
+  .btn i
+    margin-right: 5px
+  .item-img
+    max-width: 100%
+    border-radius: 2%
+    display: block
+    float: left
+    margin-right: 25px
+    box-shadow: 0px 1px 2px 0 rgba(0, 0, 0, 0.2)
+  h1
+    margin-bottom: 10px
+    margin-top: 10px
+  p
+    font-style: italic
+    font-size: 15px
+
+.form-group
+  margin-bottom: 30px
+
+form
+  legend
+    color: $brown1
+    border: 0
+    font-weight: bold
+    font-size: 14px
+  .custom-control-label
+    font-weight: normal
+    padding-left: 10px
+    cursor: pointer
+  .custom-checkbox, .custom-radio
+    display: inline-block
+    width: 200px
+    cursor: pointer
+    label
+      font-weight: normal
+      cursor: pointer
+      display: inline
+  .form-control
+    font-size: 16px
+    font-weight: 500
+    border-radius: 20px
+    letter-spacing: -0.2px
+    text-transform: uppercase
+    height: 45px
+    padding-left: 15px
+    border-width: 2px
+    border-color: $brown1
+    background-color: $gray6
+
+  .btn-primary
+    background: $orange
+    border-color: $orange
+  .text-danger
+    display: block
+
+.images_preview
+  img
+    width: 100%
+
+.ecosystem, .fruiting_season
+  .badge
+    font-size: 14px
+    margin-right: 2px
+    margin-top: 5px
+    padding: 7px
+  .forest
+    background: #2bb110
+  .thick
+    background: #eead2d
+  .swamp
+    background: #006400
+
+.search-input
+  background: url("~assets/img/search.png") no-repeat scroll 4px 7px
+  background-size: 24px
+  padding-left: 35px
+  border-radius: 90px
+
+.years-filter
+  max-width: 100px
+  float: right
+  font-weight: bold
+  margin-bottom: 15px
+
+.v-select
+  margin-bottom: 10px
+.vs__dropdown-menu, .vs__selected
+  .select-item
+    display: flex
+    align-items: center
+    img
+      float: left
+      max-width: 40px
+      margin-right: 10px
+    .desc
+      float: left
+.list-group-item
+  .fa-pencil
+    width: 30px
+    text-align: right
+    height: 30px
+    margin-top: -10px
+    padding-top: 12px
+    font-size: 20px
+    cursor: pointer
+    padding-bottom: 30px
+  > a
+    color: $gray1
+    display: block
+.list-group
+  margin-bottom: 20px
+  table
+    tr
+      td
+        padding-top: 0
+        padding-bottom: 0
+        // margin: 0
+        border: none
+.list-group-item.active, .list-group-item.active:focus, .list-group-item.active:hover
+  background-color: $orange
+  border-color: $orange
+
+.weight
+  width: 100px !important
+  display: inline
+
+.seeds-select, .stock-items
+  input.weight
+    width: calc(100% - 172px) !important
+    height: 34px
+  .col-sm-6
+    border: none
+.seeds-select
+  .col-sm-6
+    padding-left: 0
+.stock-items
+  .btn
+    margin-top: 40px
+.inline
+  display: inline !important
+.stock, .requests
+  table
+    font-size: 15px
+    a
+      &:not([class*="text-"]):not(.btn)
+        color: $gray1
+  .stock_in
+    color: green
+  .stock_out
+    color: red
+
+.filters
+  legend
+    font-size: 16px
+    border-bottom: 0
+    margin-bottom: 5px
+  .row
+    margin-right: -5px
+    margin-left: -5px
+    div
+      &[class*="col-sm-"]
+        padding-left: 5px
+        padding-right: 5px
+    input:not(.vs__search), select
+      width: 100%
+      font-weight: bold
+      font-size: 14px
+      &::placeholder
+        color: $gray2
+        opacity: 1
+        font-weight: normal
+    .from_to
+      input
+        width: calc(50% - 50px)
+        display: inline-block
+    .filter-entity-select
+      .IZ-select
+        margin-bottom: 10px
+        float: left
+        width: calc(100%)
+      i
+        background-color: $brown1
+        cursor: pointer
+        width: 18px
+        height: 20px
+        text-align: center
+        margin-left: -22px
+        margin-top: 9px
+
+.fade.active
+  opacity: 1
+
+.date_time
+  .date
+    width: 60% !important
+    float: left
+    margin-right: 5px
+  input.time
+    width: calc(40% - 6px) !important
+    float: left
+    margin-right: 1px
+
+.weekly-summary
+  a
+    color: $gray1
+  .number
+    font-size: 26px
+    font-weight: 400
+.nav-buttons
+  padding: 30px 0
+  a
+    margin: 5px
+
+.receipt
+  .heading, .details
+    td
+      font-size: 13px
+      line-height: 16px
+  .total
+    font-weight: bold
+  .signature
+    border-top: 1px solid $gray1
+    max-width: 300px
+    margin: auto
+    margin-top: 80px
+    text-align: center
+    padding-top: 10px
+    p
+      margin-bottom: 0
+.vue-notification-group, .vue-notification, .notification-content
+  font-size: 18px
+  font-weight: bold
+
+.floating-button
+  position: fixed !important
+  right: 15px
+  bottom: 15px
+
+@media (max-width: 992px)
+  .years-filter
+    max-width: 100%
+    float: none
+    margin-bottom: 20px
+  .resume-table
+    width: calc(100% + 54px)
+    margin: 0 -27px
+
+@media (max-width: 768px)
+  .search-input
+    margin-top: 15px
+  .list-group-item
+    div
+      &[class*="col-sm-"], &[class*="col-xs-"]
+        &:not(:first-child)
+          border-left: 0
+          border-top: 1px solid $gray5
+  .seeds-select
+    .col-sm-6
+      margin-top: 10px
+      padding-left: 15px
+
+  .tab-content
+    .row.search input
+      position: static
+      right: 0
+      margin-top: 0
+      margin-bottom: 15px
+  .filters .row div[class*="col-sm-"]
+    clear: both
+
+  .b-table-bottom-row
+    display: block !important
+    text-align: center
+    > th, > td
+      display: block
+    td:empty
+      display: none !important
+
+@media (max-width: 576px)
+  .panel
+    .main-actions
+      margin-top: 15px
+      text-align: left
+    .tab-content
+      padding-top: 0
+
+.button-transaction
+  display: flex
+  flex-direction: row
+  justify-content: center
+  align-items: center
+  margin: 0 auto
+
+@media print
+  .sidebar-wrapper, .breadcrumb, .main-actions
+    display: none !important
+  .main
+    width: 100%
+    .main-content, .container-fluid
+      padding: 0
+    .panel-body, .info-content
+      padding-top: 0
+
+@media (min-width: 576px) and (max-width: 1806px)
+  .col-sm-3, .col-sm-5
+    max-width: 35%
+  .col-sm-9
+    margin-right:5.9rem
+  form
+    legend
+      white-space: nowrap

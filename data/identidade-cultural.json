@@ -1,0 +1,30 @@
+[
+    {
+        "text": "Selecione uma identidade",
+        "value": ""
+    },
+    {
+        "text": "Indígena",
+        "value": "indígena"
+    },
+    {
+        "text": "Quilombola",
+        "value": "quilombola "
+    },
+    {
+        "text": "Povos e comunidades tradicionais ",
+        "value": "povos e comunidades tradicionais "
+    },
+    {
+        "text": "Agricultor extrativista",
+        "value": "agricultor extrativista"
+    },
+    {
+        "text": "Assentado da reforma agrária",
+        "value": "assentado da reforma agrária"
+    },
+    {
+        "text": "Outros",
+        "value": "outros"
+    }
+]

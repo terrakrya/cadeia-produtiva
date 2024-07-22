@@ -1,0 +1,857 @@
+[
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Barreiro"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Canary"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Chico Mendes"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Equador"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Limoeiro"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Porto Dias"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Porto Rico"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Remanso"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Santa Quitéria"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Cazumbá/Iracema"
+	},
+	{
+		"estado": "Acre",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Chico Mendes"
+	},
+	{
+		"estado": "Amapá",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Maracá"
+	},
+	{
+		"estado": "Amapá",
+		"tipo": "Unidade de Conservação",
+		"nome": "RDS do Rio Iratapuru"
+	},
+	{
+		"estado": "Amapá",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Cajari"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Apurinã km-124"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Ariramba"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Caititu"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Camicuã"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Diahui"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Évare I"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Évare II"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Itxi Mitare"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Kaxarari"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Lago Capanã"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Nhamunda-Mapuera"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Nove de Janeiro"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Paumari"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Pinaatuba"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Pirarã"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Tenharim do Igarapé Preto"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Tenharim/Marmelos"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Terra Indígena",
+		"nome": "TI Torá"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLONA Balata-Tufari"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLONA Humaitá"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLONA Mapiá-Inauini"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLONA Tefé"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "PARNA do Jaú"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RDS Amanã"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RDS Bararati"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RDS Piagaçu-Purus"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RDS Rio Amapá"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RDS Rio Madeira"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Rio Unini"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Arapixi"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Auati-Paraná"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Canutama"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Baixo Rio Branco-Jauaperi"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX do Rio Unini"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Ituxi"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Lago do Capanã Grande"
+	},
+	{
+		"estado": "Amazonas",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Médio Purus"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Unidade de Conservação",
+		"nome": "PA Juruena"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Unidade de Conservação",
+		"nome": "PA Vale do Amanhecer"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "PI Aripuanã"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "PI do Xingu"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Apiaká-Kayabi"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Arara do Rio Branco"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Aripuanã"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Batovi"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Erikpatsa"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Capoto/Jarina"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Escondido"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Japuíra"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Kawahiva do Rio Pardo"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Paraná"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Roosevelt"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Serra Morena"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Sete de Setembro"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Terra Indígena",
+		"nome": "TI Zoró"
+	},
+	{
+		"estado": "Mato Grosso",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Guariba-Roosevelt"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Camburão II"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Casarão"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Curumu"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Fortaleza"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Grotão do Severino"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA João Vaz"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Lago Azul"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Miriti"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Novo Horizonte"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PA Tocantins"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PAE Praia Alta Piranheira"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Projeto de Assentamento",
+		"nome": "PDS Paraíso"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Apyteréwa"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Arara"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Baú"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Cachoeira Seca"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Curuaia"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Kaxuyana-Tunayana"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Kayapó"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Las Casas"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Mãe Maria"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Mekrãgnotire"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Sororó"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Trincheira/Bacajá"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Trombetas Mapuera"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Xikrin do Cateté"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Terra Indígena",
+		"nome": "TI Xipaya"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Território Quilombola",
+		"nome": "TQ Abacatal"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Território Quilombola",
+		"nome": "TQ Alto Trombetas I"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Território Quilombola",
+		"nome": "TQ Alto Trombetas II"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Território Quilombola",
+		"nome": "TQ Erepecuru"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Território Quilombola",
+		"nome": "TQ Trombetas"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "EE do Jarí"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "EE Terra do Meio"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLONA Saraquá-Taquera"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLOTA do Parú"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLOTA Trombetas"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "REBIO Trombetas"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Arioca-Pruanã"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX do Rio Xingu"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Ipaú-Anilzinho"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Iriri"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Mapuá"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Rio Iriri"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Riozinho do Anfrísio"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Tapajós-Arapiuns"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Terra do Meio"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Verde para Sempre"
+	},
+	{
+		"estado": "Pará",
+		"tipo": "Unidade de Conservação",
+		"nome": "RVS Metrópole da Amazônia"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Aripunã"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Igarapé Laje"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Igarapé Lourdes"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Igarapé Ribeirão"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Karitiana"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Kaxarari"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Pacaá-Novas"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Rio Branco"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Rio Guaporé"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Rio Negro Ocaia"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Roosevelt"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Sagarana"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Serra Morena"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Sete de Setembro"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Uru-Eu-Wau-Wau"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Jacamim"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Trombeta-Mapuera"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Wai Wai"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Terra Indígena",
+		"nome": "TI Yanomami"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Território Quilombola",
+		"nome": "TQ Forte Principe da Beira"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Território Quilombola",
+		"nome": "TQ Pedras Negras"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "ESEC de Cuniã"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLONA de Jacundá"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "FLONA do Jamari"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "PARNA Serra da Cutia"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX  Maçaranduba"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX  Mogno"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Angelim"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Aquariquara"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Barreiro das Antas"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Castanheira"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Cedro"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Freijó"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Garrote"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Ipê"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Itauba"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Jatobá"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Lago do Cuniã"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Maracatiara"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Massaranduba"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Mogno"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Ouro Preto"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Pacaás Novos"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Pedras Negras"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Piquiá"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Rio Cautário"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Rio Cautário (estadual)"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Rio Ouro Preto"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Rio Preto-Jacundá"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Roxinho"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Seringueira"
+	},
+	{
+		"estado": "Rondônia",
+		"tipo": "Unidade de Conservação",
+		"nome": "RESEX Sucupira"
+	}
+]

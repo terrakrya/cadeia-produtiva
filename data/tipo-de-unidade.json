@@ -1,0 +1,35 @@
+[
+	{
+		"text": "Selecione a medida",
+		"value": ""
+	},
+	{
+		"text": "Kg",
+		"value": "Kg"
+	},
+	{
+		"text": "Lata ",
+		"value": "Lata"
+	},
+	{
+		"text": "Caixa (2 Latas)",
+		"value": "Caixa"
+	},
+	{
+		"text": "Saca (4 Latas)",
+		"value": "Saca"
+	},
+
+	{
+		"text": "Hectolitro (5 Latas)",
+		"value": "Hectolitro"
+	},
+	{
+		"text": "Barrica (6 Latas)",
+		"value": "Barrica"
+	},
+	{
+		"text": "Tonelada",
+		"value": "Tonelada"
+	}
+]

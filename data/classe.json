@@ -1,0 +1,38 @@
+[
+	{
+		"text": "Selecione o tamanho",
+		"value": ""
+	},
+	{
+		"text": "Extra grande",
+		"value": "Extra grande"
+	},
+	{
+		"text": "Grande",
+		"value": "Grande"
+	},
+	{
+		"text": "Média",
+		"value": "Média"
+	},
+	{
+		"text": "Pequena (miúda)",
+		"value": "Pequena (miúda)"
+	},
+	{
+		"text": "Tyne (Miudinha)",
+		"value": "Tyne (Miudinha)"
+	},
+	{
+		"text": "Ferida ou ponta quebrada (chipped)",
+		"value": "Ferida ou ponta quebrada (chipped)"
+	},
+	{
+		"text": "Quebrada (broked)",
+		"value": "Quebrada (broked)"
+	},
+	{
+		"text": "Granulada",
+		"value": "Granulada"
+	}
+]

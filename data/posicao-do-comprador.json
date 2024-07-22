@@ -1,0 +1,50 @@
+[
+	{
+		"text": "Selecione a posição",
+		"value": ""
+	},
+	{
+		"text": "Coletores",
+		"value": "Coletores"
+	},
+	{
+		"text": "Associação (não beneficia)",
+		"value": "Associação (não beneficia)"
+	},
+	{
+		"text": "Cooperativa (não beneficia)",
+		"value": "Cooperativa (não beneficia)"
+	},
+	{
+		"text": "Intermediários (atravessadores)",
+		"value": "Intermediários (atravessadores)"
+	},
+	{
+		"text": "Usina de beneficiamento comunitária",
+		"value": "Usina de beneficiamento comunitária"
+	},
+	{
+		"text": "Usina de beneficiamento privada (empresarial)",
+		"value": "Usina de beneficiamento privada (empresarial)"
+	},
+	{
+		"text": "Indústria de transformação",
+		"value": "Indústria de transformação"
+	},
+	{
+		"text": "Atacadista",
+		"value": "Atacadista"
+	},
+	{
+		"text": "Varejista",
+		"value": "Varejista"
+	},
+	{
+		"text": "Compra pública (PAA, PNAE, etc.)",
+		"value": "Compra pública (PAA, PNAE, etc.)"
+	},
+	{
+		"text": "Consumidor final",
+		"value": "Consumidor final"
+	}
+]

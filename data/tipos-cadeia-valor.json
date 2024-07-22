@@ -1,0 +1,54 @@
+[
+	{
+		"text": "Selecione a cadeia",
+		"value": ""
+	},
+	{
+		"text": "Produção ( extrativismo ) ",
+		"value": "produção ( extrativismo ) "
+	},
+	{
+		"text": "Comercialização atacadista ",
+		"value": "comercialização atacadista "
+	},
+	{
+		"text": "Comercialização varejista",
+		"value": "comercialização varejista"
+	},
+	{
+		"text": "Logística transporte ",
+		"value": "Logística transporte "
+	},
+	{
+		"text": "Industrialização",
+		"value": "Industrialização"
+	},
+	{
+		"text": "Beneficiamento",
+		"value": "Beneficiamento"
+	},
+	{
+		"text": "Transformação",
+		"value": "Transformação"
+	},
+	{
+		"text": "Armazenamento",
+		"value": "Armazenamento"
+	},
+	{
+		"text": "Assistência técnica",
+		"value": "Assistência técnica"
+	},
+	{
+		"text": "Distribuição",
+		"value": "Distribuição"
+	},
+	{
+		"text": "Consumo",
+		"value": "Consumo"
+	},
+	{
+		"text": "Outro",
+		"value": "Outro"
+	}
+]

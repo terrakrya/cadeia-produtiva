@@ -1,0 +1,41 @@
+[   {
+	    "text": "Selecione o tipo",
+	    "value": ""
+    },
+	{
+	  "text": "Associação",
+	  "value": "Associação"
+    },
+	{
+		"text": "Atravessadores",
+		"value": "Atravessadores"
+	},
+	{
+		"text": "Coletores ",
+		"value": "Coletores "
+	},
+	{
+		"text": "Consumidor final ",
+		"value": "Consumidor final "
+	},
+	{
+		"text": "Cooperativa ",
+		"value": "Cooperativa "
+	},
+	{
+		"text": "Distribuidores ",
+		"value": "Distribuidores "
+	},
+	{
+		"text": "Indústria de processamento ",
+		"value": "Indústria de processamento "
+	},
+	{
+		"text": "Revendedores ",
+		"value": "Revendedores "
+	},
+	{
+		"text": "Usinas ",
+		"value": "Usinas "
+	}
+]
