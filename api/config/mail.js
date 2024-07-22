@@ -1,11 +1,11 @@
 const nodemailer = require('nodemailer')
 
 const mailConfig = {
-  host: 'mail.privateemail.com',
-  port: 587,
-  authUser: 'suporte@terrakrya.com',
-  authPass: 'pr]))-6[*iUv',
-  fromMail: 'suporte@terrakrya.com'
+  host: process.env.SMTP_HOST,
+  port: process.env.SMTP_PORT,
+  authUser: process.env.SMTP_USER,
+  authPass: process.env.SMTP_PASS,
+  fromMail: process.env.SMTP_FROM
 }
 
 const transporter = nodemailer.createTransport({
