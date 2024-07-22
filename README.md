@@ -39,3 +39,8 @@ $ yarn sync_dev
 **IMPORTANT:** you must have MongoDB database tools directory specified in your host path, because "sync_dev" script uses "mongorestore" command line tool without specifying the path (the correct behavior).
 
 For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).
+
+## Licença
+
+Este projeto está licenciado sob a [GNU Affero General Public License v3.0](LICENSE) - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
