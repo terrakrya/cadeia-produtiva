@@ -9,6 +9,7 @@
     @hidden="closeModal"
   >
     <div>
+      <h6 class="form-subtitle mb-3">Selecione um filtro para aplicar</h6>
       <!-- Conteúdo dos filtros -->
       <div class="filter-buttons">
         <b-button
