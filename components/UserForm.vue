@@ -9,8 +9,8 @@
         <form-headline name="Usuário" />
         <loading :loading="is_loading" />
         <b-form @submit.prevent="save">
-          <div v-if="isAdmin || isGlobalManager" class="row">
-            <div class="col-sm-6">
+          <div v-if="isAdmin || isGlobalManager" class="form-row">
+            <div class="col-md-12">
               <b-form-group label="Perfil *">
                 <b-form-radio-group
                   v-model="form.role"
@@ -40,19 +40,21 @@
               </b-form-group>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-4">
+
+          <div class="form-row">
+            <div class="col-md-4 col-sm-12">
               <b-form-group label="Nome *">
                 <b-form-input
                   v-model="form.name"
                   v-validate="'required'"
                   name="name"
+                  placeholder="Digite o nome"
                 />
                 <field-error :msg="veeErrors" field="name" />
               </b-form-group>
             </div>
-            <div class="col-sm-2">
-              <b-form-group label="Gênero ">
+            <div class="col-md-3 col-sm-12">
+              <b-form-group label="Gênero">
                 <b-form-select
                   v-model="form.gender"
                   class="form-control"
@@ -60,71 +62,101 @@
                 />
               </b-form-group>
             </div>
-            <div class="col-sm-2">
-              <b-form-group label="Nascimento ">
+            <div class="col-md-2 col-sm-12">
+              <b-form-group label="Nascimento">
                 <b-form-input
                   v-model="form.birthDate"
                   v-mask="['##/##/####']"
+                  placeholder="DD/MM/AAAA"
                 />
               </b-form-group>
             </div>
-            <div class="col-sm-4">
+            <div class="col-md-3 col-sm-12">
               <b-form-group label="E-mail *">
                 <b-form-input
                   v-model="form.email"
                   v-validate="'required'"
                   name="email"
+                  placeholder="Digite o e-mail"
                 />
                 <field-error :msg="veeErrors" field="email" />
               </b-form-group>
             </div>
-            <div class="col-sm-6">
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-3 col-sm-12">
               <b-form-group label="Celular *">
                 <b-form-input
                   v-model="form.cellphone"
                   v-validate="'required'"
                   v-mask="['(##) #####-####']"
                   name="cellphone"
+                  placeholder="Digite o celular"
                 />
                 <field-error :msg="veeErrors" field="cellphone" />
               </b-form-group>
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-3 col-sm-12">
               <b-form-group label="CPF *">
                 <b-form-input
                   v-model="form.cpf"
                   v-validate="'required'"
                   v-mask="['###.###.###-##']"
                   name="cpf"
+                  placeholder="Digite o CPF"
                 />
                 <field-error :msg="veeErrors" field="cpf" />
               </b-form-group>
             </div>
-            <div
-              v-if="isEditing()"
-              class="btn-change-password"
-              @click="changePassword"
-            >
-              Mude sua senha
+            <div class="col-md-3 col-sm-12">
+              <b-form-group label="Estado de Atuação *">
+                <b-form-select
+                  v-model="form.uf"
+                  class="form-control"
+                  :options="estados.map((e) => e.uf)"
+                  name="uf"
+                  @input="loadCities"
+                >
+                  <option :value="null" disabled>Selecione um Estado</option>
+                </b-form-select>
+                <field-error :msg="veeErrors" field="uf" />
+              </b-form-group>
+            </div>
+            <div class="col-md-3 col-sm-12">
+              <b-form-group label="Município de Referência *">
+                <b-form-select
+                  v-model="form.city"
+                  class="form-control"
+                  :options="cidades"
+                  name="city"
+                  @input="loadRegions()"
+                >
+                </b-form-select>
+                <field-error :msg="veeErrors" field="region" />
+              </b-form-group>
             </div>
           </div>
-          <div v-if="showPasswordFields" class="row">
-            <div class="col-sm-6">
+
+          <div v-if="showPasswordFields" class="form-row">
+            <div class="col-md-6 col-sm-12">
               <b-form-group label="Senha">
                 <b-form-input
                   v-model="form.password"
                   type="password"
                   name="password"
+                  placeholder="Digite a senha"
                 />
                 <field-error :msg="veeErrors" field="password" />
               </b-form-group>
             </div>
-            <div class="col-sm-6">
+            <div class="col-md-6 col-sm-12">
               <b-form-group label="Confirmação de senha">
                 <b-form-input
                   v-model="form.password_confirmation"
                   type="password"
                   name="password_confirmation"
+                  placeholder="Confirme a senha"
                 />
                 <field-error :msg="veeErrors" field="password_confirmation" />
               </b-form-group>
@@ -139,6 +171,9 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import genero from '@/data/generos.json'
+import estados from '@/data/estados.json'
+import cidades from '@/data/cidades.json'
+import regioes from '@/data/regioes-castanheiras.json'
 
 export default {
   components: {
@@ -146,6 +181,9 @@ export default {
   },
   data() {
     return {
+      estados,
+      cidades,
+      regioes,
       genero,
       show_password: false,
       tiposDeUsuarioPermitidos: [],
@@ -156,12 +194,17 @@ export default {
         email: '',
         cellphone: '',
         cpf: '',
-        password: '',
-        password_confirmation: '',
+        currency: 'real',
+        country: 'BR',
+        uf: null,
+        city: '',
+        region: '',
         role: null,
         organization: '',
         birthDate: '',
         gender: '',
+        password: '',
+        password_confirmation: '',
       },
     }
   },
@@ -272,13 +315,26 @@ export default {
               scope: null,
             })
             isValid = false
+          }
+          // possui Region
+          else if (!this.form.region) {
+            this.veeErrors.items.push({
+              id: 106,
+              vmId: this.veeErrors.vmId,
+              field: 'region',
+              msg: 'Município não vinculado a um Território.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
           } else {
             this.veeErrors.items = this.veeErrors.items.filter(
               (error) =>
                 error.id !== 102 &&
                 error.id !== 103 &&
                 error.id !== 104 &&
-                error.id !== 105
+                error.id !== 105 &&
+                error.id !== 106
             )
           }
         }
@@ -317,6 +373,32 @@ export default {
             .catch(this.showError)
         }
       })
+    },
+    loadCities() {
+      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
+
+      // filtra as cidades conforme a UF selecionada
+      if (this.form.uf) {
+        this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
+      }
+
+      // limpa a cidade digitada, caso não exista na lista
+      if (this.form.city && this.cidades) {
+        if (!this.cidades.find((c) => c === this.form.city)) {
+          this.form.city = ''
+        }
+      }
+    },
+    loadRegions() {
+      const [regionName] = [
+        ...new Set(
+          regioes
+            .filter((item) => item.municipio == this.form.city)
+            .map((item) => item.regiaoCastanheira)
+        ),
+      ]
+
+      this.form.region = regionName
     },
     changePassword() {
       this.show_password = !this.show_password

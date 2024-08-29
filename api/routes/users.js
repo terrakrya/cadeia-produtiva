@@ -122,7 +122,6 @@ router.post('/', auth.manager, async (req, res) => {
     user.unitOfMeasurement = req.body.unitOfMeasurement
     user.buyerPosition = req.body.buyerPosition
     user.organization = req.body.organization
-    user.comments = req.body.comments
     user.uf = req.body.uf
     user.city = req.body.city
     user.birthDate = req.body.birthDate
@@ -174,7 +173,6 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       user.country = req.body.country
       user.nickname = req.body.nickname
       user.organization = req.body.organization
-      user.comments = req.body.comments
       user.uf = req.body.uf
       user.city = req.body.city
       user.birthDate = req.body.birthDate
@@ -225,16 +223,15 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.cpf = req.body.cpf || user.cpf
       user.unitOfMeasurement = req.body.unitOfMeasurement
       user.buyerPosition = req.body.buyerPosition
-      user.currency = req.body.currency
-      user.country = req.body.country
+      user.currency = req.body.currency || user.currency
+      user.country = req.body.country || user.country
       user.nickname = req.body.nickname
-      user.comments = req.body.comments
-      user.uf = req.body.uf
-      user.city = req.body.city
+      user.uf = req.body.uf || user.uf
+      user.city = req.body.city || user.city
       user.birthDate = req.body.birthDate
       user.gender = req.body.gender
       user.identity = req.body.identity
-      user.region = req.body.region
+      user.region = req.body.region || user.region
     }
 
     await user.save()

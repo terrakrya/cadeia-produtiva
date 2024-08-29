@@ -9,7 +9,7 @@
             <b-form v-if="!is_loading" @submit.prevent="save">
               <h4 class="mb-4">Complete seu perfil</h4>
               <b-row>
-                <b-col class="col-sm-3">
+                <b-col sm="4">
                   <b-form-group label="Nome Completo *">
                     <b-form-input
                       v-model="form.name"
@@ -20,7 +20,7 @@
                     <field-error :msg="veeErrors" field="name" />
                   </b-form-group>
                 </b-col>
-                <div class="col-sm-3">
+                <b-col sm="4">
                   <b-form-group label="Data de nascimento *">
                     <b-form-input
                       v-model="form.birthDate"
@@ -29,48 +29,41 @@
                       placeholder="Insira sua data de nascimento"
                       name="birthDate"
                     />
+                    <field-error :msg="veeErrors" field="birthDate" />
                   </b-form-group>
-                </div>
-                <div class="col-sm-2">
-                  <b-form-group label="Apelido ">
+                </b-col>
+                <b-col sm="4">
+                  <b-form-group label="Apelido">
                     <b-form-input
                       v-model="form.nickname"
                       placeholder="Insira o seu apelido"
                     />
                   </b-form-group>
-                </div>
-                <b-col sm="3">
+                </b-col>
+              </b-row>
+
+              <b-row>
+                <b-col sm="6">
                   <b-form-group label="E-mail *">
                     <b-form-input
                       v-model="form.email"
-                      name="email"
+                      v-validate="getValidationRules('email')"
                       placeholder="Insira seu email"
+                      name="email"
                     />
                     <field-error :msg="veeErrors" field="email" />
                   </b-form-group>
                 </b-col>
-              </b-row>
-              <b-row>
-                <div class="col-sm-3">
-                  <b-form-group label="Gênero ">
+                <b-col sm="3">
+                  <b-form-group label="Gênero">
                     <b-form-select
                       v-model="form.gender"
-                      class="form-control"
                       :options="genero"
-                    />
-                  </b-form-group>
-                </div>
-                <div class="col-sm-3">
-                  <b-form-group label="Identidade ">
-                    <b-form-select
-                      v-model="form.identity"
                       class="form-control"
-                      name="identity"
-                      :options="identidade"
                     />
                   </b-form-group>
-                </div>
-                <div class="col-sm-3">
+                </b-col>
+                <b-col sm="3">
                   <b-form-group label="Celular *">
                     <b-form-input
                       v-model="form.cellphone"
@@ -79,22 +72,23 @@
                       placeholder="Insira seu número de celular"
                       name="cellphone"
                     />
-                  </b-form-group>
-                </div>
-                <b-col class="col-sm-2">
-                  <b-form-group label="CPF *">
-                    <b-form-input
-                      v-model="form.cpf"
-                      v-mask="['###.###.###-##']"
-                      v-validate="getValidationRules('cpf')"
-                      placeholder="Insira seu CPF"
-                      name="cpf"
-                    />
+                    <field-error :msg="veeErrors" field="cellphone" />
                   </b-form-group>
                 </b-col>
               </b-row>
-              <div class="row">
-                <b-col md="4">
+
+              <b-row>
+                <b-col sm="6">
+                  <b-form-group label="Identidade">
+                    <b-form-select
+                      v-model="form.identity"
+                      class="form-control"
+                      name="identity"
+                      :options="identidade"
+                    />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="6">
                   <b-form-group label="Posição na cadeia de valor *">
                     <b-form-select
                       v-model="form.buyerPosition"
@@ -106,59 +100,10 @@
                     <field-error :msg="veeErrors" field="buyerPosition" />
                   </b-form-group>
                 </b-col>
-                <div class="col-sm-3">
-                  <b-form-group label="País *">
-                    <b-form-select
-                      v-model="form.country"
-                      v-validate="getValidationRules('country')"
-                      class="form-control"
-                      :options="pais"
-                      name="country"
-                    />
-                    <field-error :msg="veeErrors" field="country" />
-                  </b-form-group>
-                </div>
-                <b-col sm="3">
-                  <b-form-group label="Estado de Atuação *">
-                    <b-form-select
-                      v-model="form.uf"
-                      v-validate="getValidationRules('uf')"
-                      class="form-control"
-                      :options="estados.map((e) => e.uf)"
-                      name="uf"
-                      @input="loadCities()"
-                    />
-                    <field-error :msg="veeErrors" field="uf" />
-                  </b-form-group>
-                </b-col>
-                <b-col sm="3">
-                  <b-form-group label="Município de Referência *">
-                    <b-form-select
-                      v-model="form.city"
-                      v-validate="getValidationRules('city')"
-                      class="form-control"
-                      :options="cidades"
-                      name="city"
-                      @input="loadregions()"
-                    />
-                    <field-error :msg="veeErrors" field="city" />
-                  </b-form-group>
-                </b-col>
-                <b-col sm="3">
-                  <b-form-group label="Região Castanheira">
-                    <input
-                      v-model="form.region"
-                      type="text"
-                      readonly
-                      class="form-control"
-                      text-field="region"
-                    />
-                    <field-error :msg="veeErrors" field="region" />
-                  </b-form-group>
-                </b-col>
-              </div>
-              <div class="row">
-                <b-col md="3" sm="9">
+              </b-row>
+
+              <b-row>
+                <b-col sm="6">
                   <b-form-group label="Unidade de medida mais comum *">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
@@ -170,23 +115,12 @@
                     <field-error :msg="veeErrors" field="unitOfMeasurement" />
                   </b-form-group>
                 </b-col>
-                <div class="col-md-3 col-sm-5">
-                  <b-form-group label="Moeda *">
-                    <b-form-select
-                      v-model="form.currency"
-                      v-validate="getValidationRules('currency')"
-                      false-value="Real"
-                      class="form-control"
-                      :options="moeda"
-                      name="currency"
-                    />
-                    <field-error :msg="veeErrors" field="currency" />
-                  </b-form-group>
-                </div>
-              </div>
+              </b-row>
+
               <form-submit :sending="is_sending" />
             </b-form>
           </b-tab>
+
           <b-tab title="Alterar Senha">
             <h4 class="mb-4">Alterar senha</h4>
             <b-form v-if="!is_loading" @submit.prevent="save">
@@ -225,13 +159,8 @@
 import Breadcrumb from '@/components/Breadcrumb'
 import tipoDeUnidade from '@/data/tipo-de-unidade'
 import buyerPositions from '@/data/posicao-do-comprador'
-import pais from '@/data/pais.json'
-import moeda from '@/data/moeda.json'
-import estados from '@/data/estados.json'
-import cidades from '@/data/cidades.json'
 import genero from '@/data/generos.json'
 import identidade from '@/data/identidade-cultural.json'
-import regioes from '@/data/regioes-castanheiras.json'
 
 export default {
   components: {
@@ -244,28 +173,16 @@ export default {
       genero,
       tipoDeUnidade,
       buyerPositions,
-      pais,
-      moeda,
-      estados,
-      cidades,
-      regioes,
-      regions: [],
       form: {
-        region: '',
         unitOfMeasurement: '',
         name: '',
         email: '',
         username: '',
         cellphone: '',
-        cpf: '',
         password: '',
         password_confirmation: '',
         buyerPosition: '',
-        currency: 'real',
-        country: 'BR',
         nickname: '',
-        uf: '',
-        city: '',
         identity: '',
         gender: '',
         birthDate: '',
@@ -276,33 +193,6 @@ export default {
     this.edit(this.$route.params.id)
   },
   methods: {
-    loadCities() {
-      // lista de cidades com somente o item "selecione a cidade"
-      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
-
-      // filtra as cidades conforme a UF selecionada
-      if (this.form.uf) {
-        this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
-      }
-
-      // limpa a cidade digitada, caso não exista na lista
-      if (this.form.city && this.cidades) {
-        if (!this.cidades.find((c) => c === this.form.city)) {
-          this.form.city = ''
-        }
-      }
-    },
-    loadregions() {
-      const [regionName] = [
-        ...new Set(
-          regioes
-            .filter((item) => item.municipio == this.form.city)
-            .map((item) => item.regiaoCastanheira)
-        ),
-      ]
-
-      this.form.region = regionName
-    },
     getValidationRules(fieldName) {
       if (this.activeTabKey !== 0) {
         return ''
@@ -311,7 +201,6 @@ export default {
       const staticRules = {
         birthDate: 'min:10',
         cellphone: 'min:14',
-        cpf: 'min:14',
       }
 
       const rules = ['required']
@@ -331,24 +220,12 @@ export default {
         this.form.email = dados.email
         this.form.username = dados.username
         this.form.cellphone = dados.cellphone
-        this.form.cpf = dados.cpf
         this.form.password = dados.password
         this.form.password_confirmation = dados.password_confirmation
         this.form.buyerPosition = dados.buyerPosition
         this.form.birthDate = dados.birthDate
-        if (dados.currency) {
-          this.form.currency = dados.currency
-        }
-        if (dados.country) {
-          this.form.country = dados.country
-        }
 
         this.form.nickname = dados.nickname
-        this.form.uf = dados.uf
-        this.loadCities()
-        this.form.city = dados.city
-        this.loadregions()
-        this.form.region = dados.region
         this.form.identity = dados.identity
         this.form.gender = dados.gender
         this.form.birthDate = dados.birthDate
@@ -361,10 +238,6 @@ export default {
 
     async isNotUniqueEmail(id, email) {
       return !(await this.$axios.$post('users/unique-email', { id, email }))
-    },
-
-    async isNotUniqueCpf(id, cpf) {
-      return !(await this.$axios.$post('users/unique-cpf', { id, cpf }))
     },
 
     async isNotUniqueCellphone(id, cellphone) {
@@ -404,18 +277,6 @@ export default {
             })
             isValid = false
           }
-          // unicidade do CPF
-          else if (await this.isNotUniqueCpf(id, this.form.cpf)) {
-            this.veeErrors.items.push({
-              id: 104,
-              vmId: this.veeErrors.vmId,
-              field: 'cpf',
-              msg: 'Este CPF já existe.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-          }
           // unicidade do Celular
           else if (await this.isNotUniqueCellphone(id, this.form.cellphone)) {
             this.veeErrors.items.push({
@@ -440,9 +301,6 @@ export default {
 
         if (isValid) {
           this.is_sending = true
-
-          // deixa somente os dígitos do CPF
-          this.form.username = this.form.cpf.replace(/\D/g, '')
 
           this.$axios({
             method: 'PUT',
