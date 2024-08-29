@@ -17,6 +17,7 @@ router.use('/uploads', require('./uploads'))
 router.use('/geographic-areas', require('./geographic-areas'))
 router.use('/maps', require('./maps'))
 router.use('/geo', require('./geo'))
+router.use('/ecological-data', require('./ecological-data'))
 
 router.post('/login', function (req, res, next) {
   if (!req.body.username) {

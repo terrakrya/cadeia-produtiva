@@ -45,7 +45,7 @@
                   <div
                     class="d-flex flex-column align-items-center"
                     v-if="filters.name == 'safra'"
-                    >
+                  >
                     <span>Safra</span>
                     <span
                       >{{ filters.from | moment('YYYY') }}/{{
@@ -56,7 +56,7 @@
                   <div
                     class="d-flex flex-column align-items-center"
                     v-if="filters.name == 'mes'"
-                    >
+                  >
                     <span>Mês</span>
                     <span
                       >{{ filters.from | moment('DD/MM ') }}a{{
@@ -67,7 +67,7 @@
                   <div
                     class="d-flex flex-column align-items-center"
                     v-if="filters.name == 'quinzena'"
-                    >
+                  >
                     <span>Quinzena</span>
                     <span
                       >{{ filters.from | moment('DD/MM ') }}a{{
@@ -78,7 +78,7 @@
                   <div
                     class="d-flex flex-column align-items-center"
                     v-if="filters.name == 'semana'"
-                    >
+                  >
                     <span>Semana</span>
                     <span
                       >{{ filters.from | moment('DD/MM ') }}a{{
@@ -161,6 +161,15 @@
                 variant="panel"
                 to="/operacional/informacao-preco/cadastrar"
                 >Informar Preço</b-button
+              >
+            </div>
+            <div class="text-right">
+              <b-button
+                id="show-btn"
+                class="btn mb-1 mt-3"
+                variant="panel"
+                to="/cadastros/ecological-data"
+                >Informar Dados Ecológicos</b-button
               >
             </div>
             <hr />
@@ -455,7 +464,7 @@ export default {
               to: harvestPeriod[1],
               unitOfMeasurement: this.$auth.user.unitOfMeasurement,
               product: this.filters.product,
-              regions: [this.$auth.user.region]
+              regions: [this.$auth.user.region],
             },
           }
         )
