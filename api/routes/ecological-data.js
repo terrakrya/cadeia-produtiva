@@ -1,9 +1,8 @@
-const express = require('express')
 const mongoose = require('mongoose')
-const router = express.Router()
+const router = require('express').Router()
 const auth = require('../config/auth')
-const EcologicalDataSchema = mongoose.model('EcologicalData')
 const User = mongoose.model('User')
+const EcologicalDataSchema = mongoose.model('EcologicalData')
 
 // Recupera todos os dados ecológicos de um usuário específico
 router.get('/:userId', auth.authenticated, async (req, res) => {

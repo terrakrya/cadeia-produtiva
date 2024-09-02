@@ -1,4 +1,3 @@
-const Decimal = require('decimal.js')
 const mongoose = require('mongoose')
 const router = require('express').Router()
 const auth = require('../config/auth')
