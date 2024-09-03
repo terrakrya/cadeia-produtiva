@@ -49,7 +49,7 @@ import { isGlobalManager } from '~/api/config/auth';
           </b-nav-item>
         </b-nav>
         <b-nav v-if="!isGlobalManager">
-          <b-nav-item class="text-white" to="/cadastros/ecological-data/">
+          <b-nav-item class="text-white" to="/operacional/dados-ecologicos">
             Dados Ecológicos Informados
           </b-nav-item>
         </b-nav>

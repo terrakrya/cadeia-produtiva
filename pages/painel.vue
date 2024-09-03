@@ -168,7 +168,7 @@
                 id="show-btn"
                 class="btn mb-1 mt-3"
                 variant="panel"
-                to="/cadastros/ecological-data/cadastrar"
+                to="/operacional/dados-ecologicos/cadastrar"
                 >Informar Dados Ecológicos</b-button
               >
             </div>

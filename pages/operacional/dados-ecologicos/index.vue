@@ -9,7 +9,7 @@
           </div>
           <div class="col-sm-6 main-actions">
             <n-link
-              to="/cadastros/ecological-data/cadastrar"
+              to="/operacional/dados-ecologicos/cadastrar"
               class="btn btn-primary"
             >
               <b-icon-plus /> {{ 'Cadastrar' }}
@@ -48,7 +48,9 @@
             </template>
             <template #cell(actions)="data">
               <n-link
-                :to="'/cadastros/ecological-data/' + data.item._id + '/editar'"
+                :to="
+                  '/operacional/dados-ecologicos/' + data.item._id + '/editar'
+                "
                 class="btn btn-secondary"
               >
                 <b-icon-pencil />
