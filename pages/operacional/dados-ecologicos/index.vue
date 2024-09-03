@@ -33,10 +33,9 @@
             :items="ecologicalData"
             :sort-by="'region'"
             :filter="filters.search"
+            stacked="md"
           >
-            <template #cell(region)="data">
-              {{ data.item.region }}
-            </template>
+            <template #cell(region)="data">{{ data.item.region }} </template>
             <template #cell(peakBloomMonth)="data">
               {{ getMonthName(data.item.peakBloomMonth) }}
             </template>

@@ -18,7 +18,11 @@
                   class="form-control"
                   name="peakBloomMonth"
                   v-validate="'required'"
-                />
+                >
+                  <option :value="''" disabled selected hidden>
+                    Mês de Pico da Floração
+                  </option>
+                </b-form-select>
                 <field-error :msg="veeErrors" field="peakBloomMonth" />
               </b-form-group>
             </div>
@@ -30,23 +34,55 @@
                   class="form-control"
                   name="rainySeasonStartMonth"
                   v-validate="'required'"
-                />
+                >
+                  <option :value="''" disabled selected hidden>
+                    Mês de Início da Chuva Constante
+                  </option>
+                </b-form-select>
                 <field-error :msg="veeErrors" field="rainySeasonStartMonth" />
               </b-form-group>
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-12 mb-2">
-              <b-form-group label="Expectativa para a Próxima Safra">
-                <b-form-input
-                  v-model="form.nextHarvestExpectation"
-                  class="form-control"
-                  name="nextHarvestExpectation"
-                  v-validate="'required'"
-                  placeholder="Melhor que a anterior, Pior que a anterior, etc."
-                />
-                <field-error :msg="veeErrors" field="nextHarvestExpectation" />
-              </b-form-group>
+            <div class="col-md-4 title-buttons-form">
+              <b-form-group
+                label="Expectativa para a Próxima Safra"
+              ></b-form-group>
+            </div>
+            <div
+              class="col-md-8 d-flex justify-content-center align-items-center mb-4"
+            >
+              <div class="button-transaction">
+                <b-button
+                  variant="ecological-form"
+                  @click="form.nextHarvestExpectation = 'Melhor'"
+                  :class="{
+                    'selected-button': form.nextHarvestExpectation === 'Melhor',
+                    'mr-3': true,
+                  }"
+                >
+                  Melhor
+                </b-button>
+                <b-button
+                  variant="ecological-form"
+                  @click="form.nextHarvestExpectation = 'Igual'"
+                  :class="{
+                    'selected-button': form.nextHarvestExpectation === 'Igual',
+                    'mr-3': true,
+                  }"
+                >
+                  Igual
+                </b-button>
+                <b-button
+                  variant="ecological-form"
+                  @click="form.nextHarvestExpectation = 'Pior'"
+                  :class="{
+                    'selected-button': form.nextHarvestExpectation === 'Pior',
+                  }"
+                >
+                  Pior
+                </b-button>
+              </div>
             </div>
           </div>
           <div class="row">
@@ -58,7 +94,11 @@
                   class="form-control"
                   name="harvestStartMonth"
                   v-validate="'required'"
-                />
+                >
+                  <option :value="''" disabled selected hidden>
+                    Mês de Início da Safra
+                  </option>
+                </b-form-select>
                 <field-error :msg="veeErrors" field="harvestStartMonth" />
               </b-form-group>
             </div>
@@ -70,7 +110,11 @@
                   class="form-control"
                   name="harvestEndMonth"
                   v-validate="'required'"
-                />
+                >
+                  <option :value="''" disabled selected hidden>
+                    Mês de Fim da Safra
+                  </option>
+                </b-form-select>
                 <field-error :msg="veeErrors" field="harvestEndMonth" />
               </b-form-group>
             </div>
@@ -92,7 +136,7 @@ export default {
       form: {
         peakBloomMonth: '',
         rainySeasonStartMonth: '',
-        nextHarvestExpectation: '',
+        nextHarvestExpectation: 'Igual',
         harvestStartMonth: '',
         harvestEndMonth: '',
       },
