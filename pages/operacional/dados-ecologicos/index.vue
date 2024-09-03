@@ -116,7 +116,7 @@ export default {
       try {
         const userId = this.currentUser.id // Usando o id do currentUser
         this.ecologicalData = await this.$axios.$get(
-          `/ecological-data/${userId}`
+          `/ecological-data/user/${userId}`
         )
       } catch (error) {
         console.error('Erro ao buscar os dados ecológicos:', error)

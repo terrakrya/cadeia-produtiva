@@ -100,15 +100,43 @@ export default {
       is_sending: false,
     }
   },
+  async created() {
+    if (this.isEditing()) {
+      await this.edit(this.$route.params.id)
+    }
+  },
   methods: {
-    save() {
+    async edit(id) {
+      this.is_loading = true
+      try {
+        const dados = await this.$axios.$get(`ecological-data/${id}`)
+        this.form = {
+          peakBloomMonth: dados.peakBloomMonth || '',
+          rainySeasonStartMonth: dados.rainySeasonStartMonth || '',
+          nextHarvestExpectation: dados.nextHarvestExpectation || '',
+          harvestStartMonth: dados.harvestStartMonth || '',
+          harvestEndMonth: dados.harvestEndMonth || '',
+        }
+      } catch (error) {
+        console.error('Erro ao carregar os dados ecológicos:', error)
+      }
+      this.is_loading = false
+    },
+    async save() {
       this.$validator.validate().then((isValid) => {
         if (isValid) {
           this.is_sending = true
-          this.$axios
-            .post('ecological-data', this.form)
+          const method = this.isEditing() ? 'PUT' : 'POST'
+          const url = this.isEditing()
+            ? `ecological-data/${this.$route.params.id}`
+            : 'ecological-data'
+          this.$axios({
+            method,
+            url,
+            data: this.form,
+          })
             .then(() => {
-              this.$router.replace('/painel') // Redirecione após o sucesso
+              this.$router.replace('/painel')
               this.is_sending = false
             })
             .catch((error) => {
