@@ -35,6 +35,14 @@ const EcologicalDataSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    harvestStartYear: {
+      type: Number,
+      required: true,
+    },
+    harvestEndYear: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true },
   { toJSON: { virtuals: true } }
@@ -51,6 +59,8 @@ EcologicalDataSchema.methods.data = function () {
     nextHarvestExpectation: this.nextHarvestExpectation,
     harvestStartMonth: this.harvestStartMonth,
     harvestEndMonth: this.harvestEndMonth,
+    harvestStartYear: this.harvestStartYear,
+    harvestEndYear: this.harvestEndYear,
     createdAt: this.createdAt,
     updatedAt: this.updatedAt,
   }

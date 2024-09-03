@@ -43,6 +43,8 @@ router.post('/', auth.authenticated, async (req, res) => {
       peakBloomMonth,
       rainySeasonStartMonth,
       nextHarvestExpectation,
+      harvestStartYear,
+      harvestEndYear,
       harvestStartMonth,
       harvestEndMonth,
     } = req.body
@@ -59,6 +61,8 @@ router.post('/', auth.authenticated, async (req, res) => {
       peakBloomMonth,
       rainySeasonStartMonth,
       nextHarvestExpectation,
+      harvestStartYear,
+      harvestEndYear,
       harvestStartMonth,
       harvestEndMonth,
     })
@@ -77,6 +81,8 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       peakBloomMonth,
       rainySeasonStartMonth,
       nextHarvestExpectation,
+      harvestStartYear,
+      harvestEndYear,
       harvestStartMonth,
       harvestEndMonth,
     } = req.body
@@ -93,6 +99,10 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       rainySeasonStartMonth ?? ecologicalData.rainySeasonStartMonth
     ecologicalData.nextHarvestExpectation =
       nextHarvestExpectation ?? ecologicalData.nextHarvestExpectation
+    ecologicalData.harvestStartYear =
+      harvestStartYear ?? ecologicalData.harvestStartYear
+    ecologicalData.harvestEndYear =
+      harvestEndYear ?? ecologicalData.harvestEndYear
     ecologicalData.harvestStartMonth =
       harvestStartMonth ?? ecologicalData.harvestStartMonth
     ecologicalData.harvestEndMonth =
@@ -106,7 +116,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
 })
 
 // Deleta um registro de dados ecológicos específico
-router.delete('/:id', auth.manager, async (req, res) => {
+router.delete('/:id', auth.authenticated, async (req, res) => {
   try {
     const ecologicalData = await EcologicalData.findByIdAndDelete(req.params.id)
     if (!ecologicalData) {

@@ -36,6 +36,22 @@
             stacked="md"
           >
             <template #cell(region)="data">{{ data.item.region }} </template>
+            <template #cell(harvestStartYear)="data">
+              {{
+                getMonthAndYear(
+                  data.item.harvestStartMonth,
+                  data.item.harvestStartYear
+                )
+              }}
+            </template>
+            <template #cell(harvestEndYear)="data">
+              {{
+                getMonthAndYear(
+                  data.item.harvestEndMonth,
+                  data.item.harvestEndYear
+                )
+              }}
+            </template>
             <template #cell(peakBloomMonth)="data">
               {{ getMonthName(data.item.peakBloomMonth) }}
             </template>
@@ -83,13 +99,23 @@ export default {
           sortable: true,
         },
         {
+          key: 'harvestStartYear',
+          label: 'Início da Safra',
+          sortable: true,
+        },
+        {
+          key: 'harvestEndYear',
+          label: 'Fim da Safra',
+          sortable: true,
+        },
+        {
           key: 'peakBloomMonth',
-          label: 'Mês de Pico da Floração',
+          label: 'Pico da Floração',
           sortable: true,
         },
         {
           key: 'rainySeasonStartMonth',
-          label: 'Mês de Início da Chuva Constante',
+          label: 'Início da Chuva Constante',
           sortable: true,
         },
         {
@@ -113,7 +139,7 @@ export default {
   methods: {
     async list() {
       try {
-        const userId = this.currentUser.id // Usando o id do currentUser
+        const userId = this.currentUser.id
         this.ecologicalData = await this.$axios.$get(
           `/ecological-data/user/${userId}`
         )
@@ -139,6 +165,11 @@ export default {
     getMonthName(monthNumber) {
       const mes = meses.find((mes) => mes.value === String(monthNumber))
       return mes ? mes.text : 'Mês desconhecido'
+    },
+
+    getMonthAndYear(month, year) {
+      const monthName = this.getMonthName(month)
+      return monthName ? `${monthName} de ${year}` : `Ano ${year}`
     },
 
     showError(error) {
