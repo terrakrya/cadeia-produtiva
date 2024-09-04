@@ -129,7 +129,7 @@ export default {
           class: 'actions',
         },
       ],
-      ecologicalData: null,
+      ecologicalData: [],
     }
   },
 

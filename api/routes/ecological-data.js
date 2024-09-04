@@ -10,11 +10,7 @@ router.get('/user/:userId', auth.authenticated, async (req, res) => {
     const ecologicalData = await EcologicalData.find({
       userId: req.params.userId,
     })
-    if (!ecologicalData.length) {
-      return res.status(404).json({
-        message: 'Nenhum dado ecológico encontrado para este usuário.',
-      })
-    }
+
     res.json(ecologicalData)
   } catch (err) {
     res.status(500).json({ error: err.message })
