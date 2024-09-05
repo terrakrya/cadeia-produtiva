@@ -194,8 +194,6 @@ export default {
         email: '',
         cellphone: '',
         cpf: '',
-        currency: 'real',
-        country: 'BR',
         uf: null,
         city: '',
         region: '',
