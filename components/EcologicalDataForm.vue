@@ -4,7 +4,9 @@
       <div class="panel-body">
         <div>
           <h4 class="form-title">Informar Dados Ecológicos</h4>
-          <h6 class="form-subtitle">Todos os campos são obrigatórios</h6>
+          <h6 class="form-subtitle">
+            Informe os Dados Ecológicos da sua Região
+          </h6>
         </div>
         <br />
         <loading :loading="is_loading" />
@@ -74,7 +76,7 @@
           <div class="row">
             <div class="col-md-4 title-buttons-form">
               <b-form-group
-                label="Expectativa para a Próxima Safra"
+                label="Previsão de Produção da Natureza"
               ></b-form-group>
             </div>
             <div
@@ -83,32 +85,33 @@
               <div class="button-transaction">
                 <b-button
                   variant="ecological-form"
-                  @click="form.nextHarvestExpectation = 'Melhor'"
+                  @click="form.nextHarvestExpectation = 'Grande'"
                   :class="{
-                    'selected-button': form.nextHarvestExpectation === 'Melhor',
+                    'selected-button': form.nextHarvestExpectation === 'Grande',
                     'mr-3': true,
                   }"
                 >
-                  Melhor
+                  Grande
                 </b-button>
                 <b-button
                   variant="ecological-form"
-                  @click="form.nextHarvestExpectation = 'Igual'"
+                  @click="form.nextHarvestExpectation = 'Média'"
                   :class="{
-                    'selected-button': form.nextHarvestExpectation === 'Igual',
+                    'selected-button': form.nextHarvestExpectation === 'Média',
                     'mr-3': true,
                   }"
                 >
-                  Igual
+                  Média
                 </b-button>
                 <b-button
                   variant="ecological-form"
-                  @click="form.nextHarvestExpectation = 'Pior'"
+                  @click="form.nextHarvestExpectation = 'Pequena'"
                   :class="{
-                    'selected-button': form.nextHarvestExpectation === 'Pior',
+                    'selected-button':
+                      form.nextHarvestExpectation === 'Pequena',
                   }"
                 >
-                  Pior
+                  Pequena
                 </b-button>
               </div>
             </div>
@@ -174,7 +177,7 @@ export default {
         harvestEndMonth: '',
         peakBloomMonth: '',
         rainySeasonStartMonth: '',
-        nextHarvestExpectation: 'Igual',
+        nextHarvestExpectation: 'Média',
       },
       availableYears: Array.from({ length: 9 }, (v, i) => ({
         value: currentYear - 7 + i,
