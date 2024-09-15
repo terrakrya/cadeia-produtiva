@@ -7,24 +7,18 @@
           <h6 class="form-subtitle">
             Preços de
             <span v-if="productFilter"
-              ><b> {{ productFilter }}</b></span
+              ><b>{{ productFilter }}</b></span
             >
-            da região
-            {{ this.$auth.user.region }}
-
+            da região {{ $auth.user.region }}
             <span v-if="filters.from && filters.to">
-              <span>de {{ filters.from | moment('DD/MM/YYYY') }}</span>
-              <span>até</span>
-              <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+              de {{ filters.from | moment('DD/MM/YYYY') }} até
+              {{ filters.to | moment('DD/MM/YYYY') }}
             </span>
-            <span v-if="filters.from && !filters.to">
-              <span>de {{ filters.from | moment('DD/MM/YYYY') }}</span>
-              <span>até</span>
-              <span>Hoje</span>
+            <span v-else-if="filters.from && !filters.to">
+              de {{ filters.from | moment('DD/MM/YYYY') }} até Hoje
             </span>
-            <span v-if="!filters.from && filters.to">
-              <span>até</span>
-              <span>{{ filters.to | moment('DD/MM/YYYY') }}</span>
+            <span v-else-if="!filters.from && filters.to">
+              até {{ filters.to | moment('DD/MM/YYYY') }}
             </span>
           </h6>
         </div>
@@ -33,6 +27,7 @@
             <Loading loading />
           </div>
           <div v-else>
+            <!-- Resumo da região do usuário -->
             <b-row
               v-if="userRegionSummary"
               class="price-summary-box d-flex flex-column flex-md-row"
@@ -47,44 +42,41 @@
                     v-if="filters.name == 'safra'"
                   >
                     <span>Safra</span>
-                    <span
-                      >{{ filters.from | moment('YYYY') }}/{{
+                    <span>
+                      {{ filters.from | moment('YYYY') }}/{{
                         filters.to | moment('YYYY')
-                      }}</span
-                    >
+                      }}
+                    </span>
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
-                    v-if="filters.name == 'mes'"
+                    v-else-if="filters.name == 'mes'"
                   >
                     <span>Mês</span>
-                    <span
-                      >{{ filters.from | moment('DD/MM ') }}a{{
-                        filters.to | moment(' DD/MM')
-                      }}</span
-                    >
+                    <span>
+                      {{ filters.from | moment('DD/MM') }} a
+                      {{ filters.to | moment('DD/MM') }}
+                    </span>
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
-                    v-if="filters.name == 'quinzena'"
+                    v-else-if="filters.name == 'quinzena'"
                   >
                     <span>Quinzena</span>
-                    <span
-                      >{{ filters.from | moment('DD/MM ') }}a{{
-                        filters.to | moment(' DD/MM')
-                      }}</span
-                    >
+                    <span>
+                      {{ filters.from | moment('DD/MM') }} a
+                      {{ filters.to | moment('DD/MM') }}
+                    </span>
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
-                    v-if="filters.name == 'semana'"
+                    v-else-if="filters.name == 'semana'"
                   >
                     <span>Semana</span>
-                    <span
-                      >{{ filters.from | moment('DD/MM ') }}a{{
-                        filters.to | moment(' DD/MM')
-                      }}</span
-                    >
+                    <span>
+                      {{ filters.from | moment('DD/MM') }} a
+                      {{ filters.to | moment('DD/MM') }}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -94,7 +86,7 @@
                   <div class="price-value">
                     {{ userRegionSummary.minimumPrice | moeda }}
                     <span class="price-measure">{{
-                      this.$auth.user.unitOfMeasurement
+                      $auth.user.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
@@ -104,7 +96,7 @@
                   <div class="price-value">
                     {{ userRegionSummary.maximumPrice | moeda }}
                     <span class="price-measure">{{
-                      this.$auth.user.unitOfMeasurement
+                      $auth.user.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
@@ -114,7 +106,7 @@
                   <div class="price-value">
                     {{ userRegionSummary.averagePrice | moeda }}
                     <span class="price-measure">{{
-                      this.$auth.user.unitOfMeasurement
+                      $auth.user.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
@@ -124,22 +116,21 @@
                   <div class="price-value">
                     {{ userRegionSummary.moda | moeda }}
                     <span class="price-measure">{{
-                      this.$auth.user.unitOfMeasurement
+                      $auth.user.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
                 <hr />
                 <div class="measure-row mt-2 d-flex justify-content-between">
+                  <span> Preços de 1 {{ $auth.user.unitOfMeasurement }} </span>
                   <span>
-                    Preços de 1 {{ this.$auth.user.unitOfMeasurement }}
-                  </span>
-                  <span>
-                    Preços Informados: {{ this.userRegionSummary.totalPrices }}
+                    Preços Informados: {{ userRegionSummary.totalPrices }}
                   </span>
                 </div>
               </div>
             </b-row>
 
+            <!-- Botão de Filtro -->
             <b-button
               @click="isModalActive = true"
               id="show-btn"
@@ -154,14 +145,16 @@
               @apply-filter="applyFilter"
             />
 
+            <!-- Botões adicionais -->
             <div class="text-right">
               <b-button
                 id="show-btn"
                 class="btn mb-1 mt-3"
                 variant="panel"
                 to="/operacional/informacao-preco/cadastrar"
-                >Informar Preço</b-button
               >
+                Informar Preço
+              </b-button>
             </div>
             <div class="text-right">
               <b-button
@@ -169,9 +162,12 @@
                 class="btn mb-1 mt-3"
                 variant="panel"
                 to="/operacional/dados-ecologicos/cadastrar"
-                >Informar Dados Ecológicos</b-button
               >
+                Informar Dados Ecológicos
+              </b-button>
             </div>
+
+            <!-- Gráfico -->
             <hr />
             <div>
               <h4 class="form-title">
@@ -179,99 +175,17 @@
               </h4>
               <line-chart :chart-data="chartData" />
             </div>
+
+            <!-- Outras Regiões -->
             <hr />
             <div class="d-flex justify-content-between align-items-center">
               <div>
                 <h4 class="form-title">Outras regiões</h4>
-                <div
-                  v-if="!showFilters"
-                  class="text-muted pointer"
-                  style="font-size: 14px"
-                  @click="showFilters = true"
-                >
-                  <div v-if="productFilter">
-                    {{ productFilter }}
-                  </div>
-                  <div v-if="filters.buyerPosition">
-                    {{ filters.buyerPosition }}
-                  </div>
-                  <div
-                    v-if="filters.from && filters.to"
-                    class="d-flex flex-column"
-                  >
-                    De {{ filters.from | moment('DD/MM/YYYY') }} até
-                    {{ filters.to | moment('DD/MM/YYYY') }}
-                  </div>
-                  <div v-if="filters.from && !filters.to">
-                    De {{ filters.from | moment('DD/MM/YYYY') }} até Hoje
-                  </div>
-                  <div v-if="!filters.from && filters.to">
-                    Até {{ filters.to | moment('DD/MM/YYYY') }}
-                  </div>
-                </div>
               </div>
-              <!-- <div>
-                <b-btn @click="showFilters = !showFilters">
-                  <b-icon icon="filter" font-scale="3"></b-icon>
-                </b-btn>
-              </div> -->
             </div>
-            <!-- <div v-if="showFilters" class="py-4">
-              <div class="row">
-                <div class="col-md-6">
-                  <b-form-group label="Produto">
-                    <b-form-select
-                      v-model="filters.product"
-                      class="form-control"
-                      :options="products"
-                      value-field="_id"
-                      text-field="name"
-                    />
-                  </b-form-group>
-                </div>
-                <div class="col-md-6">
-                  <b-form-group label="Tipo de comprador">
-                    <b-form-select
-                      v-model="filters.buyerPosition"
-                      class="form-control"
-                      :options="buyerPositions"
-                    />
-                  </b-form-group>
-                </div>
-              </div>
-              <div class="row">
-                <b-col cols="6">
-                  <b-form-group label="Data inicial">
-                    <b-form-input
-                      v-model="filters.from"
-                      type="date"
-                      name="date_time"
-                      locale="pt-BR"
-                      formatter="{}"
-                      placeholder="DD/MM/AAAA"
-                    />
-                  </b-form-group>
-                </b-col>
-                <b-col cols="6">
-                  <b-form-group label="Data final">
-                    <b-form-input
-                      v-model="filters.to"
-                      type="date"
-                      name="date_time"
-                      locale="pt-BR"
-                      placeholder="DD/MM/AAAA"
-                      clearable
-                    />
-                  </b-form-group>
-                </b-col>
-              </div>
-              <b-button variant="primary" size="lg" block @click="applyFilters">
-                Filtrar
-              </b-button>
-            </div> -->
-            <div v-if="summary" class="pt-4">
+            <div v-if="summary && summary.length" class="pt-4">
               <div
-                v-for="(square, squareIndex) in summary.squares"
+                v-for="(square, squareIndex) in summary"
                 :key="square.name"
                 class="mb-3"
               >
@@ -304,7 +218,7 @@
                       }}
                     </span>
                     <span
-                      v-if="
+                      v-else-if="
                         userRegionSummary.averagePrice &&
                         square.averagePrice < userRegionSummary.averagePrice
                       "
@@ -341,6 +255,8 @@ import buyerPositions from '@/data/posicao-do-comprador.json'
 import NoItem from '~/components/NoItem.vue'
 import LineChart from '@/components/LineChart.vue'
 import FilterModal from '@/components/FilterModal.vue'
+import localforage from 'localforage'
+
 export default {
   components: {
     Breadcrumb,
@@ -349,12 +265,11 @@ export default {
     FormMetodologia,
     NoItem,
     LineChart,
+    FilterModal,
   },
   data() {
     return {
-      regiao: null,
       loading: false,
-      showFilters: false,
       isModalActive: false,
       chartData: {
         labels: [],
@@ -370,11 +285,9 @@ export default {
         regions: [],
       },
       buyerPositions,
-      priceInformations: [],
       products: [],
-      summary: null,
+      summary: [],
       userRegionSummary: null,
-      gradientColors: [],
     }
   },
   computed: {
@@ -383,12 +296,11 @@ export default {
         const product = this.products.find(
           (product) => product._id === this.filters.product
         )
-        return product.name
+        return product ? product.name : ''
       }
       return ''
     },
   },
-
   async created() {
     if (
       !this.$auth.user.unitOfMeasurement ||
@@ -412,17 +324,15 @@ export default {
         to: harvestPeriod[1],
       }
       await this.load()
-      this.loading = false
     }
   },
   methods: {
     squareIsUserRegion(name) {
-      return name == this.$auth.user.region
+      return name === this.$auth.user.region
     },
     priceDiffFromUserRegion(basePrice, priceToCompare) {
       return (priceToCompare - basePrice) / basePrice
     },
-
     async loadProducts() {
       const products = await this.$axios.$get('products')
       this.products = products
@@ -430,45 +340,47 @@ export default {
         this.filters.product = this.products[0]._id
       }
     },
-
     async load() {
       this.filters = {
         ...this.filters,
         unitOfMeasurement: this.$auth.user.unitOfMeasurement,
       }
-      const harvestPeriod = this.currentHarvestPeriod()
 
-      const summary = await this.$axios.$get('price-informations/summary', {
+      // Realize apenas uma chamada ao backend
+      const squares = await this.$axios.$get('price-informations/summary', {
         params: this.filters,
       })
 
-      const userRegionSummary = await this.$axios.$get(
-        'price-informations/summary',
-        {
-          params: {
-            product: this.filters.product,
-            unitOfMeasurement: this.$auth.user.unitOfMeasurement,
-            regions: [this.$auth.user.region],
-            from: this.filters.from,
-            to: this.filters.to,
-          },
-        }
+      // Agora 'squares' é um array de objetos
+      this.summary = squares
+
+      // Extrair o userRegionSummary de squares
+      this.userRegionSummary = squares.find(
+        (square) => square.name === this.$auth.user.region
       )
 
+      // Caso a região do usuário não seja encontrada, trate o caso
+      if (!this.userRegionSummary) {
+        this.userRegionSummary = {
+          minimumPrice: null,
+          maximumPrice: null,
+          averagePrice: null,
+          moda: null,
+          totalPrices: 0,
+        }
+      }
+
+      // Continue com o restante do código
       try {
-        const response = await this.$axios.$get(
-          'price-informations/harvest-mode',
-          {
-            params: {
-              from: harvestPeriod[0],
-              to: harvestPeriod[1],
-              unitOfMeasurement: this.$auth.user.unitOfMeasurement,
-              product: this.filters.product,
-              regions: [this.$auth.user.region],
-            },
-          }
-        )
-        const data = response
+        const data = await this.$axios.$get('price-informations/harvest-mode', {
+          params: {
+            from: this.filters.from,
+            to: this.filters.to,
+            unitOfMeasurement: this.$auth.user.unitOfMeasurement,
+            product: this.filters.product,
+            regions: [this.$auth.user.region],
+          },
+        })
         if (Array.isArray(data)) {
           this.chartData = {
             labels: data.map((item) => item.week),
@@ -489,15 +401,8 @@ export default {
         console.error('Erro ao buscar os dados da safra:', error)
       }
 
-      this.summary = summary
-      this.userRegionSummary = userRegionSummary
+      this.loading = false
     },
-
-    applyFilters() {
-      this.showFilters = false
-      this.load()
-    },
-
     applyFilter(period) {
       let fromDate, toDate
       this.filters.name = period
@@ -526,9 +431,7 @@ export default {
 
       this.applyDateFilter(fromDate, toDate)
     },
-
     applyDateFilter(from, to) {
-      // Implementação do filtro de data
       this.filters.from = from
       this.filters.to = to
       this.load()
@@ -537,16 +440,10 @@ export default {
       const today = this.$moment(new Date())
 
       if (today.isBefore(`${today.year()}-10-01`)) {
-        return [
-          `${new Date().getFullYear() - 1}-10-01`,
-          `${new Date().getFullYear()}-09-30`,
-        ]
+        return [`${today.year() - 1}-10-01`, `${today.year()}-09-30`]
       }
 
-      return [
-        `${new Date().getFullYear()}-10-01`,
-        `${new Date().getFullYear() + 1}-09-30`,
-      ]
+      return [`${today.year()}-10-01`, `${today.year() + 1}-09-30`]
     },
   },
 }

@@ -5,7 +5,7 @@ const populate = require('../config/utils').populate
 const moment = require('moment')
 const convertUnit = require('../utils/convertUnit')
 const getModa = require('../utils/moda')
-const { processPrices } = require('../utils/priceSummary')
+const { processSquares } = require('../utils/priceSummary')
 
 moment.locale('pt-br')
 const Price = mongoose.model('PriceInformation')
@@ -105,7 +105,7 @@ router.get('/summary', auth.authenticated, async (req, res) => {
     maximumPrice: 1,
   })
 
-  let summary = processPrices(prices, req.query.unitOfMeasurement)
+  let summary = processSquares(prices, req.query.unitOfMeasurement)
 
   res.json(summary)
 })

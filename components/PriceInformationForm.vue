@@ -246,7 +246,7 @@ import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
 import transacao from '@/data/transacionada.json'
 import regiao from '@/data/regioes-castanheiras.json'
-
+import localforage from 'localforage'
 export default {
   components: {
     Breadcrumb,
@@ -293,6 +293,7 @@ export default {
       products: [],
       messengers: [],
       creating: true,
+      isOnline: navigator.onLine,
     }
   },
   computed: {
@@ -319,8 +320,34 @@ export default {
       return x.uf.localeCompare(y.uf)
     })
     this.form.transaction = this.form.transactedQuantity ? false : true
+
+    window.addEventListener('online', this.syncData)
+    window.addEventListener('offline', this.updateOnlineStatus)
+  },
+  beforeDestroy() {
+    window.removeEventListener('online', this.syncData)
+    window.removeEventListener('offline', this.updateOnlineStatus)
   },
   methods: {
+    updateOnlineStatus() {
+      this.isOnline = navigator.onLine
+    },
+    async syncData() {
+      this.isOnline = true
+      const pendingPrices = (await localforage.getItem('pendingPrices')) || []
+      if (pendingPrices.length > 0) {
+        for (const price of pendingPrices) {
+          try {
+            await this.$axios.post('price-informations', price)
+          } catch (error) {
+            console.error('Erro ao sincronizar o preço:', error)
+            return
+          }
+        }
+        await localforage.removeItem('pendingPrices')
+        this.notify('Preços pendentes sincronizados com sucesso!')
+      }
+    },
     async listOrganizations() {
       try {
         const organizationsData = await this.$axios.$get('organizations')
@@ -342,7 +369,6 @@ export default {
       }
     },
     preSetDados() {
-      // pre-set das informações conforme o usuário logado
       if (!this.isEditing() && !this.isAdmin && !this.isGlobalManager) {
         this.form.currency = this.currentUser.currency
         this.form.country = this.currentUser.country
@@ -386,8 +412,6 @@ export default {
         const selectedMessenger = await this.$axios.$get(
           'users/' + this.form.messenger
         )
-
-        // pre-set das informações conforme o usuário selecionado
         this.form.currency = selectedMessenger.currency
         this.form.country = selectedMessenger.country
         this.form.measure = selectedMessenger.unitOfMeasurement
@@ -397,22 +421,22 @@ export default {
       }
     },
     loadCities() {
-      // lista de cidades com somente o item "selecione a cidade"
+      // Lista de cidades com somente o item "selecione a cidade"
       this.cidades = [{ value: '', text: 'Selecione a cidade' }]
 
-      // filtra as cidades conforme a UF selecionada
+      // Filtrar as cidades conforme a UF selecionada
       if (this.form.uf) {
         this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
       }
 
-      // limpa a cidade digitada, caso não exista na lista
+      // Limpar a cidade digitada, caso não exista na lista
       if (this.form.city && this.cidades) {
         if (!this.cidades.find((c) => c === this.form.city)) {
           this.form.city = ''
         }
       }
     },
-    // filtra as regiões imediatas conforme a município selecionada
+    // Filtrar as regiões imediatas conforme o município selecionado
     loadPracas() {
       if (this.form.city) {
         const cidade = this.form.city
@@ -421,8 +445,7 @@ export default {
         })
         if (regiao && regiao.length > 0) {
           this.form.region = regiao[0].regiaoCastanheira
-        }
-        else {
+        } else {
           this.form.region = ''
         }
       }
@@ -436,7 +459,6 @@ export default {
         this.form.originalMinimumPrice = finalValue
         this.form.originalMaximumPrice = finalValue
       } else {
-        // +({numero}.toFixed(2)) arredonda o número com duas casas decimais e retorna um número (já que o toFloat converte em string)
         this.form.minimumPrice = +new Decimal(min).div(multiplyer).toFixed(2)
         this.form.maximumPrice = +new Decimal(max).div(multiplyer).toFixed(2)
       }
@@ -486,120 +508,129 @@ export default {
 
       this.is_loading = false
     },
-    save() {
-      this.$validator.validate().then((isValid) => {
-        // #region validação
+    async save() {
+      const isValid = await this.$validator.validate()
 
-        if (
-          (!this.form.originalMinimumPrice ||
-            this.form.originalMinimumPrice === 0) &&
-          this.form.transaction
-        ) {
+      if (
+        (!this.form.originalMinimumPrice ||
+          this.form.originalMinimumPrice === 0) &&
+        this.form.transaction
+      ) {
+        this.veeErrors.items.push({
+          id: 101,
+          vmId: this.veeErrors.vmId,
+          field: 'originalMinimumPrice',
+          msg: 'Este campo é obrigatório.',
+          rule: 'required',
+          scope: null,
+        })
+        isValid = false
+      } else if (this.form.originalMaximumPrice === 0) {
+        this.form.originalMaximumPrice = this.form.originalMinimumPrice
+      } else if (
+        this.form.originalMaximumPrice < this.form.originalMinimumPrice
+      ) {
+        this.veeErrors.items.push({
+          id: 102,
+          vmId: this.veeErrors.vmId,
+          field: 'originalMaximumPrice',
+          msg: 'O preço máximo deve ser maior ou igual ao preço mínimo.',
+          rule: 'required',
+          scope: null,
+        })
+        isValid = false
+      } else if (this.form.transaction === false) {
+        if (this.form.transactedQuantity === 0.0) {
           this.veeErrors.items.push({
-            id: 101,
+            id: 103,
             vmId: this.veeErrors.vmId,
-            field: 'originalMinimumPrice',
+            field: 'transactedQuantity',
             msg: 'Este campo é obrigatório.',
             rule: 'required',
             scope: null,
           })
           isValid = false
-        } else if (this.form.originalMaximumPrice === 0) {
-          this.form.originalMaximumPrice = this.form.originalMinimumPrice
-        } else if (
-          this.form.originalMaximumPrice < this.form.originalMinimumPrice
-        ) {
-          this.veeErrors.items.push({
-            id: 102,
-            vmId: this.veeErrors.vmId,
-            field: 'originalMaximumPrice',
-            msg: 'O preço máximo deve ser maior ou igual ao preço mínimo.',
-            rule: 'required',
-            scope: null,
-          })
-          isValid = false
-        } else if (this.form.transaction === false) {
-          if (this.form.transactedQuantity === 0.0) {
-            this.veeErrors.items.push({
-              id: 103,
-              vmId: this.veeErrors.vmId,
-              field: 'transactedQuantity',
-              msg: 'Este campo é obrigatório.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-          }
-        } 
-        else if (!this.form.region) {
-            this.veeErrors.items.push({
-              id: 104,
-              vmId: this.veeErrors.vmId,
-              field: 'region',
-              msg: 'O município selecionado não faz parte de uma Região Castanheira.',
-              rule: 'required',
-              scope: null,
-            })
-            isValid = false
-        }else {
-          this.veeErrors.items = this.veeErrors.items.filter(
-            (error) => error.id !== 101 && error.id !== 102 && error.id !== 103 && error.id !== 104
-          )
+        }
+      } else if (!this.form.region) {
+        this.veeErrors.items.push({
+          id: 104,
+          vmId: this.veeErrors.vmId,
+          field: 'region',
+          msg: 'O município selecionado não faz parte de uma Região Castanheira.',
+          rule: 'required',
+          scope: null,
+        })
+        isValid = false
+      } else {
+        this.veeErrors.items = this.veeErrors.items.filter(
+          (error) =>
+            error.id !== 101 &&
+            error.id !== 102 &&
+            error.id !== 103 &&
+            error.id !== 104
+        )
+      }
+
+      if (this.form.transaction === true) {
+        this.form.transactedQuantity = 0
+      }
+
+      if (isValid) {
+        this.is_sending = true
+
+        if (this.isAdmin || this.isGlobalManager) {
+          this.form.organization = this.messengers.find(
+            (messenger) => messenger._id === this.form.messenger
+          ).organization._id
+        } else {
+          this.form.organization = this.currentUser.organization
         }
 
         if (this.form.transaction === true) {
           this.form.transactedQuantity = 0
         }
 
-        // #endregion validação
-
-        if (isValid) {
-          this.is_sending = true
-
-          // #region ajusta os campos do form
-
-          if (this.isAdmin || this.isGlobalManager) {
-            this.form.organization = this.messengers.find(
-              (messenger) => messenger._id === this.form.messenger
-            ).organization._id
-          } else {
-            this.form.organization = this.currentUser.organization
-          }
-
-          if (this.form.transaction === true) {
-            this.form.transactedQuantity = 0
-          }
-
-          if ((this.isManager && !this.form.messenger) || this.isMessenger) {
-            this.form.messenger = this.currentUser._id
-          }
-
-          this.transactedQuantity()
-
-          // #endregion ajusta os campos do form
-
-          // #region envia os dados preenchidos ao server
-
-          this.$axios({
-            method: this.isEditing() ? 'PUT' : 'POST',
-            url: this.isEditing()
-              ? 'price-informations/' + this.$route.params.id
-              : 'price-informations',
-            data: this.form,
-          })
-            .then((resp) => {
-              const category = resp.data
-              if (category && category._id) {
-                this.notify('informações de preço salvo com sucesso')
-                this.$router.replace('/operacional/informacao-preco')
-              }
-              this.is_sending = false
-            })
-            .catch(this.showError)
-
-          // #endregion envia os dados preenchidos ao server
+        if ((this.isManager && !this.form.messenger) || this.isMessenger) {
+          this.form.messenger = this.currentUser._id
         }
-      })
+
+        this.transactedQuantity()
+
+        const priceData = { ...this.form }
+
+        if (this.isOnline) {
+          // Online: enviar dados para o servidor
+          try {
+            const resp = await this.$axios({
+              method: this.isEditing() ? 'PUT' : 'POST',
+              url: this.isEditing()
+                ? 'price-informations/' + this.$route.params.id
+                : 'price-informations',
+              data: priceData,
+            })
+            const category = resp.data
+            if (category && category._id) {
+              this.notify('Informações de preço salvo com sucesso')
+              this.$router.replace('/operacional/informacao-preco')
+            }
+            this.is_sending = false
+          } catch (error) {
+            this.showError(error)
+            this.is_sending = false
+          }
+        } else {
+          // Offline: armazenar dados localmente
+          const pendingPrices =
+            (await localforage.getItem('pendingPrices')) || []
+          pendingPrices.push(priceData)
+          await localforage.setItem('pendingPrices', pendingPrices)
+          this.notify(
+            'Você está offline. O preço será enviado quando a conexão for restabelecida.'
+          )
+          this.is_sending = false
+          this.$router.replace('/operacional/informacao-preco')
+        }
+      }
     },
   },
 }

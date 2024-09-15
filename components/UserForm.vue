@@ -208,7 +208,7 @@ export default {
   },
   computed: {
     showPasswordFields() {
-      return (!this.isEditing() || this.isAdmin) || this.show_password
+      return !this.isEditing() || this.isAdmin || this.show_password
     },
   },
   async created() {
