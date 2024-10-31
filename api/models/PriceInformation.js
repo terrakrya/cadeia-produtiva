@@ -50,6 +50,9 @@ const PriceSchema = new mongoose.Schema(
     averagePrice: {
       type: Number,
     },
+    totalTransactionValue: {
+      type: Number,
+    },
     country: String,
     currency: String,
     square: String,
@@ -106,18 +109,35 @@ const getConversion = (measure) => {
 // pre save middleware
 PriceSchema.pre('save', function (next) {
   const conversion = getConversion(this.measure);
-  const min = new Decimal(this.originalMinimumPrice);
-  const max = new Decimal(this.originalMaximumPrice);
-
-  let quant = 1;
-  if (this.transactedQuantity) {
-    quant = this.transactedQuantity;
+  
+  if (this.transaction === "preço de mercado") {
+    // For market prices
+    const min = new Decimal(this.originalMinimumPrice);
+    const max = new Decimal(this.originalMaximumPrice);
+    
+    this.minimumPrice = min.div(conversion).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
+    this.maximumPrice = max.div(conversion).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
+    this.totalTransactionValue = null;
+  } else {
+    // For transactions (transação realizada)
+    const pricePerUnit = new Decimal(this.originalPrice);
+    const quantity = new Decimal(this.transactedQuantity);
+    
+    // Calculate total transaction value
+    this.totalTransactionValue = pricePerUnit.times(quantity).toNumber();
+    
+    // Set original min/max to the total transaction value
+    this.originalMinimumPrice = this.totalTransactionValue;
+    this.originalMaximumPrice = this.totalTransactionValue;
+    
+    // Convert price per unit to price per kg
+    const pricePerKg = pricePerUnit.div(conversion);
+    this.minimumPrice = pricePerKg.toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
+    this.maximumPrice = this.minimumPrice;
   }
-
-  this.minimumPrice = min.div(conversion).div(quant).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
-  this.maximumPrice = max.div(conversion).div(quant).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
+  
   this.averagePrice = new Decimal(this.minimumPrice).plus(this.maximumPrice).div(2).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
-
+  
   next();
 });
 
@@ -140,9 +160,11 @@ PriceSchema.methods.data = function () {
     transaction: this.transaction,
     transactedQuantity: this.transactedQuantity,
     originalPrice: this.originalPrice,
+    totalTransactionValue: this.totalTransactionValue,
     region: this.region,
   }
 }
+
 PriceSchema.methods.generateJWT = function () {
   const today = new Date()
   const exp = new Date(today)
