@@ -110,7 +110,7 @@ const getConversion = (measure) => {
 PriceSchema.pre('save', function (next) {
   const conversion = getConversion(this.measure);
   
-  if (this.transaction === "preço de mercado") {
+  if (this.transaction) {
     // For market prices
     const min = new Decimal(this.originalMinimumPrice);
     const max = new Decimal(this.originalMaximumPrice);
