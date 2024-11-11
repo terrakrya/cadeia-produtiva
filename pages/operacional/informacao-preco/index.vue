@@ -98,6 +98,12 @@
                   {{ data.item.maximumPrice | moeda }}/Kg
                 </small>
               </template>
+              <template #cell(totalTransactionValue)="data">
+                {{ data.item.totalTransactionValue | moeda }}
+              </template>
+              <template #cell(transactedQuantity)="data">
+                {{ data.item.transactedQuantity }}
+              </template>
               <template #cell(measure)="data">
                 {{ data.item.measure }}
               </template>
@@ -192,7 +198,16 @@ export default {
         label: 'Preço máximo',
         sortable: true,
       })
-
+      tableFields.push({
+        key: 'totalTransactionValue',
+        label: 'Valor da transação',
+        sortable: true,
+      })
+      tableFields.push({
+        key: 'transactedQuantity',
+        label: 'Quantidade transacionada',
+        sortable: true,
+      })
       tableFields.push({ key: 'measure', label: 'Unidade', sortable: true })
 
       tableFields.push({ key: 'actions', label: 'Ação', class: 'actions' })
