@@ -60,21 +60,26 @@
               <div class="button-transaction">
                 <b-button
                   variant="form"
-                  @click="form.transaction = true"
-                  :class="{ 'selected-button': form.transaction, 'mr-3': true }"
+                  @click="form.transaction = 'oferta de preços'"
+                  :class="{
+                    'selected-button': form.transaction === 'oferta de preços',
+                    'mr-3': true,
+                  }"
                   >Oferta de Preços
                 </b-button>
                 <b-button
                   variant="form"
-                  @click="form.transaction = false"
-                  :class="{ 'selected-button': !form.transaction }"
-                  >Preço da Venda
+                  @click="form.transaction = 'preço da venda'"
+                  :class="{
+                    'selected-button': form.transaction === 'preço da venda',
+                  }"
+                  >preço da venda
                 </b-button>
               </div>
             </div>
           </div>
           <div class="row">
-            <div v-if="!form.transaction" class="col-sm-4">
+            <div v-if="form.transaction === 'preço da venda'" class="col-sm-4">
               <b-form-group :label="`Preço por ${form.measure}`">
                 <money
                   v-model="form.originalPrice"
@@ -85,7 +90,7 @@
                 <field-error :msg="veeErrors" field="originalPrice" />
               </b-form-group>
             </div>
-            <div v-if="!form.transaction" class="col-sm-4">
+            <div v-if="form.transaction === 'preço da venda'" class="col-sm-4">
               <b-form-group label="Quantidade Vendida">
                 <b-form-input
                   v-model="form.transactedQuantity"
@@ -102,7 +107,10 @@
             </div>
           </div>
           <div class="row">
-            <div v-if="form.transaction" class="col-sm-4">
+            <div
+              v-if="form.transaction === 'oferta de preços'"
+              class="col-sm-4"
+            >
               <b-form-group label="Informe o menor preço">
                 <money
                   v-model="form.originalMinimumPrice"
@@ -113,7 +121,10 @@
                 <field-error :msg="veeErrors" field="originalMinimumPrice" />
               </b-form-group>
             </div>
-            <div v-if="form.transaction" class="col-sm-4">
+            <div
+              v-if="form.transaction === 'oferta de preços'"
+              class="col-sm-4"
+            >
               <b-form-group label="Informe o maior preço">
                 <money
                   v-model="form.originalMaximumPrice"
@@ -133,7 +144,7 @@
                 />
               </b-form-group>
             </div>
-            <div v-if="!form.transaction" class="col-sm-4">
+            <div v-if="form.transaction === 'preço da venda'" class="col-sm-4">
               <b-form-group label="Valor Total da Transação">
                 <money
                   :value="totalTransactionValue"
@@ -282,7 +293,7 @@ export default {
         product: '63ff4160ff65e9001b61c6af',
         uf: '',
         city: '',
-        transaction: true,
+        transaction: 'oferta de preços',
         transactedQuantity: '',
         organization: '',
         square: '',
@@ -319,7 +330,9 @@ export default {
     this.estados.sort(function (x, y) {
       return x.uf.localeCompare(y.uf)
     })
-    this.form.transaction = this.form.transactedQuantity ? false : true
+    this.form.transaction = this.form.transactedQuantity
+      ? 'preço da venda'
+      : 'oferta de preços'
 
     window.addEventListener('online', this.syncData)
     window.addEventListener('offline', this.updateOnlineStatus)
@@ -454,11 +467,11 @@ export default {
       const multiplyer = this.getMultiplyer(this.form.measure)
       let min = this.form.originalMinimumPrice
       let max = this.form.originalMaximumPrice
-      if (!this.form.transaction) {
+      if (this.form.transaction === 'preço da venda') {
         const finalValue = this.form.originalPrice * multiplyer
         this.form.originalMinimumPrice = finalValue
         this.form.originalMaximumPrice = finalValue
-      } else {
+      } else if (this.form.transaction === 'oferta de preços') {
         this.form.minimumPrice = +new Decimal(min).div(multiplyer).toFixed(2)
         this.form.maximumPrice = +new Decimal(max).div(multiplyer).toFixed(2)
       }
@@ -514,7 +527,7 @@ export default {
       if (
         (!this.form.originalMinimumPrice ||
           this.form.originalMinimumPrice === 0) &&
-        this.form.transaction
+        this.form.transaction === 'oferta de preços'
       ) {
         this.veeErrors.items.push({
           id: 101,
@@ -539,8 +552,11 @@ export default {
           scope: null,
         })
         isValid = false
-      } else if (this.form.transaction === false) {
-        if (this.form.transactedQuantity === 0.0) {
+      } else if (this.form.transaction === 'preço da venda') {
+        if (
+          !this.form.transactedQuantity ||
+          this.form.transactedQuantity === 0
+        ) {
           this.veeErrors.items.push({
             id: 103,
             vmId: this.veeErrors.vmId,
@@ -571,7 +587,7 @@ export default {
         )
       }
 
-      if (this.form.transaction === true) {
+      if (this.form.transaction === 'oferta de preços') {
         this.form.transactedQuantity = 0
       }
 
@@ -586,7 +602,7 @@ export default {
           this.form.organization = this.currentUser.organization
         }
 
-        if (this.form.transaction === true) {
+        if (this.form.transaction === 'oferta de preços') {
           this.form.transactedQuantity = 0
         }
 

@@ -88,58 +88,70 @@ const PriceSchema = new mongoose.Schema(
 const getConversion = (measure) => {
   switch (measure) {
     case 'Kg':
-      return 1;
+      return 1
     case 'Tonelada':
-      return 1000;
+      return 1000
     case 'Lata':
-      return 12;
+      return 12
     case 'Caixa':
-      return 24;
+      return 24
     case 'Hectolitro':
-      return 60;
+      return 60
     case 'Saca':
-      return 48;
+      return 48
     case 'Barrica':
-      return 72;
+      return 72
     default:
-      return 1;
+      return 1
   }
 }
 
 // pre save middleware
 PriceSchema.pre('save', function (next) {
-  const conversion = getConversion(this.measure);
-  
-  if (this.transaction) {
+  const conversion = getConversion(this.measure)
+
+  if (this.transaction === 'oferta de preços') {
     // For market prices
-    const min = new Decimal(this.originalMinimumPrice);
-    const max = new Decimal(this.originalMaximumPrice);
-    
-    this.minimumPrice = min.div(conversion).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
-    this.maximumPrice = max.div(conversion).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
-    this.totalTransactionValue = null;
-  } else {
+    const min = new Decimal(this.originalMinimumPrice)
+    const max = new Decimal(this.originalMaximumPrice)
+
+    this.minimumPrice = min
+      .div(conversion)
+      .toDecimalPlaces(10, Decimal.ROUND_HALF_UP)
+      .toNumber()
+    this.maximumPrice = max
+      .div(conversion)
+      .toDecimalPlaces(10, Decimal.ROUND_HALF_UP)
+      .toNumber()
+    this.totalTransactionValue = null
+  } else if (this.transaction === 'preço da venda') {
     // For transactions (transação realizada)
-    const pricePerUnit = new Decimal(this.originalPrice);
-    const quantity = new Decimal(this.transactedQuantity);
-    
+    const pricePerUnit = new Decimal(this.originalPrice)
+    const quantity = new Decimal(this.transactedQuantity)
+
     // Calculate total transaction value
-    this.totalTransactionValue = pricePerUnit.times(quantity).toNumber();
-    
-    // Set original min/max to the total transaction value
-    this.originalMinimumPrice = this.totalTransactionValue;
-    this.originalMaximumPrice = this.totalTransactionValue;
-    
+    this.totalTransactionValue = pricePerUnit.times(quantity).toNumber()
+
+    // Set original min/max to the original price
+    this.originalMinimumPrice = this.originalPrice
+    this.originalMaximumPrice = this.originalPrice
+
     // Convert price per unit to price per kg
-    const pricePerKg = pricePerUnit.div(conversion);
-    this.minimumPrice = pricePerKg.toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
-    this.maximumPrice = this.minimumPrice;
+    const pricePerKg = pricePerUnit.div(conversion)
+    this.minimumPrice = pricePerKg
+      .toDecimalPlaces(10, Decimal.ROUND_HALF_UP)
+      .toNumber()
+    this.maximumPrice = this.minimumPrice
   }
-  
-  this.averagePrice = new Decimal(this.minimumPrice).plus(this.maximumPrice).div(2).toDecimalPlaces(10, Decimal.ROUND_HALF_UP).toNumber();
-  
-  next();
-});
+
+  this.averagePrice = new Decimal(this.minimumPrice)
+    .plus(this.maximumPrice)
+    .div(2)
+    .toDecimalPlaces(10, Decimal.ROUND_HALF_UP)
+    .toNumber()
+
+  next()
+})
 
 PriceSchema.methods.data = function () {
   return {
