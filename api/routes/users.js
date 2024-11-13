@@ -135,8 +135,6 @@ router.post('/', auth.manager, async (req, res) => {
 
     if (req.body.password) {
       user.setPassword(req.body.password)
-    } else {
-      user.setPassword('MUDESUASENHA')
     }
 
     await user.save()
@@ -370,6 +368,58 @@ router.post('/password-reset/:token', async (req, res) => {
     res
       .status(422)
       .send('Ocorreu um erro ao redefinir a senha do usuário: ' + err.message)
+  }
+})
+
+router.post('/validate-first-access', async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.body.cpf })
+
+    if (user && !user.hash) {
+      const tokenData = moment().format('YYYY-MM-DDTHH:mm') + '+' + user.id
+      const token = Buffer.from(tokenData).toString('base64')
+      return res.json({ valid: true, token })
+    }
+
+    return res.json({ valid: false })
+  } catch (err) {
+    res.status(422).send('Erro ao validar CPF')
+  }
+})
+
+router.get('/first-access/:token/valid', async (req, res) => {
+  try {
+    const isValid = (await getTokenData(req.params.token)).valid
+    return res.json(isValid)
+  } catch (err) {
+    return res.send(false)
+  }
+})
+
+router.post('/first-access/:token', async (req, res) => {
+  try {
+    const token = req.params.token
+    const tokenData = await getTokenData(token)
+
+    if (
+      !req.body.password ||
+      req.body.password !== req.body.password_confirmation
+    ) {
+      return res.status(422).send('Confira as senhas informadas')
+    }
+
+    if (tokenData.valid) {
+      const user = await User.findOne({ _id: tokenData.userId })
+      if (user) {
+        user.setPassword(req.body.password)
+        await user.save()
+        return res.json(user)
+      }
+    }
+
+    return res.status(422).send('Link expirado')
+  } catch (err) {
+    res.status(422).send('Erro ao definir senha: ' + err.message)
   }
 })
 

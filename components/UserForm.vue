@@ -138,7 +138,7 @@
             </div>
           </div>
 
-          <div v-if="showPasswordFields" class="form-row">
+          <div v-if="showPasswordFields && isEditing()" class="form-row">
             <div class="col-md-6 col-sm-12">
               <b-form-group label="Senha">
                 <b-form-input

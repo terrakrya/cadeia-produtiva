@@ -43,6 +43,14 @@
                   Entrar
                 </button>
                 <br />
+                <div class="text-center">
+                  <NuxtLink
+                    to="/primeiro-acesso"
+                    class="btn btn-white btn-lg btn-block"
+                  >
+                    Primeiro Acesso
+                  </NuxtLink>
+                </div>
               </form>
             </b-card-body>
           </b-card>
