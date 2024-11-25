@@ -37,6 +37,13 @@
                     </span> 
                     e selecione "Adicionar à tela inicial"
                   </li>
+                  <li v-if="!isIOS && !isAndroid" class="mb-2">
+                    No seu navegador, procure pelo ícone de instalação 
+                    <span class="text-primary">
+                      <font-awesome-icon icon="fa-solid fa-download" />
+                    </span> 
+                    na barra de endereço ou no menu do navegador e selecione "Instalar" ou "Adicionar à tela inicial"
+                  </li>
                 </ul>
               </div>
             </b-card-body>
