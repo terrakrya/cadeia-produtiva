@@ -35,7 +35,7 @@
                     <span class="text-primary">
                       <font-awesome-icon icon="fa-solid fa-ellipsis-vertical" />
                     </span> 
-                    e selecione "Adicionar à tela inicial"
+                    e selecione "Adicionar à tela inicial" ou "Instalar aplicativo"
                   </li>
                   <li v-if="!isIOS && !isAndroid" class="mb-2">
                     No seu navegador, procure pelo ícone de instalação 
