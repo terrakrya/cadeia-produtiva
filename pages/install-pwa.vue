@@ -14,7 +14,7 @@
               
               <!-- Install button - only shows when prompt is available -->
               <div v-if="deferredPrompt" class="mt-4">
-                <b-button variant="primary" class="btn-lg" @click="installPWA">
+                <b-button class="btn btn-white btn-lg btn-block" @click="installPWA">
                   Instalar Aplicativo
                 </b-button>
               </div>
@@ -105,15 +105,4 @@ export default {
   }
 }
 </script>
-
-<style>
-.install-pwa {
-  text-align: center;
-  padding: 20px;
-}
-
-.btn-primary {
-  margin-bottom: 1rem;
-}
-</style>
   
