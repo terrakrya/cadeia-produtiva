@@ -24,14 +24,14 @@
                 <h4>Como instalar:</h4>
                 <ul class="text-left">
                   <li v-if="isIOS" class="mb-2">
-                    No Safari, toque no ícone de compartilhamento 
+                    Abra o menu do navegador 
                     <span class="text-primary">
                       <font-awesome-icon icon="fa-solid fa-share-from-square" />
                     </span> 
                     e selecione "Adicionar à Tela de Início"
                   </li>
                   <li v-if="isAndroid" class="mb-2">
-                    No Chrome, toque no menu 
+                    No navegador, abra o menu (⋮ ou ≡) no canto da tela
                     <span class="text-primary">
                       <font-awesome-icon icon="fa-solid fa-ellipsis-vertical" />
                     </span> 
