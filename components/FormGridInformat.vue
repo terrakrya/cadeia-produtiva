@@ -13,6 +13,12 @@
     <template #cell(to)="data">
       {{ data.item.to }}
     </template>
+    <template #cell(messenger)="data">
+      {{ data.item.messenger }}
+    </template>
+    <template #cell(region)="data">
+      {{ data.item.region || 'Não informado' }}
+    </template>
     <template #cell(date)="data">
       {{ data.item.date }}
     </template>
@@ -42,6 +48,14 @@ export default {
         {
           key: 'to',
           label: 'Para',
+        },
+        {
+          key: 'messenger',
+          label: 'Mensageiro',
+        },
+        {
+          key: 'region',
+          label: 'Região Castanheira',
         },
         {
           key: 'date',

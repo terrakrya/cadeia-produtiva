@@ -77,7 +77,7 @@
                   v-model="filters.city"
                   class="form-control"
                   :options="cidades"
-                  @input="loadPracas(true)"
+                  @input="applyFilters"
                 />
               </b-form-group>
             </b-col>
@@ -118,13 +118,12 @@
               </b-form-group>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Região imediata">
-                <input
-                  v-model="filters.square"
-                  type="text"
-                  readonly
+              <b-form-group label="Região Castanheira">
+                <b-form-select
+                  v-model="filters.region"
+                  :options="regionOptions"
+                  @input="applyFilters"
                   class="form-control"
-                  text-field="nome"
                 />
               </b-form-group>
             </b-col>
@@ -166,7 +165,7 @@ import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
-import pracas from '@/data/praca.json'
+import regions from '@/data/regioes-castanheiras.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
 export default {
   components: {
@@ -181,28 +180,38 @@ export default {
       filters: {
         uf: '',
         city: '',
+        region: '',
         square: null,
-        from: '',
         to: '',
         product: '',
       },
       buyerPositions,
       estados,
       cidades,
-      pracas,
+      regionOptions: [],
       priceInformations: [],
       products: [],
     }
   },
 
   async created() {
-    if (this.$auth.user.role === 'mensageiro'  || this.$auth.user.role === 'gestor') {
-        this.$router.push( '/painel')
+    if (
+      this.$auth.user.role === 'mensageiro' ||
+      this.$auth.user.role === 'gestor'
+    ) {
+      this.$router.push('/painel')
     }
     await this.loadCities(false)
-    await this.loadPracas(false)
     await this.applyFilters()
     await this.loadProducts()
+
+    this.regionOptions = [
+      { value: '', text: 'Todas as regiões' },
+      ...[...new Set(regions.map((r) => r.regiaoCastanheira))].map((reg) => ({
+        value: reg,
+        text: reg,
+      })),
+    ]
   },
   methods: {
     async loadCities(loadFilters) {
@@ -221,28 +230,6 @@ export default {
         if (!this.cidades.find((c) => c === this.filters.city)) {
           this.filters.city = ''
         }
-      }
-
-      if (loadFilters) {
-        await this.applyFilters()
-      }
-    },
-
-    // filtra as regiões imediatas conforme a cidade selecionada
-    async loadPracas(loadFilters) {
-      if (this.filters.city) {
-        const cidade = this.filters.city
-        const pracas = this.pracas.filter(function (item) {
-          return item.cidade === cidade
-        })
-        if (pracas && pracas.length > 0) {
-          this.filters.square = pracas[0].nome
-        }
-        if (this.filters.city === 'Selecione a cidade') {
-          this.filters.square = ''
-        }
-      } else {
-        this.filters.square = null
       }
 
       if (loadFilters) {
@@ -278,6 +265,13 @@ export default {
       if (this.filters.to) {
         filters.to = this.filters.to
       }
+
+      if (this.filters.region) {
+        filters.region = this.filters.region
+      }
+
+      console.log('Filtros Aplicados', filters)
+
       this.priceInformations = await this.$axios.$get(
         'price-informations/data-published',
         {

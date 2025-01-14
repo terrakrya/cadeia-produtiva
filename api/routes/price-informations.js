@@ -22,6 +22,8 @@ const buildFilters = (filters) => {
     if (filters.from) query.createdAt.$gte = new Date(filters.from)
     if (filters.to) query.createdAt.$lte = new Date(filters.to)
   }
+  if (filters.uf) query.uf = filters.uf
+  if (filters.city) query.city = filters.city
 
   return query
 }
@@ -112,33 +114,70 @@ router.get('/summary', auth.authenticated, async (req, res) => {
 
 // Route for getting data published
 router.get('/data-published', auth.authenticated, async (req, res) => {
-  const query = buildFilters(JSON.parse(req.query.filters || '{}'))
-
   try {
-    const priceListAgr = await Price.aggregate([
-      { $match: query },
+    // Extrai os filtros do front-end
+    const { region, ...otherFilters } = JSON.parse(req.query.filters || '{}')
+
+    // Monta o $match inicial para filtros como uf, city, etc.
+    const match = buildFilters(otherFilters)
+    console.log('Match gerado:', match)
+
+    // Monta o pipeline base
+    const pipeline = [
+      { $match: match },
       { $sort: { createdAt: -1 } },
       {
-        $group: {
-          _id: {
-            date: { $dateToString: { format: '%d/%m/%Y', date: '$createdAt' } },
-            from: '$buyerPositionSeller',
-            to: '$buyerPositionBuyer',
-          },
-          minimumPrice: { $min: '$minimumPrice' },
-          maximumPrice: { $max: '$maximumPrice' },
+        $lookup: {
+          from: 'users',
+          localField: 'messenger',
+          foreignField: '_id',
+          as: 'messengerDetails',
         },
       },
-    ])
+      {
+        $unwind: {
+          path: '$messengerDetails',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+    ]
 
-    const priceList = priceListAgr.map((obj) => ({
-      date: obj._id.date,
-      from: obj._id.from,
-      to: obj._id.to,
-      minimumPrice: obj.minimumPrice,
-      maximumPrice: obj.maximumPrice,
-      averagePrice: (obj.minimumPrice + obj.maximumPrice) / 2,
-    }))
+    // Se o front-end passou 'region', filtramos no messengerDetails.region
+    if (region) {
+      pipeline.push({ $match: { 'messengerDetails.region': region } })
+    }
+
+    // Agora fazemos o group para consolidar os dados
+    pipeline.push({
+      $group: {
+        _id: {
+          date: { $dateToString: { format: '%d/%m/%Y', date: '$createdAt' } },
+          from: '$buyerPositionSeller',
+          to: '$buyerPositionBuyer',
+        },
+        minimumPrice: { $min: '$minimumPrice' },
+        maximumPrice: { $max: '$maximumPrice' },
+        messengerName: { $first: '$messengerDetails.name' },
+        region: { $first: '$messengerDetails.region' },
+      },
+    })
+
+    // Executa o pipeline
+    const priceListAgr = await Price.aggregate(pipeline)
+
+    // Monta a resposta final
+    const priceList = priceListAgr.map(
+      ({ _id, minimumPrice, maximumPrice, messengerName, region }) => ({
+        date: _id.date,
+        from: _id.from,
+        to: _id.to,
+        minimumPrice,
+        maximumPrice,
+        averagePrice: (minimumPrice + maximumPrice) / 2,
+        messenger: messengerName || 'Não informado',
+        region: region || 'Não informado',
+      })
+    )
 
     res.json(priceList)
   } catch (err) {
