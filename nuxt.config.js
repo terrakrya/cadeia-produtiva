@@ -85,6 +85,8 @@ export default {
     workbox: {
       offlineStrategy: 'NetworkFirst',
       offlineAnalytics: true,
+      clientsClaim: true,
+      skipWaiting: true,
       config: {
         debug: true,
       },
