@@ -8,6 +8,7 @@
           <b-tab title="Meu perfil">
             <b-form v-if="!is_loading" @submit.prevent="save">
               <h4 class="mb-4">Complete seu perfil</h4>
+
               <b-row>
                 <b-col sm="4">
                   <b-form-group label="Nome Completo *">
@@ -20,6 +21,7 @@
                     <field-error :msg="veeErrors" field="name" />
                   </b-form-group>
                 </b-col>
+
                 <b-col sm="4">
                   <b-form-group label="Data de nascimento *">
                     <b-form-input
@@ -32,6 +34,7 @@
                     <field-error :msg="veeErrors" field="birthDate" />
                   </b-form-group>
                 </b-col>
+
                 <b-col sm="4">
                   <b-form-group label="Apelido">
                     <b-form-input
@@ -117,6 +120,47 @@
                 </b-col>
               </b-row>
 
+              <b-row v-if="isAdmin || isGlobalManager">
+                <b-col sm="4">
+                  <!-- NOTE: We now use 'value-field="uf"' so that 'form.uf' stores the sigla -->
+                  <b-form-group label="Estado de Atuação *">
+                    <b-form-select
+                      v-model="form.uf"
+                      class="form-control"
+                      :options="estados"
+                      value-field="uf"
+                      text-field="nome"
+                      @input="loadCities()"
+                    />
+                  </b-form-group>
+                </b-col>
+
+                <b-col sm="4">
+                  <b-form-group label="Município de Referência *">
+                    <b-form-select
+                      v-model="form.city"
+                      class="form-control"
+                      :options="cidades"
+                      value-field="nome"
+                      text-field="nome"
+                      @input="loadRegion()"
+                    />
+                  </b-form-group>
+                </b-col>
+
+                <b-col sm="4">
+                  <b-form-group label="Região Castanheira *">
+                    <input
+                      v-model="form.region"
+                      type="text"
+                      name="region"
+                      readonly
+                      class="form-control"
+                    />
+                  </b-form-group>
+                </b-col>
+              </b-row>
+
               <form-submit :sending="is_sending" />
             </b-form>
           </b-tab>
@@ -161,6 +205,9 @@ import tipoDeUnidade from '@/data/tipo-de-unidade'
 import buyerPositions from '@/data/posicao-do-comprador'
 import genero from '@/data/generos.json'
 import identidade from '@/data/identidade-cultural.json'
+import estados from '@/data/estados.json'
+import municipios from '@/data/municipios.json'
+import regioes from '@/data/regioes-castanheiras.json'
 
 export default {
   components: {
@@ -173,6 +220,9 @@ export default {
       genero,
       tipoDeUnidade,
       buyerPositions,
+      estados,
+      municipios,
+      cidades: [],
       form: {
         unitOfMeasurement: '',
         name: '',
@@ -186,7 +236,12 @@ export default {
         identity: '',
         gender: '',
         birthDate: '',
+        uf: '',        // Will store the state sigla: "AC", "AM", etc.
+        city: '',
+        region: '',
       },
+      is_loading: false,
+      is_sending: false,
     }
   },
   created() {
@@ -210,6 +265,7 @@ export default {
 
       return rules.join('|')
     },
+
     async edit(id) {
       this.is_loading = true
       try {
@@ -220,26 +276,35 @@ export default {
         this.form.email = dados.email
         this.form.username = dados.username
         this.form.cellphone = dados.cellphone
-        this.form.password = dados.password
-        this.form.password_confirmation = dados.password_confirmation
+        this.form.password = '' // não carregamos senhas
+        this.form.password_confirmation = ''
         this.form.buyerPosition = dados.buyerPosition
         this.form.birthDate = dados.birthDate
-
         this.form.nickname = dados.nickname
         this.form.identity = dados.identity
         this.form.gender = dados.gender
-        this.form.birthDate = dados.birthDate
+
+        if (this.isGlobalManager || this.isAdmin) {
+          this.form.uf = dados.uf 
+          this.form.city = dados.city
+          this.form.region = dados.region
+          if (this.form.uf) {
+            this.loadCities()
+          }
+        }
       } catch (e) {
         this.showError(e)
+      } finally {
+        this.is_loading = false
       }
-
-      this.is_loading = false
     },
+
 
     async isNotUniqueEmail(id, email) {
       return !(await this.$axios.$post('users/unique-email', { id, email }))
     },
 
+    // Check uniqueness of cellphone
     async isNotUniqueCellphone(id, cellphone) {
       return !(await this.$axios.$post('users/unique-cellphone', {
         id,
@@ -249,8 +314,7 @@ export default {
 
     save() {
       this.$validator.validate().then(async (isValid) => {
-        // valida a email
-        if (this.form.email && this.activeTabKey === 0) {
+        if (this.activeTabKey === 0 && this.form.email) {
           const id = this.isEditing() ? this.$route.params.id : null
 
           // formato do email
@@ -277,7 +341,6 @@ export default {
             })
             isValid = false
           }
-          // unicidade do Celular
           else if (await this.isNotUniqueCellphone(id, this.form.cellphone)) {
             this.veeErrors.items.push({
               id: 105,
@@ -289,19 +352,41 @@ export default {
             })
             isValid = false
           }
+          else if (
+            (this.isAdmin || this.isGlobalManager) &&
+            !this.form.region
+          ) {
+            this.veeErrors.items.push({
+              id: 106,
+              vmId: this.veeErrors.vmId,
+              field: 'region',
+              msg: 'Município não vinculado a um Território.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+          } else {
+            this.veeErrors.items = this.veeErrors.items.filter(
+              (error) =>
+                error.id !== 102 &&
+                error.id !== 103 &&
+                error.id !== 105 &&
+                error.id !== 106
+            )
+          }
         } else {
           this.veeErrors.items = this.veeErrors.items.filter(
             (error) =>
               error.id !== 102 &&
               error.id !== 103 &&
               error.id !== 104 &&
-              error.id !== 105
+              error.id !== 105 &&
+              error.id !== 106
           )
         }
 
         if (isValid) {
           this.is_sending = true
-
           this.$axios({
             method: 'PUT',
             url: 'users/' + this.$route.params.id + '/profile',
@@ -309,22 +394,71 @@ export default {
           })
             .then((resp) => {
               const user = resp.data
-
               if (user && user._id) {
                 if (user._id === this.currentUser._id) {
                   this.$auth.setUser(user)
                 }
-
                 this.notify('Dados salvos com sucesso')
-
                 this.$router.push('/')
               }
-
+            })
+            .catch((err) => {
+              this.showError(err)
+            })
+            .finally(() => {
               this.is_sending = false
             })
-            .catch(this.showError)
         }
       })
+    },
+
+    loadCities() {
+      if (this.form.uf) {
+        const estado = this.estados.find((est) => est.uf === this.form.uf)
+        if (estado) {
+          this.cidades = this.municipios.filter(
+            (item) => item.codigo_uf === estado.codigo_uf
+          )
+        } else {
+          this.cidades = []
+        }
+      } else {
+        this.cidades = []
+      }
+
+      if (this.form.city && this.cidades.length) {
+        if (!this.cidades.find((c) => c.nome === this.form.city)) {
+          this.form.city = ''
+          this.form.region = ''
+        }
+      }
+    },
+
+    loadRegion() {
+      if (this.form.city) {
+        const regiao = regioes.filter(
+          (item) => item.municipio === this.form.city
+        )
+        if (regiao && regiao.length > 0) {
+          this.form.region = regiao[0].regiaoCastanheira
+        } else {
+          this.form.region = ''
+        }
+      } else {
+        this.form.region = ''
+      }
+    },
+
+    isEditing() {
+      return !!this.$route.params.id
+    },
+  },
+  computed: {
+    isGlobalManager() {
+      return this.currentUser && this.currentUser.role === 'gestor-global'
+    },
+    isAdmin() {
+      return this.currentUser && this.currentUser.role === 'admin'
     },
   },
 }
