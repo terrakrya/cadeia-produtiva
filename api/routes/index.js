@@ -5,6 +5,7 @@ const auth = require('../config/auth')
 const User = mongoose.model('User')
 const ObjectId = mongoose.Types.ObjectId
 
+router.use('/services', require('./services'))
 router.use('/users', require('./users'))
 router.use('/products', require('./products'))
 router.use('/categories', require('./categories'))
