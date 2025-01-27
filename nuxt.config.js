@@ -34,6 +34,7 @@ export default {
     '~/plugins/vee-validate',
     '~/plugins/v-money',
     '~/plugins/fontawesome.js',
+    '~/plugins/sw-update-client.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -84,18 +85,15 @@ export default {
     },
     workbox: {
       offlineStrategy: 'NetworkFirst',
-      offlineAnalytics: true,
+      offlineAnalytics: false,
       clientsClaim: true,
       skipWaiting: true,
-      config: {
-        debug: true,
-      },
-      // runtimeCaching: [
-      //   {
-      //     urlPattern: '.*/api/.*',
-      //     handler: 'NetworkOnly',
-      //   },
-      // ],
+      runtimeCaching: [
+        {
+          urlPattern: '.*/api/.*',
+          handler: 'NetworkOnly',
+        }
+      ]
     },
   },
 
