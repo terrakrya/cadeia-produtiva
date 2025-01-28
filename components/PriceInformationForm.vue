@@ -73,7 +73,7 @@
                   :class="{
                     'selected-button': form.transaction === 'preço da venda',
                   }"
-                  >preço da venda
+                  >Preço da Venda
                 </b-button>
               </div>
             </div>
