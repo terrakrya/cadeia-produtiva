@@ -24,13 +24,13 @@
       {{ data.item.date }}
     </template>
     <template #cell(averagePrice)="data">
-      {{ data.item.averagePrice | moeda }}
+      {{ convertPrice(data.item.averagePrice) | moeda }}
     </template>
     <template #cell(price)="data">
-      {{ data.item.minimumPrice | moeda }}
-      /
-      {{ data.item.maximumPrice | moeda }} </template
-    >]
+      {{ convertPrice(data.item.minimumPrice) | moeda }}
+      / 
+      {{ convertPrice(data.item.maximumPrice) | moeda }}
+    </template>
   </b-table>
 </template>
 <script>
@@ -43,7 +43,12 @@ export default {
     return {
       sortBy: 'date',
       sortDesc: true,
-      table_fields: [
+    }
+  },
+  computed: {
+    table_fields() {
+      const unit = this.$auth.user.unitOfMeasurement;
+      return [
         {
           key: 'from',
           label: 'De',
@@ -73,16 +78,31 @@ export default {
         },
         {
           key: 'averagePrice',
-          label: 'Preço médio',
+          label: `Preço médio (${unit})`,
           sortable: true
         },
         {
           key: 'price',
-          label: 'Mínimo/Máximo',
-          sortable: false // Não ordenável por ser um campo composto
+          label: `Mínimo/Máximo (${unit})`,
+          sortable: false
         }
-      ],
+      ];
     }
   },
+  methods: {
+    convertPrice(price) {
+      const unit = this.$auth.user.unitOfMeasurement;
+      const conversionRates = {
+        'Kg': 1,
+        'Tonelada': 1000,
+        'Lata': 12,
+        'Caixa': 24,
+        'Hectolitro': 60,
+        'Saca': 48,
+        'Barrica': 72
+      };
+      return price * (conversionRates[unit] || 1);
+    }
+  }
 }
 </script>
