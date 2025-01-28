@@ -29,7 +29,7 @@ if ('serviceWorker' in navigator) {
   
     // Optional: Less intrusive notification
     window.addEventListener('sw-updated', () => {
-      if (confirm('New version available! Reload now?')) {
+      if (confirm('Nova versão disponível! Deseja atualizar?')) {
         window.location.reload();
       }
     });
