@@ -4,7 +4,8 @@
     class="table b-table b-table-stacked-md table-striped"
     :fields="table_fields"
     :items="list"
-    :sort-by="'date'"
+    :sort-by.sync="sortBy"
+    :sort-desc.sync="sortDesc"
     stacked="lg"
   >
     <template #cell(from)="data">
@@ -40,35 +41,46 @@ export default {
   },
   data() {
     return {
+      sortBy: 'date',
+      sortDesc: true,
       table_fields: [
         {
           key: 'from',
           label: 'De',
+          sortable: true
         },
         {
           key: 'to',
           label: 'Para',
+          sortable: true
         },
         {
           key: 'messenger',
           label: 'Mensageiro',
+          sortable: true
         },
         {
           key: 'region',
           label: 'Região Castanheira',
+          sortable: true
         },
         {
           key: 'date',
           label: 'Data',
+          sortable: true,
+          sortByFormatted: true,
+          formatter: value => new Date(value.split('/').reverse().join('-'))
         },
         {
           key: 'averagePrice',
           label: 'Preço médio',
+          sortable: true
         },
         {
           key: 'price',
           label: 'Mínimo/Máximo',
-        },
+          sortable: false // Não ordenável por ser um campo composto
+        }
       ],
     }
   },

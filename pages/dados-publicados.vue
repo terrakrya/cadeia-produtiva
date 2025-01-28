@@ -270,8 +270,6 @@ export default {
         filters.region = this.filters.region
       }
 
-      console.log('Filtros Aplicados', filters)
-
       this.priceInformations = await this.$axios.$get(
         'price-informations/data-published',
         {
@@ -280,13 +278,6 @@ export default {
           },
         }
       )
-      this.priceInformations.sort(function (a, b) {
-        if (a.date > b.date) {
-          return -1
-        } else {
-          return true
-        }
-      })
     },
   },
 }
