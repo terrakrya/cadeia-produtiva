@@ -246,19 +246,31 @@ export default {
         console.error('Erro ao carregar organização:', error)
       }
     },
-    edit(id) {
-      this.is_loading = true
-      this.$axios
-        .get('users/' + id)
-        .then((response) => {
-          this.apiDataToForm(this.form, response.data)
-          this.form.cellphone = this.formatValue(
-            this.form.cellphone,
-            '(##) #####-####'
-          )
-          this.is_loading = false
-        })
-        .catch(this.showError)
+    async edit(id) {
+      this.is_loading = true;
+      try {
+        const response = await this.$axios.get(`users/${id}`);
+        const existingData = response.data;
+        
+        this.form = {
+          ...this.form,
+          ...existingData,
+          password: '',
+          password_confirmation: '',
+          cellphone: this.formatPhoneNumber(existingData.cellphone)
+        };
+        
+        if (existingData.uf) {
+          this.loadCities();
+        }
+        if (existingData.city) {
+          this.loadRegions();
+        }
+      } catch (error) {
+        this.showError(error);
+      } finally {
+        this.is_loading = false;
+      }
     },
     save() {
       this.$validator.validate().then(async (isValid) => {
@@ -412,6 +424,9 @@ export default {
         id,
         cellphone,
       }))
+    },
+    formatPhoneNumber(number) {
+      return number.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
     },
   },
 }

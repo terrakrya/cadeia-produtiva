@@ -158,36 +158,33 @@ router.put('/:id', auth.authenticated, async (req, res) => {
 
     const user = await User.findOne(query)
 
-    if (user) {
-      user.username = req.body.username
-      user.email = req.body.email
-      user.name = req.body.name
-      user.role = req.body.role
-      user.cellphone = req.body.cellphone.replace(/\D/g, '')
-      user.cpf = req.body.cpf
-      user.unitOfMeasurement = req.body.unitOfMeasurement
-      user.buyerPosition = req.body.buyerPosition
-      user.currency = 'real'
-      user.country = 'BR'
-      user.nickname = req.body.nickname
-      user.organization = req.body.organization
-      user.uf = req.body.uf
-      user.city = req.body.city
-      user.birthDate = req.body.birthDate
-      user.gender = req.body.gender
-      user.identity = req.body.identity
-      user.region = req.body.region
+    if (!user) return res.status(404).send('Usuário não encontrado')
 
-      if (req.body.password) {
-        user.setPassword(req.body.password)
+    // Atualiza apenas campos presentes no request
+    const updatableFields = [
+      'username', 'email', 'name', 'role', 'cellphone', 'cpf',
+      'unitOfMeasurement', 'buyerPosition', 'nickname', 'organization',
+      'uf', 'city', 'birthDate', 'gender', 'identity', 'region'
+    ];
+
+    updatableFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        user[field] = field === 'cellphone' 
+          ? req.body[field].replace(/\D/g, '')
+          : req.body[field];
       }
+    });
 
-      await user.save()
+    // Campos fixos (não alteráveis)
+    user.currency = 'real';
+    user.country = 'BR';
 
-      return res.send(user)
-    } else {
-      res.status(422).send('Usuário não encontrado')
+    if (req.body.password) {
+      user.setPassword(req.body.password);
     }
+
+    await user.save();
+    return res.send(user);
   } catch (err) {
     res
       .status(422)
