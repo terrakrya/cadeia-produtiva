@@ -22,6 +22,11 @@ const buildFilters = (filters) => {
     if (filters.dateFrom) query.createdAt.$gte = new Date(filters.dateFrom)
     if (filters.dateTo) query.createdAt.$lte = new Date(filters.dateTo)
   }
+  if (filters.from || filters.to) {
+    query.createdAt = {}
+    if (filters.from) query.createdAt.$gte = new Date(filters.from)
+    if (filters.to) query.createdAt.$lte = new Date(filters.to)
+  }
   if (filters.buyerFrom) query.buyerPositionSeller = filters.buyerFrom
   if (filters.buyerTo) query.buyerPositionBuyer = filters.buyerTo
   if (filters.uf) query.uf = filters.uf
