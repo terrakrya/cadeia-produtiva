@@ -86,7 +86,7 @@
             <b-col sm="4">
               <b-form-group label="Data inicial">
                 <b-form-datepicker
-                  v-model="filters.from"
+                  v-model="filters.dateFrom"
                   class="date"
                   name="date_time"
                   locale="pt-BR"
@@ -103,7 +103,7 @@
             <b-col sm="4">
               <b-form-group label="Data final">
                 <b-form-datepicker
-                  v-model="filters.to"
+                  v-model="filters.dateTo"
                   class="date"
                   name="date_time"
                   locale="pt-BR"
@@ -132,18 +132,20 @@
             <b-col sm="6">
               <b-form-group label="De ">
                 <b-form-select
-                  v-model="filters.from"
+                  v-model="filters.buyerFrom"
                   class="form-control"
                   :options="buyerPositions"
+                  @input="applyFilters"
                 />
               </b-form-group>
             </b-col>
             <b-col sm="6">
               <b-form-group label="Para">
                 <b-form-select
-                  v-model="filters.to"
+                  v-model="filters.buyerTo"
                   class="form-control"
                   :options="buyerPositions"
+                  @input="applyFilters"
                 />
               </b-form-group>
             </b-col>
@@ -182,7 +184,10 @@ export default {
         city: '',
         region: '',
         square: null,
-        to: '',
+        dateFrom: '',
+        dateTo: '',
+        buyerFrom: '',
+        buyerTo: '',
         product: '',
       },
       buyerPositions,
@@ -258,12 +263,20 @@ export default {
         filters.product = this.filters.product
       }
 
-      if (this.filters.from) {
-        filters.from = this.filters.from
+      if (this.filters.dateFrom) {
+        filters.dateFrom = this.filters.dateFrom
       }
 
-      if (this.filters.to) {
-        filters.to = this.filters.to
+      if (this.filters.dateTo) {
+        filters.dateTo = this.filters.dateTo
+      }
+
+      if (this.filters.buyerFrom && this.filters.buyerFrom !== '') {
+        filters.buyerFrom = this.filters.buyerFrom
+      }
+
+      if (this.filters.buyerTo && this.filters.buyerTo !== '') {
+        filters.buyerTo = this.filters.buyerTo
       }
 
       if (this.filters.region) {

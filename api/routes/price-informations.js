@@ -17,11 +17,13 @@ const buildFilters = (filters) => {
   if (filters.product) query.product = filters.product
   if (filters.regions) query.region = filters.regions
   if (filters.buyerPosition) query.buyerPositionBuyer = filters.buyerPosition
-  if (filters.from || filters.to) {
+  if (filters.dateFrom || filters.dateTo) {
     query.createdAt = {}
-    if (filters.from) query.createdAt.$gte = new Date(filters.from)
-    if (filters.to) query.createdAt.$lte = new Date(filters.to)
+    if (filters.dateFrom) query.createdAt.$gte = new Date(filters.dateFrom)
+    if (filters.dateTo) query.createdAt.$lte = new Date(filters.dateTo)
   }
+  if (filters.buyerFrom) query.buyerPositionSeller = filters.buyerFrom
+  if (filters.buyerTo) query.buyerPositionBuyer = filters.buyerTo
   if (filters.uf) query.uf = filters.uf
   if (filters.city) query.city = filters.city
 
@@ -115,12 +117,20 @@ router.get('/summary', auth.authenticated, async (req, res) => {
 // Route for getting data published
 router.get('/data-published', auth.authenticated, async (req, res) => {
   try {
-    // Extrai os filtros do front-end
     const { region, ...otherFilters } = JSON.parse(req.query.filters || '{}')
-
-    // Monta o $match inicial para filtros como uf, city, etc.
+    
+    // Add product filter directly to match
     const match = buildFilters(otherFilters)
-    console.log('Match gerado:', match)
+    if (otherFilters.product) {
+      match.product = mongoose.Types.ObjectId(otherFilters.product)
+    }
+
+    // Add date filtering to match
+    if (otherFilters.dateFrom || otherFilters.dateTo) {
+      match.createdAt = {}
+      if (otherFilters.dateFrom) match.createdAt.$gte = new Date(otherFilters.dateFrom)
+      if (otherFilters.dateTo) match.createdAt.$lte = new Date(otherFilters.dateTo)
+    }
 
     // Monta o pipeline base
     const pipeline = [
@@ -152,8 +162,8 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
       $group: {
         _id: {
           date: { $dateToString: { format: '%d/%m/%Y', date: '$createdAt' } },
-          from: '$buyerPositionSeller',
-          to: '$buyerPositionBuyer',
+          buyerFrom: '$buyerPositionSeller',
+          buyerTo: '$buyerPositionBuyer',
         },
         minimumPrice: { $min: '$minimumPrice' },
         maximumPrice: { $max: '$maximumPrice' },
@@ -169,8 +179,8 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
     const priceList = priceListAgr.map(
       ({ _id, minimumPrice, maximumPrice, messengerName, region }) => ({
         date: _id.date,
-        from: _id.from,
-        to: _id.to,
+        buyerFrom: _id.buyerFrom,
+        buyerTo: _id.buyerTo,
         minimumPrice,
         maximumPrice,
         averagePrice: (minimumPrice + maximumPrice) / 2,

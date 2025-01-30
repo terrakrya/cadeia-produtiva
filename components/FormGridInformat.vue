@@ -9,10 +9,10 @@
     stacked="lg"
   >
     <template #cell(from)="data">
-      {{ data.item.from }}
+      {{ data.item.buyerFrom }}
     </template>
     <template #cell(to)="data">
-      {{ data.item.to }}
+      {{ data.item.buyerTo }}
     </template>
     <template #cell(messenger)="data">
       {{ data.item.messenger }}
@@ -50,12 +50,12 @@ export default {
       const unit = this.$auth.user.unitOfMeasurement;
       return [
         {
-          key: 'from',
+          key: 'buyerFrom',
           label: 'De',
           sortable: true
         },
         {
-          key: 'to',
+          key: 'buyerTo',
           label: 'Para',
           sortable: true
         },
