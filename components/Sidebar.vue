@@ -43,7 +43,7 @@ import { isGlobalManager } from '~/api/config/auth';
         </b-nav>
       </b-list-group-item>
       <b-list-group-item>
-        <b-nav v-if="!isGlobalManager">
+        <b-nav>
           <b-nav-item class="text-white" to="/operacional/informacao-preco">
             Histórico de Preços Informados
           </b-nav-item>
