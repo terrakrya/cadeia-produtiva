@@ -169,6 +169,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
         maximumPrice: { $max: '$maximumPrice' },
         messengerName: { $first: '$messengerDetails.name' },
         region: { $first: '$messengerDetails.region' },
+        city: { $first: '$city' }
       },
     })
 
@@ -177,7 +178,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
 
     // Monta a resposta final
     const priceList = priceListAgr.map(
-      ({ _id, minimumPrice, maximumPrice, messengerName, region }) => ({
+      ({ _id, minimumPrice, maximumPrice, messengerName, region, city }) => ({
         date: _id.date,
         buyerFrom: _id.buyerFrom,
         buyerTo: _id.buyerTo,
@@ -186,6 +187,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
         averagePrice: (minimumPrice + maximumPrice) / 2,
         messenger: messengerName || 'Não informado',
         region: region || 'Não informado',
+        city: city || 'Não informado'
       })
     )
 

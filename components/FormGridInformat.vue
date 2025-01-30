@@ -20,6 +20,9 @@
     <template #cell(region)="data">
       {{ data.item.region || 'Não informado' }}
     </template>
+    <template #cell(city)="data">
+      {{ data.item.city }}
+    </template>
     <template #cell(date)="data">
       {{ data.item.date }}
     </template>
@@ -62,6 +65,11 @@ export default {
         {
           key: 'messenger',
           label: 'Mensageiro',
+          sortable: true
+        },
+        {
+          key:'city',
+          label: 'Município',
           sortable: true
         },
         {
