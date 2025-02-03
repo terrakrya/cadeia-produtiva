@@ -183,8 +183,8 @@ export default {
 
       if (this.isAdmin || this.isGlobalManager) {
         tableFields.push({
-          key: 'square',
-          label: 'Região Imediata',
+          key: 'region',
+          label: 'Região Castanheira',
           sortable: true,
         })
       }
