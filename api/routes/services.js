@@ -151,4 +151,71 @@ router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
   }
 })
 
+router.post('/register-price', authenticateToken, async (req, res) => {
+  try {
+    const { transaction, product, messenger, measure, createdAt } = req.body;
+
+    // Aqui é o tipo da transação. Ex. "oferta de preços" ou "preço da venda"
+    if (!transaction) {
+      return res.status(400).json({ message: "Campo 'transaction' é obrigatório." });
+    }
+
+    // Por enquanto será sempre "63ff4160ff65e9001b61c6af" -> VER COMO É EM PROD
+    if (!product) {
+      return res.status(400).json({ message: "Campo 'product' é obrigatório." });
+    }
+
+    // É o ObjectID do Mensageiro
+    if (!messenger) {
+      return res.status(400).json({ message: "Campo 'messenger' é obrigatório." });
+    }
+
+    const newPrice = new Price();
+    newPrice.transaction = transaction;
+    newPrice.product = product;
+    newPrice.messenger = messenger;
+    newPrice.measure = measure;
+    newPrice.createdAt = createdAt ? new Date(createdAt) : new Date();
+
+    // Set some common fields if provided
+    newPrice.currency = req.body.currency || 'BRL';
+    newPrice.country = req.body.country || 'BR';
+    newPrice.uf = req.body.uf;
+    newPrice.city = req.body.city;
+    newPrice.organization = req.body.organization;
+    newPrice.region = req.body.region;
+    newPrice.buyerPositionSeller = req.body.buyerPositionSeller;
+    newPrice.buyerPositionBuyer = req.body.buyerPositionBuyer;
+
+    if (transaction === 'oferta de preços') {
+      const { originalMinimumPrice, originalMaximumPrice } = req.body;
+      if (originalMinimumPrice === undefined || originalMaximumPrice === undefined) {
+        return res.status(400).json({ message: "Para 'oferta de preços', os campos 'originalMinimumPrice' e 'originalMaximumPrice' são obrigatórios." });
+      }
+      newPrice.originalMinimumPrice = originalMinimumPrice;
+      newPrice.originalMaximumPrice = originalMaximumPrice;
+
+      // Em uma oferta de preços não há quantidade transacionada
+      newPrice.transactedQuantity = 0;
+    } else if (transaction === 'preço da venda') {
+      const { originalPrice, transactedQuantity } = req.body;
+      if (originalPrice === undefined || transactedQuantity === undefined) {
+        return res.status(400).json({ message: "Para 'preço da venda', os campos 'originalPrice' e 'transactedQuantity' são obrigatórios." });
+      }
+      newPrice.originalPrice = originalPrice;
+      newPrice.originalMaximumPrice = originalPrice;
+      newPrice.originalMinimumPrice = originalPrice;
+      newPrice.transactedQuantity = transactedQuantity;
+    } else {
+      return res.status(400).json({ message: "Valor de 'transaction' inválido." });
+    }
+
+    await newPrice.save();
+
+    return res.status(201).json({ message: 'Preço registrado com sucesso', price: newPrice });
+  } catch (err) {
+    return res.status(422).json({ message: 'Erro ao registrar preço: ' + err.message });
+  }
+});
+
 module.exports = router
