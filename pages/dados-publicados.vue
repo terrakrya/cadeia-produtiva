@@ -150,9 +150,17 @@
               </b-form-group>
             </b-col>
           </div>
+          <b-button
+            variant="danger"
+            class="btn btn-primary"
+            style="margin-bottom: 12px"
+            @click="downloadExcel"
+          >
+            Download Excel
+          </b-button>
           <br />
           <no-item :list="priceInformations" />
-          <form-grid-informat :list="priceInformations" />
+          <form-grid-informat ref="gridInformat" :list="priceInformations" />
         </div>
       </div>
     </div>
@@ -169,6 +177,8 @@ import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import regions from '@/data/regioes-castanheiras.json'
 import buyerPositions from '@/data/posicao-do-comprador.json'
+import * as XLSX from 'xlsx'
+
 export default {
   components: {
     Breadcrumb,
@@ -291,6 +301,95 @@ export default {
           },
         }
       )
+    },
+
+    downloadExcel() {
+      // Retrieve the sorting parameters from the FormGridInformat component
+      const grid = this.$refs.gridInformat
+      const sortKey = grid ? grid.sortBy : 'date'
+      const sortDesc = grid ? grid.sortDesc : true
+
+      // Clone and sort the data according to the current sorting settings
+      let sortedData = [...this.priceInformations].sort((a, b) => {
+        let aVal, bVal
+        if (sortKey === 'date') {
+          // Convert date strings "dd/mm/yyyy" into Date objects for proper sorting
+          aVal = new Date(a.date.split('/').reverse().join('-'))
+          bVal = new Date(b.date.split('/').reverse().join('-'))
+        } else if (sortKey === 'averagePrice') {
+          // Use converted price for averagePrice column
+          aVal = this.convertPrice(a.averagePrice)
+          bVal = this.convertPrice(b.averagePrice)
+        } else if (
+          typeof a[sortKey] === 'string' &&
+          typeof b[sortKey] === 'string'
+        ) {
+          // Compare strings case-insensitively
+          aVal = a[sortKey].toLowerCase()
+          bVal = b[sortKey].toLowerCase()
+        } else {
+          aVal = a[sortKey]
+          bVal = b[sortKey]
+        }
+
+        if (aVal < bVal) return sortDesc ? 1 : -1
+        if (aVal > bVal) return sortDesc ? -1 : 1
+        return 0
+      })
+
+      const unit = this.$auth.user.unitOfMeasurement
+      const exportData = sortedData.map((item) => ({
+        De: item.buyerFrom,
+        Para: item.buyerTo,
+        Mensageiro: item.messenger,
+        Município: item.city,
+        'Região Castanheira': item.region || 'Não informado',
+        Data: item.date,
+        [`Preço médio (${unit})`]: this.convertPrice(item.averagePrice),
+        [`Mínimo/Máximo (${unit})`]: `${this.convertPrice(
+          item.minimumPrice
+        )} / ${this.convertPrice(item.maximumPrice)}`,
+      }))
+
+      // Create worksheet from JSON data
+      const worksheet = XLSX.utils.json_to_sheet(exportData)
+
+      // Define column widths so that the text is fully readable
+      worksheet['!cols'] = [
+        { wch: 15 }, // "De"
+        { wch: 15 }, // "Para"
+        { wch: 20 }, // "Mensageiro"
+        { wch: 20 }, // "Município"
+        { wch: 25 }, // "Região Castanheira"
+        { wch: 15 }, // "Data"
+        { wch: 20 }, // "Preço médio"
+        { wch: 30 }, // "Mínimo/Máximo"
+      ]
+
+      const workbook = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Dados Publicados')
+      const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' })
+      const blob = new Blob([wbout], { type: 'application/octet-stream' })
+      const url = URL.createObjectURL(blob)
+      const link = document.createElement('a')
+      link.href = url
+      link.download = 'dados-publicados.xlsx'
+      link.click()
+      URL.revokeObjectURL(url)
+    },
+
+    convertPrice(price) {
+      const unit = this.$auth.user.unitOfMeasurement
+      const conversionRates = {
+        Kg: 1,
+        Tonelada: 1000,
+        Lata: 12,
+        Caixa: 24,
+        Hectolitro: 60,
+        Saca: 48,
+        Barrica: 72,
+      }
+      return price * (conversionRates[unit] || 1)
     },
   },
 }

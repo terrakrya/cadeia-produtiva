@@ -91,7 +91,7 @@
     "vue2-leaflet": "^2.6.0",
     "vue2-leaflet-locatecontrol": "^1.0.2",
     "vuex-persistedstate": "^4.0.0",
-    "xlsx": "^0.16.9",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-latest/xlsx-latest.tgz",
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
