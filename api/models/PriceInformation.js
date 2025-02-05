@@ -117,11 +117,11 @@ PriceSchema.pre('save', function (next) {
 
     this.minimumPrice = min
       .div(conversion)
-      .toDecimalPlaces(10, Decimal.ROUND_HALF_UP)
+      .toDecimalPlaces(2, Decimal.ROUND_UP)
       .toNumber()
     this.maximumPrice = max
       .div(conversion)
-      .toDecimalPlaces(10, Decimal.ROUND_HALF_UP)
+      .toDecimalPlaces(2, Decimal.ROUND_UP)
       .toNumber()
     this.totalTransactionValue = null
   } else if (this.transaction === 'preço da venda') {
@@ -139,7 +139,7 @@ PriceSchema.pre('save', function (next) {
     // Convert price per unit to price per kg
     const pricePerKg = pricePerUnit.div(conversion)
     this.minimumPrice = pricePerKg
-      .toDecimalPlaces(10, Decimal.ROUND_HALF_UP)
+      .toDecimalPlaces(2, Decimal.ROUND_UP)
       .toNumber()
     this.maximumPrice = this.minimumPrice
   }
@@ -147,7 +147,7 @@ PriceSchema.pre('save', function (next) {
   this.averagePrice = new Decimal(this.minimumPrice)
     .plus(this.maximumPrice)
     .div(2)
-    .toDecimalPlaces(10, Decimal.ROUND_HALF_UP)
+    .toDecimalPlaces(2, Decimal.ROUND_UP)
     .toNumber()
 
   next()
