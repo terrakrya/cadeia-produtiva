@@ -346,9 +346,8 @@ export default {
         'Região Castanheira': item.region || 'Não informado',
         Data: item.date,
         [`Preço médio (${unit})`]: this.convertPrice(item.averagePrice),
-        [`Mínimo/Máximo (${unit})`]: `${this.convertPrice(
-          item.minimumPrice
-        )} / ${this.convertPrice(item.maximumPrice)}`,
+        [`Preço Mínimo (${unit})`]: this.convertPrice(item.minimumPrice),
+        [`Preço Máximo (${unit})`]: this.convertPrice(item.maximumPrice),
       }))
 
       // Create worksheet from JSON data
@@ -363,7 +362,8 @@ export default {
         { wch: 25 }, // "Região Castanheira"
         { wch: 15 }, // "Data"
         { wch: 20 }, // "Preço médio"
-        { wch: 30 }, // "Mínimo/Máximo"
+        { wch: 20 }, // "Preço mínimo"
+        { wch: 20 }, // "Preço máximo"
       ]
 
       const workbook = XLSX.utils.book_new()

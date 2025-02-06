@@ -29,9 +29,10 @@
     <template #cell(averagePrice)="data">
       {{ convertPrice(data.item.averagePrice) | moeda }}
     </template>
-    <template #cell(price)="data">
+    <template #cell(minimumPrice)="data">
       {{ convertPrice(data.item.minimumPrice) | moeda }}
-      / 
+    </template>
+    <template #cell(maximumPrice)="data">
       {{ convertPrice(data.item.maximumPrice) | moeda }}
     </template>
   </b-table>
@@ -90,9 +91,14 @@ export default {
           sortable: true
         },
         {
-          key: 'price',
-          label: `Mínimo/Máximo (${unit})`,
-          sortable: false
+          key: 'minimumPrice',
+          label: `Preço Mínimo (${unit})`,
+          sortable: true
+        },
+        {
+          key: 'maximumPrice',
+          label: `Preço Máximo (${unit})`,
+          sortable: true
         }
       ];
     }
