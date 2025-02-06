@@ -8,29 +8,6 @@ if ('serviceWorker' in navigator) {
       window.location.reload();
     });
   
-    // SW registration
-    navigator.serviceWorker.register('/sw.js').then(reg => {
-      reg.addEventListener('updatefound', () => {
-        const newWorker = reg.installing;
-        
-        // Detect when new SW is fully activated
-        newWorker.addEventListener('statechange', () => {
-          if (newWorker.state === 'activated') {
-            // Only notify for non-initial installs
-            if (navigator.serviceWorker.controller) {
-              window.dispatchEvent(new CustomEvent('sw-updated', {
-                detail: { registration: reg }
-              }));
-            }
-          }
-        });
-      });
-    });
-  
-    // Optional: Less intrusive notification
-    window.addEventListener('sw-updated', () => {
-      if (confirm('Nova versão disponível! Deseja atualizar?')) {
-        window.location.reload();
-      }
-    });
+    // SW registration (simplified for clarity)
+    navigator.serviceWorker.register('/sw.js'); // No need for complex event handling here
   }
