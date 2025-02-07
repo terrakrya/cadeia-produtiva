@@ -8,7 +8,9 @@ const convertUnit = require('../utils/convertUnit')
 router.get('/user-by-phone/:cellphone', authenticateToken, async (req, res) => {
   try {
     if (!req.params.cellphone) {
-      return res.status(400).json({ message: 'Número de telefone é obrigatório' })
+      return res
+        .status(400)
+        .json({ message: 'Número de telefone é obrigatório' })
     }
 
     const cleanPhone = req.params.cellphone.replace(/\D/g, '')
@@ -34,33 +36,33 @@ router.get('/prices-by-region/:region', authenticateToken, async (req, res) => {
           from: 'users',
           localField: 'messenger',
           foreignField: '_id',
-          as: 'messengerDetails'
-        }
+          as: 'messengerDetails',
+        },
       },
       {
         $unwind: {
           path: '$messengerDetails',
-          preserveNullAndEmptyArrays: true
-        }
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
         $match: {
-          'messengerDetails.region': req.params.region
-        }
+          'messengerDetails.region': req.params.region,
+        },
       },
       {
         $lookup: {
           from: 'products',
           localField: 'product',
           foreignField: '_id',
-          as: 'productDetails'
-        }
+          as: 'productDetails',
+        },
       },
       {
         $unwind: {
           path: '$productDetails',
-          preserveNullAndEmptyArrays: true
-        }
+          preserveNullAndEmptyArrays: true,
+        },
       },
       {
         $project: {
@@ -71,7 +73,7 @@ router.get('/prices-by-region/:region', authenticateToken, async (req, res) => {
           date: '$createdAt',
           product: {
             _id: '$productDetails._id',
-            name: '$productDetails.name'
+            name: '$productDetails.name',
           },
           messenger: '$messengerDetails._id',
           messengerDetails: {
@@ -80,10 +82,10 @@ router.get('/prices-by-region/:region', authenticateToken, async (req, res) => {
             email: '$messengerDetails.email',
             cellphone: '$messengerDetails.cellphone',
             role: '$messengerDetails.role',
-            region: '$messengerDetails.region'
-          }
-        }
-      }
+            region: '$messengerDetails.region',
+          },
+        },
+      },
     ]
 
     const prices = await Price.aggregate(pipeline)
@@ -101,13 +103,17 @@ router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
     const defaultEndDate = new Date(currentYear, 8, 30) // September 30th of current year
 
     // Use query-provided date filter if passed; otherwise, use the default range.
-    const startDate = req.query.dateFrom ? new Date(req.query.dateFrom) : defaultStartDate
-    const endDate = req.query.dateTo ? new Date(req.query.dateTo) : defaultEndDate
+    const startDate = req.query.dateFrom
+      ? new Date(req.query.dateFrom)
+      : defaultStartDate
+    const endDate = req.query.dateTo
+      ? new Date(req.query.dateTo)
+      : defaultEndDate
 
     // Find Price records for the given region within the determined date range.
     const prices = await Price.find({
       region,
-      createdAt: { $gte: startDate, $lte: endDate }
+      createdAt: { $gte: startDate, $lte: endDate },
     })
 
     if (!prices.length) {
@@ -120,14 +126,14 @@ router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
     let count = 0
     let priceValues = []
 
-    prices.forEach(price => {
+    prices.forEach((price) => {
       const min = price.minimumPrice
       const max = price.maximumPrice
 
       if (min < minPrice) minPrice = min
       if (max > maxPrice) maxPrice = max
 
-      total += (min + max)
+      total += min + max
       count++
       priceValues.push(min, max)
     })
@@ -144,78 +150,100 @@ router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
       minimumPrice: Math.round(convertUnit(minPrice, unit) * 100) / 100,
       maximumPrice: Math.round(convertUnit(maxPrice, unit) * 100) / 100,
       averagePrice: Math.round(convertUnit(averagePrice, unit) * 100) / 100,
-      mode: Math.round(convertUnit(mode, unit) * 100) / 100
+      mode: Math.round(convertUnit(mode, unit) * 100) / 100,
     })
   } catch (err) {
-    res.status(422).json({ message: 'Error retrieving summary: ' + err.message })
+    res
+      .status(422)
+      .json({ message: 'Error retrieving summary: ' + err.message })
   }
 })
 
 router.post('/register-price', authenticateToken, async (req, res) => {
   try {
-    const { transaction, product, messenger, measure, createdAt } = req.body;
+    const { transaction, product, messenger, measure, createdAt } = req.body
 
-    // Aqui é o tipo da transação. Ex. "oferta de preços" ou "preço da venda"
     if (!transaction) {
-      return res.status(400).json({ message: "Campo 'transaction' é obrigatório." });
+      return res
+        .status(400)
+        .json({ message: "Campo 'transaction' é obrigatório." })
     }
 
-    // Por enquanto será sempre "63ff4160ff65e9001b61c6af" -> VER COMO É EM PROD
     if (!product) {
-      return res.status(400).json({ message: "Campo 'product' é obrigatório." });
+      return res.status(400).json({ message: "Campo 'product' é obrigatório." })
     }
 
-    // É o ObjectID do Mensageiro
     if (!messenger) {
-      return res.status(400).json({ message: "Campo 'messenger' é obrigatório." });
+      return res
+        .status(400)
+        .json({ message: "Campo 'messenger' é obrigatório." })
     }
 
-    const newPrice = new Price();
-    newPrice.transaction = transaction;
-    newPrice.product = product;
-    newPrice.messenger = messenger;
-    newPrice.measure = measure;
-    newPrice.createdAt = createdAt ? new Date(createdAt) : new Date();
+    const newPrice = new Price()
+    newPrice.transaction = transaction
+    newPrice.product = product
+    newPrice.messenger = messenger
+    newPrice.measure = measure
+    newPrice.createdAt = createdAt ? new Date(createdAt) : new Date()
 
-    // Set some common fields if provided
-    newPrice.currency = req.body.currency || 'BRL';
-    newPrice.country = req.body.country || 'BR';
-    newPrice.uf = req.body.uf;
-    newPrice.city = req.body.city;
-    newPrice.organization = req.body.organization;
-    newPrice.region = req.body.region;
-    newPrice.buyerPositionSeller = req.body.buyerPositionSeller;
-    newPrice.buyerPositionBuyer = req.body.buyerPositionBuyer;
+    // Atribuição de campos comuns
+    newPrice.currency = req.body.currency || 'BRL'
+    newPrice.country = req.body.country || 'BR'
+    newPrice.uf = req.body.uf
+    newPrice.city = req.body.city
+    newPrice.organization = req.body.organization
+    newPrice.region = req.body.region
+    newPrice.buyerPositionSeller = req.body.buyerPositionSeller
+    newPrice.buyerPositionBuyer = req.body.buyerPositionBuyer
 
     if (transaction === 'oferta de preços') {
-      const { originalMinimumPrice, originalMaximumPrice } = req.body;
-      if (originalMinimumPrice === undefined || originalMaximumPrice === undefined) {
-        return res.status(400).json({ message: "Para 'oferta de preços', os campos 'originalMinimumPrice' e 'originalMaximumPrice' são obrigatórios." });
+      const { originalMinimumPrice, originalMaximumPrice } = req.body
+      if (
+        originalMinimumPrice === undefined ||
+        originalMaximumPrice === undefined
+      ) {
+        return res
+          .status(400)
+          .json({
+            message:
+              "Para 'oferta de preços', os campos 'originalMinimumPrice' e 'originalMaximumPrice' são obrigatórios.",
+          })
       }
-      newPrice.originalMinimumPrice = originalMinimumPrice;
-      newPrice.originalMaximumPrice = originalMaximumPrice;
-
+      // Converter para número mesmo que enviado como string
+      newPrice.originalMinimumPrice = Number(originalMinimumPrice)
+      newPrice.originalMaximumPrice = Number(originalMaximumPrice)
       // Em uma oferta de preços não há quantidade transacionada
-      newPrice.transactedQuantity = 0;
+      newPrice.transactedQuantity = 0
     } else if (transaction === 'preço da venda') {
-      const { originalPrice, transactedQuantity } = req.body;
+      const { originalPrice, transactedQuantity } = req.body
       if (originalPrice === undefined || transactedQuantity === undefined) {
-        return res.status(400).json({ message: "Para 'preço da venda', os campos 'originalPrice' e 'transactedQuantity' são obrigatórios." });
+        return res
+          .status(400)
+          .json({
+            message:
+              "Para 'preço da venda', os campos 'originalPrice' e 'transactedQuantity' são obrigatórios.",
+          })
       }
-      newPrice.originalPrice = originalPrice;
-      newPrice.originalMaximumPrice = originalPrice;
-      newPrice.originalMinimumPrice = originalPrice;
-      newPrice.transactedQuantity = transactedQuantity;
+      // Converter os valores recebidos para número, mesmo que enviados como string
+      newPrice.originalPrice = Number(originalPrice)
+      newPrice.originalMaximumPrice = Number(originalPrice)
+      newPrice.originalMinimumPrice = Number(originalPrice)
+      newPrice.transactedQuantity = Number(transactedQuantity)
     } else {
-      return res.status(400).json({ message: "Valor de 'transaction' inválido." });
+      return res
+        .status(400)
+        .json({ message: "Valor de 'transaction' inválido." })
     }
 
-    await newPrice.save();
-
-    return res.status(201).json({ message: 'Preço registrado com sucesso', price: newPrice });
+    await newPrice.save()
+    return res
+      .status(201)
+      .json({ message: 'Preço registrado com sucesso', price: newPrice })
   } catch (err) {
-    return res.status(422).json({ message: 'Erro ao registrar preço: ' + err.message });
+    return res
+      .status(422)
+      .json({ message: 'Erro ao registrar preço: ' + err.message })
   }
-});
+})
 
 module.exports = router
