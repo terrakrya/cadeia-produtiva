@@ -102,13 +102,28 @@ router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
     const defaultStartDate = new Date(currentYear - 1, 9, 1) // October 1st of last year
     const defaultEndDate = new Date(currentYear, 8, 30) // September 30th of current year
 
-    // Use query-provided date filter if passed; otherwise, use the default range.
-    const startDate = req.query.dateFrom
-      ? new Date(req.query.dateFrom)
-      : defaultStartDate
-    const endDate = req.query.dateTo
-      ? new Date(req.query.dateTo)
-      : defaultEndDate
+    let startDate, endDate;
+
+    // Check if a period filter is provided in the body
+    if (req.body && req.query.period) {
+      if (req.query.period === 'Semana') {
+        // Last 7 days
+        startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+        endDate = new Date()
+      } else if (req.query.period === 'Mês') {
+        // Last 30 days
+        startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+        endDate = new Date()
+      } else {
+        // If an unrecognized period is provided, fallback to query/default.
+        startDate = req.query.dateFrom ? new Date(req.query.dateFrom) : defaultStartDate
+        endDate = req.query.dateTo ? new Date(req.query.dateTo) : defaultEndDate
+      }
+    } else {
+      // Use custom query parameters if provided; otherwise, use the default range.
+      startDate = req.query.dateFrom ? new Date(req.query.dateFrom) : defaultStartDate
+      endDate = req.query.dateTo ? new Date(req.query.dateTo) : defaultEndDate
+    }
 
     // Find Price records for the given region within the determined date range.
     const prices = await Price.find({
