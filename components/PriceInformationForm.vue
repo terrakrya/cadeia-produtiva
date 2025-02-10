@@ -522,7 +522,7 @@ export default {
       this.is_loading = false
     },
     async save() {
-      const isValid = await this.$validator.validate()
+      let isValid = await this.$validator.validate()
 
       if (
         (!this.form.originalMinimumPrice ||
@@ -577,18 +577,40 @@ export default {
           scope: null,
         })
         isValid = false
-      } else {
-        this.veeErrors.items = this.veeErrors.items.filter(
-          (error) =>
-            error.id !== 101 &&
-            error.id !== 102 &&
-            error.id !== 103 &&
-            error.id !== 104
-        )
       }
+      this.veeErrors.items = this.veeErrors.items.filter(
+        (error) =>
+          error.id !== 101 &&
+          error.id !== 102 &&
+          error.id !== 103 &&
+          error.id !== 104
+      )
 
       if (this.form.transaction === 'oferta de preços') {
         this.form.transactedQuantity = 0
+      }
+
+      // New validation logic
+      let minPricePerKg = this.form.originalMinimumPrice
+      let maxPricePerKg = this.form.originalMaximumPrice
+
+      if (this.form.transaction === 'preço da venda') {
+        minPricePerKg = this.form.originalPrice
+        maxPricePerKg = this.form.originalPrice
+      }
+
+      const multiplyer = this.getMultiplyer(this.form.measure)
+      minPricePerKg = +new Decimal(minPricePerKg).div(multiplyer).toFixed(2)
+      if (minPricePerKg < 1) {
+        this.veeErrors.items.push({
+          id: 105, // Unique ID for this error
+          vmId: this.veeErrors.vmId,
+          field: 'originalMinimumPrice', // Associate with the relevant field
+          msg: 'Revise o preço, valor informado muito baixo.',
+          rule: 'min_value', // Custom rule name (for clarity)
+          scope: null,
+        })
+        isValid = false
       }
 
       if (isValid) {
