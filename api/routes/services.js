@@ -104,13 +104,12 @@ router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
 
     let startDate, endDate;
 
-    // Check if a period filter is provided in the body
     if (req.body && req.query.period) {
       if (req.query.period === 'Semana') {
         // Last 7 days
         startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
         endDate = new Date()
-      } else if (req.query.period === 'Mês') {
+      } else if (req.query.period === 'Mes') {
         // Last 30 days
         startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
         endDate = new Date()
