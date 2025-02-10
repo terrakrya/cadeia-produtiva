@@ -123,21 +123,20 @@ router.get('/summary', auth.authenticated, async (req, res) => {
 router.get('/data-published', auth.authenticated, async (req, res) => {
   try {
     const { region, ...otherFilters } = JSON.parse(req.query.filters || '{}')
-    
-    // Add product filter directly to match
+
     const match = buildFilters(otherFilters)
     if (otherFilters.product) {
       match.product = mongoose.Types.ObjectId(otherFilters.product)
     }
 
-    // Add date filtering to match
     if (otherFilters.dateFrom || otherFilters.dateTo) {
       match.createdAt = {}
-      if (otherFilters.dateFrom) match.createdAt.$gte = new Date(otherFilters.dateFrom)
-      if (otherFilters.dateTo) match.createdAt.$lte = new Date(otherFilters.dateTo)
+      if (otherFilters.dateFrom)
+        match.createdAt.$gte = new Date(otherFilters.dateFrom)
+      if (otherFilters.dateTo)
+        match.createdAt.$lte = new Date(otherFilters.dateTo)
     }
 
-    // Monta o pipeline base
     const pipeline = [
       { $match: match },
       { $sort: { createdAt: -1 } },
@@ -157,44 +156,29 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
       },
     ]
 
-    // Se o front-end passou 'region', filtramos no messengerDetails.region
     if (region) {
       pipeline.push({ $match: { 'messengerDetails.region': region } })
     }
 
-    // Agora fazemos o group para consolidar os dados
-    pipeline.push({
-      $group: {
-        _id: {
-          date: { $dateToString: { format: '%d/%m/%Y', date: '$createdAt' } },
-          buyerFrom: '$buyerPositionSeller',
-          buyerTo: '$buyerPositionBuyer',
-        },
-        minimumPrice: { $min: '$minimumPrice' },
-        maximumPrice: { $max: '$maximumPrice' },
-        messengerName: { $first: '$messengerDetails.name' },
-        region: { $first: '$messengerDetails.region' },
-        city: { $first: '$city' }
-      },
-    })
-
-    // Executa o pipeline
     const priceListAgr = await Price.aggregate(pipeline)
 
-    // Monta a resposta final
-    const priceList = priceListAgr.map(
-      ({ _id, minimumPrice, maximumPrice, messengerName, region, city }) => ({
-        date: _id.date,
-        buyerFrom: _id.buyerFrom,
-        buyerTo: _id.buyerTo,
-        minimumPrice,
-        maximumPrice,
-        averagePrice: (minimumPrice + maximumPrice) / 2,
-        messenger: messengerName || 'Não informado',
-        region: region || 'Não informado',
-        city: city || 'Não informado'
-      })
-    )
+    const priceList = priceListAgr.map((item) => ({
+      date: item.createdAt
+        ? moment(item.createdAt).format('DD/MM/YYYY')
+        : 'Data inválida',
+      buyerFrom: item.buyerPositionSeller,
+      buyerTo: item.buyerPositionBuyer,
+      minimumPrice: item.minimumPrice,
+      maximumPrice: item.maximumPrice,
+      averagePrice: (item.minimumPrice + item.maximumPrice) / 2,
+      messenger: item.messengerDetails
+        ? item.messengerDetails.name || 'Não informado'
+        : 'Não informado',
+      region: item.messengerDetails
+        ? item.messengerDetails.region || 'Não informado'
+        : 'Não informado',
+      city: item.city || 'Não informado',
+    }))
 
     res.json(priceList)
   } catch (err) {
