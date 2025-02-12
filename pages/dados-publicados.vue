@@ -290,7 +290,7 @@ export default {
       }
 
       if (this.filters.region) {
-        filters.region = this.filters.region
+        filters.regions = this.filters.region
       }
 
       this.priceInformations = await this.$axios.$get(
