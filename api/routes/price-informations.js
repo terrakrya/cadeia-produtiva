@@ -156,10 +156,6 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
       },
     ]
 
-    if (region) {
-      pipeline.push({ $match: { 'messengerDetails.region': region } })
-    }
-
     const priceListAgr = await Price.aggregate(pipeline)
 
     const priceList = priceListAgr.map((item) => ({
@@ -174,9 +170,7 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
       messenger: item.messengerDetails
         ? item.messengerDetails.name || 'Não informado'
         : 'Não informado',
-      region: item.messengerDetails
-        ? item.messengerDetails.region || 'Não informado'
-        : 'Não informado',
+      region: item.region || 'Não informado',
       city: item.city || 'Não informado',
     }))
 
