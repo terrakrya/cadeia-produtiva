@@ -260,4 +260,70 @@ router.post('/register-price', authenticateToken, async (req, res) => {
   }
 })
 
+router.get('/mean-prices-by-region/:region', authenticateToken, async (req, res) => {
+  try {
+    const userRegion = req.params.region;
+    const unit = req.query.unitOfMeasurement || 'Kg';
+
+    const pipeline = [
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'messenger',
+          foreignField: '_id',
+          as: 'messengerDetails',
+        },
+      },
+      {
+        $unwind: {
+          path: '$messengerDetails',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $group: {
+          _id: '$region',
+          totalMinimumPrice: { $sum: '$minimumPrice' },
+          totalMaximumPrice: { $sum: '$maximumPrice' },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          averagePrice: { $divide: [{ $add: ['$totalMinimumPrice', '$totalMaximumPrice'] }, { $multiply: ['$count', 2] }] },
+        },
+      },
+      {
+        $sort: { averagePrice: -1 },
+      },
+    ];
+
+    const prices = await Price.aggregate(pipeline);
+
+    if (!prices.length) {
+      return res.status(404).json({ message: 'No prices found for any region.' });
+    }
+
+    let resultString = '';
+    prices.forEach(price => {
+      const regionName = price._id;
+      const averagePrice = price.averagePrice;
+      const convertedAveragePrice = convertUnit(averagePrice, unit);
+      const formattedPrice = `R$ ${Number(convertedAveragePrice).toFixed(2)}`;
+
+      if (regionName === userRegion) {
+        resultString += `**${regionName}: ${formattedPrice}**\n`;
+      } else {
+        resultString += `${regionName}: ${formattedPrice}\n`;
+      }
+    });
+
+    res.send(resultString);
+
+  } catch (err) {
+    res.status(422).json({ message: 'Error fetching mean prices: ' + err.message });
+  }
+});
+
 module.exports = router
