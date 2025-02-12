@@ -265,7 +265,39 @@ router.get('/mean-prices-by-region/:region', authenticateToken, async (req, res)
     const userRegion = req.params.region;
     const unit = req.query.unitOfMeasurement || 'Kg';
 
+    // Define default date range
+    const currentYear = new Date().getFullYear();
+    const defaultStartDate = new Date(currentYear - 1, 9, 1); // October 1 of last year
+    const defaultEndDate = new Date(currentYear, 8, 30); // September 30 of current year
+
+    let startDate, endDate;
+    if (req.query.period) {
+      if (req.query.period === 'Semana') {
+        // Last 7 days
+        startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+        endDate = new Date();
+      } else if (req.query.period === 'Mes') {
+        // Last 30 days
+        startDate = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+        endDate = new Date();
+      } else {
+        // Unrecognized period: fallback to explicit dates if provided or defaults.
+        startDate = req.query.dateFrom ? new Date(req.query.dateFrom) : defaultStartDate;
+        endDate = req.query.dateTo ? new Date(req.query.dateTo) : defaultEndDate;
+      }
+    } else {
+      // Use explicit dates provided in the query (if any); otherwise, use defaults.
+      startDate = req.query.dateFrom ? new Date(req.query.dateFrom) : defaultStartDate;
+      endDate = req.query.dateTo ? new Date(req.query.dateTo) : defaultEndDate;
+    }
+
     const pipeline = [
+      // Filter by the createdAt date based on the computed startDate and endDate.
+      { 
+        $match: { 
+          createdAt: { $gte: startDate, $lte: endDate } 
+        } 
+      },
       {
         $lookup: {
           from: 'users',
@@ -291,12 +323,15 @@ router.get('/mean-prices-by-region/:region', authenticateToken, async (req, res)
       {
         $project: {
           _id: 1,
-          averagePrice: { $divide: [{ $add: ['$totalMinimumPrice', '$totalMaximumPrice'] }, { $multiply: ['$count', 2] }] },
+          averagePrice: {
+            $divide: [
+              { $add: ['$totalMinimumPrice', '$totalMaximumPrice'] },
+              { $multiply: ['$count', 2] }
+            ]
+          },
         },
       },
-      {
-        $sort: { averagePrice: -1 },
-      },
+      { $sort: { averagePrice: -1 } },
     ];
 
     const prices = await Price.aggregate(pipeline);
@@ -320,7 +355,6 @@ router.get('/mean-prices-by-region/:region', authenticateToken, async (req, res)
     });
 
     res.send(resultString);
-
   } catch (err) {
     res.status(422).json({ message: 'Error fetching mean prices: ' + err.message });
   }
