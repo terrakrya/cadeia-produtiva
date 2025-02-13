@@ -373,4 +373,79 @@ router.get(
   }
 )
 
+router.get(
+  '/user-price-ranking/:cellphone',
+  authenticateToken,
+  async (req, res) => {
+    try {
+      const cellphone = req.params.cellphone
+      if (!cellphone) {
+        return res
+          .status(400)
+          .json({ message: 'Número de telefone é obrigatório.' })
+      }
+
+      const cleanPhone = cellphone.replace(/\D/g, '')
+      const user = await User.findOne({ cellphone: cleanPhone })
+      if (!user) {
+        return res.status(404).json({ message: 'Usuário não encontrado.' })
+      }
+
+      // Define o intervalo da safra:
+      // de 1º de outubro do ano anterior até 30 de setembro do ano atual
+      const currentYear = new Date().getFullYear()
+      const startDate = new Date(currentYear - 1, 9, 1) // 1º de outubro do ano anterior
+      const endDate = new Date(currentYear, 8, 30) // 30 de setembro do ano atual
+
+      // Agregamos os preços informados na safra, agrupando por mensageiro
+      const pipeline = [
+        { $match: { createdAt: { $gte: startDate, $lte: endDate } } },
+        { $group: { _id: '$messenger', priceCount: { $sum: 1 } } },
+      ]
+      const aggregated = await Price.aggregate(pipeline)
+
+      // Verifica quantos preços o usuário informado possui (se não possuir, considera 0)
+      const userData = aggregated.find(
+        (item) => item._id.toString() === user._id.toString()
+      )
+      const userPriceCount = userData ? userData.priceCount : 0
+
+      // Calcula o ranking do usuário:
+      // Ranking é determinado pelo número de usuários com contagem superior + 1.
+      const ranking =
+        aggregated.filter((item) => item.priceCount > userPriceCount).length + 1
+
+      // Calcula quantos preços faltam para ultrapassar o próximo usuário de ranking:
+      // Filtra os usuários que possuem mais preços que o usuário consultado e obtém o menor desses valores.
+      const higherCounts = aggregated
+        .filter((item) => item.priceCount > userPriceCount)
+        .map((item) => item.priceCount)
+
+      let additionalNeeded = 0
+      if (higherCounts.length > 0) {
+        // Se o usuário logo acima reportou, por exemplo, 11 preços, o usuário precisa atingir 12.
+        const nextHigher = Math.min(...higherCounts)
+        additionalNeeded = nextHigher + 1 - userPriceCount
+      }
+
+      // Total de usuários com preços informados no período
+      const totalUsers = aggregated.length
+
+      return res.json({
+        name: user.name,
+        priceCount: userPriceCount,
+        additionalNeeded,
+        ranking,
+        totalUsers,
+      })
+    } catch (err) {
+      return res
+        .status(422)
+        .json({
+          message: 'Erro ao calcular o avanço no ranking: ' + err.message,
+        })
+    }
+  }
+)
+
 module.exports = router
