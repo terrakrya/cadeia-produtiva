@@ -86,6 +86,7 @@
                   :required="!form.transaction"
                   class="form-control"
                   name="originalPrice"
+                  :precision="form.measure === 'Kg' ? 2 : 0"
                 ></money>
                 <field-error :msg="veeErrors" field="originalPrice" />
               </b-form-group>
@@ -117,6 +118,7 @@
                   :required="form.transaction"
                   class="form-control"
                   name="originalMinimumPrice"
+                  :precision="form.measure === 'Kg' ? 2 : 0"
                 ></money>
                 <field-error :msg="veeErrors" field="originalMinimumPrice" />
               </b-form-group>
@@ -130,6 +132,8 @@
                   v-model="form.originalMaximumPrice"
                   :required="form.transaction"
                   class="form-control"
+                  name="originalMaximumPrice"
+                  :precision="form.measure === 'Kg' ? 2 : 0"
                 ></money>
                 <field-error :msg="veeErrors" field="originalMaximumPrice" />
               </b-form-group>
