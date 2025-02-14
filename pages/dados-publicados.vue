@@ -376,7 +376,8 @@ export default {
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      link.download = 'dados-publicados.xlsx'
+      const downloadDate = new Date().toISOString().slice(0, 10);
+      link.download = `Dados Publicados ${downloadDate}.xlsx`;
       link.click()
       URL.revokeObjectURL(url)
     },
