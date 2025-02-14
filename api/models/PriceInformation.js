@@ -111,44 +111,34 @@ PriceSchema.pre('save', function (next) {
   const conversion = getConversion(this.measure)
 
   if (this.transaction === 'oferta de preços') {
-    // For market prices
+    // Para ofertas de preços (preços de mercado)
     const min = new Decimal(this.originalMinimumPrice)
     const max = new Decimal(this.originalMaximumPrice)
 
-    this.minimumPrice = min
-      .div(conversion)
-      .toDecimalPlaces(2, Decimal.ROUND_UP)
-      .toNumber()
-    this.maximumPrice = max
-      .div(conversion)
-      .toDecimalPlaces(2, Decimal.ROUND_UP)
-      .toNumber()
+    this.minimumPrice = min.div(conversion)
+    this.maximumPrice = max.div(conversion)
     this.totalTransactionValue = null
   } else if (this.transaction === 'preço da venda') {
-    // For transactions (transação realizada)
+    // Para transações realizadas
     const pricePerUnit = new Decimal(this.originalPrice)
     const quantity = new Decimal(this.transactedQuantity)
 
-    // Calculate total transaction value
-    this.totalTransactionValue = pricePerUnit.times(quantity).toNumber()
+    // Calcula o valor total da transação
+    this.totalTransactionValue = pricePerUnit.times(quantity)
 
-    // Set original min/max to the original price
+    // Define os preços mínimo e máximo originais
     this.originalMinimumPrice = this.originalPrice
     this.originalMaximumPrice = this.originalPrice
 
-    // Convert price per unit to price per kg
-    const pricePerKg = pricePerUnit.div(conversion)
-    this.minimumPrice = pricePerKg
-      .toDecimalPlaces(2, Decimal.ROUND_UP)
-      .toNumber()
+    // Converte o preço por unidade para preço por kg
+    this.minimumPrice = pricePerUnit.div(conversion)
     this.maximumPrice = this.minimumPrice
   }
 
+  // Calcula o preço médio com a precisão completa
   this.averagePrice = new Decimal(this.minimumPrice)
-    .plus(this.maximumPrice)
+    .plus(new Decimal(this.maximumPrice))
     .div(2)
-    .toDecimalPlaces(2, Decimal.ROUND_UP)
-    .toNumber()
 
   next()
 })

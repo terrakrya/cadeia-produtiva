@@ -345,9 +345,12 @@ export default {
         Município: item.city,
         'Região Castanheira': item.region || 'Não informado',
         Data: item.date,
-        [`Preço médio (${unit})`]: this.convertPrice(item.averagePrice),
-        [`Preço Mínimo (${unit})`]: this.convertPrice(item.minimumPrice),
-        [`Preço Máximo (${unit})`]: this.convertPrice(item.maximumPrice),
+        [`Preço médio (${unit})`]:
+          Math.round(this.convertPrice(item.averagePrice) * 100) / 100,
+        [`Preço Mínimo (${unit})`]:
+          Math.round(this.convertPrice(item.minimumPrice) * 100) / 100,
+        [`Preço Máximo (${unit})`]:
+          Math.round(this.convertPrice(item.maximumPrice) * 100) / 100,
       }))
 
       // Create worksheet from JSON data
