@@ -1,11 +1,12 @@
 <template>
   <div>
-    <div class="text-right">
+    <div class="text-right input-group">
       <input
         v-model="internalFilter"
         type="search"
         :placeholder="searchPlaceholder"
         class="form-control search-input"
+        aria-label="Search Price Information"
       />
     </div>
     <br />
@@ -15,6 +16,7 @@
       :fields="tableFields"
       :items="priceInformations"
       :sort-by="defaultSortBy"
+      :sort-desc="defaultSortDesc"
       :filter="internalFilter"
       stacked="lg"
     >
@@ -22,7 +24,7 @@
         {{ data.item.product.name }}
       </template>
       <template #cell(createdAt)="data">
-        {{ data.item.createdAt | moment('DD/MM/YYYY') }}
+        {{ formatDate(data.item.createdAt) }}
       </template>
       <template #cell(buyerPosition)="data">
         Preço de {{ data.item.buyerPositionSeller }} para
@@ -99,42 +101,49 @@ export default {
   props: {
     priceInformations: {
       type: Array,
-      required: true
+      required: true,
     },
     tableFields: {
       type: Array,
-      required: true
+      required: true,
     },
     defaultSortBy: {
       type: String,
-      default: 'product'
+      default: 'createdAt',
+    },
+    defaultSortDesc: {
+      type: Boolean,
+      default: true,
     },
     searchPlaceholder: {
       type: String,
-      default: 'Buscar'
+      default: 'Buscar',
     },
-    value: { // for v-model support on the search input
+    value: {
       type: String,
-      default: ''
-    }
+      default: '',
+    },
   },
   data() {
     return {
-      internalFilter: this.value
-    };
+      internalFilter: this.value,
+    }
   },
   watch: {
     value(newVal) {
-      this.internalFilter = newVal;
+      this.internalFilter = newVal
     },
     internalFilter(newVal) {
-      this.$emit('input', newVal);
-    }
+      this.$emit('input', newVal)
+    },
   },
   methods: {
     handleRemove(id) {
-      this.$emit('remove', id);
-    }
-  }
-};
-</script> 
+      this.$emit('remove', id)
+    },
+    formatDate(date) {
+      return this.$moment(date).format('DD/MM/YYYY')
+    },
+  },
+}
+</script>
