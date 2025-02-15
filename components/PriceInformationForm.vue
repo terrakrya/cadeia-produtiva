@@ -653,7 +653,9 @@ export default {
             const category = resp.data
             if (category && category._id) {
               this.notify('Informações de preço salvo com sucesso')
-              this.$router.replace('/operacional/informacao-preco')
+              try {
+                await this.$router.replace('/')
+              } catch (error) {}
             }
             this.is_sending = false
           } catch (error) {
@@ -670,7 +672,9 @@ export default {
             'Você está offline. O preço será enviado quando a conexão for restabelecida.'
           )
           this.is_sending = false
-          this.$router.replace('/operacional/informacao-preco')
+          try {
+            await this.$router.replace('/')
+          } catch (error) {}
         }
       }
     },
