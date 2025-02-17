@@ -212,7 +212,7 @@ router.post('/register-price', authenticateToken, async (req, res) => {
     newPrice.createdAt = createdAt ? new Date(createdAt) : new Date()
 
     // Atribuição de campos comuns
-    newPrice.currency = req.body.currency || 'BRL'
+    newPrice.currency = req.body.currency || 'real'
     newPrice.country = req.body.country || 'BR'
     newPrice.uf = req.body.uf
     newPrice.city = req.body.city
