@@ -12,14 +12,16 @@ router.get('/user-by-phone/:cellphone', authenticateToken, async (req, res) => {
         .status(400)
         .json({ message: 'Número de telefone é obrigatório' })
     }
-    
+
     // Remove all non-digit characters from the provided phone number.
     const cleanPhone = req.params.cellphone.replace(/\D/g, '')
     // Extract the last 8 digits.
     const lastEightDigits = cleanPhone.slice(-8)
-    
+
     // Find a user whose stored cellphone ends with the last 8 digits.
-    const user = await User.findOne({ cellphone: { $regex: lastEightDigits + '$' } })
+    const user = await User.findOne({
+      cellphone: { $regex: lastEightDigits + '$' },
+    })
       .populate('organization')
       .select('-hash -salt')
 
@@ -390,8 +392,15 @@ router.get(
           .json({ message: 'Número de telefone é obrigatório.' })
       }
 
+      // Remove all non-digit characters from the provided phone number.
       const cleanPhone = cellphone.replace(/\D/g, '')
-      const user = await User.findOne({ cellphone: cleanPhone })
+      // Extract the last 8 digits.
+      const lastEightDigits = cleanPhone.slice(-8)
+
+      // Find a user whose stored cellphone ends with the last 8 digits.
+      const user = await User.findOne({
+        cellphone: { $regex: lastEightDigits + '$' },
+      })
       if (!user) {
         return res.status(404).json({ message: 'Usuário não encontrado.' })
       }
@@ -444,11 +453,9 @@ router.get(
         totalUsers,
       })
     } catch (err) {
-      return res
-        .status(422)
-        .json({
-          message: 'Erro ao calcular o avanço no ranking: ' + err.message,
-        })
+      return res.status(422).json({
+        message: 'Erro ao calcular o avanço no ranking: ' + err.message,
+      })
     }
   }
 )
