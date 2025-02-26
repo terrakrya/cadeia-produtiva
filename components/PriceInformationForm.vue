@@ -186,19 +186,39 @@
           <div class="row">
             <div class="col-sm-4">
               <b-form-group :label="'Data'">
-                <b-form-datepicker
-                  v-model="form.createdAt"
-                  v-validate="'required'"
-                  class="date"
-                  name="date_time"
-                  locale="pt-BR"
-                  :date-format-options="{
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  }"
-                  placeholder="DD/MM/AAAA"
-                />
+                <b-input-group>
+                  <b-form-select
+                    v-model="form.day"
+                    :options="availableDays"
+                    class="form-control"
+                    name="day"
+                    v-validate="'required'"
+                  >
+                    <option :value="''" disabled selected hidden>Dia</option>
+                  </b-form-select>
+                  <b-form-select
+                    v-model="form.month"
+                    :options="meses"
+                    class="form-control"
+                    name="month"
+                    v-validate="'required'"
+                    style="width: 35%;"
+                  >
+                    <option :value="''" disabled selected hidden>Mês</option>
+                  </b-form-select>
+                  <b-form-select
+                    v-model="form.year"
+                    :options="availableYears"
+                    class="form-control"
+                    name="year"
+                    v-validate="'required'"
+                  >
+                    <option :value="''" disabled selected hidden>Ano</option>
+                  </b-form-select>
+                </b-input-group>
+                <field-error :msg="veeErrors" field="day" />
+                <field-error :msg="veeErrors" field="month" />
+                <field-error :msg="veeErrors" field="year" />
               </b-form-group>
             </div>
             <b-col sm="4">
@@ -284,6 +304,9 @@ export default {
         createdAt: this.$moment(new Date())
           .tz('America/Sao_Paulo')
           .format('YYYY-MM-DD'),
+        day: '',
+        month: '',
+        year: '',
         buyerPositionBuyer: '',
         buyerPositionSeller: '',
         minimumPrice: 0,
@@ -309,14 +332,50 @@ export default {
       messengers: [],
       creating: true,
       isOnline: navigator.onLine,
+      meses: [
+        { value: '01', text: 'Janeiro' },
+        { value: '02', text: 'Fevereiro' },
+        { value: '03', text: 'Março' },
+        { value: '04', text: 'Abril' },
+        { value: '05', text: 'Maio' },
+        { value: '06', text: 'Junho' },
+        { value: '07', text: 'Julho' },
+        { value: '08', text: 'Agosto' },
+        { value: '09', text: 'Setembro' },
+        { value: '10', text: 'Outubro' },
+        { value: '11', text: 'Novembro' },
+        { value: '12', text: 'Dezembro' },
+      ],
     }
   },
   computed: {
+    availableYears() {
+      const currentYear = new Date().getFullYear()
+      return Array.from({ length: 9 }, (_, i) => ({
+        value: (currentYear - 7 + i).toString(),
+        text: currentYear - 7 + i,
+      }))
+    },
+    availableDays() {
+      if (!this.form.month || !this.form.year) {
+        return []
+      }
+      const daysInMonth = new Date(this.form.year, this.form.month, 0).getDate()
+      return Array.from({ length: daysInMonth }, (_, i) => ({
+        value: (i + 1).toString().padStart(2, '0'),
+        text: i + 1,
+      }))
+    },
     totalTransactionValue() {
       return (this.form.transactedQuantity * this.form.originalPrice).toFixed(2)
     },
   },
   async created() {
+    const now = this.$moment().tz('America/Sao_Paulo')
+    this.form.day = now.format('DD')
+    this.form.month = now.format('MM')
+    this.form.year = now.format('YYYY')
+
     if (this.isEditing()) {
       await this.edit(this.$route.params.id)
     }
@@ -519,6 +578,10 @@ export default {
         this.form.country = dados.country
         this.form.buyerPositionSeller = dados.buyerPositionSeller
         this.form.originalPrice = dados.originalPrice || 0
+        const date = this.$moment(dados.createdAt)
+        this.form.day = date.format('DD')
+        this.form.month = date.format('MM')
+        this.form.year = date.format('YYYY')
       } catch (e) {
         this.showError(e)
       }
@@ -639,6 +702,7 @@ export default {
         this.transactedQuantity()
 
         const priceData = { ...this.form }
+        priceData.createdAt = `${this.form.year}-${this.form.month}-${this.form.day}`
 
         if (this.isOnline) {
           // Online: enviar dados para o servidor
