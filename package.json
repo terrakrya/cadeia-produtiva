@@ -76,6 +76,8 @@
     "sharp": "^0.29.0",
     "shp-write": "^0.3.2",
     "slugify": "^1.4.6",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^8.3.2",
     "v-money": "^0.8.1",
     "vee-validate": "2.2.15",

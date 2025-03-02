@@ -1,3 +1,14 @@
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     ApiKeyAuth:
+ *       type: apiKey
+ *       in: header
+ *       name: Authorization
+ *       description: API token for authentication
+ */
+
 // Middleware de autenticação
 const authenticateToken = (req, res, next) => {
     const token = req.headers.authorization

@@ -5,6 +5,54 @@ const User = mongoose.model('User')
 const Price = mongoose.model('PriceInformation')
 const convertUnit = require('../utils/convertUnit')
 
+/**
+ * @swagger
+ * tags:
+ *   name: Services
+ *   description: External service endpoints for integration
+ */
+
+/**
+ * @swagger
+ * /services/user-by-phone/{cellphone}:
+ *   get:
+ *     summary: Find a user by phone number
+ *     description: Retrieves user information by matching the last 8 digits of their phone number
+ *     tags: [Services]
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: cellphone
+ *         required: true
+ *         description: User's phone number
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User information retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 _id:
+ *                   type: string
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *                 cellphone:
+ *                   type: string
+ *                 organization:
+ *                   type: object
+ *       400:
+ *         description: Phone number is required
+ *       404:
+ *         description: User not found
+ *       422:
+ *         description: Error searching for user
+ */
 router.get('/user-by-phone/:cellphone', authenticateToken, async (req, res) => {
   try {
     if (!req.params.cellphone) {
@@ -35,6 +83,50 @@ router.get('/user-by-phone/:cellphone', authenticateToken, async (req, res) => {
   }
 })
 
+/**
+ * @swagger
+ * /services/prices-by-region/{region}:
+ *   get:
+ *     summary: Get prices by region
+ *     description: Retrieves all price information for a specific region
+ *     tags: [Services]
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: region
+ *         required: true
+ *         description: Region identifier
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of prices for the specified region
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                   price:
+ *                     type: number
+ *                   minimumPrice:
+ *                     type: number
+ *                   maximumPrice:
+ *                     type: number
+ *                   date:
+ *                     type: string
+ *                     format: date-time
+ *                   product:
+ *                     type: object
+ *                   messengerDetails:
+ *                     type: object
+ *       422:
+ *         description: Error fetching prices
+ */
 router.get('/prices-by-region/:region', authenticateToken, async (req, res) => {
   try {
     const pipeline = [
@@ -101,6 +193,67 @@ router.get('/prices-by-region/:region', authenticateToken, async (req, res) => {
     res.status(422).json({ message: 'Erro ao buscar preços: ' + err.message })
   }
 })
+
+/**
+ * @swagger
+ * /services/prices-summary/{region}:
+ *   get:
+ *     summary: Get prices summary for a region
+ *     description: Retrieves a summary of prices for a region based on a date range or period filter.
+ *     tags: [Services]
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: region
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Region identifier.
+ *       - in: query
+ *         name: period
+ *         schema:
+ *           type: string
+ *           enum: [Semana, Mes]
+ *         description: Predefined period filter (e.g., 'Semana' for last 7 days, 'Mes' for last 30 days).
+ *       - in: query
+ *         name: dateFrom
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Start date for a custom date range.
+ *       - in: query
+ *         name: dateTo
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: End date for a custom date range.
+ *       - in: query
+ *         name: unitOfMeasurement
+ *         schema:
+ *           type: string
+ *         description: Unit of measurement (default is 'Kg').
+ *     responses:
+ *       200:
+ *         description: Price summary for the specified region.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 totalInputs:
+ *                   type: integer
+ *                 minimumPrice:
+ *                   type: number
+ *                 maximumPrice:
+ *                   type: number
+ *                 averagePrice:
+ *                   type: number
+ *                 mode:
+ *                   type: number
+ *       422:
+ *         description: Error retrieving price summary.
+ */
 
 router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
   try {
@@ -184,6 +337,72 @@ router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
   }
 })
 
+/**
+ * @swagger
+ * /services/register-price:
+ *   post:
+ *     summary: Register a new price record
+ *     description: Creates a new price record with details such as transaction type, product, messenger, and pricing information.
+ *     tags: [Services]
+ *     security:
+ *       - ApiKeyAuth: []
+ *     requestBody:
+ *       description: Price record object that needs to be added
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               transaction:
+ *                 type: string
+ *               product:
+ *                 type: string
+ *               messenger:
+ *                 type: string
+ *               measure:
+ *                 type: string
+ *               createdAt:
+ *                 type: string
+ *                 format: date-time
+ *               originalMinimumPrice:
+ *                 type: number
+ *               originalMaximumPrice:
+ *                 type: number
+ *               originalPrice:
+ *                 type: number
+ *               transactedQuantity:
+ *                 type: number
+ *               uf:
+ *                 type: string
+ *               city:
+ *                 type: string
+ *               organization:
+ *                 type: string
+ *               region:
+ *                 type: string
+ *               buyerPositionSeller:
+ *                 type: string
+ *               buyerPositionBuyer:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Price record registered successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 price:
+ *                   type: object
+ *       400:
+ *         description: Missing required fields or invalid transaction type.
+ *       422:
+ *         description: Error registering price.
+ */
+
 router.post('/register-price', authenticateToken, async (req, res) => {
   try {
     const { transaction, product, messenger, measure, createdAt } = req.body
@@ -266,6 +485,65 @@ router.post('/register-price', authenticateToken, async (req, res) => {
       .json({ message: 'Erro ao registrar preço: ' + err.message })
   }
 })
+
+/**
+ * @swagger
+ * /services/mean-prices-by-region/{region}:
+ *   get:
+ *     summary: Get average prices by region
+ *     description: Retrieves the average price data for a specific region, with optional filtering for a date range or period.
+ *     tags: [Services]
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: region
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Region identifier.
+ *       - in: query
+ *         name: period
+ *         schema:
+ *           type: string
+ *           enum: [Semana, Mes]
+ *         description: Predefined period filter (e.g., 'Semana' or 'Mes').
+ *       - in: query
+ *         name: dateFrom
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: Start date for a custom date range.
+ *       - in: query
+ *         name: dateTo
+ *         schema:
+ *           type: string
+ *           format: date
+ *         description: End date for a custom date range.
+ *       - in: query
+ *         name: unitOfMeasurement
+ *         schema:
+ *           type: string
+ *         description: Unit of measurement (default is 'Kg').
+ *     responses:
+ *       200:
+ *         description: Retrieved mean prices for the specified region.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   region:
+ *                     type: string
+ *                   averagePrice:
+ *                     type: number
+ *       404:
+ *         description: No prices found for any region.
+ *       422:
+ *         description: Error retrieving average prices.
+ */
 
 router.get(
   '/mean-prices-by-region/:region',
@@ -380,6 +658,47 @@ router.get(
   }
 )
 
+/**
+ * @swagger
+ * /services/user-price-ranking/{cellphone}:
+ *   get:
+ *     summary: Get user price ranking
+ *     description: Retrieves a user's ranking based on the number of prices reported
+ *     tags: [Services]
+ *     security:
+ *       - ApiKeyAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: cellphone
+ *         required: true
+ *         description: User's phone number
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User ranking information
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                 priceCount:
+ *                   type: integer
+ *                 additionalNeeded:
+ *                   type: integer
+ *                 ranking:
+ *                   type: integer
+ *                 totalUsers:
+ *                   type: integer
+ *       400:
+ *         description: Phone number is required
+ *       404:
+ *         description: User not found
+ *       422:
+ *         description: Error calculating ranking
+ */
 router.get(
   '/user-price-ranking/:cellphone',
   authenticateToken,
