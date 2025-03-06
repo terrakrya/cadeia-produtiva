@@ -40,13 +40,14 @@ export default {
 <style>
 .offline-indicator {
   position: fixed;
-  bottom: 0;
+  bottom: 50px;
   left: 0;
   right: 0;
   background-color: #dc3545;
   color: white;
   text-align: center;
   padding: 8px;
-  z-index: 9999;
+  z-index: 999;
+  box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
 }
 </style> 
