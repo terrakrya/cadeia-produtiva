@@ -17,20 +17,17 @@
       <BottomNavbar />
     </div>
     <notifications />
-    <offline-indicator />
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar'
 import BottomNavbar from '@/components/BottomNavbar'
-import OfflineIndicator from '~/components/OfflineIndicator.vue'
 
 export default {
   components: {
     Navbar,
     BottomNavbar,
-    OfflineIndicator
   },
 
   middleware: 'auth',
