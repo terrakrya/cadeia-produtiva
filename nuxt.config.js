@@ -35,7 +35,9 @@ export default {
     '~/plugins/v-money',
     '~/plugins/fontawesome.js',
     '~/plugins/sw-update-client.js',
-    '~/plugins/offline-sync-service.js'
+    '~/plugins/offline-sync-service.js',
+    '~/plugins/offline-cache-service.js',
+    '~/plugins/auth-cache-interceptor.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -91,7 +93,20 @@ export default {
       skipWaiting: true,
       runtimeCaching: [
         {
-          // Cache API responses for offline use
+          // Cache de APIs de dados de referência
+          urlPattern: '.*/api/(products|organizations|locations|buyer-positions).*',
+          handler: 'CacheFirst',
+          method: 'GET',
+          strategyOptions: {
+            cacheName: 'reference-data-cache',
+            cacheExpiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 60 * 60 * 24 * 7 // 1 semana
+            }
+          }
+        },
+        {
+          // Cache de APIs de dados dinâmicos
           urlPattern: '.*/api/(?!price-informations$|ecological-data$).*',
           handler: 'StaleWhileRevalidate',
           method: 'GET',
@@ -99,12 +114,25 @@ export default {
             cacheName: 'api-cache',
             cacheExpiration: {
               maxEntries: 100,
-              maxAgeSeconds: 60 * 60 * 24 // 1 day
+              maxAgeSeconds: 60 * 60 * 24 // 1 dia
             }
           }
         },
         {
-          // Don't cache POST/PUT requests
+          // Cache para dados do usuário
+          urlPattern: '.*/api/profile',
+          handler: 'NetworkFirst',
+          method: 'GET',
+          strategyOptions: {
+            cacheName: 'user-cache',
+            cacheExpiration: {
+              maxEntries: 1,
+              maxAgeSeconds: 60 * 60 * 24 * 30 // 30 dias
+            }
+          }
+        },
+        {
+          // Não cachear requisições POST/PUT
           urlPattern: '.*/api/.*',
           handler: 'NetworkOnly',
           method: 'POST|PUT'

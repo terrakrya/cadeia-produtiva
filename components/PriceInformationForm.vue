@@ -445,43 +445,56 @@ export default {
       }
     },
     preSetDados() {
-      if (!this.isEditing() && !this.isAdmin && !this.isGlobalManager) {
-        this.form.currency = this.currentUser.currency
-        this.form.country = this.currentUser.country
-        this.form.measure = this.currentUser.unitOfMeasurement
-        this.form.uf = this.currentUser.uf
-        this.form.city = this.currentUser.city
-        this.form.buyerPositionSeller = this.currentUser.buyerPosition
+      if (this.isEditing() || this.isAdmin || this.isGlobalManager) return;
+      
+      if (this.$auth.user) {
+        this.form.currency = this.$auth.user.currency
+        this.form.country = this.$auth.user.country
+        this.form.measure = this.$auth.user.unitOfMeasurement
+        this.form.uf = this.$auth.user.uf
+        this.form.city = this.$auth.user.city
+        this.form.buyerPositionSeller = this.$auth.user.buyerPosition
+      } else {
+        this.$getCachedData('user', 'currentUser').then(userData => {
+          if (userData) {
+            this.form.currency = userData.currency
+            this.form.country = userData.country
+            this.form.measure = userData.unitOfMeasurement
+            this.form.uf = userData.uf
+            this.form.city = userData.city
+            this.form.buyerPositionSeller = userData.buyerPosition
+          }
+        })
       }
     },
     async loadOrganization() {
-      let organizationId = null
-      if (this.isManager || this.isMessenger) {
-        organizationId = this.currentUser.organization
-      } else {
-        organizationId = this.form.organization
+      try {
+        if (navigator.onLine) {
+          const organizationsData = await this.$axios.$get('organizations')
+          this.organizationsOptions = [
+            { value: '', text: 'Selecione uma organização' },
+          ].concat(
+            organizationsData.map((organization) => ({
+              value: organization._id,
+              text: organization.name,
+            }))
+          )
+        } else {
+          const cachedOrganizations = await this.$getCachedData('reference', 'organizations')
+          if (cachedOrganizations) {
+            this.organizationsOptions = [
+              { value: '', text: 'Selecione uma organização' },
+            ].concat(
+              cachedOrganizations.map((organization) => ({
+                value: organization._id,
+                text: organization.name,
+              }))
+            )
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao carregar organizações:', error)
       }
-
-      const filters = { role: 'mensageiro' }
-
-      if (organizationId) {
-        const organization = await this.$axios.$get(
-          'organizations/' + organizationId
-        )
-        this.products = organization.products
-      }
-
-      if (this.isMessenger) {
-        filters.id = this.currentUser._id
-      } else if (organizationId) {
-        filters.organization = organizationId
-      }
-
-      this.messengers = await this.$axios.$get('users', {
-        params: {
-          filters,
-        },
-      })
     },
     async loadMessenger() {
       if (this.form.messenger && !this.creating) {
@@ -497,33 +510,33 @@ export default {
       }
     },
     loadCities() {
-      // Lista de cidades com somente o item "selecione a cidade"
       this.cidades = [{ value: '', text: 'Selecione a cidade' }]
 
-      // Filtrar as cidades conforme a UF selecionada
       if (this.form.uf) {
         this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
       }
 
-      // Limpar a cidade digitada, caso não exista na lista
       if (this.form.city && this.cidades) {
         if (!this.cidades.find((c) => c === this.form.city)) {
           this.form.city = ''
         }
       }
     },
-    // Filtrar as regiões imediatas conforme o município selecionado
-    loadPracas() {
-      if (this.form.city) {
-        const cidade = this.form.city
-        const regiao = this.regiao.filter(function (item) {
-          return item.municipio === cidade
-        })
-        if (regiao && regiao.length > 0) {
-          this.form.region = regiao[0].regiaoCastanheira
+    async loadPracas() {
+      try {
+        if (navigator.onLine) {
+          const estados = await this.$axios.$get('locations/estados')
+          this.estados = estados
+          
+          await this.$getCachedData('reference', 'estados', estados)
         } else {
-          this.form.region = ''
+          const cachedEstados = await this.$getCachedData('reference', 'estados')
+          if (cachedEstados) {
+            this.estados = cachedEstados
+          }
         }
+      } catch (error) {
+        console.error('Erro ao carregar praças:', error)
       }
     },
     transactedQuantity() {
@@ -657,7 +670,6 @@ export default {
         this.form.transactedQuantity = 0
       }
 
-      // New validation logic
       let minPricePerKg = this.form.originalMinimumPrice
       let maxPricePerKg = this.form.originalMaximumPrice
 
@@ -670,11 +682,11 @@ export default {
       minPricePerKg = +new Decimal(minPricePerKg).div(multiplyer).toFixed(2)
       if (minPricePerKg < 1) {
         this.veeErrors.items.push({
-          id: 105, // Unique ID for this error
+          id: 105,
           vmId: this.veeErrors.vmId,
-          field: 'originalMinimumPrice', // Associate with the relevant field
+          field: 'originalMinimumPrice',
           msg: 'Revise o preço, valor informado muito baixo.',
-          rule: 'min_value', // Custom rule name (for clarity)
+          rule: 'min_value',
           scope: null,
         })
         isValid = false
@@ -705,7 +717,6 @@ export default {
         priceData.createdAt = `${this.form.year}-${this.form.month}-${this.form.day}`
 
         if (this.isOnline) {
-          // Online: enviar dados para o servidor
           try {
             const resp = await this.$axios({
               method: this.isEditing() ? 'PUT' : 'POST',
@@ -727,7 +738,6 @@ export default {
             this.is_sending = false
           }
         } else {
-          // Offline: armazenar dados localmente
           const pendingPrices =
             (await localforage.getItem('pendingPrices')) || []
           pendingPrices.push(priceData)

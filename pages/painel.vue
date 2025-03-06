@@ -334,10 +334,25 @@ export default {
       return (priceToCompare - basePrice) / basePrice
     },
     async loadProducts() {
-      const products = await this.$axios.$get('products')
-      this.products = products
-      if (this.products && this.products.length > 0) {
-        this.filters.product = this.products[0]._id
+      try {
+        if (navigator.onLine) {
+          const products = await this.$axios.$get('products')
+          this.products = products
+          if (this.products && this.products.length > 0) {
+            this.filters.product = this.products[0]._id
+          }
+        } else {
+          // Usar produtos em cache quando offline
+          const cachedProducts = await this.$getCachedData('reference', 'products')
+          if (cachedProducts) {
+            this.products = cachedProducts
+            if (this.products && this.products.length > 0) {
+              this.filters.product = this.products[0]._id
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao carregar produtos:', error)
       }
     },
     async load() {
