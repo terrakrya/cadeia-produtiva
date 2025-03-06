@@ -34,7 +34,8 @@ export default {
     '~/plugins/vee-validate',
     '~/plugins/v-money',
     '~/plugins/fontawesome.js',
-    '~/plugins/sw-update-client.js'
+    '~/plugins/sw-update-client.js',
+    '~/plugins/offline-sync-service.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -84,14 +85,29 @@ export default {
       ogImage: '/icon.png',
     },
     workbox: {
-      offlineStrategy: 'NetworkFirst',
+      offlineStrategy: 'StaleWhileRevalidate',
       offlineAnalytics: false,
       clientsClaim: true,
       skipWaiting: true,
       runtimeCaching: [
         {
+          // Cache API responses for offline use
+          urlPattern: '.*/api/(?!price-informations$|ecological-data$).*',
+          handler: 'StaleWhileRevalidate',
+          method: 'GET',
+          strategyOptions: {
+            cacheName: 'api-cache',
+            cacheExpiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 60 * 60 * 24 // 1 day
+            }
+          }
+        },
+        {
+          // Don't cache POST/PUT requests
           urlPattern: '.*/api/.*',
           handler: 'NetworkOnly',
+          method: 'POST|PUT'
         }
       ]
     },

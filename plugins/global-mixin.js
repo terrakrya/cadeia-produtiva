@@ -277,6 +277,22 @@ if (!Vue.__my_mixin__) {
       async setLocalItem(key, value) {
         return await this.$localForage.setItem(key, value)
       },
+
+      async hasPendingOfflineData() {
+        if (!process.client) return false
+        
+        const pendingPrices = await localforage.getItem('pendingPrices') || []
+        const pendingEcologicalData = await localforage.getItem('pendingEcologicalData') || []
+        
+        return pendingPrices.length > 0 || pendingEcologicalData.length > 0
+      },
+      
+      // This can be used to manually trigger sync
+      syncOfflineData() {
+        if (this.$syncOfflineData) {
+          this.$syncOfflineData()
+        }
+      }
     },
 
     filters: {

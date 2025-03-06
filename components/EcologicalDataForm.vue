@@ -164,6 +164,7 @@
 
 <script>
 import meses from '@/data/meses.json'
+import localforage from 'localforage'
 
 export default {
   data() {
@@ -233,7 +234,7 @@ export default {
     async save() {
       this.validateEndYear()
 
-      this.$validator.validate().then((isValid) => {
+      this.$validator.validate().then(async (isValid) => {
         if (this.yearError || this.showHarvestError) {
           isValid = false
         }
@@ -244,19 +245,43 @@ export default {
           const url = this.isEditing()
             ? `ecological-data/${this.$route.params.id}`
             : 'ecological-data'
-          this.$axios({
-            method,
-            url,
-            data: this.form,
-          })
-            .then(() => {
-              this.$router.replace('/painel')
+          
+          const ecologicalData = { ...this.form }
+          
+          if (navigator.onLine) {
+            // Online: send data to server
+            try {
+              await this.$axios({
+                method,
+                url,
+                data: ecologicalData,
+              })
+              this.notify('Dados ecológicos salvos com sucesso')
+              await this.$router.replace('/painel')
               this.is_sending = false
-            })
-            .catch((error) => {
+            } catch (error) {
               console.error('Erro ao salvar os dados ecológicos:', error)
+              this.showError(error)
               this.is_sending = false
+            }
+          } else {
+            // Offline: store data locally
+            const pendingEcologicalData = 
+              (await localforage.getItem('pendingEcologicalData')) || []
+            pendingEcologicalData.push({
+              method,
+              url,
+              data: ecologicalData
             })
+            await localforage.setItem('pendingEcologicalData', pendingEcologicalData)
+            this.notify(
+              'Você está offline. Os dados ecológicos serão enviados quando a conexão for restabelecida.'
+            )
+            this.is_sending = false
+            try {
+              await this.$router.replace('/painel')
+            } catch (error) {}
+          }
         }
       })
     },

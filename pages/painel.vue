@@ -345,63 +345,93 @@ export default {
         ...this.filters,
         unitOfMeasurement: this.$auth.user.unitOfMeasurement,
       }
-
-      // Realize apenas uma chamada ao backend
-      const squares = await this.$axios.$get('price-informations/summary', {
-        params: this.filters,
-      })
-
-      // Agora 'squares' é um array de objetos
-      this.summary = squares
-
-      // Extrair o userRegionSummary de squares
-      this.userRegionSummary = squares.find(
-        (square) => square.name === this.$auth.user.region
-      )
-
-      // Caso a região do usuário não seja encontrada, trate o caso
-      if (!this.userRegionSummary) {
-        this.userRegionSummary = {
-          minimumPrice: null,
-          maximumPrice: null,
-          averagePrice: null,
-          moda: null,
-          totalPrices: 0,
-        }
-      }
-
-      // Continue com o restante do código
+      
       try {
-        const data = await this.$axios.$get('price-informations/harvest-mode', {
-          params: {
-            from: this.filters.from,
-            to: this.filters.to,
-            unitOfMeasurement: this.$auth.user.unitOfMeasurement,
-            product: this.filters.product,
-            regions: [this.$auth.user.region],
-          },
-        })
-        if (Array.isArray(data)) {
-          this.chartData = {
-            labels: data.map((item) => item.week),
-            datasets: [
-              {
-                label: 'Preço Mais Comum por Semana',
-                backgroundColor: '#6DC5D1',
-                borderColor: '#6DC5D1',
-                fill: false,
-                data: data.map((item) => item.moda),
-              },
-            ],
-          }
+        if (navigator.onLine) {
+          // Online: fetch data from server
+          const squares = await this.$axios.$get('price-informations/summary', {
+            params: this.filters,
+          })
+          
+          // Store the data for offline use
+          await localforage.setItem('cachedSummary', squares)
+          this.summary = squares
+          
         } else {
-          console.error('Dados retornados não são um array:', data)
+          // Offline: use cached data
+          const cachedSummary = await localforage.getItem('cachedSummary')
+          this.summary = cachedSummary || []
+        }
+        
+        // Extract the userRegionSummary from squares
+        this.userRegionSummary = this.summary.find(
+          (square) => square.name === this.$auth.user.region
+        )
+        
+        // Deal with case when user region isn't found
+        if (!this.userRegionSummary) {
+          this.userRegionSummary = {
+            minimumPrice: null,
+            maximumPrice: null,
+            averagePrice: null,
+            moda: null,
+            totalPrices: 0,
+          }
+        }
+        
+        // Load chart data with offline support
+        await this.loadChartData()
+        
+      } catch (error) {
+        console.error('Erro ao carregar dados:', error)
+      }
+      
+      this.loading = false
+    },
+    async loadChartData() {
+      try {
+        if (navigator.onLine) {
+          const data = await this.$axios.$get('price-informations/harvest-mode', {
+            params: {
+              from: this.filters.from,
+              to: this.filters.to,
+              unitOfMeasurement: this.$auth.user.unitOfMeasurement,
+              product: this.filters.product,
+              regions: [this.$auth.user.region],
+            },
+          })
+          
+          // Cache the chart data
+          await localforage.setItem('cachedChartData', data)
+          this.updateChartData(data)
+        } else {
+          // Use cached chart data when offline
+          const cachedData = await localforage.getItem('cachedChartData')
+          if (cachedData) {
+            this.updateChartData(cachedData)
+          }
         }
       } catch (error) {
         console.error('Erro ao buscar os dados da safra:', error)
       }
-
-      this.loading = false
+    },
+    updateChartData(data) {
+      if (Array.isArray(data)) {
+        this.chartData = {
+          labels: data.map((item) => item.week),
+          datasets: [
+            {
+              label: 'Preço Mais Comum por Semana',
+              backgroundColor: '#6DC5D1',
+              borderColor: '#6DC5D1',
+              fill: false,
+              data: data.map((item) => item.moda),
+            },
+          ],
+        }
+      } else {
+        console.error('Dados retornados não são um array:', data)
+      }
     },
     applyFilter(period) {
       let fromDate, toDate
