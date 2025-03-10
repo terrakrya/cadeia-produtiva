@@ -36,17 +36,15 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-sm-6 mb-4">
-              <b-form-select
-                v-model="form.product"
-                v-validate="'required'"
-                class="form-control"
-                :options="products"
-                value-field="id"
-                text-field="name"
-                name="product"
-              />
-              <field-error :msg="veeErrors" field="product" />
+            <div class="col-sm-4">
+              <b-form-group label="Produto">
+                <input
+                  v-model="productName"
+                  type="text"
+                  readonly
+                  class="form-control"
+                />
+              </b-form-group>
             </div>
           </div>
           <div class="row">
@@ -227,12 +225,7 @@
                   v-model="form.uf"
                   v-validate="'required'"
                   class="form-control"
-                  :options="
-                    (Array.isArray(estados)
-                      ? estados
-                      : estados.default || []
-                    ).map((e) => e.uf)
-                  "
+                  :options="estadosOptions"
                   name="uf"
                   @input="loadCities()"
                 />
@@ -374,6 +367,16 @@ export default {
     totalTransactionValue() {
       return (this.form.transactedQuantity * this.form.originalPrice).toFixed(2)
     },
+    estadosOptions() {
+      if (!Array.isArray(estados)) {
+        return Object.keys(estados).map((uf) => ({ value: uf, text: uf }))
+      }
+
+      return estados.map((e) => ({ value: e.uf, text: e.uf }))
+    },
+    productName() {
+      return 'Castanha com casca in natura'
+    },
   },
   async created() {
     const now = this.$moment().tz('America/Sao_Paulo')
@@ -385,12 +388,14 @@ export default {
       await this.edit(this.$route.params.id)
     }
 
+    await this.setMessenger()
+
     if (!this.isMessenger) {
       await this.listOrganizations()
     }
+
     await this.loadOrganization()
     await this.preSetDados()
-    await this.setMessenger()
 
     this.creating = false
 
@@ -430,18 +435,29 @@ export default {
       }
     },
     async listOrganizations() {
+      if (this.isMessenger) {
+        return
+      }
+
       try {
-        const organizationsData = await this.$axios.$get('organizations')
-        this.organizationsOptions = [
-          { value: '', text: 'Selecione uma organização' },
-        ].concat(
-          organizationsData.map((organization) => ({
-            value: organization._id,
-            text: organization.name,
-          }))
-        )
+        const orgs = await this.$axios.$get('organizations')
+        this.organizationsOptions = orgs.map((org) => ({
+          value: org._id,
+          text: org.name,
+        }))
       } catch (error) {
-        console.error('Erro ao carregar organização:', error)
+        console.error('Erro ao carregar organizações:', error)
+
+        const cachedOrgs = await this.$getCachedData(
+          'reference',
+          'organizations'
+        )
+        if (cachedOrgs) {
+          this.organizationsOptions = cachedOrgs.map((org) => ({
+            value: org._id,
+            text: org.name,
+          }))
+        }
       }
     },
     setMessenger() {
@@ -450,8 +466,8 @@ export default {
       }
     },
     preSetDados() {
-      if (this.isEditing() || this.isAdmin || this.isGlobalManager) return;
-      
+      if (this.isEditing() || this.isAdmin || this.isGlobalManager) return
+
       if (this.$auth.user) {
         this.form.currency = this.$auth.user.currency
         this.form.country = this.$auth.user.country
@@ -460,7 +476,7 @@ export default {
         this.form.city = this.$auth.user.city
         this.form.buyerPositionSeller = this.$auth.user.buyerPosition
       } else {
-        this.$getCachedData('user', 'currentUser').then(userData => {
+        this.$getCachedData('user', 'currentUser').then((userData) => {
           if (userData) {
             this.form.currency = userData.currency
             this.form.country = userData.country
@@ -474,29 +490,119 @@ export default {
     },
     async loadOrganization() {
       try {
-        if (navigator.onLine) {
-          const organizationsData = await this.$axios.$get('organizations')
-          this.organizationsOptions = [
-            { value: '', text: 'Selecione uma organização' },
-          ].concat(
-            organizationsData.map((organization) => ({
-              value: organization._id,
-              text: organization.name,
-            }))
-          )
+        let organizationId = null
+
+        // Determina a organização baseada no papel do usuário
+        if (this.isManager || this.isMessenger) {
+          organizationId = this.currentUser.organization
         } else {
-          const cachedOrganizations = await this.$getCachedData('reference', 'organizations')
-          if (cachedOrganizations) {
+          organizationId = this.form.organization
+        }
+
+        // Prepara filtros para buscar mensageiros
+        const filters = { role: 'mensageiro' }
+
+        if (this.isMessenger) {
+          filters.id = this.currentUser._id
+        } else if (organizationId) {
+          filters.organization = organizationId
+        }
+
+        if (navigator.onLine) {
+          // ONLINE: busca dados do servidor
+
+          // Carrega organizações apropriadas para dropdowns
+          if (!this.isMessenger) {
+            const organizationsData = await this.$axios.$get('organizations')
             this.organizationsOptions = [
               { value: '', text: 'Selecione uma organização' },
             ].concat(
-              cachedOrganizations.map((organization) => ({
+              organizationsData.map((organization) => ({
                 value: organization._id,
                 text: organization.name,
               }))
             )
           }
+
+          // Carrega produtos da organização específica
+          if (organizationId) {
+            const organization = await this.$axios.$get(
+              'organizations/' + organizationId
+            )
+            this.products = organization.products || []
+          }
+
+          // Carrega mensageiros baseado nos filtros
+          this.messengers = await this.$axios.$get('users', {
+            params: { filters },
+          })
+
+          // Armazena os dados em cache para uso offline
+          if (this.products) {
+            await this.$getCachedData('reference', 'products', this.products)
+          }
+          if (this.messengers) {
+            await this.$getCachedData(
+              'reference',
+              'currentMessengers',
+              this.messengers
+            )
+          }
+        } else {
+          // OFFLINE: usa dados em cache
+
+          // Carrega organizações do cache
+          if (!this.isMessenger) {
+            const cachedOrganizations = await this.$getCachedData(
+              'reference',
+              'organizations'
+            )
+            if (cachedOrganizations) {
+              this.organizationsOptions = [
+                { value: '', text: 'Selecione uma organização' },
+              ].concat(
+                cachedOrganizations.map((organization) => ({
+                  value: organization._id,
+                  text: organization.name,
+                }))
+              )
+            }
+          }
+
+          // Carrega produtos e mensageiros do cache
+          if (organizationId) {
+            const cachedProducts = await this.$getCachedData(
+              'reference',
+              'products'
+            )
+            if (cachedProducts) {
+              // Filtra produtos pela organização se necessário
+              this.products = cachedProducts
+            }
+          }
+
+          const cachedMessengers = await this.$getCachedData(
+            'reference',
+            'currentMessengers'
+          )
+          if (cachedMessengers) {
+            // Filtra mensageiros baseado no papel do usuário e organização
+            if (this.isMessenger) {
+              this.messengers = cachedMessengers.filter(
+                (m) => m._id === this.currentUser._id
+              )
+            } else if (organizationId) {
+              this.messengers = cachedMessengers.filter(
+                (m) => m.organization === organizationId
+              )
+            } else {
+              this.messengers = cachedMessengers
+            }
+          }
         }
+
+        // Simplificar - sempre definir o produto padrão
+        this.form.product = '63ff4160ff65e9001b61c6af'
       } catch (error) {
         console.error('Erro ao carregar organizações:', error)
       }
@@ -532,13 +638,34 @@ export default {
         if (navigator.onLine) {
           const estados = await this.$axios.$get('locations/estados')
           this.estados = estados
-          
+
           await this.$getCachedData('reference', 'estados', estados)
         } else {
-          const cachedEstados = await this.$getCachedData('reference', 'estados')
+          const cachedEstados = await this.$getCachedData(
+            'reference',
+            'estados'
+          )
           if (cachedEstados) {
             this.estados = cachedEstados
           }
+        }
+
+        // Adicionar lógica para atualizar a região castanheira
+        if (this.form.city && this.form.uf) {
+          // Encontra a região castanheira correspondente ao município selecionado
+          const regiaoFound = this.regiao.find(
+            (item) =>
+              item.municipio === this.form.city && item.uf === this.form.uf
+          )
+
+          // Atualiza o campo de região se encontrar uma correspondência
+          if (regiaoFound) {
+            this.form.region = regiaoFound.regiaoCastanheira
+          } else {
+            this.form.region = '' // Limpa o campo se não encontrar correspondência
+          }
+        } else {
+          this.form.region = '' // Limpa o campo se município ou UF não estiverem definidos
         }
       } catch (error) {
         console.error('Erro ao carregar praças:', error)
@@ -743,14 +870,21 @@ export default {
             this.is_sending = false
           }
         } else {
+          // Offline: salvar localmente
           const pendingPrices =
             (await localforage.getItem('pendingPrices')) || []
+
+          // Garantir que o ID do produto esteja definido
+          priceData.product = '63ff4160ff65e9001b61c6af'
+
           pendingPrices.push(priceData)
           await localforage.setItem('pendingPrices', pendingPrices)
+
           this.notify(
-            'Você está offline. O preço será enviado quando a conexão for restabelecida.'
+            'Preço salvo localmente. Será sincronizado quando estiver online.'
           )
           this.is_sending = false
+
           try {
             await this.$router.replace('/')
           } catch (error) {}
