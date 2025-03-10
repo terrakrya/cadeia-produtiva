@@ -202,7 +202,7 @@
                     class="form-control"
                     name="month"
                     v-validate="'required'"
-                    style="width: 35%;"
+                    style="width: 35%"
                   >
                     <option :value="''" disabled selected hidden>Mês</option>
                   </b-form-select>
@@ -227,7 +227,12 @@
                   v-model="form.uf"
                   v-validate="'required'"
                   class="form-control"
-                  :options="estados.map((e) => e.uf)"
+                  :options="
+                    (Array.isArray(estados)
+                      ? estados
+                      : estados.default || []
+                    ).map((e) => e.uf)
+                  "
                   name="uf"
                   @input="loadCities()"
                 />
