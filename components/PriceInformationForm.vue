@@ -860,9 +860,11 @@ export default {
             const category = resp.data
             if (category && category._id) {
               this.notify('Informações de preço salvo com sucesso')
-              try {
-                await this.$router.replace('/')
-              } catch (error) {}
+              setTimeout(() => {
+                try {
+                  this.$router.replace('/')
+                } catch (error) {}
+              }, 500)
             }
             this.is_sending = false
           } catch (error) {
@@ -885,9 +887,11 @@ export default {
           )
           this.is_sending = false
 
-          try {
-            await this.$router.replace('/')
-          } catch (error) {}
+          setTimeout(() => {
+            try {
+              this.$router.replace('/')
+            } catch (error) {}
+          }, 500)
         }
       }
     },
