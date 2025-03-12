@@ -39,8 +39,13 @@
                 <div v-if="error" class="alert alert-danger">
                   {{ error }}
                 </div>
-                <button type="submit" class="btn btn-white btn-lg btn-block">
-                  Entrar
+                <button
+                  type="submit"
+                  class="btn btn-white btn-lg btn-block"
+                  :disabled="is_loading"
+                >
+                  <span v-if="is_loading"><b-spinner small /> Entrando...</span>
+                  <span v-else>Entrar</span>
                 </button>
                 <br />
                 <div class="text-center">
@@ -68,6 +73,7 @@ export default {
     return {
       show_login: false,
       error: null,
+      is_loading: false,
       form: {
         username: '',
         password: '',
@@ -85,28 +91,37 @@ export default {
 
   methods: {
     async login() {
+      // Prevent multiple submissions
+      if (this.is_loading) {
+        return
+      }
+
       this.error = null
       this.is_loading = true
 
-      const dados = {
-        data: {
-          username: this.form.username.replace(/\D/g, ''),
-          password: this.form.password,
-        },
-      }
+      try {
+        const dados = {
+          data: {
+            username: this.form.username.replace(/\D/g, ''),
+            password: this.form.password,
+          },
+        }
 
-      const resp = await this.$auth.loginWith('local', dados).catch((error) => {
+        const resp = await this.$auth.loginWith('local', dados)
+
+        if (resp) {
+          this.$router.push(this.$route.query.redirect || '/painel')
+        }
+      } catch (error) {
         if (error.response && error.response.data) {
           this.error = error.response.data
         } else {
           this.showError(error)
         }
-      })
-
-      if (resp) {
-        this.$router.push(this.$route.query.redirect || '/painel')
+      } finally {
+        // Always make sure to reset loading state
+        this.is_loading = false
       }
-      this.is_loading = false
     },
   },
 }
