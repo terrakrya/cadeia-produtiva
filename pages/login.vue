@@ -44,8 +44,7 @@
                   class="btn btn-white btn-lg btn-block"
                   :disabled="is_loading"
                 >
-                  <span v-if="is_loading"><b-spinner small /> Entrando...</span>
-                  <span v-else>Entrar</span>
+                  <span>Entrar</span>
                 </button>
                 <br />
                 <div class="text-center">
