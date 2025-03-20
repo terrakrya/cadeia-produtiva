@@ -812,6 +812,8 @@ export default {
 
       const multiplyer = this.getMultiplyer(this.form.measure)
       minPricePerKg = +new Decimal(minPricePerKg).div(multiplyer).toFixed(2)
+      maxPricePerKg = +new Decimal(maxPricePerKg).div(multiplyer).toFixed(2)
+
       if (minPricePerKg < 1) {
         this.veeErrors.items.push({
           id: 105,
@@ -819,6 +821,18 @@ export default {
           field: 'originalMinimumPrice',
           msg: 'Revise o preço, valor informado muito baixo.',
           rule: 'min_value',
+          scope: null,
+        })
+        isValid = false
+      }
+
+      if (maxPricePerKg > 50) {
+        this.veeErrors.items.push({
+          id: 106,
+          vmId: this.veeErrors.vmId,
+          field: 'originalMaximumPrice',
+          msg: 'Revise o preço, valor informado muito alto.',
+          rule: 'max_value',
           scope: null,
         })
         isValid = false
