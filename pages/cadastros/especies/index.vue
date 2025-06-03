@@ -37,9 +37,6 @@
             <template #cell(scientificName)="data">
               {{ data.item.scientificName }}
             </template>
-            <template #cell(description)="data">
-              {{ data.item.description }}
-            </template>
             <template #cell(actions)="data">
               <n-link
                 :to="'/cadastros/especies/' + data.item._id + '/editar'"
@@ -76,11 +73,6 @@ export default {
         {
           key: 'scientificName',
           label: 'Nome científico',
-          sortable: true,
-        },
-        {
-          key: 'description',
-          label: 'Descrição',
           sortable: true,
         },
         {

@@ -25,8 +25,7 @@ router.get('/', auth.globalManager, async (req, res) => {
   try {
     // ***** executa a query *****
 
-    const species = await Specie.find(query)
-      .populate(populate(req))
+    const species = await Specie.find(query).populate(populate(req))
 
     res.json(species)
   } catch (err) {
@@ -49,59 +48,54 @@ router.get('/:id', auth.globalManager, async (req, res) => {
 
 router.post('/', auth.globalManager, async (req, res) => {
   try {
-    const species = new Specie()
+    const { scientificName, popularName } = req.body
 
-    species.scientificName = req.body.scientificName
-    species.description = req.body.description
-    species.popularName = req.body.popularName
-    species.images = req.body.images
+    const newSpecie = new Specie({
+      scientificName,
+      popularName,
+    })
 
-    await species.save()
-
-    return res.send(species)
+    await newSpecie.save()
+    return res.status(201).json(newSpecie)
   } catch (err) {
     res.status(422).send('Ocorreu um erro ao incluir o espécie: ' + err.message)
   }
 })
-// altera um produto
+
 router.put('/:id', auth.globalManager, async (req, res) => {
   try {
-    const query = { _id: req.params.id }
+    const { scientificName, popularName } = req.body
+    const { id } = req.params
 
-    const species = await Specie.findOne(query)
+    const updatedSpecie = await Specie.findByIdAndUpdate(
+      id,
+      { scientificName, popularName },
+      { new: true, runValidators: true }
+    )
 
-    if (species) {
-      species.scientificName = req.body.scientificName
-      species.description = req.body.description
-      species.popularName = req.body.popularName
-      species.images = req.body.images
-
-      await species.save()
-
-      return res.send(species)
-    } else {
-      res.status(422).send('espécie não encontrado')
+    if (!updatedSpecie) {
+      return res.status(404).json({ error: 'Espécie não encontrada' })
     }
+
+    return res.json(updatedSpecie)
   } catch (err) {
-    res
-      .status(422)
-      .send('Ocorreu um erro ao atualizar o espécie: ' + err.message)
+    res.status(400).json({ error: err.message })
   }
 })
 
-router.delete('/:id', auth.globalManager, (req, res) => {
-  const query = { _id: req.params.id }
+router.delete('/:id', auth.globalManager, async (req, res) => {
+  try {
+    const { id } = req.params
+    const deletedSpecie = await Specie.findByIdAndDelete(id)
 
-  Specie.findOne(query).exec(function (err, species) {
-    if (err) {
-      res
-        .status(422)
-        .send('Ocorreu um erro ao excluir o espécie: ' + err.message)
-    } else {
-      species.remove()
-      res.send(species)
+    if (!deletedSpecie) {
+      return res.status(404).json({ error: 'Espécie não encontrada' })
     }
-  })
+
+    return res.status(204).send()
+  } catch (err) {
+    res.status(400).json({ error: err.message })
+  }
 })
 
 module.exports = router

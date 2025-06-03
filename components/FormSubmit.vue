@@ -2,11 +2,10 @@
   <div class="row">
     <div class="col-sm-12 text-center">
       <b-alert
-        v-if="veeErrors && veeErrors.items && veeErrors.items.length"
+        v-if="hasErrors"
         variant="danger"
         show
-        >Verifique os requisitos acima antes de continuar</b-alert
-      >
+      >Verifique os requisitos acima antes de continuar</b-alert>
       <button
         role="button"
         class="btn btn-lg rounded-pill"
@@ -35,6 +34,13 @@ export default {
     floating: {
       type: Boolean,
       default: false,
+    },
+  },
+  computed: {
+    hasErrors() {
+      const errs = this.veeErrors && this.veeErrors.items;
+      if (!errs) return false;
+      return errs.some(err => !err.scope);
     },
   },
 }

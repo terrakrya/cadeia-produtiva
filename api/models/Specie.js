@@ -14,9 +14,6 @@ const SpecieSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
-    description: String,
-    images: [Object],
   },
   {
     timestamps: true,
@@ -24,14 +21,18 @@ const SpecieSchema = new mongoose.Schema(
   }
 )
 
+SpecieSchema.virtual('measurements', {
+  ref: 'Measurement',
+  localField: '_id',
+  foreignField: 'specie'
+})
+
 SpecieSchema.methods.data = function () {
   return {
     _id: this._id,
     id: this.id,
     scientificName: this.scientificName,
     popularName: this.popularName,
-    description: this.description,
-    images: this.images,
   }
 }
 SpecieSchema.methods.generateJWT = function () {

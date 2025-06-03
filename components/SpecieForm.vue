@@ -31,47 +31,48 @@
               </b-form-group>
             </b-col>
           </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <b-form-group label="Descrição">
-                <b-form-input v-model="form.description" name="description" />
-              </b-form-group>
-            </div>
-            <div class="col-md-6">
-              <Upload
-                v-model="form.images"
-                multiple
-                type="images"
-                label="Fotos da semente"
-              />
-            </div>
-          </div>
           <form-submit :sending="is_sending" />
         </b-form>
+        
+        <!-- Show measurements form only after species is saved -->
+        <div v-if="specieId" class="mt-4">
+          <hr>
+          <measurement-form
+            :specie-id="specieId"
+          />
+        </div>
+        
+        <div v-else-if="!isEditing()" class="alert alert-info mt-4">
+          <p class="mb-0">
+            <b-icon-info-circle /> 
+            Salve a espécie primeiro para poder adicionar unidades de medida.
+          </p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import Upload from '@/components/Upload'
+import MeasurementForm from '@/components/MeasurementForm'
+
 export default {
   components: {
     Breadcrumb,
-    Upload,
+    MeasurementForm,
   },
   data() {
     return {
       form: {
-        description: '',
         scientificName: '',
         popularName: '',
-        images: [],
       },
+      specieId: null,
     }
   },
   created() {
     if (this.isEditing()) {
+      this.specieId = this.$route.params.id
       this.edit(this.$route.params.id)
     }
   },
@@ -82,10 +83,6 @@ export default {
         .get('species/' + id)
         .then((response) => {
           this.apiDataToForm(this.form, response.data)
-
-          if (response.data.image) {
-            this.images_preview = [response.data.image]
-          }
           this.is_loading = false
         })
         .catch(this.showError)
@@ -94,10 +91,6 @@ export default {
       this.$validator.validate().then(async (isValid) => {
         if (isValid) {
           this.is_sending = true
-
-          // const formData = Object.assign({}, this.form)
-          // formData.popularName = formData.popularName.split(',')
-
           this.$axios({
             method: this.isEditing() ? 'PUT' : 'POST',
             url: this.isEditing()
@@ -106,10 +99,14 @@ export default {
             data: this.form,
           })
             .then((resp) => {
-              const category = resp.data
-              if (category && category._id) {
+              const specie = resp.data
+              if (specie && specie._id) {
                 this.notify('Espécie salvo com sucesso')
-                this.$router.replace('/cadastros/especies')
+                this.specieId = specie._id
+                
+                if (!this.isEditing()) {
+                  this.$router.replace(`/cadastros/especies/${specie._id}/editar`)
+                }
               }
               this.is_sending = false
             })
@@ -117,6 +114,7 @@ export default {
         }
       })
     },
+
   },
 }
 </script>

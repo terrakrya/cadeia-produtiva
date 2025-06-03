@@ -10,6 +10,7 @@ import './models/Product'
 import './models/GeographicArea'
 import './config/passport'
 import './models/Map'
+import './models/Measurement'
 import './models/Layer'
 import './models/Shape'
 
