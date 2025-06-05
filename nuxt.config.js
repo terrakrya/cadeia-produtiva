@@ -95,7 +95,7 @@ export default {
         {
           // Cache de APIs de dados de referência
           urlPattern: '.*/api/(products|organizations|locations|buyer-positions).*',
-          handler: 'CacheFirst',
+          handler: 'NetworkFirst',
           method: 'GET',
           strategyOptions: {
             cacheName: 'reference-data-cache',
