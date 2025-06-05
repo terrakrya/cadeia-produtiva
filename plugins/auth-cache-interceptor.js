@@ -13,5 +13,21 @@ export default function ({ $auth, $cacheUserData }) {
       
       return result
     }
+
+    // Intercepta o logout para limpar o cache
+    const originalLogout = $auth.logout
+    $auth.logout = async function() {
+      // Limpa o cache do usuário antes do logout
+      try {
+        const localforage = await import('localforage')
+        const userCache = localforage.default.createInstance({ name: 'userCache' })
+        await userCache.clear()
+      } catch (error) {
+        console.error('Erro ao limpar cache no logout:', error)
+      }
+      
+      // Chama o logout original
+      return originalLogout.call(this)
+    }
   }
 } 
