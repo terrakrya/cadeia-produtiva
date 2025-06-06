@@ -18,27 +18,23 @@ export default function ({ $auth, $cacheUserData }) {
     const originalLogout = $auth.logout
     $auth.logout = async function () {
       try {
-        // Limpa apenas o cache da rota /api/profile
+        // 1. Limpa Service Worker cache da rota /api/profile
         if ('caches' in window) {
-          const cacheNames = await caches.keys()
-
-          for (const cacheName of cacheNames) {
-            const cache = await caches.open(cacheName)
-            const requests = await cache.keys()
-
-            // Remove apenas requests que sejam /api/profile
-            await Promise.all(
-              requests.map((request) => {
-                if (request.url.includes('/api/profile')) {
-                  return cache.delete(request)
-                }
-              })
-            )
-          }
+          const cache = await caches.open('user-cache')
+          await cache.keys().then(requests => 
+            Promise.all(requests.map(request => cache.delete(request)))
+          )
         }
+
+        // 2. Limpa LocalForage com dados do usuário
+        const localforage = await import('localforage')
+        const userCache = localforage.default.createInstance({ name: 'userCache' })
+        await userCache.clear()
+
       } catch (error) {
-        console.error('Erro ao limpar cache do profile:', error)
+        console.error('Erro ao limpar cache do usuário:', error)
       }
+      
       // Chama o logout original
       return originalLogout.call(this)
     }

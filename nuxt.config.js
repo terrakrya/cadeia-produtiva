@@ -37,7 +37,7 @@ export default {
     '~/plugins/sw-update-client.js',
     '~/plugins/offline-sync-service.js',
     '~/plugins/offline-cache-service.js',
-    '~/plugins/auth-cache-interceptor.js'
+    '~/plugins/auth-cache-interceptor.js',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -93,33 +93,7 @@ export default {
       skipWaiting: true,
       runtimeCaching: [
         {
-          // Cache de APIs de dados de referência
-          urlPattern: '.*/api/(products|organizations|locations|buyer-positions).*',
-          handler: 'NetworkFirst',
-          method: 'GET',
-          strategyOptions: {
-            cacheName: 'reference-data-cache',
-            cacheExpiration: {
-              maxEntries: 50,
-              maxAgeSeconds: 60 * 60 * 24 * 7 // 1 semana
-            }
-          }
-        },
-        {
-          // Cache de APIs de dados dinâmicos
-          urlPattern: '.*/api/(?!price-informations$|ecological-data$).*',
-          handler: 'StaleWhileRevalidate',
-          method: 'GET',
-          strategyOptions: {
-            cacheName: 'api-cache',
-            cacheExpiration: {
-              maxEntries: 100,
-              maxAgeSeconds: 60 * 60 * 24 // 1 dia
-            }
-          }
-        },
-        {
-          // Cache para dados do usuário
+          // Cache para dados do usuário (DEVE VIR PRIMEIRO - mais específico)
           urlPattern: '.*/api/profile',
           handler: 'NetworkFirst',
           method: 'GET',
@@ -127,17 +101,45 @@ export default {
             cacheName: 'user-cache',
             cacheExpiration: {
               maxEntries: 1,
-              maxAgeSeconds: 60 * 60 * 24 * 30 // 30 dias
-            }
-          }
+              maxAgeSeconds: 60 * 60 * 24 * 30, // 30 dias
+            },
+          },
+        },
+        {
+          // Cache de APIs de dados de referência
+          urlPattern:
+            '.*/api/(products|organizations|locations|buyer-positions).*',
+          handler: 'NetworkFirst',
+          method: 'GET',
+          strategyOptions: {
+            cacheName: 'reference-data-cache',
+            cacheExpiration: {
+              maxEntries: 50,
+              maxAgeSeconds: 60 * 60 * 24 * 7, // 1 semana
+            },
+          },
+        },
+        {
+          // Cache de APIs de dados dinâmicos (excluindo profile, price-informations e ecological-data)
+          urlPattern:
+            '.*/api/(?!profile$|price-informations$|ecological-data$).*',
+          handler: 'StaleWhileRevalidate',
+          method: 'GET',
+          strategyOptions: {
+            cacheName: 'api-cache',
+            cacheExpiration: {
+              maxEntries: 100,
+              maxAgeSeconds: 60 * 60 * 24, // 1 dia
+            },
+          },
         },
         {
           // Não cachear requisições POST/PUT
           urlPattern: '.*/api/.*',
           handler: 'NetworkOnly',
-          method: 'POST|PUT'
-        }
-      ]
+          method: 'POST|PUT',
+        },
+      ],
     },
   },
 
