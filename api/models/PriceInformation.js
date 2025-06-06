@@ -60,6 +60,13 @@ const PriceSchema = new mongoose.Schema(
     measure: {
       type: String,
       required: true,
+      index: true,
+    },
+    measurementId: {
+      type: ObjectId,
+      ref: 'Measurement',
+      required: false,
+      index: true,
     },
     product: {
       type: ObjectId,
@@ -154,6 +161,7 @@ PriceSchema.methods.data = function () {
     currency: this.currency,
     country: this.country,
     measure: this.measure,
+    measurementId: this.measurementId,
     product: this.product,
     messenger: this.messenger,
     uf: this.uf,
