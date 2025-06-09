@@ -18,8 +18,11 @@
     "lint": "yarn lint:js --fix && yarn lint:style --fix",
     "sync_dev": "./scripts/sync_dev.sh",
     "seed-user": "node ./scripts/seed-user.js",
+    "seed-measurements": "node ./scripts/seed-measurements.js",
     "generate-password": "node ./scripts/generate-password.js",
-    "migrate-regioes-castanheiras": "node ./scripts/migrate-regioes-castanheiras.js"
+    "migrate-regioes-castanheiras": "node ./scripts/migrate-regioes-castanheiras.js",
+    "migrate-measurements": "node ./scripts/migrate-measurements.js",
+    "rollback-measurements": "node ./scripts/rollback-measurements.js"
   },
   "lint-staged": {
     "*.{js,vue}": "eslint",
