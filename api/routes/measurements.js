@@ -71,7 +71,7 @@ router.post('/', auth.globalManager, async (req, res) => {
 })
 
 // Get all measurements for a specific species
-router.get('/species/:specieId', auth.globalManager, async (req, res) => {
+router.get('/species/:specieId', auth.authenticated, async (req, res) => {
   try {
     let query = Measurement.find({ specie: req.params.specieId })
 

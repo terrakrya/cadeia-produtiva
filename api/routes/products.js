@@ -72,11 +72,27 @@ router.get('/cadastro-de-produtos', auth.globalManager, async (req, res) => {
   }
 })
 
-router.get('/:id', auth.globalManager, async (req, res) => {
+router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
-    const product = await Product.findOne(query).populate(populate(req))
+    let productQuery = Product.findOne(query)
+
+    // Se precisar de espécies (para carregar medidas dinamicamente)
+    if (req.query.populate === 'specie' || req.query.populate === 'full') {
+      productQuery = productQuery.populate({
+        path: 'specieProduct',
+        populate: {
+          path: 'specie',
+          select: 'scientificName popularName',
+        },
+      })
+    } else {
+      // Comportamento padrão (mantém compatibilidade)
+      productQuery = productQuery.populate(populate(req))
+    }
+
+    const product = await productQuery.exec()
     return res.json(product)
   } catch (err) {
     res.sendStatus(422)

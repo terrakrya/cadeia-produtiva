@@ -142,8 +142,14 @@
                   v-model="form.measure"
                   v-validate="'required'"
                   class="form-control"
-                  :options="medidas"
+                  :options="medidasOptions"
+                  :disabled="loadingMedidas"
+                  @input="onMeasureChange"
                 />
+                <small v-if="loadingMedidas" class="text-muted">
+                  <i class="fa fa-spinner fa-spin"></i> Carregando medidas
+                  disponíveis...
+                </small>
               </b-form-group>
             </div>
             <div v-if="form.transaction === 'preço da venda'" class="col-sm-4">
@@ -271,8 +277,6 @@ import Breadcrumb from '@/components/Breadcrumb'
 import posicaoComprador from '@/data/posicao-do-comprador.json'
 import buyerPositions from '@/data/posicao-do-comprador'
 import moeda from '@/data/moeda.json'
-import medidas from '@/data/tipo-de-unidade.json'
-import medidasPreco from '@/data/tipo-de-unidade.json'
 import pais from '@/data/pais.json'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
@@ -289,8 +293,10 @@ export default {
       regiao,
       pracas,
       buyerPositions,
-      medidas,
-      medidasPreco,
+      medidas: [],
+      medidasPreco: [],
+      loadingMedidas: false,
+      selectedMeasurement: null,
       moeda,
       posicaoComprador,
       pais,
@@ -315,6 +321,7 @@ export default {
         currency: '',
         country: '',
         measure: '',
+        measurementId: null,
         product: '63ff4160ff65e9001b61c6af',
         uf: '',
         city: '',
@@ -364,6 +371,16 @@ export default {
         text: i + 1,
       }))
     },
+    medidasOptions() {
+      const placeholder = {
+        value: '',
+        text: this.loadingMedidas
+          ? 'Carregando medidas...'
+          : 'Selecione uma medida',
+        disabled: true,
+      }
+      return [placeholder, ...this.medidas]
+    },
     totalTransactionValue() {
       return (this.form.transactedQuantity * this.form.originalPrice).toFixed(2)
     },
@@ -383,6 +400,8 @@ export default {
     this.form.day = now.format('DD')
     this.form.month = now.format('MM')
     this.form.year = now.format('YYYY')
+
+    await this.loadMedidas()
 
     if (this.isEditing()) {
       await this.edit(this.$route.params.id)
@@ -417,6 +436,61 @@ export default {
   methods: {
     updateOnlineStatus() {
       this.isOnline = navigator.onLine
+    },
+    async loadMedidas() {
+      this.loadingMedidas = true
+      try {
+        const product = await this.$axios.$get(
+          `products/${this.form.product}?populate=specie`
+        )
+
+        if (product?.specieProduct?.specie?._id) {
+          const specieId = product.specieProduct.specie._id
+
+          const measurements = await this.$axios.$get(
+            `measurements/species/${specieId}`
+          )
+
+          if (measurements && measurements.length > 0) {
+            this.medidas = measurements.map((measurement) => ({
+              value: measurement.name,
+              text: measurement.name,
+              measurementId: measurement._id,
+              referenceInKg: measurement.referenceInKg,
+            }))
+
+            this.medidasPreco = [...this.medidas]
+          } else {
+            this.usarMedidasFallback()
+          }
+        } else {
+          this.usarMedidasFallback()
+        }
+      } catch (error) {
+        this.usarMedidasFallback()
+      }
+      this.loadingMedidas = false
+    },
+    usarMedidasFallback() {
+      this.medidas = [
+        { value: 'Kg', text: 'Kg' },
+        { value: 'Lata', text: 'Lata' },
+        { value: 'Caixa', text: 'Caixa' },
+        { value: 'Hectolitro', text: 'Hectolitro' },
+        { value: 'Saca', text: 'Saca' },
+        { value: 'Barrica', text: 'Barrica' },
+        { value: 'Tonelada', text: 'Tonelada' },
+      ]
+      this.medidasPreco = [...this.medidas]
+    },
+    onMeasureChange() {
+      const selectedMedida = this.medidas.find(
+        (m) => m.value === this.form.measure
+      )
+      if (selectedMedida) {
+        this.selectedMeasurement = selectedMedida
+        this.form.measurementId = selectedMedida.measurementId || null
+      }
     },
     async syncData() {
       this.isOnline = true
@@ -492,14 +566,12 @@ export default {
       try {
         let organizationId = null
 
-        // Determina a organização baseada no papel do usuário
         if (this.isManager || this.isMessenger) {
           organizationId = this.currentUser.organization
         } else {
           organizationId = this.form.organization
         }
 
-        // Prepara filtros para buscar mensageiros
         const filters = { role: 'mensageiro' }
 
         if (this.isMessenger) {
@@ -509,9 +581,6 @@ export default {
         }
 
         if (navigator.onLine) {
-          // ONLINE: busca dados do servidor
-
-          // Carrega organizações apropriadas para dropdowns
           if (!this.isMessenger) {
             const organizationsData = await this.$axios.$get('organizations')
             this.organizationsOptions = [
@@ -524,7 +593,6 @@ export default {
             )
           }
 
-          // Carrega produtos da organização específica
           if (organizationId) {
             const organization = await this.$axios.$get(
               'organizations/' + organizationId
@@ -532,12 +600,10 @@ export default {
             this.products = organization.products || []
           }
 
-          // Carrega mensageiros baseado nos filtros
           this.messengers = await this.$axios.$get('users', {
             params: { filters },
           })
 
-          // Armazena os dados em cache para uso offline
           if (this.products) {
             await this.$getCachedData('reference', 'products', this.products)
           }
@@ -549,9 +615,6 @@ export default {
             )
           }
         } else {
-          // OFFLINE: usa dados em cache
-
-          // Carrega organizações do cache
           if (!this.isMessenger) {
             const cachedOrganizations = await this.$getCachedData(
               'reference',
@@ -569,14 +632,12 @@ export default {
             }
           }
 
-          // Carrega produtos e mensageiros do cache
           if (organizationId) {
             const cachedProducts = await this.$getCachedData(
               'reference',
               'products'
             )
             if (cachedProducts) {
-              // Filtra produtos pela organização se necessário
               this.products = cachedProducts
             }
           }
@@ -586,7 +647,6 @@ export default {
             'currentMessengers'
           )
           if (cachedMessengers) {
-            // Filtra mensageiros baseado no papel do usuário e organização
             if (this.isMessenger) {
               this.messengers = cachedMessengers.filter(
                 (m) => m._id === this.currentUser._id
@@ -601,7 +661,6 @@ export default {
           }
         }
 
-        // Simplificar - sempre definir o produto padrão
         this.form.product = '63ff4160ff65e9001b61c6af'
       } catch (error) {
         console.error('Erro ao carregar organizações:', error)
@@ -650,22 +709,19 @@ export default {
           }
         }
 
-        // Adicionar lógica para atualizar a região castanheira
         if (this.form.city && this.form.uf) {
-          // Encontra a região castanheira correspondente ao município selecionado
           const regiaoFound = this.regiao.find(
             (item) =>
               item.municipio === this.form.city && item.uf === this.form.uf
           )
 
-          // Atualiza o campo de região se encontrar uma correspondência
           if (regiaoFound) {
             this.form.region = regiaoFound.regiaoCastanheira
           } else {
-            this.form.region = '' // Limpa o campo se não encontrar correspondência
+            this.form.region = ''
           }
         } else {
-          this.form.region = '' // Limpa o campo se município ou UF não estiverem definidos
+          this.form.region = ''
         }
       } catch (error) {
         console.error('Erro ao carregar praças:', error)
@@ -685,6 +741,10 @@ export default {
       }
     },
     getMultiplyer(measure) {
+      if (this.selectedMeasurement && this.selectedMeasurement.referenceInKg) {
+        return this.selectedMeasurement.referenceInKg
+      }
+
       if (measure === 'Kg') {
         return 1
       } else if (measure === 'Tonelada') {
@@ -700,12 +760,16 @@ export default {
       } else if (measure === 'Barrica') {
         return 72
       }
+
+      return 1
     },
     async edit(id) {
       this.is_loading = true
 
       try {
-        const dados = await this.$axios.$get('price-informations/' + id)
+        const dados = await this.$axios.$get(
+          'price-informations/' + id + '?populate=measurements'
+        )
 
         this.form.organization = dados.organization
         this.form.messenger = dados.messenger
@@ -714,6 +778,7 @@ export default {
         this.form.originalMaximumPrice = dados.originalMaximumPrice || 0
         this.form.transactedQuantity = dados.transactedQuantity || 0
         this.form.measure = dados.measure
+        this.form.measurementId = dados.measurementId?._id || null
         this.form.product = dados.product
         this.form.buyerPositionBuyer = dados.buyerPositionBuyer
         this.form.createdAt = dados.createdAt
@@ -727,6 +792,15 @@ export default {
         this.form.day = date.format('DD')
         this.form.month = date.format('MM')
         this.form.year = date.format('YYYY')
+
+        if (dados.measurementId) {
+          this.selectedMeasurement = {
+            measurementId: dados.measurementId._id,
+            referenceInKg: dados.measurementId.referenceInKg,
+            value: dados.measure,
+            text: dados.measure,
+          }
+        }
       } catch (e) {
         this.showError(e)
       }
@@ -886,11 +960,9 @@ export default {
             this.is_sending = false
           }
         } else {
-          // Offline: salvar localmente
           const pendingPrices =
             (await localforage.getItem('pendingPrices')) || []
 
-          // Garantir que o ID do produto esteja definido
           priceData.product = '63ff4160ff65e9001b61c6af'
 
           pendingPrices.push(priceData)
