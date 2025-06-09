@@ -6,7 +6,6 @@ const Product = mongoose.model('Product')
 
 router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
-
   const filters = req.query
 
   if (filters.id) {
@@ -18,13 +17,24 @@ router.get('/', auth.authenticated, async (req, res) => {
   }
 
   try {
-    // ***** executa a query *****
+    let productQuery = Product.find(query)
 
-    const product = await Product.find(query)
-      .populate('specieProduct')
-      .populate('type')
+    // Se precisar de espécies (para carregar medidas dinamicamente)
+    if (filters.populate === 'specie' || filters.populate === 'full') {
+      productQuery = productQuery.populate({
+        path: 'specieProduct',
+        populate: {
+          path: 'specie',
+          select: 'scientificName popularName',
+        },
+      })
+    } else {
+      // Comportamento padrão (mantém compatibilidade)
+      productQuery = productQuery.populate('specieProduct').populate('type')
+    }
 
-    res.json(product)
+    const products = await productQuery.exec()
+    res.json(products)
   } catch (err) {
     res
       .status(422)

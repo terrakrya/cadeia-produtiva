@@ -46,12 +46,24 @@ router.get('/', auth.authenticated, async (req, res) => {
   }
 
   try {
-    const price = await Price.find(query)
+    let priceQuery = Price.find(query)
       .populate('product')
       .populate('messenger')
       .populate('organization')
-      .sort('price')
-    res.json(price)
+
+    // Se precisar de informações das medidas dinâmicas
+    if (
+      req.query.populate === 'measurements' ||
+      req.query.populate === 'full'
+    ) {
+      priceQuery = priceQuery.populate({
+        path: 'measurementId',
+        select: 'name referenceInKg',
+      })
+    }
+
+    const prices = await priceQuery.sort('createdAt').exec()
+    res.json(prices)
   } catch (err) {
     res
       .status(422)
@@ -154,6 +166,21 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
           preserveNullAndEmptyArrays: true,
         },
       },
+      // ← NOVO: Lookup para measurementId
+      {
+        $lookup: {
+          from: 'measurements',
+          localField: 'measurementId',
+          foreignField: '_id',
+          as: 'measurementDetails',
+        },
+      },
+      {
+        $unwind: {
+          path: '$measurementDetails',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
     ]
 
     const priceListAgr = await Price.aggregate(pipeline)
@@ -172,6 +199,14 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
         : 'Não informado',
       region: item.region || 'Não informado',
       city: item.city || 'Não informado',
+      // ← NOVO: Informações da medida dinâmica
+      measure: item.measure || 'Não informado',
+      measurementName: item.measurementDetails
+        ? item.measurementDetails.name || item.measure
+        : item.measure || 'Não informado',
+      measurementReference: item.measurementDetails
+        ? `${item.measurementDetails.referenceInKg}kg`
+        : 'Valor padrão',
     }))
 
     res.json(priceList)
@@ -187,7 +222,23 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 
   try {
-    const price = await Price.findOne(query).populate(populate(req))
+    let priceQuery = Price.findOne(query)
+      .populate('product')
+      .populate('messenger')
+      .populate('organization')
+
+    // Se precisar de informações da medida dinâmica
+    if (
+      req.query.populate === 'measurements' ||
+      req.query.populate === 'full'
+    ) {
+      priceQuery = priceQuery.populate({
+        path: 'measurementId',
+        select: 'name referenceInKg',
+      })
+    }
+
+    const price = await priceQuery.exec()
     return res.json(price)
   } catch (err) {
     res.sendStatus(422)
