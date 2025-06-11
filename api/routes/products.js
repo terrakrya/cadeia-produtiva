@@ -72,6 +72,60 @@ router.get('/cadastro-de-produtos', auth.globalManager, async (req, res) => {
   }
 })
 
+router.get('/organization/:organizationId', auth.authenticated, async (req, res) => {
+  try {
+    const organizationId = req.params.organizationId
+    
+    console.log('🏢 Buscando produtos para organização:', organizationId)
+
+    // Buscar organização e popular seus produtos
+    const Organization = mongoose.model('Organization')
+    
+    const organization = await Organization
+      .findById(organizationId)
+      .populate({
+        path: 'products',
+        populate: {
+          path: 'specieProduct',
+          populate: {
+            path: 'specie',
+            select: 'scientificName popularName',
+          },
+        },
+      })
+      .lean()
+
+    console.log('📋 Organização encontrada:', {
+      id: organization?._id,
+      name: organization?.name,
+      productsCount: organization?.products?.length
+    })
+
+    if (!organization) {
+      return res.status(404).send('Organização não encontrada')
+    }
+
+    // Usar products da organização diretamente
+    const products = organization.products || []
+
+    console.log('📦 Produtos encontrados:', products.length)
+
+    // Formatar para o frontend
+    const formattedProducts = products.map(product => ({
+      _id: product._id,
+      name: product.name,
+      description: product.description,
+      specieProduct: product.specieProduct,
+      specie: product.specieProduct?.specie
+    }))
+
+    res.json(formattedProducts)
+  } catch (error) {
+    console.error('❌ Erro ao carregar produtos da organização:', error)
+    res.status(422).send('Erro ao carregar produtos: ' + error.message)
+  }
+})
+
 router.get('/:id', auth.authenticated, async (req, res) => {
   const query = { _id: req.params.id }
 

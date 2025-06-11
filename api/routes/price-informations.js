@@ -6,6 +6,8 @@ const moment = require('moment')
 const convertUnit = require('../utils/convertUnit')
 const getModa = require('../utils/moda')
 const { processSquares } = require('../utils/priceSummary')
+const convertUnitDynamic = require('../utils/convertUnitDynamic')
+const User = mongoose.model('User')
 
 moment.locale('pt-br')
 const Price = mongoose.model('PriceInformation')
@@ -71,9 +73,14 @@ router.get('/', auth.authenticated, async (req, res) => {
   }
 })
 
-// Route for getting harvest mode data
+// Route for getting harvest mode data with dynamic conversion
 router.get('/harvest-mode', auth.authenticated, async (req, res) => {
   try {
+    const user = await User.findById(req.user.id)
+    if (!user) {
+      return res.status(404).send('Usuário não encontrado')
+    }
+
     const query = buildFilters(req.query)
     const prices = await Price.find(query)
 
@@ -81,7 +88,7 @@ router.get('/harvest-mode', auth.authenticated, async (req, res) => {
 
     const modaWeekly = {}
 
-    prices.forEach((price) => {
+    for (const price of prices) {
       const startOfMonth = moment(price.createdAt).startOf('month')
       const weekOfMonth =
         Math.ceil(moment(price.createdAt).diff(startOfMonth, 'days') / 7) + 1
@@ -90,11 +97,13 @@ router.get('/harvest-mode', auth.authenticated, async (req, res) => {
         .toUpperCase()} - Semana ${weekOfMonth}`
 
       if (!modaWeekly[formattedWeek]) modaWeekly[formattedWeek] = []
-      modaWeekly[formattedWeek].push(
-        convertUnit(price.minimumPrice, req.query.unitOfMeasurement),
-        convertUnit(price.maximumPrice, req.query.unitOfMeasurement)
-      )
-    })
+      
+      // ← USAR CONVERSÃO DINÂMICA baseada no usuário
+      const minPrice = await convertUnitDynamic(price.minimumPrice, user)
+      const maxPrice = await convertUnitDynamic(price.maximumPrice, user)
+      
+      modaWeekly[formattedWeek].push(parseFloat(minPrice), parseFloat(maxPrice))
+    }
 
     let modaByWeek = Object.keys(modaWeekly).map((week) => ({
       week,
@@ -117,19 +126,82 @@ router.get('/harvest-mode', auth.authenticated, async (req, res) => {
   }
 })
 
-// Route for getting summary data
+// Route for getting summary data with dynamic conversion
 router.get('/summary', auth.authenticated, async (req, res) => {
-  const query = buildFilters(req.query)
-  const prices = await Price.find(query, {
-    region: 1,
-    minimumPrice: 1,
-    maximumPrice: 1,
+  try {
+    const user = await User.findById(req.user.id)
+    if (!user) {
+      return res.status(404).send('Usuário não encontrado')
+    }
+
+    const query = buildFilters(req.query)
+    const prices = await Price.find(query, {
+      region: 1,
+      minimumPrice: 1,
+      maximumPrice: 1,
+    })
+
+    let summary = await processSummaryDynamic(prices, user)
+    res.json(summary)
+  } catch (err) {
+    res.status(500).send(`Erro interno: ${err.message}`)
+  }
+})
+
+// Processar resumo com conversão dinâmica  
+const processSummaryDynamic = async (prices, user) => {
+  const squares = new Map()
+
+  for (const price of prices) {
+    try {
+      const minimumPrice = await convertUnitDynamic(price.minimumPrice, user)
+      const maximumPrice = await convertUnitDynamic(price.maximumPrice, user)
+      
+      const minPrice = parseFloat(minimumPrice)
+      const maxPrice = parseFloat(maximumPrice)
+
+      if (isNaN(minPrice) || isNaN(maxPrice)) continue
+
+      const squareName = price.region || 'Região não informada'
+
+      if (!squares.has(squareName)) {
+        squares.set(squareName, {
+          minimumPrice: minPrice,
+          maximumPrice: maxPrice,
+          totalPrice: minPrice + maxPrice,
+          count: 1,
+          priceValues: [minPrice, maxPrice],
+        })
+      } else {
+        const square = squares.get(squareName)
+        square.minimumPrice = Math.min(square.minimumPrice, minPrice)
+        square.maximumPrice = Math.max(square.maximumPrice, maxPrice)
+        square.totalPrice += minPrice + maxPrice
+        square.count += 1
+        square.priceValues.push(minPrice, maxPrice)
+      }
+    } catch (error) {
+      continue
+    }
+  }
+
+  const squaresArray = Array.from(squares.keys()).map((key) => {
+    const square = squares.get(key)
+    const averagePrice = square.totalPrice / (square.count * 2)
+
+    return {
+      name: key,
+      minimumPrice: Math.round(square.minimumPrice * 100) / 100,
+      maximumPrice: Math.round(square.maximumPrice * 100) / 100,
+      averagePrice: Math.round(averagePrice * 100) / 100,
+      moda: getModa(square.priceValues),
+      totalPrices: square.count,
+    }
   })
 
-  let summary = processSquares(prices, req.query.unitOfMeasurement)
-
-  res.json(summary)
-})
+  squaresArray.sort((a, b) => b.averagePrice - a.averagePrice)
+  return squaresArray
+}
 
 // Route for getting data published
 router.get('/data-published', auth.authenticated, async (req, res) => {

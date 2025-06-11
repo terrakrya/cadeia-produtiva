@@ -107,15 +107,44 @@
 
               <b-row>
                 <b-col sm="6">
-                  <b-form-group label="Unidade de medida mais comum *">
+                  <b-form-group label="Produto acompanhado">
+                    <b-form-select
+                      v-model="form.productId"
+                      v-validate="getValidationRules('productId')"
+                      class="form-control"
+                      name="productId"
+                      :options="produtosOptions"
+                      :disabled="loadingProdutos"
+                      @input="onProductChange"
+                    />
+                    <small v-if="loadingProdutos" class="text-muted">
+                      Carregando produtos da sua organização...
+                    </small>
+                    <small v-else-if="produtosOptions.length === 0" class="text-warning">
+                      Nenhum produto encontrado para sua organização
+                    </small>
+                  </b-form-group>
+                </b-col>
+                <b-col sm="6">
+                  <b-form-group label="Unidade de medida preferida">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
                       v-validate="getValidationRules('unitOfMeasurement')"
                       class="form-control"
                       name="unitOfMeasurement"
-                      :options="tipoDeUnidade"
+                      :options="medidasOptions"
+                      :disabled="loadingMedidas || !form.productId"
+                      @input="onMeasureChange"
                     />
-                    <field-error :msg="veeErrors" field="unitOfMeasurement" />
+                    <small v-if="loadingMedidas" class="text-muted">
+                      Carregando medidas do produto...
+                    </small>
+                    <small v-else-if="!form.productId" class="text-info">
+                      Selecione um produto primeiro
+                    </small>
+                    <small v-else-if="medidasOptions.length === 0" class="text-warning">
+                      Nenhuma medida encontrada para este produto
+                    </small>
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -223,8 +252,14 @@ export default {
       estados,
       municipios,
       cidades: [],
+      medidas: [],
+      loadingMedidas: false,
+      selectedMeasurement: null,
+      loadingProdutos: false,
+      produtos: [],
       form: {
         unitOfMeasurement: '',
+        measurementId: null,
         name: '',
         email: '',
         username: '',
@@ -236,34 +271,63 @@ export default {
         identity: '',
         gender: '',
         birthDate: '',
-        uf: '',        // Will store the state sigla: "AC", "AM", etc.
+        uf: '',
         city: '',
         region: '',
+        productId: '',
       },
       is_loading: false,
       is_sending: false,
     }
   },
+  computed: {
+    medidasOptions() {
+      const medidasArray = Array.isArray(this.medidas) ? this.medidas : []
+      
+      return [
+        { value: '', text: 'Selecione uma medida...' },
+        ...medidasArray.map(medida => ({
+          value: medida.value,
+          text: medida.text,
+          measurementId: medida.measurementId,
+          referenceInKg: medida.referenceInKg
+        }))
+      ]
+    },
+    produtosOptions() {
+      const produtosArray = Array.isArray(this.produtos) ? this.produtos : []
+      
+      return [
+        { value: '', text: 'Selecione um produto...' },
+        ...produtosArray.map(produto => ({
+          value: produto._id,
+          text: produto.name,
+          specie: produto.specie
+        }))
+      ]
+    },
+    isGlobalManager() {
+      return this.currentUser && this.currentUser.role === 'gestor-global'
+    },
+    isAdmin() {
+      return this.currentUser && this.currentUser.role === 'admin'
+    },
+  },
   created() {
-    this.edit(this.$route.params.id)
+    this.initializeProfile()
   },
   methods: {
-    getValidationRules(fieldName) {
-      if (this.activeTabKey !== 0) {
-        return ''
+    async initializeProfile() {
+      // 1. Primeiro carregar os dados do usuário
+      await this.edit(this.$route.params.id)
+      
+      // 2. Carregar produtos da organização
+      await this.loadProdutos()
+      
+      // 3. Se o usuário tem produto selecionado, carregar suas medidas
+      if (this.form.productId) {
+        await this.loadMedidasPorProduto(this.form.productId)
       }
-
-      const staticRules = {
-        birthDate: 'min:10',
-        cellphone: 'min:14',
-      }
-
-      const rules = ['required']
-      if (staticRules[fieldName]) {
-        rules.push(staticRules[fieldName])
-      }
-
-      return rules.join('|')
     },
 
     async edit(id) {
@@ -271,12 +335,14 @@ export default {
       try {
         const dados = await this.$axios.$get('users/' + id)
 
-        this.form.unitOfMeasurement = dados.unitOfMeasurement
+        this.form.productId = dados.productId || ''
+        this.form.unitOfMeasurement = dados.unitOfMeasurement || ''
+        this.form.measurementId = dados.measurementId || null
         this.form.name = dados.name
         this.form.email = dados.email
         this.form.username = dados.username
         this.form.cellphone = dados.cellphone
-        this.form.password = '' // não carregamos senhas
+        this.form.password = ''
         this.form.password_confirmation = ''
         this.form.buyerPosition = dados.buyerPosition
         this.form.birthDate = dados.birthDate
@@ -284,13 +350,13 @@ export default {
         this.form.identity = dados.identity
         this.form.gender = dados.gender
 
-        if (this.isGlobalManager || this.isAdmin) {
-          this.form.uf = dados.uf 
-          this.form.city = dados.city
-          this.form.region = dados.region
-          if (this.form.uf) {
-            this.loadCities()
-          }
+        // ← CORREÇÃO: SEMPRE carregar esses campos
+        this.form.uf = dados.uf || ''
+        this.form.city = dados.city || ''
+        this.form.region = dados.region || ''
+        
+        if (this.form.uf) {
+          this.loadCities()
         }
       } catch (e) {
         this.showError(e)
@@ -299,12 +365,108 @@ export default {
       }
     },
 
+    async loadProdutos() {
+      this.loadingProdutos = true
+      try {
+        const userOrganization = this.$auth.user.organization
+        
+        if (userOrganization) {
+          const produtos = await this.$axios.$get(
+            `products/organization/${userOrganization}`
+          )
+          
+          this.produtos = Array.isArray(produtos) ? produtos : []
+        } else {
+          this.produtos = []
+        }
+      } catch (error) {
+        console.error('❌ Erro ao carregar produtos:', error)
+        this.produtos = []
+      } finally {
+        this.loadingProdutos = false
+      }
+    },
+
+    async onProductChange() {
+      // Limpar medida quando produto muda
+      this.form.unitOfMeasurement = ''
+      this.form.measurementId = null
+      this.medidas = []
+
+      if (this.form.productId) {
+        await this.loadMedidasPorProduto(this.form.productId)
+      }
+    },
+
+    async loadMedidasPorProduto(productId) {
+      this.loadingMedidas = true
+      try {
+        const measurements = await this.$axios.$get(
+          `measurements/product/${productId}`
+        )
+
+        if (measurements && measurements.length > 0) {
+          this.medidas = measurements
+            .sort((a, b) => a.referenceInKg - b.referenceInKg)
+            .map((measurement) => ({
+              value: measurement.originalName,
+              text: `${measurement.name} - ${measurement.referenceInKg}kg`,
+              measurementId: measurement._id,
+              referenceInKg: measurement.referenceInKg,
+              hasConflict: measurement.hasConflict,
+              specie: measurement.specie
+            }))
+        } else {
+          this.medidas = []
+        }
+      } catch (error) {
+        console.error('❌ Erro ao carregar medidas:', error)
+        this.medidas = []
+      } finally {
+        this.loadingMedidas = false
+      }
+    },
+
+    onMeasureChange() {
+      const selectedMedida = this.medidas.find(
+        (m) => m.value === this.form.unitOfMeasurement
+      )
+      if (selectedMedida) {
+        this.selectedMeasurement = selectedMedida
+        this.form.measurementId = selectedMedida.measurementId || null
+      }
+    },
+
+    getValidationRules(fieldName) {
+      if (this.activeTabKey !== 0) {
+        return ''
+      }
+
+      // Campos realmente obrigatórios (os que já existiam antes)
+      const requiredFields = ['name', 'email', 'cellphone', 'buyerPosition']
+      
+      const staticRules = {
+        birthDate: 'min:10',
+        cellphone: 'min:14',
+      }
+
+      const rules = []
+      
+      if (requiredFields.includes(fieldName)) {
+        rules.push('required')
+      }
+
+      if (staticRules[fieldName]) {
+        rules.push(staticRules[fieldName])
+      }
+
+      return rules.join('|')
+    },
 
     async isNotUniqueEmail(id, email) {
       return !(await this.$axios.$post('users/unique-email', { id, email }))
     },
 
-    // Check uniqueness of cellphone
     async isNotUniqueCellphone(id, cellphone) {
       return !(await this.$axios.$post('users/unique-cellphone', {
         id,
@@ -387,27 +549,21 @@ export default {
 
         if (isValid) {
           this.is_sending = true
-          this.$axios({
-            method: 'PUT',
-            url: 'users/' + this.$route.params.id + '/profile',
-            data: this.form,
-          })
-            .then((resp) => {
-              const user = resp.data
-              if (user && user._id) {
-                if (user._id === this.currentUser._id) {
-                  this.$auth.setUser(user)
-                }
-                this.notify('Dados salvos com sucesso')
-                this.$router.push('/')
-              }
-            })
-            .catch((err) => {
-              this.showError(err)
-            })
-            .finally(() => {
-              this.is_sending = false
-            })
+          
+          try {
+            const response = await this.$axios.$put('users/' + this.$route.params.id, this.form)
+            
+            // Atualizar usuário logado
+            this.$auth.setUser(response)
+            
+            // ← REDIRECIONAMENTO SIMPLES
+            this.$router.push('/painel')
+            
+          } catch (e) {
+            this.showError(e)
+          } finally {
+            this.is_sending = false
+          }
         }
       })
     },
@@ -451,14 +607,6 @@ export default {
 
     isEditing() {
       return !!this.$route.params.id
-    },
-  },
-  computed: {
-    isGlobalManager() {
-      return this.currentUser && this.currentUser.role === 'gestor-global'
-    },
-    isAdmin() {
-      return this.currentUser && this.currentUser.role === 'admin'
     },
   },
 }

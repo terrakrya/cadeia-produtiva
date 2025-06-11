@@ -9,6 +9,11 @@ const UserSchema = new mongoose.Schema(
   {
     role: String,
     unitOfMeasurement: String,
+    measurementId: {
+      type: ObjectId,
+      ref: 'Measurement',
+      default: null,
+    },
     buyerPosition: String,
     currency: String,
     country: String,
@@ -85,6 +90,7 @@ UserSchema.methods.data = function () {
     name: this.name,
     nickname: this.nickname,
     unitOfMeasurement: this.unitOfMeasurement,
+    measurementId: this.measurementId,
     buyerPosition: this.buyerPosition,
     currency: this.currency,
     country: this.country,

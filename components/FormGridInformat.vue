@@ -58,7 +58,10 @@ export default {
   },
   computed: {
     table_fields() {
-      const unit = this.$auth.user.unitOfMeasurement;
+      const userMeasure = this.$auth.user.measurementId 
+        ? 'Medida Personalizada'
+        : this.$auth.user.unitOfMeasurement
+
       return [
         {
           key: 'buyerFrom',
@@ -94,36 +97,21 @@ export default {
         },
         {
           key: 'averagePrice',
-          label: `Preço médio (${unit})`,
+          label: `Preço médio (${userMeasure})`,
           sortable: true
         },
         {
           key: 'minimumPrice',
-          label: `Preço Mínimo (${unit})`,
+          label: `Preço Mínimo (${userMeasure})`,
           sortable: true
         },
         {
           key: 'maximumPrice',
-          label: `Preço Máximo (${unit})`,
+          label: `Preço Máximo (${userMeasure})`,
           sortable: true
         }
       ];
     }
   },
-  methods: {
-    convertPrice(price) {
-      const unit = this.$auth.user.unitOfMeasurement;
-      const conversionRates = {
-        'Kg': 1,
-        'Tonelada': 1000,
-        'Lata': 12,
-        'Caixa': 24,
-        'Hectolitro': 60,
-        'Saca': 48,
-        'Barrica': 72
-      };
-      return price * (conversionRates[unit] || 1);
-    }
-  }
 }
 </script>

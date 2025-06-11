@@ -4,6 +4,7 @@ const authenticateToken = require('../config/api-auth')
 const User = mongoose.model('User')
 const Price = mongoose.model('PriceInformation')
 const convertUnit = require('../utils/convertUnit')
+const getModa = require('../utils/moda')
 
 /**
  * @swagger
@@ -317,7 +318,6 @@ router.get('/prices-summary/:region', authenticateToken, async (req, res) => {
     })
 
     const averagePrice = total / (2 * count)
-    const getModa = require('../utils/moda')
     const mode = getModa(priceValues)
 
     // Retrieve the unit of measurement from the query; default is 'Kg'
