@@ -107,7 +107,7 @@
 
               <b-row>
                 <b-col sm="6">
-                  <b-form-group label="Produto acompanhado">
+                  <b-form-group label="Produto acompanhado *">
                     <b-form-select
                       v-model="form.productId"
                       v-validate="getValidationRules('productId')"
@@ -123,10 +123,11 @@
                     <small v-else-if="produtosOptions.length === 0" class="text-warning">
                       Nenhum produto encontrado para sua organização
                     </small>
+                    <field-error :msg="veeErrors" field="productId" />
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
-                  <b-form-group label="Unidade de medida preferida">
+                  <b-form-group label="Unidade de medida preferida *">
                     <b-form-select
                       v-model="form.unitOfMeasurement"
                       v-validate="getValidationRules('unitOfMeasurement')"
@@ -139,12 +140,10 @@
                     <small v-if="loadingMedidas" class="text-muted">
                       Carregando medidas do produto...
                     </small>
-                    <small v-else-if="!form.productId" class="text-info">
-                      Selecione um produto primeiro
-                    </small>
                     <small v-else-if="medidasOptions.length === 0" class="text-warning">
                       Nenhuma medida encontrada para este produto
                     </small>
+                    <field-error :msg="veeErrors" field="unitOfMeasurement" />
                   </b-form-group>
                 </b-col>
               </b-row>
@@ -327,6 +326,11 @@ export default {
       // 3. Se o usuário tem produto selecionado, carregar suas medidas
       if (this.form.productId) {
         await this.loadMedidasPorProduto(this.form.productId)
+        
+        // 4. Após carregar as medidas, definir a unidade correta se houver measurementId
+        if (this.form.measurementId) {
+          this.setMeasurementFromId()
+        }
       }
     },
 
@@ -376,11 +380,14 @@ export default {
           )
           
           this.produtos = Array.isArray(produtos) ? produtos : []
+          
+          if (this.form.productId) {
+            const produtoEncontrado = this.produtos.find(p => p._id === this.form.productId)
+          }
         } else {
           this.produtos = []
         }
       } catch (error) {
-        console.error('❌ Erro ao carregar produtos:', error)
         this.produtos = []
       } finally {
         this.loadingProdutos = false
@@ -420,7 +427,6 @@ export default {
           this.medidas = []
         }
       } catch (error) {
-        console.error('❌ Erro ao carregar medidas:', error)
         this.medidas = []
       } finally {
         this.loadingMedidas = false
@@ -437,13 +443,38 @@ export default {
       }
     },
 
+    setMeasurementFromId() {
+      // Encontrar a medida correspondente ao measurementId salvo
+      let savedMeasurement = null
+      
+      if (this.form.measurementId) {
+        savedMeasurement = this.medidas.find(
+          (m) => m.measurementId === this.form.measurementId
+        )
+      }
+      
+      // Fallback: se não encontrou por ID, tentar pelo nome da unidade
+      if (!savedMeasurement && this.form.unitOfMeasurement) {
+        savedMeasurement = this.medidas.find(
+          (m) => m.value === this.form.unitOfMeasurement
+        )
+      }
+      
+      if (savedMeasurement) {
+        this.form.unitOfMeasurement = savedMeasurement.value
+        this.selectedMeasurement = savedMeasurement
+        // Garantir que o measurementId esteja correto
+        this.form.measurementId = savedMeasurement.measurementId
+      }
+    },
+
     getValidationRules(fieldName) {
       if (this.activeTabKey !== 0) {
         return ''
       }
 
-      // Campos realmente obrigatórios (os que já existiam antes)
-      const requiredFields = ['name', 'email', 'cellphone', 'buyerPosition']
+      // Campos realmente obrigatórios
+      const requiredFields = ['name', 'email', 'cellphone', 'buyerPosition', 'productId', 'unitOfMeasurement']
       
       const staticRules = {
         birthDate: 'min:10',
@@ -478,6 +509,37 @@ export default {
       this.$validator.validate().then(async (isValid) => {
         if (this.activeTabKey === 0 && this.form.email) {
           const id = this.isEditing() ? this.$route.params.id : null
+
+          // Limpar erros anteriores dos novos campos
+          this.veeErrors.items = this.veeErrors.items.filter(
+            (error) => error.id !== 107 && error.id !== 108
+          )
+
+          // Validação do produto
+          if (!this.form.productId) {
+            this.veeErrors.items.push({
+              id: 107,
+              vmId: this.veeErrors.vmId,
+              field: 'productId',
+              msg: 'O produto é obrigatório.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+          }
+
+          // Validação da unidade de medida
+          if (!this.form.unitOfMeasurement) {
+            this.veeErrors.items.push({
+              id: 108,
+              vmId: this.veeErrors.vmId,
+              field: 'unitOfMeasurement',
+              msg: 'A unidade de medida é obrigatória.',
+              rule: 'required',
+              scope: null,
+            })
+            isValid = false
+          }
 
           // formato do email
           if (!/\S+@\S+\.\S+/.test(this.form.email)) {
@@ -533,7 +595,9 @@ export default {
                 error.id !== 102 &&
                 error.id !== 103 &&
                 error.id !== 105 &&
-                error.id !== 106
+                error.id !== 106 &&
+                error.id !== 107 &&
+                error.id !== 108
             )
           }
         } else {
@@ -543,7 +607,9 @@ export default {
               error.id !== 103 &&
               error.id !== 104 &&
               error.id !== 105 &&
-              error.id !== 106
+              error.id !== 106 &&
+              error.id !== 107 &&
+              error.id !== 108
           )
         }
 

@@ -163,7 +163,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
     // Atualiza apenas campos presentes no request
     const updatableFields = [
       'username', 'email', 'name', 'role', 'cellphone', 'cpf',
-      'unitOfMeasurement', 'measurementId', 'buyerPosition', 'nickname', 'organization',
+      'unitOfMeasurement', 'measurementId', 'productId', 'buyerPosition', 'nickname', 'organization',
       'uf', 'city', 'birthDate', 'gender', 'identity', 'region'
     ];
 
