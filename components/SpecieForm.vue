@@ -40,6 +40,10 @@
           <measurement-form
             :specie-id="specieId"
           />
+          <hr>
+          <region-manager
+            :specie-id="specieId"
+          />
         </div>
         
         <div v-else-if="!isEditing()" class="alert alert-info mt-4">
@@ -55,11 +59,13 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import MeasurementForm from '@/components/MeasurementForm'
+import RegionManager from '@/components/RegionManager'
 
 export default {
   components: {
     Breadcrumb,
     MeasurementForm,
+    RegionManager,
   },
   data() {
     return {
