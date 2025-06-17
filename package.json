@@ -21,6 +21,8 @@
     "seed-measurements": "node ./scripts/seed-measurements.js",
     "generate-password": "node ./scripts/generate-password.js",
     "migrate-regioes-castanheiras": "node ./scripts/migrate-regioes-castanheiras.js",
+    "seed-regioes-castanheiras": "node ./scripts/seed-regions-castanheiras.js",
+    "rollback-regioes-castanheiras": "node ./scripts/rollback-regions-castanheiras.js",
     "migrate-measurements": "node ./scripts/migrate-measurements.js",
     "rollback-measurements": "node ./scripts/rollback-measurements.js"
   },
