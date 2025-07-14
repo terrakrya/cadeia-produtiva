@@ -17,8 +17,6 @@ if (isProduction) {
   mongoose.connect(process.env.MONGODB_URI, {
     keepAlive: 1,
     connectTimeoutMS: 30000,
-    reconnectTries: Number.MAX_VALUE,
-    reconnectInterval: 1000,
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

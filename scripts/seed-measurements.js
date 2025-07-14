@@ -19,7 +19,7 @@ const seedMeasurements = async () => {
     
     const newSpecie = new Specie({
       scientificName: 'Bertholletia excelsa',
-      popularName: 'Castanha-do-pará'
+      popularName: 'Castanha-da-amazônia'
     })
     await newSpecie.save()
     
