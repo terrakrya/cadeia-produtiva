@@ -220,9 +220,20 @@ export default {
     showEditModal(region) {
       this.isEditing = true
       this.form = JSON.parse(JSON.stringify(region))
+      
       if (!this.form.municipalities || this.form.municipalities.length === 0) {
         this.form.municipalities = [{ name: '', state: '', uf: null, codigo_uf: null }]
+      } else {
+        this.form.municipalities.forEach(municipality => {
+          if (municipality.uf && !municipality.codigo_uf) {
+            const selectedUf = this.ufs.find(u => u.uf === municipality.uf);
+            if (selectedUf) {
+              municipality.codigo_uf = selectedUf.codigo_uf;
+            }
+          }
+        });
       }
+      
       this.isModalVisible = true
     },
     hideModal() {
@@ -235,6 +246,22 @@ export default {
       this.form.municipalities.splice(index, 1)
     },
     async saveRegion() {
+      // Validação para municípios duplicados
+      const municipalityKeys = this.form.municipalities.map(m => `${m.name}-${m.uf}`).filter(key => key !== '-');
+      const uniqueKeys = new Set(municipalityKeys);
+      
+      if (municipalityKeys.length !== uniqueKeys.size) {
+        this.notify('Não é possível adicionar o mesmo município mais de uma vez na região.', 'error');
+        return;
+      }
+
+      // Validação para municípios vazios
+      const hasEmptyMunicipality = this.form.municipalities.some(m => !m.name || !m.uf);
+      if (hasEmptyMunicipality) {
+        this.notify('Todos os municípios devem ser preenchidos.', 'error');
+        return;
+      }
+
       this.isSaving = true
       const method = this.isEditing ? 'put' : 'post'
       const url = this.isEditing ? `/regions/${this.form._id}` : '/regions'
