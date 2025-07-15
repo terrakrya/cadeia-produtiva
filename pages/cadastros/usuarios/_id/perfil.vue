@@ -229,7 +229,6 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import tipoDeUnidade from '@/data/tipo-de-unidade'
 import buyerPositions from '@/data/posicao-do-comprador'
 import genero from '@/data/generos.json'
 import identidade from '@/data/identidade-cultural.json'
@@ -246,7 +245,6 @@ export default {
       activeTabKey: 0,
       identidade,
       genero,
-      tipoDeUnidade,
       buyerPositions,
       estados,
       municipios,

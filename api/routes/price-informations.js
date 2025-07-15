@@ -3,9 +3,7 @@ const router = require('express').Router()
 const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const moment = require('moment')
-const convertUnit = require('../utils/convertUnit')
 const getModa = require('../utils/moda')
-const { processSquares } = require('../utils/priceSummary')
 const convertUnitDynamic = require('../utils/convertUnitDynamic')
 const User = mongoose.model('User')
 
