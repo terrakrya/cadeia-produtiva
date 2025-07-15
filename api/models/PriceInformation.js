@@ -5,46 +5,20 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const secret = process.env.SECRET || 'cadeia-produtiva'
 
-// ← NOVA FUNÇÃO: getConversion dinâmica simplificada
-const getConversion = async (measure, measurementId = null) => {
-  try {
-    // 1. PRIORIDADE: Buscar da base dinâmica se temos measurementId
-    if (measurementId) {
-      const Measurement = mongoose.model('Measurement')
-      const measurement = await Measurement.findById(measurementId)
-
-      if (measurement && measurement.referenceInKg) {
-        return measurement.referenceInKg
-      }
-    }
-
-    // 2. FALLBACK TEMPORÁRIO: Valores hard coded para dados existentes
-    return getConversionFallback(measure)
-  } catch (error) {
-    return getConversionFallback(measure)
+// Função de conversão dinâmica simplificada - apenas measurementId
+const getConversion = async (measurementId) => {
+  if (!measurementId) {
+    throw new Error('measurementId é obrigatório para conversão')
   }
-}
 
-// ← FUNÇÃO AUXILIAR: Fallback para valores hard coded
-const getConversionFallback = (measure) => {
-  switch (measure) {
-    case 'Kg':
-      return 1
-    case 'Tonelada':
-      return 1000
-    case 'Lata':
-      return 12
-    case 'Caixa':
-      return 24
-    case 'Hectolitro':
-      return 60
-    case 'Saca':
-      return 48
-    case 'Barrica':
-      return 72
-    default:
-      return 1
+  const Measurement = mongoose.model('Measurement')
+  const measurement = await Measurement.findById(measurementId)
+
+  if (!measurement || !measurement.referenceInKg) {
+    throw new Error(`Measurement não encontrado: ${measurementId}`)
   }
+
+  return measurement.referenceInKg
 }
 
 const PriceSchema = new mongoose.Schema(
@@ -107,7 +81,7 @@ const PriceSchema = new mongoose.Schema(
     measurementId: {
       type: ObjectId,
       ref: 'Measurement',
-      required: false,
+      required: true, // ← AGORA OBRIGATÓRIO
       index: true,
     },
     product: {
@@ -134,11 +108,11 @@ const PriceSchema = new mongoose.Schema(
   }
 )
 
-// ← MIDDLEWARE MODIFICADO: pre save middleware
+// Middleware simplificado - apenas conversão dinâmica
 PriceSchema.pre('save', async function (next) {
   try {
-    // Buscar conversão dinamicamente
-    const conversion = await getConversion(this.measure, this.measurementId)
+    // Buscar conversão dinamicamente - measurementId obrigatório
+    const conversion = await getConversion(this.measurementId)
 
     if (this.transaction === 'oferta de preços') {
       // Para ofertas de preços (preços de mercado)

@@ -461,27 +461,19 @@ export default {
 
             this.medidasPreco = [...this.medidas]
           } else {
-            this.usarMedidasFallback()
+            // ← ERRO: Sem fallback, exibir erro
+            throw new Error('Nenhuma unidade de medida encontrada para esta espécie')
           }
         } else {
-          this.usarMedidasFallback()
+          throw new Error('Produto não possui espécie configurada')
         }
       } catch (error) {
-        this.usarMedidasFallback()
+        // ← ERRO: Informar ao usuário ao invés de fallback silencioso
+        this.notify(`Erro ao carregar medidas: ${error.message}`, 'error')
+        this.medidas = []
+        this.medidasPreco = []
       }
       this.loadingMedidas = false
-    },
-    usarMedidasFallback() {
-      this.medidas = [
-        { value: 'Kg', text: 'Kg' },
-        { value: 'Lata', text: 'Lata' },
-        { value: 'Caixa', text: 'Caixa' },
-        { value: 'Hectolitro', text: 'Hectolitro' },
-        { value: 'Saca', text: 'Saca' },
-        { value: 'Barrica', text: 'Barrica' },
-        { value: 'Tonelada', text: 'Tonelada' },
-      ]
-      this.medidasPreco = [...this.medidas]
     },
     onMeasureChange() {
       const selectedMedida = this.medidas.find(
@@ -741,27 +733,13 @@ export default {
       }
     },
     getMultiplyer(measure) {
+      // ← APENAS measurementId dinâmico
       if (this.selectedMeasurement && this.selectedMeasurement.referenceInKg) {
         return this.selectedMeasurement.referenceInKg
       }
 
-      if (measure === 'Kg') {
-        return 1
-      } else if (measure === 'Tonelada') {
-        return 1000
-      } else if (measure === 'Lata') {
-        return 12
-      } else if (measure === 'Caixa') {
-        return 24
-      } else if (measure === 'Hectolitro') {
-        return 60
-      } else if (measure === 'Saca') {
-        return 48
-      } else if (measure === 'Barrica') {
-        return 72
-      }
-
-      return 1
+      // ← ERRO: Sem fallback hardcoded
+      throw new Error(`Unidade de medida '${measure}' não possui referência configurada`)
     },
     async edit(id) {
       this.is_loading = true
@@ -809,6 +787,19 @@ export default {
     },
     async save() {
       let isValid = await this.$validator.validate()
+
+      // ← VALIDAÇÃO: Verificar se measurementId está presente
+      if (!this.form.measurementId) {
+        this.veeErrors.items.push({
+          id: 107,
+          vmId: this.veeErrors.vmId,
+          field: 'measure',
+          msg: 'Selecione uma unidade de medida válida.',
+          rule: 'required',
+          scope: null,
+        })
+        isValid = false
+      }
 
       if (
         (!this.form.originalMinimumPrice ||
@@ -869,7 +860,8 @@ export default {
           error.id !== 101 &&
           error.id !== 102 &&
           error.id !== 103 &&
-          error.id !== 104
+          error.id !== 104 &&
+          error.id !== 107
       )
 
       if (this.form.transaction === 'oferta de preços') {
@@ -884,9 +876,15 @@ export default {
         maxPricePerKg = this.form.originalPrice
       }
 
-      const multiplyer = this.getMultiplyer(this.form.measure)
-      minPricePerKg = +new Decimal(minPricePerKg).div(multiplyer).toFixed(2)
-      maxPricePerKg = +new Decimal(maxPricePerKg).div(multiplyer).toFixed(2)
+      try {
+        const multiplyer = this.getMultiplyer(this.form.measure)
+        minPricePerKg = +new Decimal(minPricePerKg).div(multiplyer).toFixed(2)
+        maxPricePerKg = +new Decimal(maxPricePerKg).div(multiplyer).toFixed(2)
+      } catch (error) {
+        this.notify(`Erro: ${error.message}`, 'error')
+        this.is_sending = false
+        return
+      }
 
       if (minPricePerKg < 1) {
         this.veeErrors.items.push({
