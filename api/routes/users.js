@@ -422,47 +422,4 @@ router.post('/first-access/:token', async (req, res) => {
   }
 })
 
-// ← NOVO: Endpoint para debug de conversão
-router.get('/:id/debug-measurement', auth.authenticated, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id)
-    if (!user) {
-      return res.status(404).send('Usuário não encontrado')
-    }
-
-    console.log('🔍 Debug usuário:', {
-      unitOfMeasurement: user.unitOfMeasurement,
-      measurementId: user.measurementId
-    })
-
-    let measurementDetails = null
-    if (user.measurementId) {
-      const Measurement = mongoose.model('Measurement')
-      measurementDetails = await Measurement.findById(user.measurementId)
-      console.log('📏 Measurement encontrado:', measurementDetails)
-    }
-
-    // Teste de conversão
-    const testValue = 100
-    const convertUnitDynamic = require('../utils/convertUnitDynamic')
-    const convertedValue = await convertUnitDynamic(testValue, user)
-
-    res.json({
-      user: {
-        unitOfMeasurement: user.unitOfMeasurement,
-        measurementId: user.measurementId,
-      },
-      measurementDetails,
-      testConversion: {
-        originalValue: testValue,
-        convertedValue,
-        unit: user.unitOfMeasurement
-      }
-    })
-  } catch (err) {
-    console.error('Erro no debug:', err)
-    res.status(500).send('Erro: ' + err.message)
-  }
-})
-
 module.exports = router

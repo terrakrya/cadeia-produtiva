@@ -14,21 +14,13 @@ const getConversion = async (measure, measurementId = null) => {
       const measurement = await Measurement.findById(measurementId)
 
       if (measurement && measurement.referenceInKg) {
-        console.log(
-          `🔍 Conversão dinâmica: ${measurementId} = ${measurement.referenceInKg}kg`
-        )
         return measurement.referenceInKg
-      } else {
-        console.warn(`⚠️ Measurement não encontrado: ${measurementId}`)
       }
     }
 
     // 2. FALLBACK TEMPORÁRIO: Valores hard coded para dados existentes
-    console.log(`🔄 Fallback para measure: ${measure}`)
     return getConversionFallback(measure)
   } catch (error) {
-    console.error('❌ Erro em getConversion:', error.message)
-    console.log(`🔄 Fallback por erro para measure: ${measure}`)
     return getConversionFallback(measure)
   }
 }
@@ -51,7 +43,6 @@ const getConversionFallback = (measure) => {
     case 'Barrica':
       return 72
     default:
-      console.warn(`⚠️ Medida desconhecida: ${measure}, usando 1kg como padrão`)
       return 1
   }
 }
@@ -181,7 +172,6 @@ PriceSchema.pre('save', async function (next) {
 
     next()
   } catch (error) {
-    console.error('❌ Erro no middleware pre-save:', error.message)
     next(error)
   }
 })

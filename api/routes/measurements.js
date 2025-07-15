@@ -31,7 +31,6 @@ router.post('/', auth.globalManager, async (req, res) => {
 
     // Capitalize the name for standardization
     const capitalizedName = capitalizeName(name)
-    console.log('Capitalized name:', capitalizedName)
 
     // Check if a measurement with the same name already exists for this species
     const existingMeasurement = await Measurement.findOne({
@@ -39,8 +38,6 @@ router.post('/', auth.globalManager, async (req, res) => {
       specie: specie,
       deletedAt: null, // ← IGNORA registros soft deleted
     })
-
-    console.log('Existing measurement found:', existingMeasurement)
 
     if (existingMeasurement) {
       return res
@@ -56,16 +53,10 @@ router.post('/', auth.globalManager, async (req, res) => {
       referenceInKg: parseFloat(referenceInKg),
     })
 
-    console.log('Measurement before save:', measurement)
-
     await measurement.save()
-
-    console.log('Measurement after save:', measurement)
-    console.log('=== END DEBUG ===')
 
     res.status(201).json(measurement)
   } catch (err) {
-    console.error('Error in measurement creation:', err)
     res.status(422).send('Erro ao criar unidade de medida: ' + err.message)
   }
 })
@@ -113,12 +104,6 @@ router.put('/:id', auth.globalManager, async (req, res) => {
     const { name, specie, referenceInKg } = req.body
     const measurementId = req.params.id
 
-    console.log('=== MEASUREMENT UPDATE DEBUG ===')
-    console.log('Original name:', name)
-    console.log('Original specie:', specie)
-    console.log('Original referenceInKg:', referenceInKg)
-    console.log('Measurement ID:', measurementId)
-
     // Validate name
     if (!name || !name.trim()) {
       return res.status(422).send('O nome da unidade é obrigatório.')
@@ -131,7 +116,6 @@ router.put('/:id', auth.globalManager, async (req, res) => {
 
     // Capitalize the name for standardization
     const capitalizedName = capitalizeName(name)
-    console.log('Capitalized name:', capitalizedName)
 
     // Check if a measurement with the same name already exists for this species (excluding the current one)
     const existingMeasurement = await Measurement.findOne({
@@ -141,8 +125,6 @@ router.put('/:id', auth.globalManager, async (req, res) => {
       deletedAt: null, // ← IGNORA registros soft deleted
     })
 
-    console.log('Existing measurement found:', existingMeasurement)
-
     if (existingMeasurement) {
       return res
         .status(422)
@@ -150,12 +132,6 @@ router.put('/:id', auth.globalManager, async (req, res) => {
           `Já existe uma unidade de medida "${capitalizedName}" para esta espécie. Escolha um nome diferente.`
         )
     }
-
-    console.log('Update data:', {
-      ...req.body,
-      name: capitalizedName,
-      referenceInKg: parseFloat(referenceInKg),
-    })
 
     const measurement = await Measurement.findByIdAndUpdate(
       measurementId,
@@ -167,15 +143,11 @@ router.put('/:id', auth.globalManager, async (req, res) => {
       { new: true }
     )
 
-    console.log('Updated measurement:', measurement)
-    console.log('=== END UPDATE DEBUG ===')
-
     if (!measurement) {
       return res.status(404).json({ error: 'Unidade de medida não encontrada' })
     }
     res.json(measurement)
   } catch (err) {
-    console.error('Error in measurement update:', err)
     res.status(422).send('Erro ao atualizar unidade de medida: ' + err.message)
   }
 })
@@ -221,7 +193,6 @@ router.delete('/:id', auth.globalManager, async (req, res) => {
       })
     }
   } catch (err) {
-    console.error('Erro ao excluir measurement:', err)
     res.status(422).send('Erro ao excluir unidade de medida: ' + err.message)
   }
 })
@@ -230,8 +201,6 @@ router.delete('/:id', auth.globalManager, async (req, res) => {
 router.get('/organization/:organizationId', auth.authenticated, async (req, res) => {
   try {
     const organizationId = req.params.organizationId
-    
-    console.log('🔍 Buscando medidas para organização:', organizationId)
 
     // 1. Buscar organização com produtos populados
     const Organization = mongoose.model('Organization')
@@ -250,12 +219,6 @@ router.get('/organization/:organizationId', auth.authenticated, async (req, res)
           }
         }
       })
-
-    console.log('📋 Organização encontrada:', {
-      id: organization?._id,
-      name: organization?.name,
-      productsCount: organization?.products?.length
-    })
 
     if (!organization) {
       return res.status(404).send('Organização não encontrada')
@@ -279,10 +242,7 @@ router.get('/organization/:organizationId', auth.authenticated, async (req, res)
       }
     })
 
-    console.log('🌿 Espécies encontradas:', speciesInfo)
-
     if (speciesIds.length === 0) {
-      console.log('⚠️ Nenhuma espécie encontrada')
       return res.json([])
     }
 
@@ -293,12 +253,6 @@ router.get('/organization/:organizationId', auth.authenticated, async (req, res)
     })
     .populate('specie', 'scientificName popularName')
     .sort({ referenceInKg: 1 }) // ← ORDENAR: crescente por kg
-
-    console.log('📏 Medidas encontradas:', measurements.map(m => ({
-      name: m.name,
-      referenceInKg: m.referenceInKg,
-      specie: m.specie.popularName
-    })))
 
     // 4. ← NOVA LÓGICA: Detectar conflitos corretamente
     const measurementsByName = new Map()
@@ -363,17 +317,8 @@ router.get('/organization/:organizationId', auth.authenticated, async (req, res)
     // ← ADICIONAR: Ordenar array final também
     finalMeasurements.sort((a, b) => a.referenceInKg - b.referenceInKg)
 
-    console.log('✅ Medidas finais processadas (ordenadas):', finalMeasurements.map(m => ({
-      name: m.name,
-      originalName: m.originalName,
-      referenceInKg: m.referenceInKg,
-      hasConflict: m.hasConflict,
-      specie: m.specie.popularName
-    })))
-
     res.json(finalMeasurements)
   } catch (err) {
-    console.error('❌ Erro ao buscar medidas da organização:', err)
     res.status(422).send('Erro ao buscar medidas da organização: ' + err.message)
   }
 })
@@ -382,8 +327,6 @@ router.get('/organization/:organizationId', auth.authenticated, async (req, res)
 router.get('/product/:productId', auth.authenticated, async (req, res) => {
   try {
     const productId = req.params.productId
-    
-    console.log('🔍 Buscando medidas para produto:', productId)
 
     // 1. Buscar produto com espécie
     const Product = mongoose.model('Product')
@@ -396,18 +339,11 @@ router.get('/product/:productId', auth.authenticated, async (req, res) => {
         }
       })
 
-    console.log('📦 Produto encontrado:', {
-      id: product?._id,
-      name: product?.name,
-      specie: product?.specieProduct?.specie?.popularName
-    })
-
     if (!product) {
       return res.status(404).send('Produto não encontrado')
     }
 
     if (!product.specieProduct?.specie) {
-      console.log('⚠️ Produto sem espécie vinculada')
       return res.json([])
     }
 
@@ -418,12 +354,6 @@ router.get('/product/:productId', auth.authenticated, async (req, res) => {
       specie: specieId,
       deletedAt: null
     }).populate('specie', 'scientificName popularName')
-
-    console.log('📏 Medidas encontradas:', measurements.map(m => ({
-      name: m.name,
-      referenceInKg: m.referenceInKg,
-      specie: m.specie.popularName
-    })))
 
     // 3. Como são medidas de uma única espécie, não haverá conflitos de nome
     // Mas ainda vamos formatar adequadamente
@@ -439,11 +369,8 @@ router.get('/product/:productId', auth.authenticated, async (req, res) => {
       }
     }))
 
-    console.log('✅ Medidas finais processadas:', formattedMeasurements)
-
     res.json(formattedMeasurements)
   } catch (error) {
-    console.error('❌ Erro ao carregar medidas do produto:', error)
     res.status(422).send('Erro ao carregar medidas: ' + error.message)
   }
 })
