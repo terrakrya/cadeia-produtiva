@@ -16,6 +16,7 @@
                   v-model="form.organization"
                   class="form-control"
                   :options="organizationsOptions"
+                  @input="onOrganizationChange"
                 />
               </b-form-group>
             </div>
@@ -35,18 +36,27 @@
               </b-form-group>
             </div>
           </div>
+          
           <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Produto">
-                <input
-                  v-model="productName"
-                  type="text"
-                  readonly
+                <b-form-select
+                  v-model="form.product"
+                  v-validate="'required'"
                   class="form-control"
+                  name="product"
+                  :options="produtosOptions"
+                  :disabled="loadingProdutos"
+                  @input="onProductChange"
                 />
+                <small v-if="loadingProdutos" class="text-muted">
+                  Carregando produtos...
+                </small>
+                <field-error :msg="veeErrors" field="product" />
               </b-form-group>
             </div>
           </div>
+          
           <div class="row">
             <div class="col-md-4 title-buttons-form">
               <b-form-group label="Selecione a classificação de preço">
@@ -233,7 +243,7 @@
                   class="form-control"
                   :options="estadosOptions"
                   name="uf"
-                  @input="loadCities()"
+                  @input="onUfChange()"
                 />
                 <field-error :msg="veeErrors" field="uf" />
               </b-form-group>
@@ -245,7 +255,7 @@
                   class="form-control"
                   :options="cidades"
                   name="city"
-                  @input="loadPracas()"
+                  @input="onCityChange()"
                 />
                 <field-error :msg="veeErrors" field="region" />
               </b-form-group>
@@ -282,21 +292,22 @@ import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import pracas from '@/data/praca.json'
 import transacao from '@/data/transacionada.json'
-import regiao from '@/data/regioes-castanheiras.json'
 import localforage from 'localforage'
+
 export default {
   components: {
     Breadcrumb,
   },
   data() {
     return {
-      regiao,
       pracas,
       buyerPositions,
       medidas: [],
       medidasPreco: [],
       loadingMedidas: false,
+      loadingProdutos: false,
       selectedMeasurement: null,
+      produtos: [],
       moeda,
       posicaoComprador,
       pais,
@@ -322,7 +333,7 @@ export default {
         country: '',
         measure: '',
         measurementId: null,
-        product: '63ff4160ff65e9001b61c6af',
+        product: '',
         uf: '',
         city: '',
         transaction: 'oferta de preços',
@@ -371,12 +382,25 @@ export default {
         text: i + 1,
       }))
     },
+    
+    produtosOptions() {
+      const produtosArray = Array.isArray(this.produtos) ? this.produtos : []
+      
+      return [
+        { value: '', text: 'Selecione um produto...' },
+        ...produtosArray.map(produto => ({
+          value: produto._id,
+          text: produto.name
+        }))
+      ]
+    },
+    
     medidasOptions() {
       const placeholder = {
         value: '',
         text: this.loadingMedidas
           ? 'Carregando medidas...'
-          : 'Selecione uma medida',
+          : this.form.product ? 'Selecione uma medida' : 'Selecione um produto primeiro',
         disabled: true,
       }
       return [placeholder, ...this.medidas]
@@ -391,9 +415,6 @@ export default {
 
       return estados.map((e) => ({ value: e.uf, text: e.uf }))
     },
-    productName() {
-      return 'Castanha com casca in natura'
-    },
   },
   async created() {
     const now = this.$moment().tz('America/Sao_Paulo')
@@ -401,20 +422,21 @@ export default {
     this.form.month = now.format('MM')
     this.form.year = now.format('YYYY')
 
-    await this.loadMedidas()
-
     if (this.isEditing()) {
       await this.edit(this.$route.params.id)
     }
 
     await this.setMessenger()
 
+    await this.preSetDados()
+
     if (!this.isMessenger) {
       await this.listOrganizations()
     }
 
     await this.loadOrganization()
-    await this.preSetDados()
+    
+    await this.loadProdutos()
 
     this.creating = false
 
@@ -437,44 +459,134 @@ export default {
     updateOnlineStatus() {
       this.isOnline = navigator.onLine
     },
-    async loadMedidas() {
+
+    async loadProdutos() {
+      this.loadingProdutos = true
+      try {
+        let organizationId = null
+
+        if (this.isManager || this.isMessenger) {
+          organizationId = this.currentUser.organization
+        } else {
+          organizationId = this.form.organization
+        }
+        
+        if (organizationId) {
+          const produtos = await this.$axios.$get(
+            `products/organization/${organizationId}`
+          )
+          
+          this.produtos = Array.isArray(produtos) ? produtos : []
+        } else {
+          this.produtos = []
+        }
+      } catch (error) {
+        console.error('Erro ao carregar produtos:', error)
+        this.produtos = []
+      } finally {
+        this.loadingProdutos = false
+      }
+    },
+
+    async onOrganizationChange() {
+      // Limpar produto, medidas e região
+      this.form.product = ''
+      this.form.measure = ''
+      this.form.measurementId = null
+      this.form.region = ''
+      this.medidas = []
+      this.produtos = []
+      
+      // Recarregar produtos da nova organização
+      await this.loadProdutos()
+    },
+
+    async onProductChange() {
+      // Limpar medida e região quando produto muda
+      this.form.measure = ''
+      this.form.measurementId = null
+      this.form.region = ''
+      this.medidas = []
+      this.selectedMeasurement = null
+
+      if (this.form.product) {
+        // Carregar medidas do produto
+        await this.loadMedidasPorProduto(this.form.product)
+        
+        // Carregar região baseada no produto + localização
+        await this.loadRegionByProductAndLocation(this.form.product)
+      }
+    },
+
+    async loadRegionByProductAndLocation(productId) {
+      try {
+
+        if (!this.form.uf || !this.form.city) {
+          this.form.region = ''
+          return
+        }
+
+        const response = await this.$axios.$get(
+          `regions/product/${productId}/user-location`,
+          {
+            params: {
+              uf: this.form.uf,
+              city: this.form.city
+            }
+          }
+        )
+        
+        if (response.region) {
+          this.form.region = response.region
+        } 
+      } catch (error) {
+        console.error('Erro ao carregar região por produto e localização:', error)
+      }
+    },
+
+    onUfChange() {
+      this.form.region = ''
+      
+      this.loadCities()
+    },
+ 
+    onCityChange() {
+      // Limpar região
+      this.form.region = ''
+      
+      // Recarregar região se temos produto
+      if (this.form.product && this.form.city && this.form.uf) {
+        this.loadRegionByProductAndLocation(this.form.product)
+      }
+    },
+
+    async loadMedidasPorProduto(productId) {
       this.loadingMedidas = true
       try {
-        const product = await this.$axios.$get(
-          `products/${this.form.product}?populate=specie`
+        const measurements = await this.$axios.$get(
+          `measurements/product/${productId}`
         )
 
-        if (product?.specieProduct?.specie?._id) {
-          const specieId = product.specieProduct.specie._id
-
-          const measurements = await this.$axios.$get(
-            `measurements/species/${specieId}`
-          )
-
-          if (measurements && measurements.length > 0) {
-            this.medidas = measurements.map((measurement) => ({
-              value: measurement.name,
+        if (measurements && measurements.length > 0) {
+          this.medidas = measurements
+            .sort((a, b) => a.referenceInKg - b.referenceInKg)
+            .map((measurement) => ({
+              value: measurement.originalName,
               text: measurement.name,
               measurementId: measurement._id,
               referenceInKg: measurement.referenceInKg,
             }))
-
-            this.medidasPreco = [...this.medidas]
-          } else {
-            // ← ERRO: Sem fallback, exibir erro
-            throw new Error('Nenhuma unidade de medida encontrada para esta espécie')
-          }
         } else {
-          throw new Error('Produto não possui espécie configurada')
+          this.medidas = []
         }
       } catch (error) {
-        // ← ERRO: Informar ao usuário ao invés de fallback silencioso
-        this.notify(`Erro ao carregar medidas: ${error.message}`, 'error')
+        console.error('Erro ao carregar medidas do produto:', error)
         this.medidas = []
-        this.medidasPreco = []
+      } finally {
+        this.loadingMedidas = false
       }
-      this.loadingMedidas = false
     },
+
     onMeasureChange() {
       const selectedMedida = this.medidas.find(
         (m) => m.value === this.form.measure
@@ -484,6 +596,7 @@ export default {
         this.form.measurementId = selectedMedida.measurementId || null
       }
     },
+
     async syncData() {
       this.isOnline = true
       const pendingPrices = (await localforage.getItem('pendingPrices')) || []
@@ -500,6 +613,7 @@ export default {
         this.notify('Preços pendentes sincronizados com sucesso!')
       }
     },
+
     async listOrganizations() {
       if (this.isMessenger) {
         return
@@ -526,34 +640,69 @@ export default {
         }
       }
     },
+
     setMessenger() {
       if (this.isAdmin || this.isGlobalManager || this.isManager) {
         this.form.messenger = this.currentUser._id
       }
     },
-    preSetDados() {
+
+    async preSetDados() {
       if (this.isEditing() || this.isAdmin || this.isGlobalManager) return
 
       if (this.$auth.user) {
         this.form.currency = this.$auth.user.currency
         this.form.country = this.$auth.user.country
         this.form.measure = this.$auth.user.unitOfMeasurement
+        this.form.measurementId = this.$auth.user.measurementId
         this.form.uf = this.$auth.user.uf
         this.form.city = this.$auth.user.city
         this.form.buyerPositionSeller = this.$auth.user.buyerPosition
+        
+        if (this.$auth.user.productId) {
+          this.form.product = this.$auth.user.productId
+          // Carregar medidas do produto do usuário
+          await this.loadMedidasPorProduto(this.$auth.user.productId)
+          
+          // NOVO: carregar região baseada no produto + localização do usuário
+          await this.loadRegionByProductAndLocation(this.$auth.user.productId)
+          
+          // Definir medida padrão se usuário tiver uma definida
+          if (this.$auth.user.unitOfMeasurement) {
+            this.form.measure = this.$auth.user.unitOfMeasurement
+            this.onMeasureChange()
+          }
+        }
       } else {
-        this.$getCachedData('user', 'currentUser').then((userData) => {
+        // Fallback para dados em cache
+        
+        this.$getCachedData('user', 'currentUser').then(async (userData) => {
           if (userData) {
             this.form.currency = userData.currency
             this.form.country = userData.country
             this.form.measure = userData.unitOfMeasurement
+            this.form.measurementId = userData.measurementId
             this.form.uf = userData.uf
             this.form.city = userData.city
             this.form.buyerPositionSeller = userData.buyerPosition
+            
+            if (userData.productId) {
+              this.form.product = userData.productId
+              await this.loadMedidasPorProduto(userData.productId)
+              
+              // NOVO: carregar região baseada no produto + localização do usuário
+              await this.loadRegionByProductAndLocation(userData.productId)
+              
+              if (userData.unitOfMeasurement) {
+                this.form.measure = userData.unitOfMeasurement
+                this.onMeasureChange()
+              }
+            }
           }
         })
       }
     },
+
     async loadOrganization() {
       try {
         let organizationId = null
@@ -585,20 +734,10 @@ export default {
             )
           }
 
-          if (organizationId) {
-            const organization = await this.$axios.$get(
-              'organizations/' + organizationId
-            )
-            this.products = organization.products || []
-          }
-
           this.messengers = await this.$axios.$get('users', {
             params: { filters },
           })
 
-          if (this.products) {
-            await this.$getCachedData('reference', 'products', this.products)
-          }
           if (this.messengers) {
             await this.$getCachedData(
               'reference',
@@ -607,57 +746,20 @@ export default {
             )
           }
         } else {
-          if (!this.isMessenger) {
-            const cachedOrganizations = await this.$getCachedData(
-              'reference',
-              'organizations'
-            )
-            if (cachedOrganizations) {
-              this.organizationsOptions = [
-                { value: '', text: 'Selecione uma organização' },
-              ].concat(
-                cachedOrganizations.map((organization) => ({
-                  value: organization._id,
-                  text: organization.name,
-                }))
-              )
-            }
-          }
-
-          if (organizationId) {
-            const cachedProducts = await this.$getCachedData(
-              'reference',
-              'products'
-            )
-            if (cachedProducts) {
-              this.products = cachedProducts
-            }
-          }
-
+          // Fallback offline
           const cachedMessengers = await this.$getCachedData(
             'reference',
             'currentMessengers'
           )
           if (cachedMessengers) {
-            if (this.isMessenger) {
-              this.messengers = cachedMessengers.filter(
-                (m) => m._id === this.currentUser._id
-              )
-            } else if (organizationId) {
-              this.messengers = cachedMessengers.filter(
-                (m) => m.organization === organizationId
-              )
-            } else {
-              this.messengers = cachedMessengers
-            }
+            this.messengers = cachedMessengers
           }
         }
-
-        this.form.product = '63ff4160ff65e9001b61c6af'
       } catch (error) {
-        console.error('Erro ao carregar organizações:', error)
+        console.error('Erro ao carregar organização:', error)
       }
     },
+
     async loadMessenger() {
       if (this.form.messenger && !this.creating) {
         const selectedMessenger = await this.$axios.$get(
@@ -666,24 +768,50 @@ export default {
         this.form.currency = selectedMessenger.currency
         this.form.country = selectedMessenger.country
         this.form.measure = selectedMessenger.unitOfMeasurement
+        this.form.measurementId = selectedMessenger.measurementId
         this.form.uf = selectedMessenger.uf
         this.form.city = selectedMessenger.city
         this.form.buyerPositionSeller = selectedMessenger.buyerPosition
+        
+        if (selectedMessenger.productId) {
+          this.form.product = selectedMessenger.productId
+          await this.loadMedidasPorProduto(selectedMessenger.productId)
+          
+          // NOVO: carregar região baseada no produto + localização do mensageiro
+          await this.loadRegionByProductAndLocation(selectedMessenger.productId)
+          
+          if (selectedMessenger.unitOfMeasurement) {
+            this.form.measure = selectedMessenger.unitOfMeasurement
+            this.onMeasureChange()
+          }
+        } else if (this.form.product) {
+          // Se mensageiro não tem produto mas já temos um produto selecionado,
+          // recarregar região com nova localização
+          await this.loadRegionByProductAndLocation(this.form.product)
+        }
       }
     },
+
     loadCities() {
       this.cidades = [{ value: '', text: 'Selecione a cidade' }]
 
       if (this.form.uf) {
-        this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
+        const cidadesDoEstado = Object(cidades)[this.form.uf] || []
+        const cidadesFormatadas = cidadesDoEstado.map(cidade => ({
+          value: cidade,
+          text: cidade
+        }))
+        this.cidades = this.cidades.concat(cidadesFormatadas)
       }
 
       if (this.form.city && this.cidades) {
-        if (!this.cidades.find((c) => c === this.form.city)) {
+        if (!this.cidades.find((c) => c.value === this.form.city)) {
           this.form.city = ''
+          this.form.region = ''
         }
       }
     },
+
     async loadPracas() {
       try {
         if (navigator.onLine) {
@@ -701,24 +829,14 @@ export default {
           }
         }
 
-        if (this.form.city && this.form.uf) {
-          const regiaoFound = this.regiao.find(
-            (item) =>
-              item.municipio === this.form.city && item.uf === this.form.uf
-          )
-
-          if (regiaoFound) {
-            this.form.region = regiaoFound.regiaoCastanheira
-          } else {
-            this.form.region = ''
-          }
-        } else {
-          this.form.region = ''
-        }
+        if (this.form.product && this.form.city && this.form.uf) {
+          await this.loadRegionByProductAndLocation(this.form.product)
+        } 
       } catch (error) {
         console.error('Erro ao carregar praças:', error)
       }
     },
+
     transactedQuantity() {
       const multiplyer = this.getMultiplyer(this.form.measure)
       let min = this.form.originalMinimumPrice
@@ -732,15 +850,15 @@ export default {
         this.form.maximumPrice = +new Decimal(max).div(multiplyer).toFixed(2)
       }
     },
+
     getMultiplyer(measure) {
-      // ← APENAS measurementId dinâmico
       if (this.selectedMeasurement && this.selectedMeasurement.referenceInKg) {
         return this.selectedMeasurement.referenceInKg
       }
 
-      // ← ERRO: Sem fallback hardcoded
       throw new Error(`Unidade de medida '${measure}' não possui referência configurada`)
     },
+
     async edit(id) {
       this.is_loading = true
 
@@ -757,7 +875,7 @@ export default {
         this.form.transactedQuantity = dados.transactedQuantity || 0
         this.form.measure = dados.measure
         this.form.measurementId = dados.measurementId?._id || null
-        this.form.product = dados.product
+        this.form.product = dados.product._id || dados.product
         this.form.buyerPositionBuyer = dados.buyerPositionBuyer
         this.form.createdAt = dados.createdAt
         this.form.uf = dados.uf
@@ -766,10 +884,16 @@ export default {
         this.form.country = dados.country
         this.form.buyerPositionSeller = dados.buyerPositionSeller
         this.form.originalPrice = dados.originalPrice || 0
+        this.form.region = dados.region
+        
         const date = this.$moment(dados.createdAt)
         this.form.day = date.format('DD')
         this.form.month = date.format('MM')
         this.form.year = date.format('YYYY')
+
+        if (this.form.product) {
+          await this.loadMedidasPorProduto(this.form.product)
+        }
 
         if (dados.measurementId) {
           this.selectedMeasurement = {
@@ -785,10 +909,23 @@ export default {
 
       this.is_loading = false
     },
+
     async save() {
       let isValid = await this.$validator.validate()
 
-      // ← VALIDAÇÃO: Verificar se measurementId está presente
+      if (!this.form.product) {
+        this.veeErrors.items.push({
+          id: 109,
+          vmId: this.veeErrors.vmId,
+          field: 'product',
+          msg: 'Selecione um produto.',
+          rule: 'required',
+          scope: null,
+        })
+        isValid = false
+      }
+
+      // Validação measurementId
       if (!this.form.measurementId) {
         this.veeErrors.items.push({
           id: 107,
@@ -844,24 +981,16 @@ export default {
           })
           isValid = false
         }
-      } else if (!this.form.region) {
-        this.veeErrors.items.push({
-          id: 104,
-          vmId: this.veeErrors.vmId,
-          field: 'region',
-          msg: 'O município selecionado não faz parte de uma Região Castanheira.',
-          rule: 'required',
-          scope: null,
-        })
-        isValid = false
       }
+
       this.veeErrors.items = this.veeErrors.items.filter(
         (error) =>
           error.id !== 101 &&
           error.id !== 102 &&
           error.id !== 103 &&
           error.id !== 104 &&
-          error.id !== 107
+          error.id !== 107 &&
+          error.id !== 109
       )
 
       if (this.form.transaction === 'oferta de preços') {
@@ -958,19 +1087,12 @@ export default {
             this.is_sending = false
           }
         } else {
-          const pendingPrices =
-            (await localforage.getItem('pendingPrices')) || []
-
-          priceData.product = '63ff4160ff65e9001b61c6af'
-
+          // Salvar offline
+          const pendingPrices = (await localforage.getItem('pendingPrices')) || []
           pendingPrices.push(priceData)
           await localforage.setItem('pendingPrices', pendingPrices)
-
-          this.notify(
-            'Preço salvo localmente. Será sincronizado quando estiver online.'
-          )
+          this.notify('Preço salvo localmente. Será sincronizado quando voltar online.')
           this.is_sending = false
-
           setTimeout(() => {
             try {
               this.$router.replace('/')
@@ -978,6 +1100,10 @@ export default {
           }, 500)
         }
       }
+    },
+
+    isEditing() {
+      return !!this.$route.params.id
     },
   },
 }
