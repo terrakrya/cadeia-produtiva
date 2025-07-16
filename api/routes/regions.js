@@ -84,4 +84,86 @@ router.delete('/:id', auth.globalManager, async (req, res) => {
   }
 })
 
+// Nova rota: Buscar região por produto e localização do usuário
+router.get('/product/:productId/user-location', auth.authenticated, async (req, res) => {
+  try {
+    const productId = req.params.productId
+    const userUf = req.query.uf
+    const userCity = req.query.city
+
+    if (!userUf || !userCity) {
+      return res.status(400).json({ 
+        region: null, 
+        message: 'UF e cidade do usuário são obrigatórios' 
+      })
+    }
+
+    // 1. Buscar produto com espécie
+    const Product = mongoose.model('Product')
+    const product = await Product.findById(productId)
+      .populate({
+        path: 'specieProduct',
+        populate: {
+          path: 'specie',
+          select: 'scientificName popularName'
+        }
+      })
+
+    if (!product) {
+      return res.status(404).json({ region: null, message: 'Produto não encontrado' })
+    }
+
+    if (!product.specieProduct?.specie) {
+      return res.json({ 
+        region: null, 
+        message: 'Produto não possui espécie configurada' 
+      })
+    }
+
+    const specieId = product.specieProduct.specie._id
+
+    // 2. Buscar regiões dessa espécie que contenham o município/UF do usuário
+    const regions = await Region.find({
+      specie: specieId,
+      'municipalities': {
+        $elemMatch: {
+          name: userCity,
+          uf: userUf
+        }
+      }
+    }).populate('specie', 'scientificName popularName')
+
+    if (regions.length === 0) {
+      return res.json({ 
+        region: null, 
+        specie: product.specieProduct.specie
+      })
+    }
+
+    // 3. Se há apenas uma região, retornar ela
+    if (regions.length === 1) {
+      return res.json({ 
+        region: regions[0].name,
+        regionData: regions[0].data(),
+        specie: product.specieProduct.specie,
+      })
+    }
+
+    // 4. Se há múltiplas regiões (caso raro), retornar a primeira
+    return res.json({ 
+      region: regions[0].name,
+      regionData: regions[0].data(),
+      specie: product.specieProduct.specie,
+      allRegions: regions.map(r => r.data())
+    })
+
+  } catch (error) {
+    console.error('Erro ao buscar região por produto e localização:', error)
+    res.status(422).json({ 
+      region: null, 
+      message: 'Erro ao buscar região: ' + error.message 
+    })
+  }
+})
+
 module.exports = router 

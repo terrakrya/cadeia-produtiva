@@ -393,13 +393,20 @@ export default {
     },
 
     async onProductChange() {
-      // Limpar medida quando produto muda
+      // Limpar medida e região quando produto muda
       this.form.unitOfMeasurement = ''
       this.form.measurementId = null
+      this.form.region = ''
       this.medidas = []
 
       if (this.form.productId) {
+        // Carregar medidas para o produto
         await this.loadMedidasPorProduto(this.form.productId)
+        
+        // Carregar região para o produto baseada na localização do usuário
+        // Para mensageiros, UF e cidade já são fixos
+        // Para admins/gestores globais, usam os valores do formulário
+        await this.loadRegionByProductAndLocation(this.form.productId)
       }
     },
 
@@ -574,6 +581,8 @@ export default {
             })
             isValid = false
           }
+          // AJUSTE: Validação da região apenas para admins/gestores globais
+          // Para mensageiros, a região pode ficar vazia se não encontrar automaticamente
           else if (
             (this.isAdmin || this.isGlobalManager) &&
             !this.form.region
@@ -582,7 +591,7 @@ export default {
               id: 106,
               vmId: this.veeErrors.vmId,
               field: 'region',
-              msg: 'Município não vinculado a um Território.',
+              msg: 'Região não encontrada para sua localização. Verifique UF e município.',
               rule: 'required',
               scope: null,
             })
@@ -652,9 +661,21 @@ export default {
           this.form.region = ''
         }
       }
+      
+      // Se mudou UF e já tem produto selecionado, recarregar região dinamicamente
+      if (this.form.productId && this.form.uf && this.form.city) {
+        this.loadRegionByProductAndLocation(this.form.productId)
+      }
     },
 
     loadRegion() {
+      // Primeiro tentar a lógica nova (dinâmica baseada no produto)
+      if (this.form.productId && this.form.uf && this.form.city) {
+        this.loadRegionByProductAndLocation(this.form.productId)
+        return
+      }
+
+      // Fallback: lógica original estática
       if (this.form.city) {
         const regiao = regioes.filter(
           (item) => item.municipio === this.form.city
@@ -671,6 +692,58 @@ export default {
 
     isEditing() {
       return !!this.$route.params.id
+    },
+
+    async loadRegionByProductAndLocation(productId) {
+      try {
+        // Para mensageiros, verificar se têm UF e cidade (dados fixos do usuário)
+        // Para admins/gestores globais, verificar se preencheram no formulário
+        let userUf = this.form.uf
+        let userCity = this.form.city
+
+        // Se não temos UF e cidade no form (pode ser o caso para mensageiros na primeira vez)
+        // usar os dados do usuário atual
+        if (!userUf || !userCity) {
+          userUf = this.currentUser.uf
+          userCity = this.currentUser.city
+          
+          // Atualizar o form com os dados do usuário se necessário
+          if (userUf && !this.form.uf) this.form.uf = userUf
+          if (userCity && !this.form.city) this.form.city = userCity
+        }
+
+        if (!userUf || !userCity) {
+          this.notify('UF e cidade são necessários para definir a região automaticamente.', 'warning')
+          return
+        }
+
+        const response = await this.$axios.$get(
+          `regions/product/${productId}/user-location`,
+          {
+            params: {
+              uf: userUf,
+              city: userCity
+            }
+          }
+        )
+        
+        if (response.region) {
+          // Região encontrada automaticamente
+          this.form.region = response.region
+        } else {
+          // Nenhuma região encontrada
+          this.notify(response.message || 'Nenhuma região encontrada para sua localização com este produto.', 'warning')
+          this.form.region = ''
+        }
+      } catch (error) {
+        console.error('Erro ao carregar região por produto e localização:', error)
+        if (error.response?.data?.message) {
+          this.notify(error.response.data.message, 'error')
+        } else {
+          this.notify('Erro ao carregar região para o produto selecionado.', 'error')
+        }
+        this.form.region = ''
+      }
     },
   },
 }
