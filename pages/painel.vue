@@ -309,7 +309,8 @@ export default {
       !this.$auth.user.city ||
       !this.$auth.user.currency ||
       !this.$auth.user.country ||
-      !this.$auth.user.region
+      !this.$auth.user.region ||
+      !this.$auth.user.productId
     ) {
       this.$router.push(
         '/cadastros/usuarios/' + this.$auth.user._id + '/perfil'
@@ -338,16 +339,29 @@ export default {
         if (navigator.onLine) {
           const products = await this.$axios.$get('products')
           this.products = products
-          if (this.products && this.products.length > 0) {
-            this.filters.product = this.products[0]._id
+          
+          if (this.$auth.user.productId) {
+            const userProduct = this.products.find(product => product._id === this.$auth.user.productId)
+            if (userProduct) {
+              this.filters.product = this.$auth.user.productId
+            } else {
+              this.$router.push('/cadastros/usuarios/' + this.$auth.user._id + '/perfil')
+              return
+            }
           }
         } else {
-          // Usar produtos em cache quando offline
           const cachedProducts = await this.$getCachedData('reference', 'products')
           if (cachedProducts) {
             this.products = cachedProducts
-            if (this.products && this.products.length > 0) {
-              this.filters.product = this.products[0]._id
+            
+            if (this.$auth.user.productId) {
+              const userProduct = this.products.find(product => product._id === this.$auth.user.productId)
+              if (userProduct) {
+                this.filters.product = this.$auth.user.productId
+              } else {
+                this.$router.push('/cadastros/usuarios/' + this.$auth.user._id + '/perfil')
+                return
+              }
             }
           }
         }

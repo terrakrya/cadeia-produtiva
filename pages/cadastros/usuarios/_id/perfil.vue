@@ -177,7 +177,7 @@
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Região Castanheira *">
+                  <b-form-group label="Região *">
                     <input
                       v-model="form.region"
                       type="text"
