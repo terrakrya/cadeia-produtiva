@@ -4,11 +4,36 @@ const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const moment = require('moment')
 const getModa = require('../utils/moda')
-const convertUnitDynamic = require('../utils/convertUnitDynamic')
 const User = mongoose.model('User')
 
 moment.locale('pt-br')
 const Price = mongoose.model('PriceInformation')
+
+const createUnitConverter = async (userId) => {
+  const user = await User.findById(userId)
+  if (!user) {
+    throw new Error('Usuário não encontrado')
+  }
+
+  if (!user.measurementId) {
+    throw new Error('Usuário não possui measurementId configurado')
+  }
+
+  const Measurement = mongoose.model('Measurement')
+  const measurement = await Measurement.findById(user.measurementId)
+  
+  if (!measurement || !measurement.referenceInKg) {
+    throw new Error('Configuração de medida inválida para o usuário')
+  }
+// Retorna função de conversão otimizada
+  return {
+    user,
+    convert: (value) => {
+      if (!value || isNaN(value)) return 0
+      return parseFloat((value * measurement.referenceInKg).toFixed(2))
+    }
+  }
+}
 
 // Helper function for building query filters
 const buildFilters = (filters) => {
@@ -74,10 +99,7 @@ router.get('/', auth.authenticated, async (req, res) => {
 // Route for getting harvest mode data with dynamic conversion
 router.get('/harvest-mode', auth.authenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-    if (!user) {
-      return res.status(404).send('Usuário não encontrado')
-    }
+    const { convert } = await createUnitConverter(req.user.id)
 
     const query = buildFilters(req.query)
     const prices = await Price.find(query)
@@ -96,11 +118,10 @@ router.get('/harvest-mode', auth.authenticated, async (req, res) => {
 
       if (!modaWeekly[formattedWeek]) modaWeekly[formattedWeek] = []
       
-      // ← USAR CONVERSÃO DINÂMICA baseada no usuário
-      const minPrice = await convertUnitDynamic(price.minimumPrice, user)
-      const maxPrice = await convertUnitDynamic(price.maximumPrice, user)
+      const minPrice = convert(price.minimumPrice)
+      const maxPrice = convert(price.maximumPrice)
       
-      modaWeekly[formattedWeek].push(parseFloat(minPrice), parseFloat(maxPrice))
+      modaWeekly[formattedWeek].push(minPrice, maxPrice)
     }
 
     let modaByWeek = Object.keys(modaWeekly).map((week) => ({
@@ -127,10 +148,7 @@ router.get('/harvest-mode', auth.authenticated, async (req, res) => {
 // Route for getting summary data with dynamic conversion
 router.get('/summary', auth.authenticated, async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-    if (!user) {
-      return res.status(404).send('Usuário não encontrado')
-    }
+    const { convert } = await createUnitConverter(req.user.id)
 
     const query = buildFilters(req.query)
     const prices = await Price.find(query, {
@@ -139,26 +157,22 @@ router.get('/summary', auth.authenticated, async (req, res) => {
       maximumPrice: 1,
     })
 
-    let summary = await processSummaryDynamic(prices, user)
+    let summary = await processSummary(prices, convert)
     res.json(summary)
   } catch (err) {
     res.status(500).send(`Erro interno: ${err.message}`)
   }
 })
 
-// Processar resumo com conversão dinâmica  
-const processSummaryDynamic = async (prices, user) => {
+const processSummary = async (prices, convert) => {
   const squares = new Map()
 
   for (const price of prices) {
     try {
-      const minimumPrice = await convertUnitDynamic(price.minimumPrice, user)
-      const maximumPrice = await convertUnitDynamic(price.maximumPrice, user)
-      
-      const minPrice = parseFloat(minimumPrice)
-      const maxPrice = parseFloat(maximumPrice)
+      const minPrice = convert(price.minimumPrice)
+      const maxPrice = convert(price.maximumPrice)
 
-      if (isNaN(minPrice) || isNaN(maxPrice)) continue
+      if (minPrice === 0 || maxPrice === 0) continue
 
       const squareName = price.region || 'Região não informada'
 
@@ -236,7 +250,6 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
           preserveNullAndEmptyArrays: true,
         },
       },
-      // ← NOVO: Lookup para measurementId
       {
         $lookup: {
           from: 'measurements',
@@ -269,7 +282,6 @@ router.get('/data-published', auth.authenticated, async (req, res) => {
         : 'Não informado',
       region: item.region || 'Não informado',
       city: item.city || 'Não informado',
-      // ← NOVO: Informações da medida dinâmica
       measure: item.measure || 'Não informado',
       measurementName: item.measurementDetails
         ? item.measurementDetails.name || item.measure
