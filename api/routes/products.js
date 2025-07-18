@@ -76,7 +76,6 @@ router.get('/organization/:organizationId', auth.authenticated, async (req, res)
   try {
     const organizationId = req.params.organizationId
     
-    console.log('🏢 Buscando produtos para organização:', organizationId)
 
     // Buscar organização e popular seus produtos
     const Organization = mongoose.model('Organization')
@@ -95,20 +94,12 @@ router.get('/organization/:organizationId', auth.authenticated, async (req, res)
       })
       .lean()
 
-    console.log('📋 Organização encontrada:', {
-      id: organization?._id,
-      name: organization?.name,
-      productsCount: organization?.products?.length
-    })
-
     if (!organization) {
       return res.status(404).send('Organização não encontrada')
     }
 
     // Usar products da organização diretamente
     const products = organization.products || []
-
-    console.log('📦 Produtos encontrados:', products.length)
 
     // Formatar para o frontend
     const formattedProducts = products.map(product => ({
@@ -121,7 +112,6 @@ router.get('/organization/:organizationId', auth.authenticated, async (req, res)
 
     res.json(formattedProducts)
   } catch (error) {
-    console.error('❌ Erro ao carregar produtos da organização:', error)
     res.status(422).send('Erro ao carregar produtos: ' + error.message)
   }
 })
