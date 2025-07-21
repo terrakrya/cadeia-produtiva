@@ -206,6 +206,7 @@ export default {
       regionOptions: [],
       priceInformations: [],
       products: [],
+      userMeasurement: null,
     }
   },
 
@@ -216,9 +217,14 @@ export default {
     ) {
       this.$router.push('/painel')
     }
-    await this.loadCities(false)
+
+    await Promise.all([
+      this.loadCities(false),
+      this.loadUserMeasurement(),
+      this.loadProducts(),
+    ])
+
     await this.applyFilters()
-    await this.loadProducts()
 
     this.regionOptions = [
       { value: '', text: 'Todas as regiões' },
@@ -249,6 +255,20 @@ export default {
 
       if (loadFilters) {
         await this.applyFilters()
+      }
+    },
+
+    async loadUserMeasurement() {
+      try {
+        if (this.$auth.user.measurementId) {
+          const measurement = await this.$axios.$get(
+            `measurements/${this.$auth.user.measurementId}`
+          )
+          this.userMeasurement = measurement
+        }
+      } catch (error) {
+        console.error('Erro ao carregar medida do usuário:', error)
+        this.userMeasurement = null
       }
     },
 
@@ -376,24 +396,18 @@ export default {
       const url = URL.createObjectURL(blob)
       const link = document.createElement('a')
       link.href = url
-      const downloadDate = new Date().toISOString().slice(0, 10);
-      link.download = `Dados Publicados ${downloadDate}.xlsx`;
+      const downloadDate = new Date().toISOString().slice(0, 10)
+      link.download = `Dados Publicados ${downloadDate}.xlsx`
       link.click()
       URL.revokeObjectURL(url)
     },
 
     convertPrice(price) {
-      const unit = this.$auth.user.unitOfMeasurement
-      const conversionRates = {
-        Kg: 1,
-        Tonelada: 1000,
-        Lata: 12,
-        Caixa: 24,
-        Hectolitro: 60,
-        Saca: 48,
-        Barrica: 72,
+      if (this.userMeasurement && this.userMeasurement.referenceInKg) {
+        return price * this.userMeasurement.referenceInKg
       }
-      return price * (conversionRates[unit] || 1)
+      
+      return price || 0
     },
   },
 }

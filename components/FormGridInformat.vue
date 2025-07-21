@@ -54,6 +54,7 @@ export default {
     return {
       sortBy: 'date',
       sortDesc: true,
+      userMeasurement: null,
     }
   },
   computed: {
@@ -111,19 +112,30 @@ export default {
       ];
     }
   },
+  async created() {
+    await this.loadUserMeasurement()
+  },
   methods: {
-    convertPrice(price) {
-      const unit = this.$auth.user.unitOfMeasurement
-      const conversionRates = {
-        Kg: 1,
-        Tonelada: 1000,
-        Lata: 12,
-        Caixa: 24,
-        Hectolitro: 60,
-        Saca: 48,
-        Barrica: 72,
+    async loadUserMeasurement() {
+      try {
+        if (this.$auth.user.measurementId) {
+          const measurement = await this.$axios.$get(
+            `measurements/${this.$auth.user.measurementId}`
+          )
+          this.userMeasurement = measurement
+        }
+      } catch (error) {
+        console.error('Erro ao carregar medida do usuário:', error)
+        this.userMeasurement = null
       }
-      return price * (conversionRates[unit] || 1)
+    },
+
+    convertPrice(price) {
+      if (this.userMeasurement && this.userMeasurement.referenceInKg) {
+        return price * this.userMeasurement.referenceInKg
+      }
+      
+      return price || 0
     },
   }
 }
