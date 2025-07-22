@@ -118,10 +118,23 @@
                       @input="onProductChange"
                     />
                     <small v-if="loadingProdutos" class="text-muted">
-                      Carregando produtos da sua organização...
+                      <span v-if="isAdmin || isGlobalManager">
+                        Carregando todos os produtos...
+                      </span>
+                      <span v-else>
+                        Carregando produtos da sua organização...
+                      </span>
                     </small>
-                    <small v-else-if="produtosOptions.length === 0" class="text-warning">
-                      Nenhum produto encontrado para sua organização
+                    <small
+                      v-else-if="produtosOptions.length === 0"
+                      class="text-warning"
+                    >
+                      <span v-if="isAdmin || isGlobalManager">
+                        Nenhum produto encontrado no sistema
+                      </span>
+                      <span v-else>
+                        Nenhum produto encontrado para sua organização
+                      </span>
                     </small>
                     <field-error :msg="veeErrors" field="productId" />
                   </b-form-group>
@@ -140,7 +153,10 @@
                     <small v-if="loadingMedidas" class="text-muted">
                       Carregando medidas do produto...
                     </small>
-                    <small v-else-if="medidasOptions.length === 0" class="text-warning">
+                    <small
+                      v-else-if="medidasOptions.length === 0"
+                      class="text-warning"
+                    >
                       Nenhuma medida encontrada para este produto
                     </small>
                     <field-error :msg="veeErrors" field="unitOfMeasurement" />
@@ -281,27 +297,27 @@ export default {
   computed: {
     medidasOptions() {
       const medidasArray = Array.isArray(this.medidas) ? this.medidas : []
-      
+
       return [
         { value: '', text: 'Selecione uma medida...' },
-        ...medidasArray.map(medida => ({
+        ...medidasArray.map((medida) => ({
           value: medida.value,
           text: medida.text,
           measurementId: medida.measurementId,
-          referenceInKg: medida.referenceInKg
-        }))
+          referenceInKg: medida.referenceInKg,
+        })),
       ]
     },
     produtosOptions() {
       const produtosArray = Array.isArray(this.produtos) ? this.produtos : []
-      
+
       return [
         { value: '', text: 'Selecione um produto...' },
-        ...produtosArray.map(produto => ({
+        ...produtosArray.map((produto) => ({
           value: produto._id,
           text: produto.name,
-          specie: produto.specie
-        }))
+          specie: produto.specie,
+        })),
       ]
     },
     isGlobalManager() {
@@ -318,14 +334,14 @@ export default {
     async initializeProfile() {
       // 1. Primeiro carregar os dados do usuário
       await this.edit(this.$route.params.id)
-      
+
       // 2. Carregar produtos da organização
       await this.loadProdutos()
-      
+
       // 3. Se o usuário tem produto selecionado, carregar suas medidas
       if (this.form.productId) {
         await this.loadMedidasPorProduto(this.form.productId)
-        
+
         // 4. Após carregar as medidas, definir a unidade correta se houver measurementId
         if (this.form.measurementId) {
           this.setMeasurementFromId()
@@ -358,7 +374,7 @@ export default {
         this.form.city = dados.city || ''
         this.form.region = dados.region || ''
         this.form.regionId = dados.regionId || null
-        
+
         if (this.form.uf) {
           this.loadCities()
         }
@@ -375,20 +391,27 @@ export default {
     async loadProdutos() {
       this.loadingProdutos = true
       try {
-        const userOrganization = this.$auth.user.organization
-        
-        if (userOrganization) {
-          const produtos = await this.$axios.$get(
-            `products/organization/${userOrganization}`
-          )
-          
+        if (this.isAdmin || this.isGlobalManager) {
+          const produtos = await this.$axios.$get('products')
           this.produtos = Array.isArray(produtos) ? produtos : []
-          
-          if (this.form.productId) {
-            const produtoEncontrado = this.produtos.find(p => p._id === this.form.productId)
-          }
         } else {
-          this.produtos = []
+          const userOrganization = this.$auth.user.organization
+
+          if (userOrganization) {
+            const produtos = await this.$axios.$get(
+              `products/organization/${userOrganization}`
+            )
+
+            this.produtos = Array.isArray(produtos) ? produtos : []
+          } else {
+            this.produtos = []
+          }
+        }
+
+        if (this.form.productId) {
+          const produtoEncontrado = this.produtos.find(
+            (p) => p._id === this.form.productId
+          )
         }
       } catch (error) {
         this.produtos = []
@@ -408,7 +431,7 @@ export default {
       if (this.form.productId) {
         // Carregar medidas para o produto
         await this.loadMedidasPorProduto(this.form.productId)
-        
+
         // Carregar região para o produto baseada na localização do usuário
         // Para mensageiros, UF e cidade já são fixos
         // Para admins/gestores globais, usam os valores do formulário
@@ -432,7 +455,7 @@ export default {
               measurementId: measurement._id,
               referenceInKg: measurement.referenceInKg,
               hasConflict: measurement.hasConflict,
-              specie: measurement.specie
+              specie: measurement.specie,
             }))
         } else {
           this.medidas = []
@@ -457,20 +480,20 @@ export default {
     setMeasurementFromId() {
       // Encontrar a medida correspondente ao measurementId salvo
       let savedMeasurement = null
-      
+
       if (this.form.measurementId) {
         savedMeasurement = this.medidas.find(
           (m) => m.measurementId === this.form.measurementId
         )
       }
-      
+
       // Fallback: se não encontrou por ID, tentar pelo nome da unidade
       if (!savedMeasurement && this.form.unitOfMeasurement) {
         savedMeasurement = this.medidas.find(
           (m) => m.value === this.form.unitOfMeasurement
         )
       }
-      
+
       if (savedMeasurement) {
         this.form.unitOfMeasurement = savedMeasurement.value
         this.selectedMeasurement = savedMeasurement
@@ -485,15 +508,22 @@ export default {
       }
 
       // Campos realmente obrigatórios
-      const requiredFields = ['name', 'email', 'cellphone', 'buyerPosition', 'productId', 'unitOfMeasurement']
-      
+      const requiredFields = [
+        'name',
+        'email',
+        'cellphone',
+        'buyerPosition',
+        'productId',
+        'unitOfMeasurement',
+      ]
+
       const staticRules = {
         birthDate: 'min:10',
         cellphone: 'min:14',
       }
 
       const rules = []
-      
+
       if (requiredFields.includes(fieldName)) {
         rules.push('required')
       }
@@ -575,8 +605,7 @@ export default {
               scope: null,
             })
             isValid = false
-          }
-          else if (await this.isNotUniqueCellphone(id, this.form.cellphone)) {
+          } else if (await this.isNotUniqueCellphone(id, this.form.cellphone)) {
             this.veeErrors.items.push({
               id: 105,
               vmId: this.veeErrors.vmId,
@@ -628,16 +657,18 @@ export default {
 
         if (isValid) {
           this.is_sending = true
-          
+
           try {
-            const response = await this.$axios.$put('users/' + this.$route.params.id, this.form)
-            
+            const response = await this.$axios.$put(
+              'users/' + this.$route.params.id,
+              this.form
+            )
+
             // Atualizar usuário logado
             this.$auth.setUser(response)
-            
+
             // ← REDIRECIONAMENTO SIMPLES
             this.$router.push('/painel')
-            
           } catch (e) {
             this.showError(e)
           } finally {
@@ -668,7 +699,7 @@ export default {
           this.form.regionId = null
         }
       }
-      
+
       // Se mudou UF e já tem produto selecionado, recarregar região dinamicamente
       if (this.form.productId && this.form.uf && this.form.city) {
         this.loadRegionByProductAndLocation(this.form.productId)
@@ -720,14 +751,17 @@ export default {
         if (!userUf || !userCity) {
           userUf = this.currentUser.uf
           userCity = this.currentUser.city
-          
+
           // Atualizar o form com os dados do usuário se necessário
           if (userUf && !this.form.uf) this.form.uf = userUf
           if (userCity && !this.form.city) this.form.city = userCity
         }
 
         if (!userUf || !userCity) {
-          this.notify('UF e cidade são necessários para definir a região automaticamente.', 'warning')
+          this.notify(
+            'UF e cidade são necessários para definir a região automaticamente.',
+            'warning'
+          )
           return
         }
 
@@ -736,11 +770,11 @@ export default {
           {
             params: {
               uf: userUf,
-              city: userCity
-            }
+              city: userCity,
+            },
           }
         )
-        
+
         if (response.region) {
           // Região encontrada automaticamente
           this.form.region = response.region
@@ -749,16 +783,26 @@ export default {
           }
         } else {
           // Nenhuma região encontrada
-          this.notify(response.message || 'Nenhuma região encontrada para sua localização com este produto.', 'warning')
+          this.notify(
+            response.message ||
+              'Nenhuma região encontrada para sua localização com este produto.',
+            'warning'
+          )
           this.form.region = ''
           this.form.regionId = null
         }
       } catch (error) {
-        console.error('Erro ao carregar região por produto e localização:', error)
+        console.error(
+          'Erro ao carregar região por produto e localização:',
+          error
+        )
         if (error.response?.data?.message) {
           this.notify(error.response.data.message, 'error')
         } else {
-          this.notify('Erro ao carregar região para o produto selecionado.', 'error')
+          this.notify(
+            'Erro ao carregar região para o produto selecionado.',
+            'error'
+          )
         }
         this.form.region = ''
         this.form.regionId = null
@@ -769,17 +813,20 @@ export default {
       try {
         const response = await this.$axios.$get('regions', {
           params: {
-            name: regionName
-          }
+            name: regionName,
+          },
         })
-        
+
         if (response && response.length > 0) {
-          const matchingRegion = response.find(region => 
-            region.municipalities && region.municipalities.some(municipality => 
-              municipality.name === city && municipality.uf === uf
-            )
+          const matchingRegion = response.find(
+            (region) =>
+              region.municipalities &&
+              region.municipalities.some(
+                (municipality) =>
+                  municipality.name === city && municipality.uf === uf
+              )
           )
-          
+
           if (matchingRegion) {
             this.form.regionId = matchingRegion._id
           } else {
