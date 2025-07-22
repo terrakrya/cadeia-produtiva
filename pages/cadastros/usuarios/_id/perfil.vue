@@ -272,6 +272,7 @@ export default {
         city: '',
         region: '',
         productId: '',
+        regionId: null,
       },
       is_loading: false,
       is_sending: false,
@@ -356,9 +357,13 @@ export default {
         this.form.uf = dados.uf || ''
         this.form.city = dados.city || ''
         this.form.region = dados.region || ''
+        this.form.regionId = dados.regionId || null
         
         if (this.form.uf) {
           this.loadCities()
+        }
+        if (this.form.city) {
+          this.loadRegion()
         }
       } catch (e) {
         this.showError(e)
@@ -397,6 +402,7 @@ export default {
       this.form.unitOfMeasurement = ''
       this.form.measurementId = null
       this.form.region = ''
+      this.form.regionId = null
       this.medidas = []
 
       if (this.form.productId) {
@@ -659,6 +665,7 @@ export default {
         if (!this.cidades.find((c) => c.nome === this.form.city)) {
           this.form.city = ''
           this.form.region = ''
+          this.form.regionId = null
         }
       }
       
@@ -682,11 +689,18 @@ export default {
         )
         if (regiao && regiao.length > 0) {
           this.form.region = regiao[0].regiaoCastanheira
+          if (this.form.uf && this.form.city) {
+            this.findRegionId(this.form.region, this.form.uf, this.form.city)
+          } else {
+            this.form.regionId = null
+          }
         } else {
           this.form.region = ''
+          this.form.regionId = null
         }
       } else {
         this.form.region = ''
+        this.form.regionId = null
       }
     },
 
@@ -730,10 +744,14 @@ export default {
         if (response.region) {
           // Região encontrada automaticamente
           this.form.region = response.region
+          if (response.regionData) {
+            this.form.regionId = response.regionData._id
+          }
         } else {
           // Nenhuma região encontrada
           this.notify(response.message || 'Nenhuma região encontrada para sua localização com este produto.', 'warning')
           this.form.region = ''
+          this.form.regionId = null
         }
       } catch (error) {
         console.error('Erro ao carregar região por produto e localização:', error)
@@ -743,6 +761,36 @@ export default {
           this.notify('Erro ao carregar região para o produto selecionado.', 'error')
         }
         this.form.region = ''
+        this.form.regionId = null
+      }
+    },
+
+    async findRegionId(regionName, uf, city) {
+      try {
+        const response = await this.$axios.$get('regions', {
+          params: {
+            name: regionName
+          }
+        })
+        
+        if (response && response.length > 0) {
+          const matchingRegion = response.find(region => 
+            region.municipalities && region.municipalities.some(municipality => 
+              municipality.name === city && municipality.uf === uf
+            )
+          )
+          
+          if (matchingRegion) {
+            this.form.regionId = matchingRegion._id
+          } else {
+            this.form.regionId = response[0]._id
+          }
+        } else {
+          this.form.regionId = null
+        }
+      } catch (error) {
+        console.warn('Erro ao buscar regionId:', error)
+        this.form.regionId = null
       }
     },
   },

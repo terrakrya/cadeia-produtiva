@@ -197,6 +197,7 @@ export default {
         uf: null,
         city: '',
         region: '',
+        regionId: null,
         role: null,
         organization: '',
         birthDate: '',
@@ -255,6 +256,7 @@ export default {
         this.form = {
           ...this.form,
           ...existingData,
+          regionId: existingData.regionId,
           password: '',
           password_confirmation: '',
           cellphone: this.formatPhoneNumber(existingData.cellphone)
@@ -409,6 +411,40 @@ export default {
       ]
 
       this.form.region = regionName
+      
+      if (regionName && this.form.uf && this.form.city) {
+        this.findRegionId(regionName, this.form.uf, this.form.city)
+      } else {
+        this.form.regionId = null
+      }
+    },
+    async findRegionId(regionName, uf, city) {
+      try {
+        const response = await this.$axios.$get('regions', {
+          params: {
+            name: regionName
+          }
+        })
+        
+        if (response && response.length > 0) {
+          const matchingRegion = response.find(region => 
+            region.municipalities && region.municipalities.some(municipality => 
+              municipality.name === city && municipality.uf === uf
+            )
+          )
+          
+          if (matchingRegion) {
+            this.form.regionId = matchingRegion._id
+          } else {
+            this.form.regionId = response[0]._id
+          }
+        } else {
+          this.form.regionId = null
+        }
+      } catch (error) {
+        console.warn('Erro ao buscar regionId:', error)
+        this.form.regionId = null
+      }
     },
     changePassword() {
       this.show_password = !this.show_password

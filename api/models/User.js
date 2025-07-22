@@ -28,6 +28,11 @@ const UserSchema = new mongoose.Schema(
     gender: String,
     identity: String,
     region: String,
+    regionId: {
+      type: ObjectId,
+      ref: 'Region',
+      default: null,
+    },
     username: {
       type: String,
       unique: true,
@@ -107,6 +112,7 @@ UserSchema.methods.data = function () {
     gender: this.gender,
     identity: this.identity,
     region: this.region,
+    regionId: this.regionId,
   }
 }
 

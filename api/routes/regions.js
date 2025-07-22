@@ -27,7 +27,7 @@ router.get('/', auth.globalManager, async (req, res) => {
 })
 
 // Obter uma região por ID
-router.get('/:id', auth.globalManager, async (req, res) => {
+router.get('/:id', auth.authenticated, async (req, res) => {
   try {
     const region = await Region.findById(req.params.id).populate(populate(req))
     if (!region) {

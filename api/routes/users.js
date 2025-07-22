@@ -127,6 +127,7 @@ router.post('/', auth.manager, async (req, res) => {
     user.birthDate = req.body.birthDate
     user.gender = req.body.gender
     user.region = req.body.region
+    user.regionId = req.body.regionId
 
     if (userRole === 'gestor') {
       user.role = 'mensageiro'
@@ -164,7 +165,7 @@ router.put('/:id', auth.authenticated, async (req, res) => {
     const updatableFields = [
       'username', 'email', 'name', 'role', 'cellphone', 'cpf',
       'unitOfMeasurement', 'measurementId', 'productId', 'buyerPosition', 'nickname', 'organization',
-      'uf', 'city', 'birthDate', 'gender', 'identity', 'region'
+      'uf', 'city', 'birthDate', 'gender', 'identity', 'region', 'regionId'
     ];
 
     updatableFields.forEach(field => {
@@ -229,6 +230,7 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
       user.gender = req.body.gender
       user.identity = req.body.identity
       user.region = req.body.region || user.region
+      user.regionId = req.body.regionId || user.regionId
     }
 
     await user.save()
