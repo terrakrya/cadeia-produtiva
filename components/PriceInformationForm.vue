@@ -342,6 +342,7 @@ export default {
         square: '',
         squareid: '',
         region: '',
+        regionId: '',
       },
       organizationsOptions: [],
       products: [],
@@ -658,6 +659,8 @@ export default {
         this.form.uf = this.$auth.user.uf
         this.form.city = this.$auth.user.city
         this.form.buyerPositionSeller = this.$auth.user.buyerPosition
+        this.form.region = this.$auth.user.region
+        this.form.regionId = this.$auth.user.regionId
         
         if (this.$auth.user.productId) {
           this.form.product = this.$auth.user.productId
@@ -685,6 +688,8 @@ export default {
             this.form.uf = userData.uf
             this.form.city = userData.city
             this.form.buyerPositionSeller = userData.buyerPosition
+            this.form.region = userData.region
+            this.form.regionId = userData.regionId
             
             if (userData.productId) {
               this.form.product = userData.productId
@@ -885,6 +890,7 @@ export default {
         this.form.buyerPositionSeller = dados.buyerPositionSeller
         this.form.originalPrice = dados.originalPrice || 0
         this.form.region = dados.region
+        this.form.regionId = dados.regionId
         
         const date = this.$moment(dados.createdAt)
         this.form.day = date.format('DD')

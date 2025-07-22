@@ -241,21 +241,16 @@ export default {
 
         if (isValid) {
           this.is_sending = true
-          const method = this.isEditing() ? 'PUT' : 'POST'
-          const url = this.isEditing()
-            ? `ecological-data/${this.$route.params.id}`
-            : 'ecological-data'
-          
-          const ecologicalData = { ...this.form }
+          const payload = {
+            ...this.form,
+            region: this.$auth.user.region,
+            regionId: this.$auth.user.regionId,
+          }
           
           if (navigator.onLine) {
             // Online: send data to server
             try {
-              await this.$axios({
-                method,
-                url,
-                data: ecologicalData,
-              })
+              await this.$axios.post('ecological-data', payload)
               this.notify('Dados ecológicos salvos com sucesso')
               await this.$router.replace('/painel')
               this.is_sending = false

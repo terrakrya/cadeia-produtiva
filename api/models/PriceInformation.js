@@ -101,6 +101,11 @@ const PriceSchema = new mongoose.Schema(
       ref: 'Organization',
     },
     region: String,
+    regionId: {
+      type: ObjectId,
+      ref: 'Region',
+      default: null,
+    },
   },
   {
     timestamps: true,
@@ -172,6 +177,7 @@ PriceSchema.methods.data = function () {
     originalPrice: this.originalPrice,
     totalTransactionValue: this.totalTransactionValue,
     region: this.region,
+    regionId: this.regionId,
   }
 }
 

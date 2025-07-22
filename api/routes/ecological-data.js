@@ -43,17 +43,14 @@ router.post('/', auth.authenticated, async (req, res) => {
       harvestEndYear,
       harvestStartMonth,
       harvestEndMonth,
+      region,
+      regionId,
     } = req.body
 
-    // Obtém o usuário autenticado
-    const user = await User.findById(req.user.id)
-    if (!user) {
-      return res.status(400).json({ error: 'Usuário não encontrado.' })
-    }
     const ecologicalData = new EcologicalData({
       userId: req.user.id,
-      region: user.region,
-      regionId: user.regionId,
+      region,
+      regionId,
       peakBloomMonth,
       rainySeasonStartMonth,
       nextHarvestExpectation,
