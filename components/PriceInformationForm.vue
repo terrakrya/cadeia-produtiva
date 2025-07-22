@@ -36,7 +36,7 @@
               </b-form-group>
             </div>
           </div>
-
+          
           <div class="row">
             <div class="col-sm-4">
               <b-form-group label="Produto">
@@ -56,7 +56,7 @@
               </b-form-group>
             </div>
           </div>
-
+          
           <div class="row">
             <div class="col-md-4 title-buttons-form">
               <b-form-group label="Selecione a classificação de preço">
@@ -348,9 +348,6 @@ export default {
       messengers: [],
       creating: true,
       isOnline: navigator.onLine,
-      organizationsCache: null,
-      messengersCache: null,
-      lastOrganizationId: null,
       meses: [
         { value: '01', text: 'Janeiro' },
         { value: '02', text: 'Fevereiro' },
@@ -385,27 +382,25 @@ export default {
         text: i + 1,
       }))
     },
-
+    
     produtosOptions() {
       const produtosArray = Array.isArray(this.produtos) ? this.produtos : []
-
+      
       return [
         { value: '', text: 'Selecione um produto...' },
-        ...produtosArray.map((produto) => ({
+        ...produtosArray.map(produto => ({
           value: produto._id,
-          text: produto.name,
-        })),
+          text: produto.name
+        }))
       ]
     },
-
+    
     medidasOptions() {
       const placeholder = {
         value: '',
         text: this.loadingMedidas
           ? 'Carregando medidas...'
-          : this.form.product
-          ? 'Selecione uma medida'
-          : 'Selecione um produto primeiro',
+          : this.form.product ? 'Selecione uma medida' : 'Selecione um produto primeiro',
         disabled: true,
       }
       return [placeholder, ...this.medidas]
@@ -421,7 +416,6 @@ export default {
       return estados.map((e) => ({ value: e.uf, text: e.uf }))
     },
   },
-
   async created() {
     const now = this.$moment().tz('America/Sao_Paulo')
     this.form.day = now.format('DD')
@@ -432,12 +426,24 @@ export default {
       await this.edit(this.$route.params.id)
     }
 
-    await this.loadInitialData()
+    await this.setMessenger()
+
+    await this.preSetDados()
+
+    if (!this.isMessenger) {
+      await this.listOrganizations()
+    }
+
+    await this.loadOrganization()
+    
+    await this.loadProdutos()
 
     this.creating = false
-    this.loadPracas()
-    this.estados.sort((x, y) => x.uf.localeCompare(y.uf))
 
+    this.loadPracas()
+    this.estados.sort(function (x, y) {
+      return x.uf.localeCompare(y.uf)
+    })
     this.form.transaction = this.form.transactedQuantity
       ? 'preço da venda'
       : 'oferta de preços'
@@ -445,238 +451,13 @@ export default {
     window.addEventListener('online', this.syncData)
     window.addEventListener('offline', this.updateOnlineStatus)
   },
-
   beforeDestroy() {
     window.removeEventListener('online', this.syncData)
     window.removeEventListener('offline', this.updateOnlineStatus)
   },
-
   methods: {
     updateOnlineStatus() {
       this.isOnline = navigator.onLine
-    },
-
-    async loadInitialData() {
-      this.setMessenger()
-
-      const preSetPromise = this.preSetDados()
-
-      const dataPromises = []
-      if (!this.isMessenger) {
-        dataPromises.push(this.loadOrganizations())
-      }
-      dataPromises.push(this.loadMessengers())
-
-      await preSetPromise
-      await Promise.all(dataPromises)
-      await this.loadProdutos()
-    },
-
-    async loadOrganizations() {
-      if (this.isMessenger) return
-
-      try {
-        if (this.organizationsCache) {
-          this.organizationsOptions = this.organizationsCache
-          return
-        }
-
-        const cachedOrgs = await this.$getCachedData(
-          'reference',
-          'organizations'
-        )
-        if (cachedOrgs && navigator.onLine) {
-          this.organizationsOptions = this.formatOrganizations(cachedOrgs)
-          this.organizationsCache = this.organizationsOptions
-        }
-
-        if (navigator.onLine) {
-          const orgs = await this.$axios.$get('organizations')
-          this.organizationsOptions = this.formatOrganizations(orgs)
-          this.organizationsCache = this.organizationsOptions
-          await this.$getCachedData('reference', 'organizations', orgs)
-        }
-      } catch (error) {
-        console.error('Erro ao carregar organizações:', error)
-        await this.handleOrganizationsError()
-      }
-    },
-
-    async loadMessengers() {
-      try {
-        const organizationId = this.getSelectedOrganizationId()
-        const filters = this.buildMessengerFilters(organizationId)
-
-        const cacheKey = `messengers_${organizationId || 'all'}`
-        if (
-          this.messengersCache &&
-          this.lastOrganizationId === organizationId
-        ) {
-          this.messengers = this.messengersCache
-          return
-        }
-
-        if (navigator.onLine) {
-          const cachedMessengers = await this.$getCachedData(
-            'reference',
-            cacheKey
-          )
-          if (cachedMessengers) {
-            this.messengers = cachedMessengers
-            this.messengersCache = cachedMessengers
-          }
-
-          const messengers = await this.$axios.$get('users', {
-            params: { filters },
-          })
-          this.messengers = messengers
-          this.messengersCache = messengers
-          this.lastOrganizationId = organizationId
-
-          await this.$getCachedData('reference', cacheKey, messengers)
-        } else {
-          const cachedMessengers = await this.$getCachedData(
-            'reference',
-            cacheKey
-          )
-          if (cachedMessengers) {
-            this.messengers = cachedMessengers
-            this.messengersCache = cachedMessengers
-          }
-        }
-      } catch (error) {
-        console.error('Erro ao carregar mensageiros:', error)
-      }
-    },
-
-    formatOrganizations(orgs) {
-      return orgs.map((org) => ({
-        value: org._id,
-        text: org.name,
-      }))
-    },
-
-    getSelectedOrganizationId() {
-      if (this.isManager || this.isMessenger) {
-        return this.currentUser.organization
-      }
-      return this.form.organization
-    },
-
-    buildMessengerFilters(organizationId) {
-      const filters = { role: 'mensageiro' }
-
-      if (this.isMessenger) {
-        filters.id = this.currentUser._id
-      } else if (organizationId) {
-        filters.organization = organizationId
-      }
-
-      return filters
-    },
-
-    async handleOrganizationsError() {
-      const cachedOrgs = await this.$getCachedData('reference', 'organizations')
-      if (cachedOrgs) {
-        this.organizationsOptions = this.formatOrganizations(cachedOrgs)
-        this.organizationsCache = this.organizationsOptions
-      }
-    },
-
-    async onOrganizationChange() {
-      this.clearProductRelatedData()
-
-      const promises = [this.loadProdutos(), this.loadMessengers()]
-
-      await Promise.all(promises)
-    },
-
-    async onProductChange() {
-      this.clearMeasureRelatedData()
-
-      if (this.form.product) {
-        const promises = [
-          this.loadMedidasPorProduto(this.form.product),
-          this.loadRegionByProductAndLocation(this.form.product),
-        ]
-
-        await Promise.all(promises)
-      }
-    },
-
-    clearProductRelatedData() {
-      this.form.product = ''
-      this.form.measure = ''
-      this.form.measurementId = null
-      this.form.region = ''
-      this.medidas = []
-      this.produtos = []
-    },
-
-    clearMeasureRelatedData() {
-      this.form.measure = ''
-      this.form.measurementId = null
-      this.form.region = ''
-      this.medidas = []
-      this.selectedMeasurement = null
-    },
-
-    async loadMessenger() {
-      if (!this.form.messenger || this.creating) return
-
-      const selectedMessenger = this.findMessengerInLoadedData(
-        this.form.messenger
-      )
-
-      if (selectedMessenger) {
-        await this.applyMessengerDataToForm(selectedMessenger)
-      } else {
-        console.warn(
-          'Mensageiro não encontrado nos dados carregados, buscando na API...'
-        )
-        await this.loadMessengerFromApi(this.form.messenger)
-      }
-    },
-
-    findMessengerInLoadedData(messengerId) {
-      return this.messengers?.find((messenger) => messenger._id === messengerId)
-    },
-
-    async applyMessengerDataToForm(messenger) {
-      this.form.currency = messenger.currency
-      this.form.country = messenger.country
-      this.form.measure = messenger.unitOfMeasurement
-      this.form.measurementId = messenger.measurementId
-      this.form.uf = messenger.uf
-      this.form.city = messenger.city
-      this.form.buyerPositionSeller = messenger.buyerPosition
-
-      if (messenger.productId) {
-        this.form.product = messenger.productId
-
-        const promises = [
-          this.loadMedidasPorProduto(messenger.productId),
-          this.loadRegionByProductAndLocation(messenger.productId),
-        ]
-
-        await Promise.all(promises)
-
-        if (messenger.unitOfMeasurement) {
-          this.form.measure = messenger.unitOfMeasurement
-          this.onMeasureChange()
-        }
-      } else if (this.form.product) {
-        await this.loadRegionByProductAndLocation(this.form.product)
-      }
-    },
-
-    async loadMessengerFromApi(messengerId) {
-      try {
-        const messenger = await this.$axios.$get(`users/${messengerId}`)
-        await this.applyMessengerDataToForm(messenger)
-      } catch (error) {
-        console.error('Erro ao carregar dados do mensageiro:', error)
-      }
     },
 
     async loadProdutos() {
@@ -689,12 +470,12 @@ export default {
         } else {
           organizationId = this.form.organization
         }
-
+        
         if (organizationId) {
           const produtos = await this.$axios.$get(
             `products/organization/${organizationId}`
           )
-
+          
           this.produtos = Array.isArray(produtos) ? produtos : []
         } else {
           this.produtos = []
@@ -708,19 +489,20 @@ export default {
     },
 
     async onOrganizationChange() {
+      // Limpar produto, medidas e região
       this.form.product = ''
       this.form.measure = ''
       this.form.measurementId = null
       this.form.region = ''
       this.medidas = []
       this.produtos = []
-
-      const promises = [this.loadProdutos(), this.loadMessengersOptimized()]
-
-      await Promise.all(promises)
+      
+      // Recarregar produtos da nova organização
+      await this.loadProdutos()
     },
 
     async onProductChange() {
+      // Limpar medida e região quando produto muda
       this.form.measure = ''
       this.form.measurementId = null
       this.form.region = ''
@@ -728,17 +510,17 @@ export default {
       this.selectedMeasurement = null
 
       if (this.form.product) {
-        const promises = [
-          this.loadMedidasPorProduto(this.form.product),
-          this.loadRegionByProductAndLocation(this.form.product),
-        ]
-
-        await Promise.all(promises)
+        // Carregar medidas do produto
+        await this.loadMedidasPorProduto(this.form.product)
+        
+        // Carregar região baseada no produto + localização
+        await this.loadRegionByProductAndLocation(this.form.product)
       }
     },
 
     async loadRegionByProductAndLocation(productId) {
       try {
+
         if (!this.form.uf || !this.form.city) {
           this.form.region = ''
           return
@@ -749,30 +531,30 @@ export default {
           {
             params: {
               uf: this.form.uf,
-              city: this.form.city,
-            },
+              city: this.form.city
+            }
           }
         )
-
+        
         if (response.region) {
           this.form.region = response.region
-        }
+        } 
       } catch (error) {
-        console.error(
-          'Erro ao carregar região por produto e localização:',
-          error
-        )
+        console.error('Erro ao carregar região por produto e localização:', error)
       }
     },
 
     onUfChange() {
       this.form.region = ''
+      
       this.loadCities()
     },
-
+ 
     onCityChange() {
+      // Limpar região
       this.form.region = ''
-
+      
+      // Recarregar região se temos produto
       if (this.form.product && this.form.city && this.form.uf) {
         this.loadRegionByProductAndLocation(this.form.product)
       }
@@ -832,6 +614,33 @@ export default {
       }
     },
 
+    async listOrganizations() {
+      if (this.isMessenger) {
+        return
+      }
+
+      try {
+        const orgs = await this.$axios.$get('organizations')
+        this.organizationsOptions = orgs.map((org) => ({
+          value: org._id,
+          text: org.name,
+        }))
+      } catch (error) {
+        console.error('Erro ao carregar organizações:', error)
+
+        const cachedOrgs = await this.$getCachedData(
+          'reference',
+          'organizations'
+        )
+        if (cachedOrgs) {
+          this.organizationsOptions = cachedOrgs.map((org) => ({
+            value: org._id,
+            text: org.name,
+          }))
+        }
+      }
+    },
+
     setMessenger() {
       if (this.isAdmin || this.isGlobalManager || this.isManager) {
         this.form.messenger = this.currentUser._id
@@ -849,23 +658,24 @@ export default {
         this.form.uf = this.$auth.user.uf
         this.form.city = this.$auth.user.city
         this.form.buyerPositionSeller = this.$auth.user.buyerPosition
-
+        
         if (this.$auth.user.productId) {
           this.form.product = this.$auth.user.productId
-
-          const promises = [
-            this.loadMedidasPorProduto(this.$auth.user.productId),
-            this.loadRegionByProductAndLocation(this.$auth.user.productId),
-          ]
-
-          await Promise.all(promises)
-
+          // Carregar medidas do produto do usuário
+          await this.loadMedidasPorProduto(this.$auth.user.productId)
+          
+          // NOVO: carregar região baseada no produto + localização do usuário
+          await this.loadRegionByProductAndLocation(this.$auth.user.productId)
+          
+          // Definir medida padrão se usuário tiver uma definida
           if (this.$auth.user.unitOfMeasurement) {
             this.form.measure = this.$auth.user.unitOfMeasurement
             this.onMeasureChange()
           }
         }
       } else {
+        // Fallback para dados em cache
+        
         this.$getCachedData('user', 'currentUser').then(async (userData) => {
           if (userData) {
             this.form.currency = userData.currency
@@ -875,17 +685,14 @@ export default {
             this.form.uf = userData.uf
             this.form.city = userData.city
             this.form.buyerPositionSeller = userData.buyerPosition
-
+            
             if (userData.productId) {
               this.form.product = userData.productId
-
-              const promises = [
-                this.loadMedidasPorProduto(userData.productId),
-                this.loadRegionByProductAndLocation(userData.productId),
-              ]
-
-              await Promise.all(promises)
-
+              await this.loadMedidasPorProduto(userData.productId)
+              
+              // NOVO: carregar região baseada no produto + localização do usuário
+              await this.loadRegionByProductAndLocation(userData.productId)
+              
               if (userData.unitOfMeasurement) {
                 this.form.measure = userData.unitOfMeasurement
                 this.onMeasureChange()
@@ -896,49 +703,91 @@ export default {
       }
     },
 
-    async loadMessenger() {
-      if (this.form.messenger && !this.creating && this.messengers) {
-        const selectedMessenger = this.messengers.find(
-          (messenger) => messenger._id === this.form.messenger
-        )
+    async loadOrganization() {
+      try {
+        let organizationId = null
 
-        if (selectedMessenger) {
-          this.form.currency = selectedMessenger.currency
-          this.form.country = selectedMessenger.country
-          this.form.measure = selectedMessenger.unitOfMeasurement
-          this.form.measurementId = selectedMessenger.measurementId
-          this.form.uf = selectedMessenger.uf
-          this.form.city = selectedMessenger.city
-          this.form.buyerPositionSeller = selectedMessenger.buyerPosition
+        if (this.isManager || this.isMessenger) {
+          organizationId = this.currentUser.organization
+        } else {
+          organizationId = this.form.organization
+        }
 
-          if (selectedMessenger.productId) {
-            this.form.product = selectedMessenger.productId
+        const filters = { role: 'mensageiro' }
 
-            const promises = [
-              this.loadMedidasPorProduto(selectedMessenger.productId),
-              this.loadRegionByProductAndLocation(selectedMessenger.productId),
-            ]
+        if (this.isMessenger) {
+          filters.id = this.currentUser._id
+        } else if (organizationId) {
+          filters.organization = organizationId
+        }
 
-            await Promise.all(promises)
+        if (navigator.onLine) {
+          if (!this.isMessenger) {
+            const organizationsData = await this.$axios.$get('organizations')
+            this.organizationsOptions = [
+              { value: '', text: 'Selecione uma organização' },
+            ].concat(
+              organizationsData.map((organization) => ({
+                value: organization._id,
+                text: organization.name,
+              }))
+            )
+          }
 
-            if (selectedMessenger.unitOfMeasurement) {
-              this.form.measure = selectedMessenger.unitOfMeasurement
-              this.onMeasureChange()
-            }
-          } else if (this.form.product) {
-            await this.loadRegionByProductAndLocation(this.form.product)
+          this.messengers = await this.$axios.$get('users', {
+            params: { filters },
+          })
+
+          if (this.messengers) {
+            await this.$getCachedData(
+              'reference',
+              'currentMessengers',
+              this.messengers
+            )
           }
         } else {
-          console.warn(
-            'Mensageiro não encontrado nos dados carregados, buscando na API...'
+          // Fallback offline
+          const cachedMessengers = await this.$getCachedData(
+            'reference',
+            'currentMessengers'
           )
-          try {
-            const selectedMessenger = await this.$axios.$get(
-              'users/' + this.form.messenger
-            )
-          } catch (error) {
-            console.error('Erro ao carregar dados do mensageiro:', error)
+          if (cachedMessengers) {
+            this.messengers = cachedMessengers
           }
+        }
+      } catch (error) {
+        console.error('Erro ao carregar organização:', error)
+      }
+    },
+
+    async loadMessenger() {
+      if (this.form.messenger && !this.creating) {
+        const selectedMessenger = await this.$axios.$get(
+          'users/' + this.form.messenger
+        )
+        this.form.currency = selectedMessenger.currency
+        this.form.country = selectedMessenger.country
+        this.form.measure = selectedMessenger.unitOfMeasurement
+        this.form.measurementId = selectedMessenger.measurementId
+        this.form.uf = selectedMessenger.uf
+        this.form.city = selectedMessenger.city
+        this.form.buyerPositionSeller = selectedMessenger.buyerPosition
+        
+        if (selectedMessenger.productId) {
+          this.form.product = selectedMessenger.productId
+          await this.loadMedidasPorProduto(selectedMessenger.productId)
+          
+          // NOVO: carregar região baseada no produto + localização do mensageiro
+          await this.loadRegionByProductAndLocation(selectedMessenger.productId)
+          
+          if (selectedMessenger.unitOfMeasurement) {
+            this.form.measure = selectedMessenger.unitOfMeasurement
+            this.onMeasureChange()
+          }
+        } else if (this.form.product) {
+          // Se mensageiro não tem produto mas já temos um produto selecionado,
+          // recarregar região com nova localização
+          await this.loadRegionByProductAndLocation(this.form.product)
         }
       }
     },
@@ -948,9 +797,9 @@ export default {
 
       if (this.form.uf) {
         const cidadesDoEstado = Object(cidades)[this.form.uf] || []
-        const cidadesFormatadas = cidadesDoEstado.map((cidade) => ({
+        const cidadesFormatadas = cidadesDoEstado.map(cidade => ({
           value: cidade,
-          text: cidade,
+          text: cidade
         }))
         this.cidades = this.cidades.concat(cidadesFormatadas)
       }
@@ -982,7 +831,7 @@ export default {
 
         if (this.form.product && this.form.city && this.form.uf) {
           await this.loadRegionByProductAndLocation(this.form.product)
-        }
+        } 
       } catch (error) {
         console.error('Erro ao carregar praças:', error)
       }
@@ -1007,9 +856,7 @@ export default {
         return this.selectedMeasurement.referenceInKg
       }
 
-      throw new Error(
-        `Unidade de medida '${measure}' não possui referência configurada`
-      )
+      throw new Error(`Unidade de medida '${measure}' não possui referência configurada`)
     },
 
     async edit(id) {
@@ -1038,7 +885,7 @@ export default {
         this.form.buyerPositionSeller = dados.buyerPositionSeller
         this.form.originalPrice = dados.originalPrice || 0
         this.form.region = dados.region
-
+        
         const date = this.$moment(dados.createdAt)
         this.form.day = date.format('DD')
         this.form.month = date.format('MM')
@@ -1078,6 +925,7 @@ export default {
         isValid = false
       }
 
+      // Validação measurementId
       if (!this.form.measurementId) {
         this.veeErrors.items.push({
           id: 107,
@@ -1239,13 +1087,11 @@ export default {
             this.is_sending = false
           }
         } else {
-          const pendingPrices =
-            (await localforage.getItem('pendingPrices')) || []
+          // Salvar offline
+          const pendingPrices = (await localforage.getItem('pendingPrices')) || []
           pendingPrices.push(priceData)
           await localforage.setItem('pendingPrices', pendingPrices)
-          this.notify(
-            'Preço salvo localmente. Será sincronizado quando voltar online.'
-          )
+          this.notify('Preço salvo localmente. Será sincronizado quando voltar online.')
           this.is_sending = false
           setTimeout(() => {
             try {
