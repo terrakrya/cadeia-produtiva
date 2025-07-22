@@ -50,10 +50,10 @@ router.post('/', auth.authenticated, async (req, res) => {
     if (!user) {
       return res.status(400).json({ error: 'Usuário não encontrado.' })
     }
-    // Cria o registro de dados ecológicos com a região do usuário autenticado
     const ecologicalData = new EcologicalData({
       userId: req.user.id,
       region: user.region,
+      regionId: user.regionId,
       peakBloomMonth,
       rainySeasonStartMonth,
       nextHarvestExpectation,

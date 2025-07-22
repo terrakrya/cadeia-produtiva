@@ -15,6 +15,11 @@ const EcologicalDataSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    regionId: {
+      type: ObjectId,
+      ref: 'Region',
+      default: null,
+    },
     peakBloomMonth: {
       type: Number,
       required: true,
@@ -54,6 +59,7 @@ EcologicalDataSchema.methods.data = function () {
     id: this.id,
     userId: this.userId,
     region: this.region,
+    regionId: this.regionId,
     peakBloomMonth: this.peakBloomMonth,
     rainySeasonStartMonth: this.rainySeasonStartMonth,
     nextHarvestExpectation: this.nextHarvestExpectation,
