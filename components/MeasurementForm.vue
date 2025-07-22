@@ -131,6 +131,9 @@ export default {
           this.measurements = await this.$axios.$get(
             `measurements/species/${this.specieId}`
           )
+          this.measurements = this.measurements.sort(
+            (a, b) => a.referenceInKg - b.referenceInKg
+          )
           this.$emit('measurements-updated', this.measurements)
         }
       } catch (error) {

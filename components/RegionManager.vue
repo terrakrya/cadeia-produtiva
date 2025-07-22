@@ -186,7 +186,7 @@ export default {
         { key: 'municipalities.length', label: 'Nº de Municípios' },
         { key: 'actions', label: 'Ações' },
       ],
-      ufs, // Carregado do JSON
+      ufs,
       municipalitiesByUf: {},
     }
   },
@@ -199,6 +199,20 @@ export default {
     await this.fetchRegions()
   },
   methods: {
+    capitalizeRegionName(name) {
+      if (!name) return name
+
+      return name
+        .toLowerCase()
+        .split(' ')
+        .map((word) => {
+          if (word.length > 2) {
+            return word.charAt(0).toUpperCase() + word.slice(1)
+          }
+          return word
+        })
+        .join(' ')
+    },
     getInitialForm() {
       return {
         _id: null,
@@ -233,7 +247,9 @@ export default {
         const response = await this.$axios.get(
           `/regions?specie=${this.specieId}`
         )
-        this.regions = response.data
+        this.regions = response.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        )
       } catch (error) {
         console.error('Error fetching regions:', error)
       } finally {
@@ -305,11 +321,15 @@ export default {
       }
 
       this.isSaving = true
+
+      const formData = { ...this.form }
+      formData.name = this.capitalizeRegionName(formData.name)
+
       const method = this.isEditing ? 'put' : 'post'
       const url = this.isEditing ? `/regions/${this.form._id}` : '/regions'
 
       try {
-        await this.$axios({ method, url, data: this.form })
+        await this.$axios({ method, url, data: formData })
         this.notify(
           `Região ${this.isEditing ? 'atualizada' : 'salva'} com sucesso!`
         )
