@@ -48,7 +48,7 @@ import { isGlobalManager } from '~/api/config/auth';
             Histórico de Preços Informados
           </b-nav-item>
         </b-nav>
-        <b-nav v-if="!isGlobalManager">
+        <b-nav>
           <b-nav-item class="text-white" to="/operacional/dados-ecologicos">
             Dados Ecológicos Informados
           </b-nav-item>

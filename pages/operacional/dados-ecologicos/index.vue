@@ -36,6 +36,15 @@
             stacked="md"
           >
             <template #cell(region)="data">{{ data.item.region }} </template>
+            <template #cell(userId.name)="data">
+              {{ data.item.userId ? data.item.userId.name : 'N/A' }}
+            </template>
+            <template #cell(organization)="data">
+              <span v-if="data.item.userId && data.item.userId.organization">
+                {{ data.item.userId.organization.sigla }}
+              </span>
+              <span v-else>N/A</span>
+            </template>
             <template #cell(harvestStartYear)="data">
               {{
                 getMonthAndYear(
@@ -94,12 +103,53 @@ export default {
       searchInput: '',
       debouncedSearch: '',
       debounceTimer: null,
-      table_fields: [
+      table_fields: [],
+      ecologicalData: [],
+    }
+  },
+
+  watch: {
+    searchInput(newVal) {
+      clearTimeout(this.debounceTimer)
+
+      this.debounceTimer = setTimeout(() => {
+        this.debouncedSearch = newVal
+      }, 300)
+    },
+  },
+
+  async created() {
+    this.fillTableFields()
+    await this.list()
+  },
+
+  methods: {
+    fillTableFields() {
+      const tableFields = [
         {
           key: 'region',
           label: 'Região',
           sortable: true,
         },
+      ]
+
+      if (this.isAdmin || this.isManager || this.isGlobalManager) {
+        tableFields.push({
+          key: 'userId.name',
+          label: 'Usuário',
+          sortable: true,
+        })
+      }
+
+      if (this.isAdmin || this.isGlobalManager) {
+        tableFields.push({
+          key: 'organization',
+          label: 'Organização',
+          sortable: true,
+        })
+      }
+
+      tableFields.push(
         {
           key: 'harvestStartYear',
           label: 'Início da Safra',
@@ -129,37 +179,20 @@ export default {
           key: 'actions',
           label: 'Ação',
           class: 'actions',
-        },
-      ],
-      ecologicalData: [],
-    }
-  },
+        }
+      )
 
-  watch: {
-    searchInput(newVal) {
-      clearTimeout(this.debounceTimer)
-      
-      this.debounceTimer = setTimeout(() => {
-        this.debouncedSearch = newVal
-      }, 300)
-    }
-  },
+      this.table_fields = tableFields
+    },
 
-  async created() {
-    await this.list()
-  },
-  
-  methods: {
     async list() {
       try {
-        const userId = this.currentUser.id
-        this.ecologicalData = await this.$axios.$get(
-          `/ecological-data/user/${userId}`
-        )
+        this.ecologicalData = await this.$axios.$get('ecological-data')
       } catch (error) {
         console.error('Erro ao buscar os dados ecológicos:', error)
       }
     },
+
     remove(id) {
       this.$bvModal
         .msgBoxConfirm('Tem certeza que deseja excluír?')
@@ -189,9 +222,9 @@ export default {
       console.error('Erro ao carregar/excluir os dados ecológicos:', error)
     },
   },
-  
+
   beforeDestroy() {
     clearTimeout(this.debounceTimer)
-  }
+  },
 }
 </script>
