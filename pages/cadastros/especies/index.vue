@@ -14,9 +14,9 @@
           </div>
         </div>
         <div class="info-content">
-          <div class="text-right">
+          <div class="text-right input-group">
             <input
-              v-model="filters.search"
+              v-model="searchInput"
               type="search"
               :placeholder="'Buscar'"
               class="form-control search-input"
@@ -28,8 +28,8 @@
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
             :items="species"
-            :sort-by="'code'"
-            :filter="filters.search"
+            :sort-by="'popularName'"
+            :filter="debouncedSearch"
           >
             <template #cell(popularName)="data">
               {{ data.item.popularName }}
@@ -63,7 +63,10 @@ export default {
   },
   data() {
     return {
-      filters: { search: null },
+      searchInput: '',
+      debouncedSearch: '',
+      isFiltering: false,
+      debounceTimer: null,
       table_fields: [
         {
           key: 'popularName',
@@ -85,9 +88,22 @@ export default {
     }
   },
 
+  watch: {
+    searchInput(newVal) {
+      this.isFiltering = true
+      clearTimeout(this.debounceTimer)
+
+      this.debounceTimer = setTimeout(() => {
+        this.debouncedSearch = newVal
+        this.isFiltering = false
+      }, 300)
+    },
+  },
+
   async created() {
     await this.list()
   },
+
   methods: {
     async list() {
       this.species = await this.$axios.$get('species')
@@ -107,6 +123,10 @@ export default {
           }
         })
     },
+  },
+
+  beforeDestroy() {
+    clearTimeout(this.debounceTimer)
   },
 }
 </script>
