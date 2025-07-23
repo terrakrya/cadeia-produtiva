@@ -19,7 +19,7 @@
         <div class="info-content">
           <div class="text-right">
             <input
-              v-model="filters.search"
+              v-model="searchInput"
               type="search"
               :placeholder="'Buscar'"
               class="form-control search-input"
@@ -32,7 +32,7 @@
             :fields="table_fields"
             :items="ecologicalData"
             :sort-by="'region'"
-            :filter="filters.search"
+            :filter="debouncedSearch"
             stacked="md"
           >
             <template #cell(region)="data">{{ data.item.region }} </template>
@@ -91,7 +91,9 @@ export default {
   },
   data() {
     return {
-      filters: { search: null },
+      searchInput: '',
+      debouncedSearch: '',
+      debounceTimer: null,
       table_fields: [
         {
           key: 'region',
@@ -133,9 +135,20 @@ export default {
     }
   },
 
+  watch: {
+    searchInput(newVal) {
+      clearTimeout(this.debounceTimer)
+      
+      this.debounceTimer = setTimeout(() => {
+        this.debouncedSearch = newVal
+      }, 300)
+    }
+  },
+
   async created() {
     await this.list()
   },
+  
   methods: {
     async list() {
       try {
@@ -176,5 +189,9 @@ export default {
       console.error('Erro ao carregar/excluir os dados ecológicos:', error)
     },
   },
+  
+  beforeDestroy() {
+    clearTimeout(this.debounceTimer)
+  }
 }
 </script>

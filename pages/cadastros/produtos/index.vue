@@ -16,7 +16,7 @@
         <div class="info-content">
           <div class="text-right">
             <input
-              v-model="filters.search"
+              v-model="searchInput"
               type="search"
               :placeholder="'Buscar'"
               class="form-control search-input"
@@ -29,7 +29,7 @@
             :fields="table_fields"
             :items="products"
             :sort-by="'name'"
-            :filter="filters.search"
+            :filter="debouncedSearch"
           >
             <template #cell(name)="data">
               {{ data.item.name }}
@@ -63,7 +63,9 @@ export default {
   },
   data() {
     return {
-      filters: { search: null },
+      searchInput: '',
+      debouncedSearch: '',
+      debounceTimer: null,
       table_fields: [
         {
           key: 'name',
@@ -85,9 +87,20 @@ export default {
     }
   },
 
+  watch: {
+    searchInput(newVal) {
+      clearTimeout(this.debounceTimer)
+      
+      this.debounceTimer = setTimeout(() => {
+        this.debouncedSearch = newVal
+      }, 300)
+    }
+  },
+
   async created() {
     await this.list()
   },
+  
   methods: {
     async list() {
       this.products = await this.$axios.$get('products/cadastro-de-produtos')
@@ -108,5 +121,9 @@ export default {
         })
     },
   },
+  
+  beforeDestroy() {
+    clearTimeout(this.debounceTimer)
+  }
 }
 </script>
