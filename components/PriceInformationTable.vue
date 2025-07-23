@@ -2,9 +2,9 @@
   <div>
     <div class="text-right input-group">
       <input
-        v-model="internalFilter"
+        v-model="searchInput"
         type="search"
-        :placeholder="searchPlaceholder"
+        :placeholder="'Buscar'"
         class="form-control search-input"
         aria-label="Search Price Information"
       />
@@ -17,7 +17,7 @@
       :items="priceInformations"
       :sort-by="defaultSortBy"
       :sort-desc="defaultSortDesc"
-      :filter="internalFilter"
+      :filter="debouncedFilter"
       stacked="lg"
     >
       <template #cell(product)="data">
@@ -126,15 +126,22 @@ export default {
   },
   data() {
     return {
-      internalFilter: this.value,
+      searchInput: this.value,
+      debouncedFilter: this.value,
+      debounceTimer: null,
     }
   },
   watch: {
     value(newVal) {
-      this.internalFilter = newVal
+      this.searchInput = newVal
     },
-    internalFilter(newVal) {
-      this.$emit('input', newVal)
+    searchInput(newVal) {
+      clearTimeout(this.debounceTimer)
+
+      this.debounceTimer = setTimeout(() => {
+        this.debouncedFilter = newVal
+        this.$emit('input', newVal)
+      }, 300)
     },
   },
   methods: {
@@ -144,6 +151,9 @@ export default {
     formatDate(date) {
       return this.$moment(date).format('DD/MM/YYYY')
     },
+  },
+  beforeDestroy() {
+    clearTimeout(this.debounceTimer)
   },
 }
 </script>
