@@ -244,15 +244,13 @@ export default {
     async fetchRegions() {
       this.isLoading = true
       try {
+        const timestamp = new Date().getTime()
         const response = await this.$axios.get(
-          `/regions?specie=${this.specieId}`
+          `/regions?specie=${this.specieId}&_t=${timestamp}`
         )
         this.regions = response.data.sort((a, b) =>
           a.name.localeCompare(b.name)
         )
-        
-        // Force re-render to ensure UI updates
-        this.$forceUpdate()
       } catch (error) {
         console.error('Error fetching regions:', error)
       } finally {

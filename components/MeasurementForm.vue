@@ -128,16 +128,14 @@ export default {
     async fetchMeasurements() {
       try {
         if (this.specieId) {
+          const timestamp = new Date().getTime()
           this.measurements = await this.$axios.$get(
-            `measurements/species/${this.specieId}`
+            `measurements/species/${this.specieId}?_t=${timestamp}`
           )
           this.measurements = this.measurements.sort(
             (a, b) => a.referenceInKg - b.referenceInKg
           )
           this.$emit('measurements-updated', this.measurements)
-          
-          // Force re-render to ensure UI updates
-          this.$forceUpdate()
         }
       } catch (error) {
         console.error('Error fetching measurements:', error)
