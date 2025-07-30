@@ -106,6 +106,10 @@ export default {
     await this.list()
   },
   
+  async activated() {
+    await this.list()
+  },
+
   methods: {
     async list() {
       this.speciesProducts = await this.$axios.$get('species-products')

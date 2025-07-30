@@ -100,6 +100,10 @@ export default {
   async created() {
     await this.list()
   },
+
+  async activated() {
+    await this.list()
+  },
   
   methods: {
     async list() {
