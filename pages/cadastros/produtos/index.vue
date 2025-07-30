@@ -90,21 +90,17 @@ export default {
   watch: {
     searchInput(newVal) {
       clearTimeout(this.debounceTimer)
-      
+
       this.debounceTimer = setTimeout(() => {
         this.debouncedSearch = newVal
       }, 300)
-    }
+    },
   },
 
   async created() {
     await this.list()
   },
 
-  async activated() {
-    await this.list()
-  },
-  
   methods: {
     async list() {
       this.products = await this.$axios.$get('products/cadastro-de-produtos')
@@ -125,9 +121,9 @@ export default {
         })
     },
   },
-  
+
   beforeDestroy() {
     clearTimeout(this.debounceTimer)
-  }
+  },
 }
 </script>

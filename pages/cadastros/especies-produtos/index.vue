@@ -95,18 +95,14 @@ export default {
   watch: {
     searchInput(newVal) {
       clearTimeout(this.debounceTimer)
-      
+
       this.debounceTimer = setTimeout(() => {
         this.debouncedSearch = newVal
       }, 300)
-    }
+    },
   },
 
   async created() {
-    await this.list()
-  },
-  
-  async activated() {
     await this.list()
   },
 
@@ -130,9 +126,9 @@ export default {
         })
     },
   },
-  
+
   beforeDestroy() {
     clearTimeout(this.debounceTimer)
-  }
+  },
 }
 </script>
