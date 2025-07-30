@@ -250,6 +250,9 @@ export default {
         this.regions = response.data.sort((a, b) =>
           a.name.localeCompare(b.name)
         )
+        
+        // Force re-render to ensure UI updates
+        this.$forceUpdate()
       } catch (error) {
         console.error('Error fetching regions:', error)
       } finally {

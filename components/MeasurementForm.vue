@@ -135,6 +135,9 @@ export default {
             (a, b) => a.referenceInKg - b.referenceInKg
           )
           this.$emit('measurements-updated', this.measurements)
+          
+          // Force re-render to ensure UI updates
+          this.$forceUpdate()
         }
       } catch (error) {
         console.error('Error fetching measurements:', error)
