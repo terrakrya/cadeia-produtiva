@@ -39,9 +39,66 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   }
 })
 
+async function validateMunicipalityUniqueness(municipalities, specieId, excludeRegionId = null) {
+  if (!municipalities || municipalities.length === 0) {
+    return { isValid: true }
+  }
+
+  // Buscar todas as regiões da mesma espécie (excluindo a região atual se for uma atualização)
+  const query = { specie: specieId }
+  if (excludeRegionId) {
+    query._id = { $ne: excludeRegionId }
+  }
+
+  const existingRegions = await Region.find(query)
+
+  // Verificar se algum município já existe em outra região
+  const conflicts = []
+  
+  for (const municipality of municipalities) {
+    for (const region of existingRegions) {
+      const existingMunicipality = region.municipalities.find(
+        m => m.name.toLowerCase() === municipality.name.toLowerCase() && 
+             m.uf.toLowerCase() === municipality.uf.toLowerCase()
+      )
+      
+      if (existingMunicipality) {
+        conflicts.push({
+          municipality: `${municipality.name}/${municipality.uf}`,
+          existingRegion: region.name
+        })
+      }
+    }
+  }
+
+  if (conflicts.length > 0) {
+    const conflictMessages = conflicts.map(
+      c => `${c.municipality} já está cadastrado na região "${c.existingRegion}"`
+    )
+    return {
+      isValid: false,
+      message: `${conflictMessages.join('; ')}`
+    }
+  }
+
+  return { isValid: true }
+}
+
 // Criar uma nova região
 router.post('/', auth.globalManager, async (req, res) => {
   try {
+    // Validar se há municípios duplicados na mesma espécie
+    const validation = await validateMunicipalityUniqueness(
+      req.body.municipalities, 
+      req.body.specie
+    )
+    
+    if (!validation.isValid) {
+      return res.status(400).json({
+        error: validation.message
+      })
+    }
+
     const newRegion = new Region(req.body)
     await newRegion.save()
     res.status(201).json(newRegion.data())
@@ -53,6 +110,19 @@ router.post('/', auth.globalManager, async (req, res) => {
 // Atualizar uma região
 router.put('/:id', auth.globalManager, async (req, res) => {
   try {
+    // Validar se há municípios duplicados na mesma espécie (excluindo a região atual)
+    const validation = await validateMunicipalityUniqueness(
+      req.body.municipalities, 
+      req.body.specie,
+      req.params.id
+    )
+    
+    if (!validation.isValid) {
+      return res.status(400).json({
+        error: validation.message
+      })
+    }
+
     const updatedRegion = await Region.findByIdAndUpdate(
       req.params.id,
       req.body,

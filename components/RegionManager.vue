@@ -298,49 +298,38 @@ export default {
       this.form.municipalities.splice(index, 1)
     },
     async saveRegion() {
-      // Validação para municípios duplicados
-      const municipalityKeys = this.form.municipalities
-        .map((m) => `${m.name}-${m.uf}`)
-        .filter((key) => key !== '-')
-      const uniqueKeys = new Set(municipalityKeys)
-
-      if (municipalityKeys.length !== uniqueKeys.size) {
-        this.notify(
-          'Não é possível adicionar o mesmo município mais de uma vez na região.',
-          'error'
-        )
-        return
-      }
-
-      // Validação para municípios vazios
-      const hasEmptyMunicipality = this.form.municipalities.some(
-        (m) => !m.name || !m.uf
-      )
-      if (hasEmptyMunicipality) {
-        this.notify('Todos os municípios devem ser preenchidos.', 'error')
-        return
-      }
-
       this.isSaving = true
-
-      const formData = { ...this.form }
-      formData.name = this.capitalizeRegionName(formData.name)
-
-      const method = this.isEditing ? 'put' : 'post'
-      const url = this.isEditing ? `/regions/${this.form._id}` : '/regions'
-
       try {
-        await this.$axios({ method, url, data: formData })
-        this.notify(
-          `Região ${this.isEditing ? 'atualizada' : 'salva'} com sucesso!`
-        )
+        let response
+        const url = this.isEditing ? `/regions/${this.form._id}` : '/regions'
+        const method = this.isEditing ? 'put' : 'post'
+        
+        response = await this.$axios[method](url, this.form)
+        
+        this.$notify({
+          type: 'success',
+          title: 'Sucesso',
+          text: `Região ${this.isEditing ? 'atualizada' : 'criada'} com sucesso!`
+        })
+        
+        this.isModalVisible = false
         await this.fetchRegions()
-        this.hideModal()
       } catch (error) {
-        if (error.response && error.response.data) {
-          this.notify(error.response.data, 'error')
+        console.error('Error saving region:', error)
+        
+        // Tratar erro específico de municípios duplicados
+        if (error.response && error.response.status === 400 && error.response.data.error) {
+          this.$notify({
+            type: 'error',
+            title: 'Conflito de Município',
+            text: error.response.data.error
+          })
         } else {
-          this.notify('Erro ao salvar a região: ' + error.message, 'error')
+          this.$notify({
+            type: 'error',
+            title: 'Erro',
+            text: `Erro ao ${this.isEditing ? 'atualizar' : 'criar'} região: ${error.response?.data || error.message}`
+          })
         }
       } finally {
         this.isSaving = false
