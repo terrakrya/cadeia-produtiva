@@ -770,6 +770,12 @@ export default {
         const selectedMessenger = await this.$axios.$get(
           'users/' + this.form.messenger
         )
+        
+        if (selectedMessenger.organization) {
+          this.form.organization = selectedMessenger.organization
+          await this.loadProdutos()
+        }
+        
         this.form.currency = selectedMessenger.currency
         this.form.country = selectedMessenger.country
         this.form.measure = selectedMessenger.unitOfMeasurement
