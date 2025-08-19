@@ -783,6 +783,8 @@ export default {
         this.form.uf = selectedMessenger.uf
         this.form.city = selectedMessenger.city
         this.form.buyerPositionSeller = selectedMessenger.buyerPosition
+        this.form.region = selectedMessenger.region
+        this.form.regionId = selectedMessenger.regionId
         
         if (selectedMessenger.productId) {
           this.form.product = selectedMessenger.productId
