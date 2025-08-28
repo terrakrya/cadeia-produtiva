@@ -44,112 +44,138 @@
           </div>
         </div>
         <div class="info-content">
-          <div class="row">
-            <div class="col-sm-4">
-              <b-form-group label="Produto">
-                <b-form-select
-                  v-model="filters.product"
-                  class="form-control"
-                  :options="products"
-                  value-field="_id"
-                  text-field="name"
-                  @input="applyFilters"
-                />
-              </b-form-group>
+          <h5 class="form-title">Filtros</h5>
+          <b-card class="mb-3 bg-gray-1">
+            <div class="row">
+              <div class="col-sm-4">
+                <b-form-group label="Produto">
+                  <b-form-select
+                    v-model="filters.product"
+                    class="form-control"
+                    :options="products"
+                    value-field="_id"
+                    text-field="name"
+                    @input="applyFilters"
+                  />
+                </b-form-group>
+              </div>
+              <b-col sm="4">
+                <b-form-group label="Data inicial">
+                  <b-form-datepicker
+                    v-model="filters.dateFrom"
+                    class="date"
+                    name="date_time"
+                    locale="pt-BR"
+                    :date-format-options="{
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                    }"
+                    placeholder="DD/MM/AAAA"
+                    @input="applyFilters"
+                  />
+                </b-form-group>
+              </b-col>
+              <b-col sm="4">
+                <b-form-group label="Data final">
+                  <b-form-datepicker
+                    v-model="filters.dateTo"
+                    class="date"
+                    name="date_time"
+                    locale="pt-BR"
+                    :date-format-options="{
+                      year: 'numeric',
+                      month: '2-digit',
+                      day: '2-digit',
+                    }"
+                    placeholder="DD/MM/AAAA"
+                    @input="applyFilters"
+                  />
+                </b-form-group>
+              </b-col>
             </div>
-            <b-col sm="4">
-              <b-form-group label="Estado">
-                <b-form-select
-                  v-model="filters.uf"
-                  class="form-control"
-                  :options="[
-                    { value: '', text: 'Todos os estados' },
-                    ...estados.map((e) => e.uf),
-                  ]"
-                  name="uf"
-                  @input="loadCities(true)"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col sm="4">
-              <b-form-group label="Município">
-                <b-form-select
-                  v-model="filters.city"
-                  class="form-control"
-                  :options="cidades"
-                  @input="applyFilters"
-                />
-              </b-form-group>
-            </b-col>
-          </div>
-          <div class="row">
-            <b-col sm="4">
-              <b-form-group label="Data inicial">
-                <b-form-datepicker
-                  v-model="filters.dateFrom"
-                  class="date"
-                  name="date_time"
-                  locale="pt-BR"
-                  :date-format-options="{
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  }"
-                  placeholder="DD/MM/AAAA"
-                  @input="applyFilters"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col sm="4">
-              <b-form-group label="Data final">
-                <b-form-datepicker
-                  v-model="filters.dateTo"
-                  class="date"
-                  name="date_time"
-                  locale="pt-BR"
-                  :date-format-options="{
-                    year: 'numeric',
-                    month: '2-digit',
-                    day: '2-digit',
-                  }"
-                  placeholder="DD/MM/AAAA"
-                  @input="applyFilters"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col sm="4">
-              <b-form-group label="Região Castanheira">
-                <b-form-select
-                  v-model="filters.region"
-                  :options="regionOptions"
-                  @input="applyFilters"
-                  class="form-control"
-                />
-              </b-form-group>
-            </b-col>
-          </div>
-          <div class="row">
-            <b-col sm="6">
-              <b-form-group label="De ">
-                <b-form-select
-                  v-model="filters.buyerFrom"
-                  class="form-control"
-                  :options="buyerPositions"
-                  @input="applyFilters"
-                />
-              </b-form-group>
-            </b-col>
-            <b-col sm="6">
-              <b-form-group label="Para">
-                <b-form-select
-                  v-model="filters.buyerTo"
-                  class="form-control"
-                  :options="buyerPositions"
-                  @input="applyFilters"
-                />
-              </b-form-group>
-            </b-col>
-          </div>
+            
+            <!-- Botão para filtros avançados -->
+            <div class="row">
+              <div class="col-12">
+                <b-button
+                  variant="danger"
+                  class="btn btn-primary mb-2"
+                  @click="showAdvancedFilters = !showAdvancedFilters"
+                >
+                  <b-icon :icon="showAdvancedFilters ? 'chevron-up' : 'chevron-down'"></b-icon>
+                  {{ showAdvancedFilters ? 'Ocultar' : 'Mostrar' }} Filtros Avançados
+                </b-button>
+              </div>
+            </div>
+
+            <!-- Filtros avançados (expansível) -->
+            <b-collapse v-model="showAdvancedFilters">
+              <hr>
+              <div class="row">
+                <b-col sm="4">
+                  <b-form-group label="Estado">
+                    <b-form-select
+                      v-model="filters.uf"
+                      class="form-control"
+                      :options="[
+                        { value: '', text: 'Todos os estados' },
+                        ...estados.map((e) => e.uf),
+                      ]"
+                      name="uf"
+                      @input="loadCities(true)"
+                    />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="4">
+                  <b-form-group label="Município">
+                    <b-form-select
+                      v-model="filters.city"
+                      class="form-control"
+                      :options="cidades"
+                      @input="onCityChange"
+                    />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="4">
+                  <b-form-group label="Região Castanheira">
+                    <b-form-select
+                      v-model="filters.region"
+                      :options="regionOptions"
+                      :disabled="isRegionDisabled"
+                      @input="onRegionChange"
+                      class="form-control"
+                    />
+                    <small v-if="regionAutoSelected" class="text-muted">
+                      Selecionada automaticamente baseada no estado e município
+                    </small>
+                  </b-form-group>
+                </b-col>
+              </div>
+              <div class="row">
+                <b-col sm="6">
+                  <b-form-group label="De ">
+                    <b-form-select
+                      v-model="filters.buyerFrom"
+                      class="form-control"
+                      :options="buyerPositions"
+                      @input="applyFilters"
+                    />
+                  </b-form-group>
+                </b-col>
+                <b-col sm="6">
+                  <b-form-group label="Para">
+                    <b-form-select
+                      v-model="filters.buyerTo"
+                      class="form-control"
+                      :options="buyerPositions"
+                      @input="applyFilters"
+                    />
+                  </b-form-group>
+                </b-col>
+              </div>
+            </b-collapse>
+          </b-card>
           <b-button
             variant="danger"
             class="btn btn-primary"
@@ -207,7 +233,15 @@ export default {
       priceInformations: [],
       products: [],
       userMeasurement: null,
+      showAdvancedFilters: false,
+      regionAutoSelected: false,
     }
+  },
+
+  computed: {
+    isRegionDisabled() {
+      return this.regionAutoSelected && this.filters.uf && this.filters.city
+    },
   },
 
   async created() {
@@ -244,6 +278,11 @@ export default {
         this.cidades = this.cidades.concat(Object(cidades)[this.filters.uf])
       } else {
         this.filters.square = null
+        // Limpa região automática quando UF é removido
+        if (this.regionAutoSelected) {
+          this.filters.region = ''
+          this.regionAutoSelected = false
+        }
       }
 
       // limpa a cidade digitada, caso não exista na lista
@@ -253,8 +292,39 @@ export default {
         }
       }
 
+      // Atualiza região automaticamente se ambos UF e cidade estão selecionados
+      this.updateRegionFromCity()
+
       if (loadFilters) {
         await this.applyFilters()
+      }
+    },
+
+    updateRegionFromCity() {
+      if (this.filters.uf && this.filters.city) {
+        const regionData = regions.find(
+          (r) => r.uf === this.filters.uf && r.municipio === this.filters.city
+        )
+        if (regionData) {
+          this.filters.region = regionData.regiaoCastanheira
+          this.regionAutoSelected = true
+        }
+      } else if (this.regionAutoSelected) {
+        // Limpa região automática se UF ou cidade foram removidos
+        this.filters.region = ''
+        this.regionAutoSelected = false
+      }
+    },
+
+    onCityChange() {
+      this.updateRegionFromCity()
+      this.applyFilters()
+    },
+
+    onRegionChange() {
+      // Se o usuário alterar a região manualmente, desabilita seleção automática
+      if (!this.regionAutoSelected) {
+        this.applyFilters()
       }
     },
 
