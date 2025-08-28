@@ -4,9 +4,11 @@
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
-          <div class="col-sm-6"></div>
+          <div class="col-sm-6">
+            <h1>Dados Publicados</h1>
+          </div>
           <div class="col-sm-6 main-actions">
-            <div>
+            <!-- <div>
               <b-button
                 id="show-btn"
                 class="btn btn-primary"
@@ -40,11 +42,21 @@
               <FormRegionsTranslator id="bv-modal-1" />
               <FormMeasureTranslator id="bv-modal" />
               <FormMetodologia id="bv-modal-2" />
-            </div>
+            </div> -->
           </div>
         </div>
         <div class="info-content">
-          <h5 class="form-title">Filtros</h5>
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h5 class="form-title mb-0">Filtros</h5>
+            <b-button
+              variant="danger"
+              class="btn btn-primary"
+              @click="downloadExcel"
+            >
+              <b-icon icon="download" class="mr-1"></b-icon>
+              Download Excel
+            </b-button>
+          </div>
           <b-card class="mb-3 bg-gray-1">
             <div class="row">
               <div class="col-sm-4">
@@ -94,7 +106,7 @@
                 </b-form-group>
               </b-col>
             </div>
-            
+
             <!-- Botão para filtros avançados -->
             <div class="row">
               <div class="col-12">
@@ -103,15 +115,18 @@
                   class="btn btn-primary mb-2"
                   @click="showAdvancedFilters = !showAdvancedFilters"
                 >
-                  <b-icon :icon="showAdvancedFilters ? 'chevron-up' : 'chevron-down'"></b-icon>
-                  {{ showAdvancedFilters ? 'Ocultar' : 'Mostrar' }} Filtros Avançados
+                  <b-icon
+                    :icon="showAdvancedFilters ? 'chevron-up' : 'chevron-down'"
+                  ></b-icon>
+                  {{ showAdvancedFilters ? 'Ocultar' : 'Mostrar' }} Filtros
+                  Avançados
                 </b-button>
               </div>
             </div>
 
             <!-- Filtros avançados (expansível) -->
             <b-collapse v-model="showAdvancedFilters">
-              <hr>
+              <hr />
               <div class="row">
                 <b-col sm="4">
                   <b-form-group label="Estado">
@@ -176,15 +191,6 @@
               </div>
             </b-collapse>
           </b-card>
-          <b-button
-            variant="danger"
-            class="btn btn-primary"
-            style="margin-bottom: 12px"
-            @click="downloadExcel"
-          >
-            Download Excel
-          </b-button>
-          <br />
           <no-item :list="priceInformations" />
           <form-grid-informat ref="gridInformat" :list="priceInformations" />
         </div>
@@ -476,7 +482,7 @@ export default {
       if (this.userMeasurement && this.userMeasurement.referenceInKg) {
         return price * this.userMeasurement.referenceInKg
       }
-      
+
       return price || 0
     },
   },
