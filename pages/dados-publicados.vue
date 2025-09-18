@@ -197,8 +197,39 @@
           
           <!-- Show content only when not loading -->
           <div v-if="!loading">
+            <!-- Pagination controls and info -->
+            <div v-if="priceInformations.length > 0" class="d-flex justify-content-between align-items-center mb-3">
+              <div>
+                <small class="text-muted">
+                  Exibindo {{ startRecord }} - {{ endRecord }} de {{ totalRecords }} registro(s)
+                </small>
+              </div>
+              <div class="d-flex align-items-center">
+                <small class="text-muted mr-2">Itens por página:</small>
+                <b-form-select
+                  v-model="perPage"
+                  :options="perPageOptions"
+                  size="sm"
+                  style="width: auto;"
+                  @change="currentPage = 1"
+                />
+              </div>
+            </div>
+
             <no-item :list="priceInformations" />
-            <form-grid-informat ref="gridInformat" :list="priceInformations" />
+            <form-grid-informat ref="gridInformat" :list="paginatedData" />
+            
+            <!-- Pagination -->
+            <div v-if="priceInformations.length > 0 && totalPages > 1" class="d-flex justify-content-center mt-3">
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="totalRecords"
+                :per-page="perPage"
+                :aria-controls="'price-informations-table'"
+                size="sm"
+                class="custom-pagination mb-0"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -231,6 +262,14 @@ export default {
   data() {
     return {
       loading: false,
+      currentPage: 1,
+      perPage: 25,
+      perPageOptions: [
+        { value: 10, text: '10' },
+        { value: 25, text: '25' },
+        { value: 50, text: '50' },
+        { value: 100, text: '100' }
+      ],
       filters: {
         uf: '',
         city: '',
@@ -258,6 +297,30 @@ export default {
     isRegionDisabled() {
       return this.regionAutoSelected && this.filters.uf && this.filters.city
     },
+    
+    totalRecords() {
+      return this.priceInformations.length
+    },
+    
+    totalPages() {
+      return Math.ceil(this.totalRecords / this.perPage)
+    },
+    
+    startRecord() {
+      if (this.totalRecords === 0) return 0
+      return (this.currentPage - 1) * this.perPage + 1
+    },
+    
+    endRecord() {
+      const end = this.currentPage * this.perPage
+      return end > this.totalRecords ? this.totalRecords : end
+    },
+    
+    paginatedData() {
+      const start = (this.currentPage - 1) * this.perPage
+      const end = start + this.perPage
+      return this.priceInformations.slice(start, end)
+    }
   },
 
   async created() {
@@ -414,6 +477,9 @@ export default {
             },
           }
         )
+        
+        // Reset para a primeira página quando aplicar filtros
+        this.currentPage = 1
       } finally {
         this.loading = false
       }
@@ -426,6 +492,7 @@ export default {
       const sortDesc = grid ? grid.sortDesc : true
 
       // Clone and sort the data according to the current sorting settings
+      // IMPORTANTE: Usa todos os dados (priceInformations) para exportação, não apenas os paginados
       let sortedData = [...this.priceInformations].sort((a, b) => {
         let aVal, bVal
         if (sortKey === 'date') {
@@ -508,3 +575,65 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+/* Estilos customizados para paginação seguindo o padrão visual do sistema */
+.custom-pagination >>> .page-link {
+  color: #852E27 !important; /* $brown1 */
+  background-color: #ffffff !important; /* $white */
+  border: 1px solid #ccc !important; /* $gray4 */
+  border-radius: 50px !important; /* Seguindo o padrão do sistema */
+  padding: 8px 12px !important;
+  margin: 0 2px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  transition: all 0.2s ease !important;
+}
+
+.custom-pagination >>> .page-link:hover {
+  color: #ffffff !important;
+  background-color: #93312A !important; /* $orange */
+  border-color: #93312A !important;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.custom-pagination >>> .page-link:focus {
+  color: #ffffff !important;
+  background-color: #93312A !important; /* $orange */
+  border-color: #93312A !important;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15) !important;
+}
+
+.custom-pagination >>> .page-item.active .page-link {
+  color: #ffffff !important;
+  background-color: #852E27 !important; /* $brown1 */
+  border-color: #852E27 !important;
+  font-weight: 700 !important;
+  box-shadow: 0px 2px 6px rgba(133, 46, 39, 0.2) !important;
+}
+
+.custom-pagination >>> .page-item.disabled .page-link {
+  color: #818181 !important; /* $gray7 */
+  background-color: #f2f2f2 !important; /* $gray6 */
+  border-color: #ccc !important;
+  opacity: 0.6 !important;
+}
+
+.custom-pagination >>> .page-item:first-child .page-link,
+.custom-pagination >>> .page-item:last-child .page-link {
+  border-radius: 50px !important;
+}
+
+/* Estilos para o select de itens por página */
+.form-control[size="sm"] {
+  border-radius: 20px !important;
+  border-color: #852E27 !important; /* $brown1 */
+  font-weight: 500 !important;
+  color: #852E27 !important; /* $brown1 */
+}
+
+.form-control[size="sm"]:focus {
+  border-color: #93312A !important; /* $orange */
+  box-shadow: 0 0 0 0.2rem rgba(147, 49, 42, 0.25) !important;
+}
+</style>
