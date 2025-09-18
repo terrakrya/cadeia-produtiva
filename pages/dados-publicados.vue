@@ -191,8 +191,15 @@
               </div>
             </b-collapse>
           </b-card>
-          <no-item :list="priceInformations" />
-          <form-grid-informat ref="gridInformat" :list="priceInformations" />
+          
+          <!-- Loading spinner -->
+          <Loading :loading="loading" msg="Carregando dados" />
+          
+          <!-- Show content only when not loading -->
+          <div v-if="!loading">
+            <no-item :list="priceInformations" />
+            <form-grid-informat ref="gridInformat" :list="priceInformations" />
+          </div>
         </div>
       </div>
     </div>
@@ -205,6 +212,7 @@ import FormGridInformat from '@/components/FormGridInformat'
 import FormRegionsTranslator from '@/components/FormRegionsTranslator'
 import FormMeasureTranslator from '@/components/FormMeasureTranslator'
 import FormMetodologia from '@/components/FormMetodologia.vue'
+import Loading from '@/components/Loading'
 import estados from '@/data/estados.json'
 import cidades from '@/data/cidades.json'
 import regions from '@/data/regioes-castanheiras.json'
@@ -218,9 +226,11 @@ export default {
     FormRegionsTranslator,
     FormMeasureTranslator,
     FormMetodologia,
+    Loading,
   },
   data() {
     return {
+      loading: false,
       filters: {
         uf: '',
         city: '',
@@ -258,21 +268,26 @@ export default {
       this.$router.push('/painel')
     }
 
-    await Promise.all([
-      this.loadCities(false),
-      this.loadUserMeasurement(),
-      this.loadProducts(),
-    ])
+    this.loading = true
+    try {
+      await Promise.all([
+        this.loadCities(false),
+        this.loadUserMeasurement(),
+        this.loadProducts(),
+      ])
 
-    await this.applyFilters()
+      await this.applyFilters()
 
-    this.regionOptions = [
-      { value: '', text: 'Todas as regiões' },
-      ...[...new Set(regions.map((r) => r.regiaoCastanheira))].map((reg) => ({
-        value: reg,
-        text: reg,
-      })),
-    ]
+      this.regionOptions = [
+        { value: '', text: 'Todas as regiões' },
+        ...[...new Set(regions.map((r) => r.regiaoCastanheira))].map((reg) => ({
+          value: reg,
+          text: reg,
+        })),
+      ]
+    } finally {
+      this.loading = false
+    }
   },
   methods: {
     async loadCities(loadFilters) {
@@ -355,48 +370,53 @@ export default {
     },
 
     async applyFilters() {
-      const filters = {}
+      this.loading = true
+      try {
+        const filters = {}
 
-      if (this.filters.uf) {
-        filters.uf = this.filters.uf
-      }
-
-      if (this.filters.city) {
-        filters.city = this.filters.city
-      }
-
-      if (this.filters.product) {
-        filters.product = this.filters.product
-      }
-
-      if (this.filters.dateFrom) {
-        filters.dateFrom = this.filters.dateFrom
-      }
-
-      if (this.filters.dateTo) {
-        filters.dateTo = this.filters.dateTo
-      }
-
-      if (this.filters.buyerFrom && this.filters.buyerFrom !== '') {
-        filters.buyerFrom = this.filters.buyerFrom
-      }
-
-      if (this.filters.buyerTo && this.filters.buyerTo !== '') {
-        filters.buyerTo = this.filters.buyerTo
-      }
-
-      if (this.filters.region) {
-        filters.regions = this.filters.region
-      }
-
-      this.priceInformations = await this.$axios.$get(
-        'price-informations/data-published',
-        {
-          params: {
-            filters,
-          },
+        if (this.filters.uf) {
+          filters.uf = this.filters.uf
         }
-      )
+
+        if (this.filters.city) {
+          filters.city = this.filters.city
+        }
+
+        if (this.filters.product) {
+          filters.product = this.filters.product
+        }
+
+        if (this.filters.dateFrom) {
+          filters.dateFrom = this.filters.dateFrom
+        }
+
+        if (this.filters.dateTo) {
+          filters.dateTo = this.filters.dateTo
+        }
+
+        if (this.filters.buyerFrom && this.filters.buyerFrom !== '') {
+          filters.buyerFrom = this.filters.buyerFrom
+        }
+
+        if (this.filters.buyerTo && this.filters.buyerTo !== '') {
+          filters.buyerTo = this.filters.buyerTo
+        }
+
+        if (this.filters.region) {
+          filters.regions = this.filters.region
+        }
+
+        this.priceInformations = await this.$axios.$get(
+          'price-informations/data-published',
+          {
+            params: {
+              filters,
+            },
+          }
+        )
+      } finally {
+        this.loading = false
+      }
     },
 
     downloadExcel() {
