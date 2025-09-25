@@ -37,46 +37,117 @@
                 <div
                   class="date-box d-flex flex-column justify-content-center align-items-center"
                 >
-                  <div
+                                    <div
                     class="d-flex flex-column align-items-center"
                     v-if="filters.name == 'safra'"
                   >
-                    <span>Safra</span>
-                    <span>
-                      {{ filters.from | moment('YYYY') }}/{{
-                        filters.to | moment('YYYY')
-                      }}
-                    </span>
+                    <div class="safra-navigation">
+                      <button
+                        type="button"
+                        class="safra-arrow"
+                        @click="navigatePeriod('prev')"
+                        :disabled="loading"
+                        :aria-label="`${periodLabel} anterior`"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-chevron-left" />
+                      </button>
+                      <span class="safra-label">{{ periodLabel }}</span>
+                      <button
+                        type="button"
+                        class="safra-arrow"
+                        :class="{ invisible: isCurrentPeriod }"
+                        @click="navigatePeriod('next')"
+                        :disabled="loading || isCurrentPeriod"
+                        :aria-label="`${periodLabel} seguinte`"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-chevron-right" />
+                      </button>
+                    </div>
+                    <span class="safra-period">{{ periodDisplay }}</span>
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
                     v-else-if="filters.name == 'mes'"
                   >
-                    <span>Mês</span>
-                    <span>
-                      {{ filters.from | moment('DD/MM') }} a
-                      {{ filters.to | moment('DD/MM') }}
-                    </span>
+                    <div class="safra-navigation">
+                      <button
+                        type="button"
+                        class="safra-arrow"
+                        @click="navigatePeriod('prev')"
+                        :disabled="loading"
+                        :aria-label="`${periodLabel} anterior`"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-chevron-left" />
+                      </button>
+                      <span class="safra-label">{{ periodLabel }}</span>
+                      <button
+                        type="button"
+                        class="safra-arrow"
+                        :class="{ invisible: isCurrentPeriod }"
+                        @click="navigatePeriod('next')"
+                        :disabled="loading || isCurrentPeriod"
+                        :aria-label="`${periodLabel} seguinte`"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-chevron-right" />
+                      </button>
+                    </div>
+                    <span class="safra-period">{{ periodDisplay }}</span>
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
                     v-else-if="filters.name == 'quinzena'"
                   >
-                    <span>Quinzena</span>
-                    <span>
-                      {{ filters.from | moment('DD/MM') }} a
-                      {{ filters.to | moment('DD/MM') }}
-                    </span>
+                    <div class="safra-navigation">
+                      <button
+                        type="button"
+                        class="safra-arrow"
+                        @click="navigatePeriod('prev')"
+                        :disabled="loading"
+                        :aria-label="`${periodLabel} anterior`"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-chevron-left" />
+                      </button>
+                      <span class="safra-label">{{ periodLabel }}</span>
+                      <button
+                        type="button"
+                        class="safra-arrow"
+                        :class="{ invisible: isCurrentPeriod }"
+                        @click="navigatePeriod('next')"
+                        :disabled="loading || isCurrentPeriod"
+                        :aria-label="`${periodLabel} seguinte`"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-chevron-right" />
+                      </button>
+                    </div>
+                    <span class="safra-period">{{ periodDisplay }}</span>
                   </div>
                   <div
                     class="d-flex flex-column align-items-center"
                     v-else-if="filters.name == 'semana'"
                   >
-                    <span>Semana</span>
-                    <span>
-                      {{ filters.from | moment('DD/MM') }} a
-                      {{ filters.to | moment('DD/MM') }}
-                    </span>
+                    <div class="safra-navigation">
+                      <button
+                        type="button"
+                        class="safra-arrow"
+                        @click="navigatePeriod('prev')"
+                        :disabled="loading"
+                        :aria-label="`${periodLabel} anterior`"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-chevron-left" />
+                      </button>
+                      <span class="safra-label">{{ periodLabel }}</span>
+                      <button
+                        type="button"
+                        class="safra-arrow"
+                        :class="{ invisible: isCurrentPeriod }"
+                        @click="navigatePeriod('next')"
+                        :disabled="loading || isCurrentPeriod"
+                        :aria-label="`${periodLabel} seguinte`"
+                      >
+                        <font-awesome-icon icon="fa-solid fa-chevron-right" />
+                      </button>
+                    </div>
+                    <span class="safra-period">{{ periodDisplay }}</span>
                   </div>
                 </div>
               </div>
@@ -300,6 +371,69 @@ export default {
       }
       return ''
     },
+    isCurrentPeriod() {
+      if (!this.filters.from || !this.filters.to || !this.filters.name) return false
+      
+      const currentDate = new Date()
+      const today = this.$moment(currentDate)
+      
+      switch (this.filters.name) {
+        case 'safra':
+          const currentHarvestPeriod = this.currentHarvestPeriod()
+          const currentFrom = currentHarvestPeriod[0]
+          const currentTo = currentHarvestPeriod[1]
+          const filterFrom = this.$moment(this.filters.from).format('YYYY-MM-DD')
+          const filterTo = this.$moment(this.filters.to).format('YYYY-MM-DD')
+          return filterFrom === currentFrom && filterTo === currentTo
+          
+        case 'semana':
+          // Verifica se é a semana atual (últimos 7 dias)
+          const weekStart = this.$moment(this.filters.from)
+          const weekEnd = this.$moment(this.filters.to)
+          const currentWeekStart = today.clone().subtract(7, 'days')
+          return weekStart.isSame(currentWeekStart, 'day') && weekEnd.isSame(today, 'day')
+          
+        case 'quinzena':
+          // Verifica se é a quinzena atual (últimos 15 dias)
+          const quinzenaStart = this.$moment(this.filters.from)
+          const quinzenaEnd = this.$moment(this.filters.to)
+          const currentQuinzenaStart = today.clone().subtract(15, 'days')
+          return quinzenaStart.isSame(currentQuinzenaStart, 'day') && quinzenaEnd.isSame(today, 'day')
+          
+        case 'mes':
+          // Verifica se é o mês atual (últimos 30 dias)
+          const mesStart = this.$moment(this.filters.from)
+          const mesEnd = this.$moment(this.filters.to)
+          const currentMesStart = today.clone().subtract(1, 'month')
+          return mesStart.isSame(currentMesStart, 'day') && mesEnd.isSame(today, 'day')
+          
+        default:
+          return false
+      }
+    },
+    periodLabel() {
+      switch (this.filters.name) {
+        case 'safra': return 'Safra'
+        case 'semana': return 'Semana'
+        case 'quinzena': return 'Quinzena'
+        case 'mes': return 'Mês'
+        default: return 'Período'
+      }
+    },
+    periodDisplay() {
+      if (!this.filters.from || !this.filters.to) return ''
+      
+      switch (this.filters.name) {
+        case 'safra':
+          return `${this.$moment(this.filters.from).format('YYYY')}/${this.$moment(this.filters.to).format('YYYY')}`
+        case 'semana':
+        case 'quinzena':
+        case 'mes':
+          return `${this.$moment(this.filters.from).format('DD/MM')} a ${this.$moment(this.filters.to).format('DD/MM')}`
+        default:
+          return ''
+      }
+    },
   },
   async created() {
     if (
@@ -503,6 +637,67 @@ export default {
       }
 
       return [`${today.year()}-10-01`, `${today.year() + 1}-09-30`]
+    },
+    navigatePeriod(direction) {
+      if (this.loading) return
+      
+      this.loading = true
+      
+      const currentFrom = this.$moment(this.filters.from)
+      const currentTo = this.$moment(this.filters.to)
+      
+      let newFrom, newTo
+      
+      switch (this.filters.name) {
+        case 'safra':
+          if (direction === 'prev') {
+            newFrom = currentFrom.clone().subtract(1, 'year').format('YYYY-MM-DD')
+            newTo = currentTo.clone().subtract(1, 'year').format('YYYY-MM-DD')
+          } else if (direction === 'next') {
+            newFrom = currentFrom.clone().add(1, 'year').format('YYYY-MM-DD')
+            newTo = currentTo.clone().add(1, 'year').format('YYYY-MM-DD')
+          }
+          break
+          
+        case 'semana':
+          if (direction === 'prev') {
+            newFrom = currentFrom.clone().subtract(7, 'days').format('YYYY-MM-DD')
+            newTo = currentTo.clone().subtract(7, 'days').format('YYYY-MM-DD')
+          } else if (direction === 'next') {
+            newFrom = currentFrom.clone().add(7, 'days').format('YYYY-MM-DD')
+            newTo = currentTo.clone().add(7, 'days').format('YYYY-MM-DD')
+          }
+          break
+          
+        case 'quinzena':
+          if (direction === 'prev') {
+            newFrom = currentFrom.clone().subtract(15, 'days').format('YYYY-MM-DD')
+            newTo = currentTo.clone().subtract(15, 'days').format('YYYY-MM-DD')
+          } else if (direction === 'next') {
+            newFrom = currentFrom.clone().add(15, 'days').format('YYYY-MM-DD')
+            newTo = currentTo.clone().add(15, 'days').format('YYYY-MM-DD')
+          }
+          break
+          
+        case 'mes':
+          if (direction === 'prev') {
+            newFrom = currentFrom.clone().subtract(1, 'month').format('YYYY-MM-DD')
+            newTo = currentTo.clone().subtract(1, 'month').format('YYYY-MM-DD')
+          } else if (direction === 'next') {
+            newFrom = currentFrom.clone().add(1, 'month').format('YYYY-MM-DD')
+            newTo = currentTo.clone().add(1, 'month').format('YYYY-MM-DD')
+          }
+          break
+          
+        default:
+          this.loading = false
+          return
+      }
+      
+      this.filters.from = newFrom
+      this.filters.to = newTo
+      
+      this.load()
     },
   },
 }
