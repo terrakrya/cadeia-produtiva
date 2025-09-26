@@ -4,6 +4,31 @@ const auth = require('../config/auth')
 const User = mongoose.model('User')
 const EcologicalData = mongoose.model('EcologicalData')
 
+// Função para verificar se o usuário tem permissão para acessar/modificar dados ecológicos
+async function hasPermissionToAccessEcologicalData(req, ecologicalDataUserId) {
+  const userRole = req.user.role
+  const userId = req.user.id
+  const userOrg = req.user.organization
+
+  // Admin e gestor-global podem acessar qualquer dado
+  if (userRole === 'admin' || userRole === 'gestor-global') {
+    return true
+  }
+
+  // Gestor pode acessar dados de usuários da sua organização
+  if (userRole === 'gestor') {
+    const targetUser = await User.findById(ecologicalDataUserId).select('organization')
+    return targetUser && targetUser.organization.toString() === userOrg.toString()
+  }
+
+  // Mensageiro só pode acessar seus próprios dados
+  if (userRole === 'mensageiro') {
+    return ecologicalDataUserId.toString() === userId.toString()
+  }
+
+  return false
+}
+
 router.get('/', auth.authenticated, async (req, res) => {
   const query = {}
 
@@ -41,9 +66,39 @@ router.get('/', auth.authenticated, async (req, res) => {
 // Recupera todos os dados ecológicos de um usuário específico
 router.get('/user/:userId', auth.authenticated, async (req, res) => {
   try {
+    // Verifica se o usuário tem permissão para acessar os dados do usuário especificado
+    const hasPermission = await hasPermissionToAccessEcologicalData(req, req.params.userId)
+    if (!hasPermission) {
+      return res.status(403).json({
+        message: 'Você não tem permissão para acessar os dados ecológicos deste usuário.'
+      })
+    }
+
     const ecologicalData = await EcologicalData.find({
       userId: req.params.userId,
     })
+
+    res.json(ecologicalData)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// Recupera um registro de dados ecológicos específico por ID
+router.get('/:id', auth.authenticated, async (req, res) => {
+  try {
+    const ecologicalData = await EcologicalData.findById(req.params.id)
+    if (!ecologicalData) {
+      return res.status(404).json({ message: 'Dado ecológico não encontrado.' })
+    }
+
+    // Verifica se o usuário tem permissão para acessar este dado
+    const hasPermission = await hasPermissionToAccessEcologicalData(req, ecologicalData.userId)
+    if (!hasPermission) {
+      return res.status(403).json({
+        message: 'Você não tem permissão para acessar este dado ecológico.'
+      })
+    }
 
     res.json(ecologicalData)
   } catch (err) {
@@ -104,6 +159,14 @@ router.put('/:id', auth.authenticated, async (req, res) => {
       return res.status(404).json({ message: 'Dado ecológico não encontrado.' })
     }
 
+    // Verifica se o usuário tem permissão para editar este dado
+    const hasPermission = await hasPermissionToAccessEcologicalData(req, ecologicalData.userId)
+    if (!hasPermission) {
+      return res.status(403).json({
+        message: 'Você não tem permissão para editar este dado ecológico.'
+      })
+    }
+
     // Atualiza os campos conforme necessário
     ecologicalData.peakBloomMonth =
       peakBloomMonth ?? ecologicalData.peakBloomMonth
@@ -130,10 +193,20 @@ router.put('/:id', auth.authenticated, async (req, res) => {
 // Deleta um registro de dados ecológicos específico
 router.delete('/:id', auth.authenticated, async (req, res) => {
   try {
-    const ecologicalData = await EcologicalData.findByIdAndDelete(req.params.id)
+    const ecologicalData = await EcologicalData.findById(req.params.id)
     if (!ecologicalData) {
       return res.status(404).json({ message: 'Dado ecológico não encontrado.' })
     }
+
+    // Verifica se o usuário tem permissão para deletar este dado
+    const hasPermission = await hasPermissionToAccessEcologicalData(req, ecologicalData.userId)
+    if (!hasPermission) {
+      return res.status(403).json({
+        message: 'Você não tem permissão para deletar este dado ecológico.'
+      })
+    }
+
+    await EcologicalData.findByIdAndDelete(req.params.id)
     res.json({ message: 'Dado ecológico deletado com sucesso.' })
   } catch (err) {
     res.status(500).json({ error: err.message })

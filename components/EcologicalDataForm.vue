@@ -217,6 +217,7 @@ export default {
       this.is_loading = true
       try {
         const dados = await this.$axios.$get(`ecological-data/${id}`)
+        const currentYear = new Date().getFullYear()
         this.form = {
           harvestStartYear: dados.harvestStartYear || currentYear - 1,
           harvestStartMonth: dados.harvestStartMonth || '',
@@ -224,10 +225,11 @@ export default {
           harvestEndMonth: dados.harvestEndMonth || '',
           peakBloomMonth: dados.peakBloomMonth || '',
           rainySeasonStartMonth: dados.rainySeasonStartMonth || '',
-          nextHarvestExpectation: dados.nextHarvestExpectation || '',
+          nextHarvestExpectation: dados.nextHarvestExpectation || 'Média',
         }
       } catch (error) {
         console.error('Erro ao carregar os dados ecológicos:', error)
+        this.showError(error)
       }
       this.is_loading = false
     },
@@ -250,7 +252,17 @@ export default {
           if (navigator.onLine) {
             // Online: send data to server
             try {
-              await this.$axios.post('ecological-data', payload)
+              const method = this.isEditing() ? 'PUT' : 'POST'
+              const url = this.isEditing() 
+                ? `ecological-data/${this.$route.params.id}` 
+                : 'ecological-data'
+              
+              await this.$axios({
+                method,
+                url,
+                data: payload
+              })
+              
               this.notify('Dados ecológicos salvos com sucesso')
               await this.$router.replace('/painel')
               this.is_sending = false
@@ -261,12 +273,17 @@ export default {
             }
           } else {
             // Offline: store data locally
+            const method = this.isEditing() ? 'PUT' : 'POST'
+            const url = this.isEditing() 
+              ? `ecological-data/${this.$route.params.id}` 
+              : 'ecological-data'
+              
             const pendingEcologicalData = 
               (await localforage.getItem('pendingEcologicalData')) || []
             pendingEcologicalData.push({
               method,
               url,
-              data: ecologicalData
+              data: payload
             })
             await localforage.setItem('pendingEcologicalData', pendingEcologicalData)
             this.notify(
