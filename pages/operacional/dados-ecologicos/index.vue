@@ -31,7 +31,8 @@
             class="table b-table b-table-stacked-md table-striped"
             :fields="table_fields"
             :items="ecologicalData"
-            :sort-by="'region'"
+            :sort-by="'createdAt'"
+            :sort-desc="true"
             :filter="debouncedSearch"
             stacked="md"
           >
@@ -69,6 +70,9 @@
             </template>
             <template #cell(nextHarvestExpectation)="data">
               {{ data.item.nextHarvestExpectation }}
+            </template>
+            <template #cell(createdAt)="data">
+              {{ formatDate(data.item.createdAt) }}
             </template>
             <template #cell(actions)="data">
               <n-link
@@ -176,6 +180,11 @@ export default {
           sortable: true,
         },
         {
+          key: 'createdAt',
+          label: 'Data de Registro',
+          sortable: true,
+        },
+        {
           key: 'actions',
           label: 'Ação',
           class: 'actions',
@@ -216,6 +225,11 @@ export default {
     getMonthAndYear(month, year) {
       const monthName = this.getMonthName(month)
       return monthName ? `${monthName} de ${year}` : `Ano ${year}`
+    },
+
+    formatDate(date) {
+      if (!date) return 'N/A'
+      return this.$moment(date).format('DD/MM/YYYY [às] HH:mm')
     },
 
     showError(error) {
