@@ -106,6 +106,19 @@ export default {
           },
         },
         {
+          // Cache para dados ecológicos (NetworkFirst para atualizações em tempo real)
+          urlPattern: '.*/api/ecological-data.*',
+          handler: 'NetworkFirst',
+          method: 'GET',
+          strategyOptions: {
+            cacheName: 'ecological-data-cache',
+            cacheExpiration: {
+              maxEntries: 20,
+              maxAgeSeconds: 60 * 60 * 24, // 1 dia
+            },
+          },
+        },
+        {
           // Cache de APIs de dados de referência
           urlPattern:
             '.*/api/(products|organizations|locations|buyer-positions|species|species-products).*',
