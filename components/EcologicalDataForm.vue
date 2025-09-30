@@ -13,8 +13,17 @@
         <b-form @submit.prevent="save">
           <div class="row">
             <div class="col-sm-6 mb-2">
-              <b-form-group label="Início da Safra">
+              <b-form-group label="Quando vai começar essa próxima safra da castanha?">
                 <b-input-group>
+                  <b-form-select
+                    v-model="form.harvestStartMonth"
+                    :options="meses"
+                    class="form-control"
+                    name="harvestStartMonth"
+                    v-validate="'required'"
+                  >
+                    <option :value="''" disabled selected hidden>Mês</option>
+                  </b-form-select>
                   <b-form-select
                     v-model="form.harvestStartYear"
                     :options="availableYears"
@@ -25,15 +34,6 @@
                   >
                     <option :value="''" disabled selected hidden>Ano</option>
                   </b-form-select>
-                  <b-form-select
-                    v-model="form.harvestStartMonth"
-                    :options="meses"
-                    class="form-control"
-                    name="harvestStartMonth"
-                    v-validate="'required'"
-                  >
-                    <option :value="''" disabled selected hidden>Mês</option>
-                  </b-form-select>
                 </b-input-group>
                 <field-error :msg="veeErrors" field="harvestStartYear" />
                 <field-error :msg="veeErrors" field="harvestStartMonth" />
@@ -41,8 +41,17 @@
             </div>
 
             <div class="col-sm-6 mb-2">
-              <b-form-group label="Fim da Safra">
+              <b-form-group label="Quando costuma terminar a safra da castanha?">
                 <b-input-group>
+                  <b-form-select
+                    v-model="form.harvestEndMonth"
+                    :options="meses"
+                    class="form-control"
+                    name="harvestEndMonth"
+                    v-validate="'required'"
+                  >
+                    <option :value="''" disabled selected hidden>Mês</option>
+                  </b-form-select>
                   <b-form-select
                     v-model="form.harvestEndYear"
                     :options="availableYears"
@@ -52,15 +61,6 @@
                     @change="validateEndYear"
                   >
                     <option :value="''" disabled selected hidden>Ano</option>
-                  </b-form-select>
-                  <b-form-select
-                    v-model="form.harvestEndMonth"
-                    :options="meses"
-                    class="form-control"
-                    name="harvestEndMonth"
-                    v-validate="'required'"
-                  >
-                    <option :value="''" disabled selected hidden>Mês</option>
                   </b-form-select>
                 </b-input-group>
                 <field-error :msg="veeErrors" field="harvestEndYear" />
@@ -76,7 +76,7 @@
           <div class="row">
             <div class="col-md-4 title-buttons-form">
               <b-form-group
-                label="Previsão de Produção da Natureza"
+                label="Qual a previsão de tamanho da produção dessa próxima safra de castanha?"
               ></b-form-group>
             </div>
             <div
@@ -125,7 +125,7 @@
 
           <div class="row">
             <div class="col-sm-6 mb-2">
-              <b-form-group label="Mês de Início da Chuva Constante">
+              <b-form-group label="Qual o mês em que as chuvas começaram a ficar constantes na sua região?">
                 <b-form-select
                   v-model="form.rainySeasonStartMonth"
                   :options="meses"
@@ -140,7 +140,7 @@
               </b-form-group>
             </div>
             <div class="col-sm-6 mb-2">
-              <b-form-group label="Mês de Pico da Floração">
+              <b-form-group label="Qual foi o mês de pico da floração das castanheiras na sua região?">
                 <b-form-select
                   v-model="form.peakBloomMonth"
                   :options="meses"
