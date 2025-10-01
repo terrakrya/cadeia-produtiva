@@ -172,9 +172,9 @@ export default {
     return {
       meses,
       form: {
-        harvestStartYear: currentYear - 1,
+        harvestStartYear: currentYear,
         harvestStartMonth: '',
-        harvestEndYear: currentYear,
+        harvestEndYear: currentYear + 1,
         harvestEndMonth: '',
         peakBloomMonth: '',
         rainySeasonStartMonth: '',
@@ -219,9 +219,9 @@ export default {
         const dados = await this.$axios.$get(`ecological-data/${id}`)
         const currentYear = new Date().getFullYear()
         this.form = {
-          harvestStartYear: dados.harvestStartYear || currentYear - 1,
+          harvestStartYear: dados.harvestStartYear || currentYear,
           harvestStartMonth: dados.harvestStartMonth || '',
-          harvestEndYear: dados.harvestEndYear || currentYear,
+          harvestEndYear: dados.harvestEndYear || currentYear + 1,
           harvestEndMonth: dados.harvestEndMonth || '',
           peakBloomMonth: dados.peakBloomMonth || '',
           rainySeasonStartMonth: dados.rainySeasonStartMonth || '',
