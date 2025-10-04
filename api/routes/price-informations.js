@@ -21,17 +21,17 @@ const createUnitConverter = async (userId) => {
 
   const Measurement = mongoose.model('Measurement')
   const measurement = await Measurement.findById(user.measurementId)
-  
+
   if (!measurement || !measurement.referenceInKg) {
     throw new Error('Configuração de medida inválida para o usuário')
   }
-// Retorna função de conversão otimizada
+  // Retorna função de conversão otimizada
   return {
     user,
     convert: (value) => {
       if (!value || isNaN(value)) return 0
       return parseFloat((value * measurement.referenceInKg).toFixed(2))
-    }
+    },
   }
 }
 
@@ -71,24 +71,32 @@ router.get('/', auth.authenticated, async (req, res) => {
   }
 
   try {
-    let priceQuery = Price.find(query)
-      .populate('product')
-      .populate('messenger')
-      .populate('organization')
+    const page = parseInt(req.query.page) || 1
+    const limit = parseInt(req.query.limit) || 50
+    const skip = (page - 1) * limit
 
-    // Se precisar de informações das medidas dinâmicas
-    if (
-      req.query.populate === 'measurements' ||
-      req.query.populate === 'full'
-    ) {
-      priceQuery = priceQuery.populate({
-        path: 'measurementId',
-        select: 'name referenceInKg',
-      })
-    }
+    const [prices, total] = await Promise.all([
+      Price.find(query)
+        .populate('product', 'name')
+        .populate('messenger', 'name')
+        .populate('organization', 'sigla')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean()
+        .exec(),
+      Price.countDocuments(query),
+    ])
 
-    const prices = await priceQuery.sort('createdAt').exec()
-    res.json(prices)
+    res.json({
+      data: prices,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit),
+      },
+    })
   } catch (err) {
     res
       .status(422)
@@ -117,10 +125,10 @@ router.get('/harvest-mode', auth.authenticated, async (req, res) => {
         .toUpperCase()} - Semana ${weekOfMonth}`
 
       if (!modaWeekly[formattedWeek]) modaWeekly[formattedWeek] = []
-      
+
       const minPrice = convert(price.minimumPrice)
       const maxPrice = convert(price.maximumPrice)
-      
+
       modaWeekly[formattedWeek].push(minPrice, maxPrice)
     }
 

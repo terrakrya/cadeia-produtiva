@@ -29,12 +29,51 @@
             <Loading loading />
           </div>
           <div v-else>
+            <!-- Controles de paginação e informações -->
+            <div
+              v-if="priceInformations.length > 0"
+              class="d-flex justify-content-between align-items-center mb-3"
+            >
+              <div>
+                <small class="text-muted">
+                  Exibindo {{ startRecord }} - {{ endRecord }} de
+                  {{ totalRows }} registro(s)
+                </small>
+              </div>
+              <div class="d-flex align-items-center">
+                <small class="text-muted mr-2">Itens por página:</small>
+                <b-form-select
+                  v-model="perPage"
+                  :options="perPageOptions"
+                  size="sm"
+                  class="pagination-per-page-select"
+                  style="width: auto"
+                  @change="onPerPageChange"
+                />
+              </div>
+            </div>
+
             <PriceInformationTable
               :priceInformations="priceInformations"
               :tableFields="table_fields"
               v-model="filters.search"
               @remove="remove"
             />
+
+            <!-- Paginação -->
+            <div
+              v-if="priceInformations.length > 0 && totalPages > 1"
+              class="d-flex justify-content-center mt-3"
+            >
+              <b-pagination
+                v-model="currentPage"
+                :total-rows="totalRows"
+                :per-page="perPage"
+                @change="onPageChange"
+                size="sm"
+                class="custom-pagination mb-0"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -51,7 +90,7 @@ export default {
   components: {
     Breadcrumb,
     PriceInformationTable,
-    FormMeasureTranslator
+    FormMeasureTranslator,
   },
   data() {
     return {
@@ -59,8 +98,30 @@ export default {
       loading: true,
       filters: { search: null },
       table_fields: [],
-      priceInformations: []
+      priceInformations: [],
+      currentPage: 1,
+      perPage: 50,
+      perPageOptions: [
+        { value: 10, text: '10' },
+        { value: 25, text: '25' },
+        { value: 50, text: '50' },
+        { value: 100, text: '100' },
+      ],
+      totalRows: 0,
+      totalPages: 0,
     }
+  },
+
+  computed: {
+    startRecord() {
+      if (this.totalRows === 0) return 0
+      return (this.currentPage - 1) * this.perPage + 1
+    },
+
+    endRecord() {
+      const end = this.currentPage * this.perPage
+      return end > this.totalRows ? this.totalRows : end
+    },
   },
 
   async created() {
@@ -69,6 +130,7 @@ export default {
     this.fillTableFields()
     this.loading = false
   },
+
   methods: {
     fillTableFields() {
       const tableFields = [{ key: 'product', label: 'Produto', sortable: true }]
@@ -132,8 +194,38 @@ export default {
 
       this.table_fields = tableFields
     },
+
     async list() {
-      this.priceInformations = await this.$axios.$get('price-informations')
+      try {
+        const response = await this.$axios.$get('price-informations', {
+          params: {
+            page: this.currentPage,
+            limit: this.perPage,
+          },
+        })
+
+        this.priceInformations = response.data
+        this.totalRows = response.pagination.total
+        this.totalPages = response.pagination.pages
+      } catch (error) {
+        this.showError(error)
+      }
+    },
+
+    async onPageChange(page) {
+      this.currentPage = page
+      this.loading = true
+      await this.list()
+      this.loading = false
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    },
+
+    onPerPageChange() {
+      this.currentPage = 1
+      this.loading = true
+      this.list().finally(() => {
+        this.loading = false
+      })
     },
 
     remove(id) {

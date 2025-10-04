@@ -113,6 +113,11 @@ const PriceSchema = new mongoose.Schema(
   }
 )
 
+// Índices compostos para otimização de queries
+PriceSchema.index({ organization: 1, createdAt: -1 }) // Para gestores
+PriceSchema.index({ messenger: 1, createdAt: -1 }) // Para mensageiros
+PriceSchema.index({ createdAt: -1 }) // Para ordenação geral
+
 // Middleware simplificado - apenas conversão dinâmica
 PriceSchema.pre('save', async function (next) {
   try {
