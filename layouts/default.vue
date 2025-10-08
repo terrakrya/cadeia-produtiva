@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="wrapper" class="bg-gray-1">
-      <Navbar />
+      <Navbar v-if="$auth.loggedIn" />
       <div>
         <b-row class="no-gutters">
           <b-col class="main bg-gray-1">
@@ -14,7 +14,7 @@
           </b-col>
         </b-row>
       </div>
-      <BottomNavbar />
+      <BottomNavbar v-if="$auth.loggedIn" />
     </div>
     <notifications />
   </div>

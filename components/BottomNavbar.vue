@@ -1,5 +1,5 @@
 <template>
-  <div class="bottom-navbar" v-if="!isMap">
+  <div class="bottom-navbar" v-if="!isMap && $auth.loggedIn">
     <b-button variant="bottom" to="/painel" class="nav-button">
       <div class="button-content">
         <font-awesome-icon icon="fa-solid fa-equals" class="nav-icon" />
