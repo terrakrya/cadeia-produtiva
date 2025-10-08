@@ -3,7 +3,12 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const secret = process.env.SECRET || 'cadeia-produtiva'
+const secret = process.env.SECRET
+
+if (!secret) {
+  console.error('❌ ERRO: Variável de ambiente SECRET não configurada')
+  process.exit(1)
+}
 
 const UserSchema = new mongoose.Schema(
   {
@@ -130,24 +135,10 @@ UserSchema.methods.generateJWT = function () {
   )
 }
 
-UserSchema.methods.generateUnlimitedJWT = function () {
-  return jwt.sign(
-    {
-      ...this.data(),
-    },
-    secret
-  )
-}
 
 UserSchema.methods.toAuthJSON = function () {
   return {
     ...this.data(),
-    token: this.generateJWT(),
-  }
-}
-
-UserSchema.methods.toUnlimitedAuthJSON = function () {
-  return {
     token: this.generateJWT(),
   }
 }

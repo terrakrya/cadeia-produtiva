@@ -3,7 +3,12 @@ const jwt = require('jsonwebtoken')
 const Decimal = require('decimal.js')
 const ObjectId = mongoose.Schema.Types.ObjectId
 
-const secret = process.env.SECRET || 'cadeia-produtiva'
+const secret = process.env.SECRET
+
+if (!secret) {
+  console.error('❌ ERRO: Variável de ambiente SECRET não configurada')
+  process.exit(1)
+}
 
 // Função de conversão dinâmica simplificada - apenas measurementId
 const getConversion = async (measurementId) => {

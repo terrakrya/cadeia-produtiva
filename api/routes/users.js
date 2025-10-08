@@ -349,7 +349,7 @@ router.post('/password-reset/:token', async (req, res) => {
 
     if (
       !req.body.password ||
-      !(req.body.password == req.body.password_confirmation)
+      !(req.body.password === req.body.password_confirmation)
     ) {
       return res.status(422).send('Confira as senhas informadas')
     } else if (tokenData.valid) {

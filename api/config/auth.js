@@ -1,5 +1,10 @@
 const jwt = require('express-jwt')
-const secret = process.env.SECRET || 'cadeia-produtiva'
+const secret = process.env.SECRET
+
+if (!secret) {
+  console.error('❌ ERRO: Variável de ambiente SECRET não configurada')
+  process.exit(1)
+}
 
 function getTokenFromHeader(req) {
   if (
