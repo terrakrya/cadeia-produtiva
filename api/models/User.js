@@ -5,11 +5,6 @@ const ObjectId = mongoose.Schema.Types.ObjectId
 
 const secret = process.env.SECRET
 
-if (!secret) {
-  console.error('❌ ERRO: Variável de ambiente SECRET não configurada')
-  process.exit(1)
-}
-
 const UserSchema = new mongoose.Schema(
   {
     role: String,

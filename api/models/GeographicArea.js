@@ -3,11 +3,6 @@ const jwt = require('jsonwebtoken')
 
 const secret = process.env.SECRET
 
-if (!secret) {
-  console.error('❌ ERRO: Variável de ambiente SECRET não configurada')
-  process.exit(1)
-}
-
 const GeographicAreaSchema = new mongoose.Schema(
   {
     uf: String,

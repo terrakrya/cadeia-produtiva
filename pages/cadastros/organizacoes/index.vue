@@ -70,7 +70,6 @@
 
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
-import { isAdmin, isGlobalManager } from '~/api/config/auth'
 export default {
   components: {
     Breadcrumb,
