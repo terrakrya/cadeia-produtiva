@@ -511,19 +511,42 @@ export default {
       
       try {
         if (navigator.onLine) {
-          // Online: fetch data from server
-          const squares = await this.$axios.$get('price-informations/summary', {
-            params: this.filters,
-          })
+          // Online: fetch data from server in parallel
+          const [squares, chartData] = await Promise.all([
+            this.$axios.$get('price-informations/summary', {
+              params: this.filters,
+            }),
+            this.$axios.$get('price-informations/harvest-mode', {
+              params: {
+                from: this.filters.from,
+                to: this.filters.to,
+                unitOfMeasurement: this.$auth.user.unitOfMeasurement,
+                product: this.filters.product,
+                regions: [this.$auth.user.region],
+              },
+            })
+          ])
           
-          // Store the data for offline use
-          await localforage.setItem('cachedSummary', squares)
+          // Store the data for offline use in parallel
+          await Promise.all([
+            localforage.setItem('cachedSummary', squares),
+            localforage.setItem('cachedChartData', chartData)
+          ])
+          
           this.summary = squares
+          this.updateChartData(chartData)
           
         } else {
-          // Offline: use cached data
-          const cachedSummary = await localforage.getItem('cachedSummary')
+          // Offline: use cached data in parallel
+          const [cachedSummary, cachedChartData] = await Promise.all([
+            localforage.getItem('cachedSummary'),
+            localforage.getItem('cachedChartData')
+          ])
+          
           this.summary = cachedSummary || []
+          if (cachedChartData) {
+            this.updateChartData(cachedChartData)
+          }
         }
         
         // Extract the userRegionSummary from squares
@@ -542,41 +565,11 @@ export default {
           }
         }
         
-        // Load chart data with offline support
-        await this.loadChartData()
-        
       } catch (error) {
         console.error('Erro ao carregar dados:', error)
       }
       
       this.loading = false
-    },
-    async loadChartData() {
-      try {
-        if (navigator.onLine) {
-          const data = await this.$axios.$get('price-informations/harvest-mode', {
-            params: {
-              from: this.filters.from,
-              to: this.filters.to,
-              unitOfMeasurement: this.$auth.user.unitOfMeasurement,
-              product: this.filters.product,
-              regions: [this.$auth.user.region],
-            },
-          })
-          
-          // Cache the chart data
-          await localforage.setItem('cachedChartData', data)
-          this.updateChartData(data)
-        } else {
-          // Use cached chart data when offline
-          const cachedData = await localforage.getItem('cachedChartData')
-          if (cachedData) {
-            this.updateChartData(cachedData)
-          }
-        }
-      } catch (error) {
-        console.error('Erro ao buscar os dados da safra:', error)
-      }
     },
     updateChartData(data) {
       if (Array.isArray(data)) {
