@@ -18,7 +18,7 @@
 
         <p>Nivel do zoom: {{ currentZoom }}</p>
         <h2>Camadas</h2>
-        <div class="mb-2">
+        <div v-if="map" class="mb-2">
           <LayerForm :map="map" @input="updateMap" />
         </div>
         <!--Camadas cadastradas pelo Usuario-->
