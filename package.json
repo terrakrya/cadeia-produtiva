@@ -126,7 +126,7 @@
     "stylelint-config-standard": "^20.0.0"
   },
   "engines": {
-    "node": "18.20.0",
+    "node": "20",
     "yarn": ">=1.22.0"
   }
 }
