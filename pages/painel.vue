@@ -157,7 +157,7 @@
                   <div class="price-value">
                     {{ userRegionSummary.minimumPrice | moeda }}
                     <span class="price-measure">{{
-                      $auth.user.unitOfMeasurement
+                      filters.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
@@ -167,7 +167,7 @@
                   <div class="price-value">
                     {{ userRegionSummary.maximumPrice | moeda }}
                     <span class="price-measure">{{
-                      $auth.user.unitOfMeasurement
+                      filters.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
@@ -177,7 +177,7 @@
                   <div class="price-value">
                     {{ userRegionSummary.averagePrice | moeda }}
                     <span class="price-measure">{{
-                      $auth.user.unitOfMeasurement
+                      filters.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
@@ -187,13 +187,13 @@
                   <div class="price-value">
                     {{ userRegionSummary.moda | moeda }}
                     <span class="price-measure">{{
-                      $auth.user.unitOfMeasurement
+                      filters.unitOfMeasurement
                     }}</span>
                   </div>
                 </div>
                 <hr />
                 <div class="measure-row mt-2 d-flex justify-content-between">
-                  <span> Preços de 1 {{ $auth.user.unitOfMeasurement }} </span>
+                  <span> Preços de 1 {{ filters.unitOfMeasurement }} </span>
                   <span>
                     Preços Informados: {{ userRegionSummary.totalPrices }}
                   </span>
@@ -213,6 +213,10 @@
 
             <FilterModal
               :isActive.sync="isModalActive"
+              :products="products"
+              :initial-product="filters.product"
+              :initial-unit="filters.unitOfMeasurement"
+              :initial-period="filters.name"
               @apply-filter="applyFilter"
             />
 
@@ -451,7 +455,12 @@ export default {
       )
     } else {
       this.loading = true
+      
+      // Set initial unit of measurement from user profile
+      this.filters.unitOfMeasurement = this.$auth.user.unitOfMeasurement
+      
       await this.loadProducts()
+      
       const harvestPeriod = await this.currentHarvestPeriod()
       this.filters = {
         ...this.filters,
@@ -504,10 +513,6 @@ export default {
       }
     },
     async load() {
-      this.filters = {
-        ...this.filters,
-        unitOfMeasurement: this.$auth.user.unitOfMeasurement,
-      }
       
       try {
         if (navigator.onLine) {
@@ -520,7 +525,7 @@ export default {
               params: {
                 from: this.filters.from,
                 to: this.filters.to,
-                unitOfMeasurement: this.$auth.user.unitOfMeasurement,
+                unitOfMeasurement: this.filters.unitOfMeasurement,
                 product: this.filters.product,
                 regions: [this.$auth.user.region],
               },
@@ -589,7 +594,15 @@ export default {
         console.error('Dados retornados não são um array:', data)
       }
     },
-    applyFilter(period) {
+    applyFilter(data) {
+      // Handle object with product/unit/period OR just period string (backward compat if needed)
+      let period = data
+      if (typeof data === 'object') {
+        period = data.period
+        if (data.product) this.filters.product = data.product
+        if (data.unit) this.filters.unitOfMeasurement = data.unit
+      }
+      
       let fromDate, toDate
       this.filters.name = period
       const currentDate = new Date()
