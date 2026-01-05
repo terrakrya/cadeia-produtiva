@@ -3,8 +3,8 @@
     <div class="panel">
       <div class="panel-body">
         <div>
-          <h4 class="form-title">Informar preço</h4>
-          <h6 class="form-subtitle">Todos os campos são obrigatórios</h6>
+          <h1 class="form-title">Informar preço</h1>
+          <p class="form-subtitle">Todos os campos são obrigatórios</p>
         </div>
         <br />
         <loading :loading="is_loading" />

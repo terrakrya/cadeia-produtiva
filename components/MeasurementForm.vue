@@ -82,6 +82,10 @@
     <b-modal
       v-model="isDeleteModalVisible"
       title="Confirmar Exclusão"
+      header-close-label="Fechar"
+      close-title="Fechar"
+      ok-title="Confirmar"
+      cancel-title="Cancelar"
       @ok="deleteMeasurement"
     >
       <p>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h4 class="form-title">Dados publicados</h4>
-    <h6 class="form-subtitle">Nessa tela você encontra os Dados Publicados</h6>
+    <h1 class="form-title">Dados publicados</h1>
+    <p class="form-subtitle">Nessa tela você encontra os Dados Publicados</p>
     <iframe
       title="Report Section"
       width="100%"

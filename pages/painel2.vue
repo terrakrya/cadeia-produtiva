@@ -4,7 +4,9 @@
     <div class="panel">
       <div class="panel-body">
         <div class="row panel-title">
-          <div class="col-sm-6"></div>
+          <div class="col-sm-6">
+            <h1>Dados publicados</h1>
+          </div>
           <div class="col-sm-6 main-actions">
             <div>
               <b-button
@@ -71,7 +73,7 @@
               </b-row>
 
               <hr />
-              <h4 class="text-center">Preço médio por região</h4>
+              <h2 class="text-center">Preço médio por região</h2>
               <div class="pt-4">
                 <div
                   v-for="(square, squareIndex) in summary.squares"

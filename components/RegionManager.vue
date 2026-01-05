@@ -50,7 +50,7 @@
     </div>
 
     <!-- Modal de Adicionar/Editar Região -->
-    <b-modal v-model="isModalVisible" :title="modalTitle" size="lg" hide-footer>
+    <b-modal v-model="isModalVisible" :title="modalTitle" size="lg" hide-footer header-close-label="Fechar" close-title="Fechar">
       <b-form @submit.prevent="saveRegion">
         <b-form-group label="Nome da Região *">
           <b-form-input
@@ -149,6 +149,10 @@
     <b-modal
       v-model="isDeleteModalVisible"
       title="Confirmar Exclusão"
+      header-close-label="Fechar"
+      close-title="Fechar"
+      ok-title="Confirmar"
+      cancel-title="Cancelar"
       @ok="deleteRegion"
     >
       <p>

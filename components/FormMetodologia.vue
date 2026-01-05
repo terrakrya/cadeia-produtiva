@@ -1,5 +1,5 @@
 <template>
-  <b-modal :id="id" hide-footer title="Nota metodológica">
+  <b-modal :id="id" hide-footer title="Nota metodológica" header-close-label="Fechar" close-title="Fechar">
     METODOLOGIA DO INDICADOR DE PREÇOS DA CASTANHA-DA-AMAZÔNIA SIE-CASTANHA/OCA
     <br />
 

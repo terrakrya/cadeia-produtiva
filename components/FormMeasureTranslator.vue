@@ -1,5 +1,5 @@
 <template>
-  <b-modal :id="id" hide-footer title="Conversões">
+  <b-modal :id="id" hide-footer title="Conversões" header-close-label="Fechar" close-title="Fechar">
     <table class="table b-table">
       <thead>
         <tr>

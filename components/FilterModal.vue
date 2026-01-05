@@ -6,6 +6,8 @@
     centered
     size="lg"
     body-class="teste"
+    header-close-label="Fechar"
+    close-title="Fechar"
     @hidden="closeModal"
   >
     <div>

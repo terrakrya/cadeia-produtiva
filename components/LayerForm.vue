@@ -19,6 +19,8 @@
       hide-footer
       show
       style="z-index: 104900000"
+      header-close-label="Fechar"
+      close-title="Fechar"
     >
       <form ref="layer-form" @submit.prevent="save">
         <b-form-group label="Nome da camada">

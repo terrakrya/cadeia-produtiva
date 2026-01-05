@@ -3,10 +3,10 @@
     <div class="panel">
       <div class="panel-body">
         <div>
-          <h4 class="form-title">Informar Dados Ecológicos</h4>
-          <h6 class="form-subtitle">
+          <h1 class="form-title">Informar Dados Ecológicos</h1>
+          <p class="form-subtitle">
             Informe os Dados Ecológicos da sua Região
-          </h6>
+          </p>
         </div>
         <br />
         <loading :loading="is_loading" />

@@ -7,37 +7,42 @@
         <b-tabs v-model="activeTabKey">
           <b-tab title="Meu perfil">
             <b-form v-if="!is_loading" @submit.prevent="save">
-              <h4 class="mb-4">Complete seu perfil</h4>
+              <h1 class="mb-4">Complete seu perfil</h1>
 
               <b-row>
                 <b-col sm="4">
-                  <b-form-group label="Nome Completo *">
+                  <b-form-group label="Nome Completo *" label-for="input-name">
                     <b-form-input
+                      id="input-name"
                       v-model="form.name"
                       v-validate="getValidationRules('name')"
                       placeholder="Insira o seu nome completo"
                       name="name"
+                      aria-describedby="error-name"
                     />
                     <field-error :msg="veeErrors" field="name" />
                   </b-form-group>
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Data de nascimento *">
+                  <b-form-group label="Data de nascimento *" label-for="input-birthDate">
                     <b-form-input
+                      id="input-birthDate"
                       v-model="form.birthDate"
                       v-mask="'##/##/####'"
                       v-validate="getValidationRules('birthDate')"
                       placeholder="Insira sua data de nascimento"
                       name="birthDate"
+                      aria-describedby="error-birthDate"
                     />
                     <field-error :msg="veeErrors" field="birthDate" />
                   </b-form-group>
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Apelido">
+                  <b-form-group label="Apelido" label-for="input-nickname">
                     <b-form-input
+                      id="input-nickname"
                       v-model="form.nickname"
                       placeholder="Insira o seu apelido"
                     />
@@ -47,19 +52,22 @@
 
               <b-row>
                 <b-col sm="6">
-                  <b-form-group label="E-mail *">
+                  <b-form-group label="E-mail *" label-for="input-email">
                     <b-form-input
+                      id="input-email"
                       v-model="form.email"
                       v-validate="getValidationRules('email')"
                       placeholder="Insira seu email"
                       name="email"
+                      aria-describedby="error-email"
                     />
                     <field-error :msg="veeErrors" field="email" />
                   </b-form-group>
                 </b-col>
                 <b-col sm="3">
-                  <b-form-group label="Gênero">
+                  <b-form-group label="Gênero" label-for="input-gender">
                     <b-form-select
+                      id="input-gender"
                       v-model="form.gender"
                       :options="genero"
                       class="form-control"
@@ -67,13 +75,15 @@
                   </b-form-group>
                 </b-col>
                 <b-col sm="3">
-                  <b-form-group label="Celular *">
+                  <b-form-group label="Celular *" label-for="input-cellphone">
                     <b-form-input
+                      id="input-cellphone"
                       v-model="form.cellphone"
                       v-mask="['(##) ####-####', '(##) #####-####']"
                       v-validate="getValidationRules('cellphone')"
                       placeholder="Insira seu número de celular"
                       name="cellphone"
+                      aria-describedby="error-cellphone"
                     />
                     <field-error :msg="veeErrors" field="cellphone" />
                   </b-form-group>
@@ -82,8 +92,9 @@
 
               <b-row>
                 <b-col sm="6">
-                  <b-form-group label="Identidade">
+                  <b-form-group label="Identidade" label-for="input-identity">
                     <b-form-select
+                      id="input-identity"
                       v-model="form.identity"
                       class="form-control"
                       name="identity"
@@ -92,13 +103,15 @@
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
-                  <b-form-group label="Posição na cadeia de valor *">
+                  <b-form-group label="Posição na cadeia de valor *" label-for="input-buyerPosition">
                     <b-form-select
+                      id="input-buyerPosition"
                       v-model="form.buyerPosition"
                       v-validate="getValidationRules('buyerPosition')"
                       class="form-control"
                       name="buyerPosition"
                       :options="buyerPositions"
+                      aria-describedby="error-buyerPosition"
                     />
                     <field-error :msg="veeErrors" field="buyerPosition" />
                   </b-form-group>
@@ -107,14 +120,16 @@
 
               <b-row>
                 <b-col sm="6">
-                  <b-form-group label="Produto acompanhado *">
+                  <b-form-group label="Produto acompanhado *" label-for="input-productId">
                     <b-form-select
+                      id="input-productId"
                       v-model="form.productId"
                       v-validate="getValidationRules('productId')"
                       class="form-control"
                       name="productId"
                       :options="produtosOptions"
                       :disabled="loadingProdutos"
+                      aria-describedby="error-productId"
                       @input="onProductChange"
                     />
                     <small v-if="loadingProdutos" class="text-muted">
@@ -140,14 +155,16 @@
                   </b-form-group>
                 </b-col>
                 <b-col sm="6">
-                  <b-form-group label="Unidade de medida preferida *">
+                  <b-form-group label="Unidade de medida preferida *" label-for="input-unitOfMeasurement">
                     <b-form-select
+                      id="input-unitOfMeasurement"
                       v-model="form.unitOfMeasurement"
                       v-validate="getValidationRules('unitOfMeasurement')"
                       class="form-control"
                       name="unitOfMeasurement"
                       :options="medidasOptions"
                       :disabled="loadingMedidas || !form.productId"
+                      aria-describedby="error-unitOfMeasurement"
                       @input="onMeasureChange"
                     />
                     <small v-if="loadingMedidas" class="text-muted">
@@ -167,8 +184,9 @@
               <b-row v-if="isAdmin || isGlobalManager">
                 <b-col sm="4">
                   <!-- NOTE: We now use 'value-field="uf"' so that 'form.uf' stores the sigla -->
-                  <b-form-group label="Estado de Atuação *">
+                  <b-form-group label="Estado de Atuação *" label-for="input-uf">
                     <b-form-select
+                      id="input-uf"
                       v-model="form.uf"
                       class="form-control"
                       :options="estados"
@@ -180,8 +198,9 @@
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Município de Referência *">
+                  <b-form-group label="Município de Referência *" label-for="input-city">
                     <b-form-select
+                      id="input-city"
                       v-model="form.city"
                       class="form-control"
                       :options="cidades"
@@ -193,8 +212,9 @@
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Região *">
+                  <b-form-group label="Região *" label-for="input-region">
                     <input
+                      id="input-region"
                       v-model="form.region"
                       type="text"
                       name="region"
@@ -210,25 +230,29 @@
           </b-tab>
 
           <b-tab title="Alterar Senha">
-            <h4 class="mb-4">Alterar senha</h4>
+            <h2 class="mb-4">Alterar senha</h2>
             <b-form v-if="!is_loading" @submit.prevent="save">
               <b-row>
                 <b-col md="6">
-                  <b-form-group label="Insira a nova senha">
+                  <b-form-group label="Insira a nova senha" label-for="input-pass">
                     <b-form-input
+                      id="input-pass"
                       v-model="form.password"
                       type="password"
                       name="pass"
+                      aria-describedby="error-pass"
                     />
                     <field-error :msg="veeErrors" field="pass" />
                   </b-form-group>
                 </b-col>
                 <b-col md="6">
-                  <b-form-group label="Repita a nova senha">
+                  <b-form-group label="Repita a nova senha" label-for="input-pass_confirmation">
                     <b-form-input
+                      id="input-pass_confirmation"
                       v-model="form.password_confirmation"
                       type="password"
                       name="pass_confirmation"
+                      aria-describedby="error-pass_confirmation"
                     />
                     <field-error :msg="veeErrors" field="pass_confirmation" />
                   </b-form-group>

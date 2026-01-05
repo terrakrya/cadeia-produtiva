@@ -27,7 +27,7 @@
 
               <!-- Manual installation instructions - shows when prompt isn't available -->
               <div v-else class="mt-4">
-                <h4>Como instalar:</h4>
+                <h3>Como instalar:</h3>
                 <ul class="text-left">
                   <li v-if="isIOS" class="mb-2">
                     Toque no ícone de compartilhamento do navegador que fica no

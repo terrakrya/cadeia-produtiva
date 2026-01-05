@@ -3,8 +3,8 @@
     <div class="panel">
       <div class="panel-body">
         <div>
-          <h4 class="form-title">Painel</h4>
-          <h6 class="form-subtitle">
+          <h1 class="form-title">Painel</h1>
+          <p class="form-subtitle">
             Preços de
             <span v-if="productFilter"
               ><b>{{ productFilter }}</b></span
@@ -20,7 +20,7 @@
             <span v-else-if="!filters.from && filters.to">
               até {{ filters.to | moment('DD/MM/YYYY') }}
             </span>
-          </h6>
+          </p>
         </div>
         <div class="info-content">
           <div v-if="loading" class="text-center">
@@ -245,9 +245,9 @@
             <!-- Gráfico -->
             <hr />
             <div>
-              <h4 class="form-title">
+              <h2 class="form-title">
                 Preço da Safra em {{ filters.unitOfMeasurement }}
-              </h4>
+              </h2>
               <line-chart :chart-data="chartData" />
             </div>
 
@@ -255,7 +255,7 @@
             <hr />
             <div class="d-flex justify-content-between align-items-center">
               <div>
-                <h4 class="form-title">Outras regiões</h4>
+                <h2 class="form-title">Outras regiões</h2>
               </div>
             </div>
             <div v-if="summary && summary.length" class="pt-4">

@@ -11,12 +11,14 @@
         <b-form @submit.prevent="save">
           <div v-if="isAdmin || isGlobalManager" class="form-row">
             <div class="col-md-12">
-              <b-form-group label="Perfil *">
+              <b-form-group label="Perfil *" label-for="input-role">
                 <b-form-radio-group
+                  id="input-role"
                   v-model="form.role"
                   v-validate="'required'"
                   :options="tiposDeUsuarioPermitidos"
                   name="role"
+                  aria-describedby="error-role"
                 />
                 <field-error :msg="veeErrors" field="role" />
               </b-form-group>
@@ -31,8 +33,9 @@
               "
               class="col-sm-6"
             >
-              <b-form-group label="Selecionar uma organização *">
+              <b-form-group label="Selecionar uma organização *" label-for="input-organization">
                 <b-form-select
+                  id="input-organization"
                   v-model="form.organization"
                   class="form-control"
                   :options="organizationsOptions"
@@ -43,19 +46,22 @@
 
           <div class="form-row">
             <div class="col-md-4 col-sm-12">
-              <b-form-group label="Nome *">
+              <b-form-group label="Nome *" label-for="input-name">
                 <b-form-input
+                  id="input-name"
                   v-model="form.name"
                   v-validate="'required'"
                   name="name"
                   placeholder="Digite o nome"
+                  aria-describedby="error-name"
                 />
                 <field-error :msg="veeErrors" field="name" />
               </b-form-group>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="Gênero">
+              <b-form-group label="Gênero" label-for="input-gender">
                 <b-form-select
+                  id="input-gender"
                   v-model="form.gender"
                   class="form-control"
                   :options="genero"
@@ -63,8 +69,9 @@
               </b-form-group>
             </div>
             <div class="col-md-2 col-sm-12">
-              <b-form-group label="Nascimento">
+              <b-form-group label="Nascimento" label-for="input-birthDate">
                 <b-form-input
+                  id="input-birthDate"
                   v-model="form.birthDate"
                   v-mask="['##/##/####']"
                   placeholder="DD/MM/AAAA"
@@ -72,12 +79,14 @@
               </b-form-group>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="E-mail *">
+              <b-form-group label="E-mail *" label-for="input-email">
                 <b-form-input
+                  id="input-email"
                   v-model="form.email"
                   v-validate="'required'"
                   name="email"
                   placeholder="Digite o e-mail"
+                  aria-describedby="error-email"
                 />
                 <field-error :msg="veeErrors" field="email" />
               </b-form-group>
@@ -86,36 +95,42 @@
 
           <div class="form-row">
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="Celular *">
+              <b-form-group label="Celular *" label-for="input-cellphone">
                 <b-form-input
+                  id="input-cellphone"
                   v-model="form.cellphone"
                   v-validate="'required'"
                   v-mask="['(##) #####-####']"
                   name="cellphone"
                   placeholder="Digite o celular"
+                  aria-describedby="error-cellphone"
                 />
                 <field-error :msg="veeErrors" field="cellphone" />
               </b-form-group>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="CPF *">
+              <b-form-group label="CPF *" label-for="input-cpf">
                 <b-form-input
+                  id="input-cpf"
                   v-model="form.cpf"
                   v-validate="'required'"
                   v-mask="['###.###.###-##']"
                   name="cpf"
                   placeholder="Digite o CPF"
+                  aria-describedby="error-cpf"
                 />
                 <field-error :msg="veeErrors" field="cpf" />
               </b-form-group>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="Estado de Atuação *">
+              <b-form-group label="Estado de Atuação *" label-for="input-uf">
                 <b-form-select
+                  id="input-uf"
                   v-model="form.uf"
                   class="form-control"
                   :options="estados.map((e) => e.uf)"
                   name="uf"
+                  aria-describedby="error-uf"
                   @input="loadCities"
                 >
                   <option :value="null" disabled>Selecione um Estado</option>
@@ -124,12 +139,14 @@
               </b-form-group>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="Município de Referência *">
+              <b-form-group label="Município de Referência *" label-for="input-city">
                 <b-form-select
+                  id="input-city"
                   v-model="form.city"
                   class="form-control"
                   :options="cidades"
                   name="city"
+                  aria-describedby="error-region"
                   @input="loadRegions()"
                 >
                 </b-form-select>
@@ -140,23 +157,27 @@
 
           <div v-if="showPasswordFields && isEditing()" class="form-row">
             <div class="col-md-6 col-sm-12">
-              <b-form-group label="Senha">
+              <b-form-group label="Senha" label-for="input-password">
                 <b-form-input
+                  id="input-password"
                   v-model="form.password"
                   type="password"
                   name="password"
                   placeholder="Digite a senha"
+                  aria-describedby="error-password"
                 />
                 <field-error :msg="veeErrors" field="password" />
               </b-form-group>
             </div>
             <div class="col-md-6 col-sm-12">
-              <b-form-group label="Confirmação de senha">
+              <b-form-group label="Confirmação de senha" label-for="input-password_confirmation">
                 <b-form-input
+                  id="input-password_confirmation"
                   v-model="form.password_confirmation"
                   type="password"
                   name="password_confirmation"
                   placeholder="Confirme a senha"
+                  aria-describedby="error-password_confirmation"
                 />
                 <field-error :msg="veeErrors" field="password_confirmation" />
               </b-form-group>

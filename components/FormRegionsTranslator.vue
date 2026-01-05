@@ -1,5 +1,5 @@
 <template>
-  <b-modal :id="id" title="Regiões Castanheiras" hide-footer>
+  <b-modal :id="id" title="Regiões Castanheiras" hide-footer header-close-label="Fechar" close-title="Fechar">
     <div class="regions-translator">
       <table
         v-for="(a, index) in groupedlist"

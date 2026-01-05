@@ -47,7 +47,7 @@
         </div>
         <div class="info-content">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <h5 class="form-title mb-0">Filtros</h5>
+            <h2 class="form-title mb-0">Filtros</h2>
             <b-button
               variant="danger"
               class="btn btn-primary"
