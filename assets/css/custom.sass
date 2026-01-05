@@ -82,12 +82,31 @@ body
   margin-bottom: 5px
   margin-top: 25px
   font-weight: 700
+  font-size: 1.5rem
+  line-height: 1.2
 
 .form-subtitle
   font-size: 16px
   font-weight: 500
   margin-bottom: 0px
-  opacity: 80%
+  color: $gray7
+  line-height: 1.5
+
+// Estilos para tags semânticas com classes de estilo (acessibilidade)
+h1.form-title, h2.form-title
+  font-size: 1.5rem
+  margin-top: 25px
+  margin-bottom: 5px
+  font-weight: 700
+  color: $brown1
+  line-height: 1.2
+
+p.form-subtitle
+  font-size: 16px
+  font-weight: 500
+  margin-bottom: 0px
+  color: $gray7
+  line-height: 1.5
 
 .title-buttons-form
   margin-bottom: -15px
@@ -259,6 +278,16 @@ th.actions, td.actions
 .install-pwa 
   text-align: center
   padding: 20px
+  // Estilos para cabeçalhos semânticos (acessibilidade)
+  h1
+    font-size: 2.5rem
+    margin-bottom: 0.5rem
+  h2
+    font-size: 1.5rem
+    margin-bottom: 1rem
+  h3
+    font-size: 1.25rem
+    margin-bottom: 0.5rem
 
 .badge
   color: $brown1 !important
@@ -477,6 +506,14 @@ th.actions, td.actions
     color: $gray1
     font-size: 30px
     margin: auto
+  // Override para h1/h2 com classe form-title (acessibilidade)
+  h1.form-title, h2.form-title
+    font-size: 1.5rem
+    margin-top: 25px
+    margin-bottom: 5px
+    font-weight: 700
+    color: $brown1
+    line-height: 1.2
   .panel-body
     padding: 0 20px 20px 20px
   .tab-content
@@ -502,6 +539,12 @@ th.actions, td.actions
           // color: $gray1
   .tab-pane
     padding: 15px 0
+    // Estilos para cabeçalhos semânticos dentro de tabs (acessibilidade)
+    h1, h2
+      font-size: 1.5rem
+      margin-bottom: 1rem
+      color: $gray1
+      font-weight: 600
   .tab-content, .info-content
     margin-top: 30px
   .tab-content th i, .info-content th i
