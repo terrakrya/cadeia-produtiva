@@ -248,7 +248,10 @@
               <h2 class="form-title">
                 Preço da Safra em {{ filters.unitOfMeasurement }}
               </h2>
-              <line-chart :chart-data="chartData" />
+              <line-chart 
+                :chart-data="chartData" 
+                :chart-title="`Preço Mais Comum por ${periodLabel}`"
+              />
             </div>
 
             <!-- Outras Regiões -->

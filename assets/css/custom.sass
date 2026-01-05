@@ -20,6 +20,25 @@ body
   overscroll-behavior-y: none
   background-color: $brown3
 
+// Estilos de foco visível para acessibilidade (navegação por teclado)
+// Indicador de foco para todos os elementos interativos
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus,
+[tabindex]:focus,
+.btn:focus
+  outline: 3px solid $orange !important
+  outline-offset: 2px
+  box-shadow: 0 0 0 3px rgba(147, 49, 42, 0.3) !important
+
+// Estilos específicos para o container do gráfico
+.line-chart-container:focus
+  outline: 3px solid $orange !important
+  outline-offset: 4px
+  box-shadow: 0 0 0 4px rgba(147, 49, 42, 0.3) !important
+
 #wrapper
   padding-bottom: 100px
   padding-top: 80px
@@ -107,6 +126,27 @@ p.form-subtitle
   margin-bottom: 0px
   color: $gray7
   line-height: 1.5
+
+// Estilos de foco visível para acessibilidade (navegação por teclado)
+// Usa cor marrom do sistema com borda interna branca para contraste em qualquer contexto
+*:focus-visible
+  outline: 3px solid $brown1
+  outline-offset: 2px
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px $brown1
+
+button:focus-visible,
+.btn:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible
+  outline: 3px solid $brown1
+  outline-offset: 2px
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px $brown1
+
+// Remove outline padrão quando não é focus-visible (clique do mouse)
+*:focus:not(:focus-visible)
+  outline: none
 
 .title-buttons-form
   margin-bottom: -15px
@@ -203,19 +243,37 @@ th.actions, td.actions
   height: 1px
   background-color: #e0e0e0
 
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:focus, .btn-primary:visited
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited
   background-color: $orange !important
   border-color: $orange
   color: $gray5
   border-radius: 50px
 
-.btn-secondary, .btn-secondary:hover, .btn-secondary:active, .btn-secondary:focus, .btn-secondary:visited
+.btn-primary:focus
+  background-color: $orange !important
+  border-color: $orange
+  color: $gray5
+  border-radius: 50px
+  outline: 3px solid #333 !important
+  outline-offset: 2px
+  box-shadow: 0 0 0 4px rgba(147, 49, 42, 0.4) !important
+
+.btn-secondary, .btn-secondary:hover, .btn-secondary:active, .btn-secondary:visited
   color: $brown1
   background-color: $gray2
   border-color: $gray2
   border-radius: 50px
 
-.btn-panel, .btn-panel:hover, .btn-panel:active, .btn-panel:focus, .btn-panel:visited
+.btn-secondary:focus
+  color: $brown1
+  background-color: $gray2
+  border-color: $gray2
+  border-radius: 50px
+  outline: 3px solid $orange !important
+  outline-offset: 2px
+  box-shadow: 0 0 0 4px rgba(147, 49, 42, 0.4) !important
+
+.btn-panel, .btn-panel:hover, .btn-panel:active, .btn-panel:visited
   color: $brown1
   background-color: $white
   border-color: #ededed
@@ -232,8 +290,22 @@ th.actions, td.actions
   padding: 0
   letter-spacing: 0.5px
 
-.btn-bottom, .btn-bottom:hover, .btn-bottom:active, .btn-bottom:focus, .btn-bottom:visited
+.btn-panel:focus
+  color: $brown1
+  background-color: $white
+  border-color: $orange
+  outline: 3px solid $orange !important
+  outline-offset: 2px
+  box-shadow: 0 0 0 4px rgba(147, 49, 42, 0.4) !important
+
+.btn-bottom, .btn-bottom:hover, .btn-bottom:active, .btn-bottom:visited
   color: $gray7
+
+.btn-bottom:focus
+  color: $gray7
+  outline: 3px solid $orange !important
+  outline-offset: 2px
+  box-shadow: 0 0 0 4px rgba(147, 49, 42, 0.4) !important
 
 .btn-form
   color: $brown1
