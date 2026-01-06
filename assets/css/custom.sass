@@ -5,7 +5,7 @@
 $brown1: #852E27
 $brown2: #f1f1e9
 $brown3: #fff
-$brown4: #b2e7d8
+$brown4:rgb(2, 163, 2)
 $orange: #93312A
 $red: #dc3545
 $gray1: #333
@@ -29,7 +29,7 @@ select:focus,
 textarea:focus,
 [tabindex]:focus,
 .btn:focus
-  outline: 3px solid $orange !important
+  outline: 3px solid $brown4 !important
   outline-offset: 2px
   box-shadow: 0 0 0 3px rgba(147, 49, 42, 0.3) !important
 
@@ -128,11 +128,13 @@ p.form-subtitle
   line-height: 1.5
 
 // Estilos de foco visível para acessibilidade (navegação por teclado)
-// Usa cor marrom do sistema com borda interna branca para contraste em qualquer contexto
+// Estratégia de anel duplo: Interno Branco + Externo Marrom (Sistema)
+// Garante contraste em fundos claros (vê-se o anel marrom) e escuros (vê-se o anel branco)
+$focus-color:rgb(255, 255, 255) !important
+
 *:focus-visible
-  outline: 3px solid $brown1
-  outline-offset: 2px
-  box-shadow: 0 0 0 2px #fff, 0 0 0 5px $brown1
+  outline: 2px solid transparent
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px $focus-color
 
 button:focus-visible,
 .btn:focus-visible,
@@ -140,9 +142,13 @@ a:focus-visible,
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible
-  outline: 3px solid $brown1
-  outline-offset: 2px
-  box-shadow: 0 0 0 2px #fff, 0 0 0 5px $brown1
+  outline: 2px solid transparent
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px $focus-color
+
+// Remove regras específicas de navbar pois o anel duplo universal já resolve
+.navbar a:focus-visible,
+.navbar button:focus-visible
+  box-shadow: 0 0 0 2px #fff, 0 0 0 5px $focus-color
 
 // Remove outline padrão quando não é focus-visible (clique do mouse)
 *:focus:not(:focus-visible)

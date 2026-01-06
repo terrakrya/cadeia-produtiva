@@ -1,7 +1,12 @@
 <template>
-  <span v-show="msg.has(field)" class="text-danger">{{
-    msg.first(field)
-  }}</span>
+  <span
+    v-show="msg.has(field)"
+    class="text-danger"
+    role="alert"
+    aria-live="polite"
+  >
+    {{ msg.first(field) }}
+  </span>
 </template>
 
 <script>

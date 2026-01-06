@@ -12,10 +12,10 @@
   >
     <div>
       <div class="filter-section mb-4">
-        <h6 class="filter-title mb-3">
+        <h2 class="filter-title mb-3 h6">
           <font-awesome-icon icon="fa-solid fa-box-open" class="mr-2" />
           Produto e Unidade
-        </h6>
+        </h2>
         <b-row>
           <b-col md="6" class="mb-3 mb-md-0">
             <label class="small text-muted mb-1 d-block">Produto</label>
@@ -44,10 +44,10 @@
       </div>
 
       <div class="filter-section">
-        <h6 class="filter-title mb-3">
+        <h2 class="filter-title mb-3 h6">
           <font-awesome-icon icon="fa-solid fa-calendar-days" class="mr-2" />
           Período de Análise
-        </h6>
+        </h2>
         <b-row class="filter-buttons-grid">
           <b-col cols="6" class="mb-3">
             <b-button
