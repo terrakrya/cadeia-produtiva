@@ -146,26 +146,56 @@ export default {
 
   computed: {
     /**
-     * Retorna os dados da tabela ordenados cronologicamente (ano > mês > semana)
+     * Retorna os dados organizados e ordenados para uso na tabela e no gráfico
+     * Centraliza a lógica de ordenação para garantir consistência
      */
-    sortedTableData() {
+    sortedItems() {
       const labels = this.chartData.labels || []
       const datasets = this.chartData.datasets || []
       
       if (!labels.length) return []
       
-      const tableData = labels.map((label, index) => ({
+      const items = labels.map((label, index) => ({
         label,
+        // Mantém os valores originais de cada dataset para este índice
         values: datasets.map(ds => ds.data[index]),
         sortKey: this.parsePeriodLabel(label)
       }))
       
       // Ordena por ano, depois mês, depois semana
-      return tableData.sort((a, b) => {
+      return items.sort((a, b) => {
         if (a.sortKey.year !== b.sortKey.year) return a.sortKey.year - b.sortKey.year
         if (a.sortKey.month !== b.sortKey.month) return a.sortKey.month - b.sortKey.month
         return a.sortKey.week - b.sortKey.week
       })
+    },
+
+    /**
+     * Retorna os dados formatados para a tabela (compatibilidade com template existente)
+     */
+    sortedTableData() {
+      return this.sortedItems
+    },
+
+    /**
+     * Reconstrói o objeto de dados do Chart.js com os labels e dados ordenados
+     */
+    sortedChartData() {
+      if (!this.sortedItems.length) return this.chartData
+
+      const labels = this.sortedItems.map(item => item.label)
+      
+      // Reconstrói os datasets mantendo as propriedades (cor, label, etc) mas com dados ordenados
+      const originalDatasets = this.chartData.datasets || []
+      const datasets = originalDatasets.map((ds, dsIndex) => ({
+        ...ds,
+        data: this.sortedItems.map(item => item.values[dsIndex])
+      }))
+
+      return {
+        labels,
+        datasets
+      }
     }
   },
 
@@ -178,7 +208,10 @@ export default {
     chartData: {
       handler(newData, oldData) {
         if (!this.areDataEqual(newData, oldData)) {
-          this.$data._chart.destroy()
+          // Destrói o gráfico anterior
+          if (this.$data._chart) {
+            this.$data._chart.destroy()
+          }
           this.updateChartOptions()
           this.renderChart()
         }
@@ -189,12 +222,14 @@ export default {
 
   methods: {
     /**
-     * Renderiza o gráfico no canvas
+     * Renderiza o gráfico no canvas usando os dados ordenados
      */
     renderChart() {
+      if (!this.$refs.canvas) return
+      
       this.$data._chart = new Chart(this.$refs.canvas.getContext('2d'), {
         type: 'line',
-        data: this.chartData,
+        data: this.sortedChartData, // Usa dados ordenados
         options: this.options
       })
     },
@@ -203,9 +238,13 @@ export default {
      * Atualiza o limite máximo do eixo Y baseado nos dados
      */
     updateChartOptions() {
+      if (!this.chartData.datasets) return
       const allValues = this.chartData.datasets.flatMap(ds => ds.data)
       const maxValue = Math.max(...allValues)
-      this.options.scales.yAxes[0].ticks.suggestedMax = maxValue * 1.1
+      // Ajusta escala se houver dados
+      if (isFinite(maxValue)) {
+        this.options.scales.yAxes[0].ticks.suggestedMax = maxValue * 1.1
+      }
     },
 
     /**
@@ -331,7 +370,15 @@ export default {
 .line-chart-container {
   position: relative;
   width: 100%;
-  height: 400px;
+  height: 300px; /* Altura padrão para mobile */
+  min-height: 250px;
+}
+
+/* Em telas maiores, aumenta a altura */
+@media (min-width: 576px) {
+  .line-chart-container {
+    height: 400px;
+  }
 }
 
 canvas {
