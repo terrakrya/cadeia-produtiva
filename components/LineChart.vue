@@ -331,11 +331,12 @@ export default {
 .line-chart-container {
   position: relative;
   width: 100%;
+  height: 400px;
 }
 
 canvas {
   width: 100%;
-  height: 400px;
+  height: 100%;
 }
 
 /* === TABELA DE DADOS === */
