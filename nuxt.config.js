@@ -68,6 +68,14 @@ export default {
 
   bootstrapVue: {
     icons: true,
+    config: {
+      BModal: {
+        headerCloseLabel: 'Fechar',
+        closeTitle: 'Fechar',
+        cancelTitle: 'Cancelar',
+        okTitle: 'OK',
+      },
+    },
   },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -198,6 +206,5 @@ export default {
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
   build: {},
 }

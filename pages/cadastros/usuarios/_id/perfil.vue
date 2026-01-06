@@ -11,7 +11,8 @@
 
               <b-row>
                 <b-col sm="4">
-                  <b-form-group label="Nome Completo *" label-for="input-name">
+                  <div class="form-group">
+                    <label for="input-name">Nome Completo *</label>
                     <b-form-input
                       id="input-name"
                       v-model="form.name"
@@ -21,11 +22,12 @@
                       aria-describedby="error-name"
                     />
                     <field-error :msg="veeErrors" field="name" />
-                  </b-form-group>
+                  </div>
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Data de nascimento *" label-for="input-birthDate">
+                  <div class="form-group">
+                    <label for="input-birthDate">Data de nascimento *</label>
                     <b-form-input
                       id="input-birthDate"
                       v-model="form.birthDate"
@@ -36,23 +38,25 @@
                       aria-describedby="error-birthDate"
                     />
                     <field-error :msg="veeErrors" field="birthDate" />
-                  </b-form-group>
+                  </div>
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Apelido" label-for="input-nickname">
+                  <div class="form-group">
+                    <label for="input-nickname">Apelido</label>
                     <b-form-input
                       id="input-nickname"
                       v-model="form.nickname"
                       placeholder="Insira o seu apelido"
                     />
-                  </b-form-group>
+                  </div>
                 </b-col>
               </b-row>
 
               <b-row>
                 <b-col sm="6">
-                  <b-form-group label="E-mail *" label-for="input-email">
+                  <div class="form-group">
+                    <label for="input-email">E-mail *</label>
                     <b-form-input
                       id="input-email"
                       v-model="form.email"
@@ -62,20 +66,22 @@
                       aria-describedby="error-email"
                     />
                     <field-error :msg="veeErrors" field="email" />
-                  </b-form-group>
+                  </div>
                 </b-col>
                 <b-col sm="3">
-                  <b-form-group label="Gênero" label-for="input-gender">
+                  <div class="form-group">
+                    <label for="input-gender">Gênero</label>
                     <b-form-select
                       id="input-gender"
                       v-model="form.gender"
                       :options="genero"
                       class="form-control"
                     />
-                  </b-form-group>
+                  </div>
                 </b-col>
                 <b-col sm="3">
-                  <b-form-group label="Celular *" label-for="input-cellphone">
+                  <div class="form-group">
+                    <label for="input-cellphone">Celular *</label>
                     <b-form-input
                       id="input-cellphone"
                       v-model="form.cellphone"
@@ -86,13 +92,14 @@
                       aria-describedby="error-cellphone"
                     />
                     <field-error :msg="veeErrors" field="cellphone" />
-                  </b-form-group>
+                  </div>
                 </b-col>
               </b-row>
 
               <b-row>
                 <b-col sm="6">
-                  <b-form-group label="Identidade" label-for="input-identity">
+                  <div class="form-group">
+                    <label for="input-identity">Identidade</label>
                     <b-form-select
                       id="input-identity"
                       v-model="form.identity"
@@ -100,10 +107,11 @@
                       name="identity"
                       :options="identidade"
                     />
-                  </b-form-group>
+                  </div>
                 </b-col>
                 <b-col sm="6">
-                  <b-form-group label="Posição na cadeia de valor *" label-for="input-buyerPosition">
+                  <div class="form-group">
+                    <label for="input-buyerPosition">Posição na cadeia de valor *</label>
                     <b-form-select
                       id="input-buyerPosition"
                       v-model="form.buyerPosition"
@@ -114,13 +122,14 @@
                       aria-describedby="error-buyerPosition"
                     />
                     <field-error :msg="veeErrors" field="buyerPosition" />
-                  </b-form-group>
+                  </div>
                 </b-col>
               </b-row>
 
               <b-row>
                 <b-col sm="6">
-                  <b-form-group label="Produto acompanhado *" label-for="input-productId">
+                  <div class="form-group">
+                    <label for="input-productId">Produto acompanhado *</label>
                     <b-form-select
                       id="input-productId"
                       v-model="form.productId"
@@ -152,10 +161,11 @@
                       </span>
                     </small>
                     <field-error :msg="veeErrors" field="productId" />
-                  </b-form-group>
+                  </div>
                 </b-col>
                 <b-col sm="6">
-                  <b-form-group label="Unidade de medida preferida *" label-for="input-unitOfMeasurement">
+                  <div class="form-group">
+                    <label for="input-unitOfMeasurement">Unidade de medida preferida *</label>
                     <b-form-select
                       id="input-unitOfMeasurement"
                       v-model="form.unitOfMeasurement"
@@ -177,14 +187,15 @@
                       Nenhuma medida encontrada para este produto
                     </small>
                     <field-error :msg="veeErrors" field="unitOfMeasurement" />
-                  </b-form-group>
+                  </div>
                 </b-col>
               </b-row>
 
               <b-row v-if="isAdmin || isGlobalManager">
                 <b-col sm="4">
                   <!-- NOTE: We now use 'value-field="uf"' so that 'form.uf' stores the sigla -->
-                  <b-form-group label="Estado de Atuação *" label-for="input-uf">
+                  <div class="form-group">
+                    <label for="input-uf">Estado de Atuação *</label>
                     <b-form-select
                       id="input-uf"
                       v-model="form.uf"
@@ -194,11 +205,12 @@
                       text-field="nome"
                       @input="loadCities()"
                     />
-                  </b-form-group>
+                  </div>
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Município de Referência *" label-for="input-city">
+                  <div class="form-group">
+                    <label for="input-city">Município de Referência *</label>
                     <b-form-select
                       id="input-city"
                       v-model="form.city"
@@ -208,11 +220,12 @@
                       text-field="nome"
                       @input="loadRegion()"
                     />
-                  </b-form-group>
+                  </div>
                 </b-col>
 
                 <b-col sm="4">
-                  <b-form-group label="Região *" label-for="input-region">
+                  <div class="form-group">
+                    <label for="input-region">Região *</label>
                     <input
                       id="input-region"
                       v-model="form.region"
@@ -221,7 +234,7 @@
                       readonly
                       class="form-control"
                     />
-                  </b-form-group>
+                  </div>
                 </b-col>
               </b-row>
 
@@ -234,7 +247,8 @@
             <b-form v-if="!is_loading" @submit.prevent="save">
               <b-row>
                 <b-col md="6">
-                  <b-form-group label="Insira a nova senha" label-for="input-pass">
+                  <div class="form-group">
+                    <label for="input-pass">Insira a nova senha</label>
                     <b-form-input
                       id="input-pass"
                       v-model="form.password"
@@ -243,10 +257,11 @@
                       aria-describedby="error-pass"
                     />
                     <field-error :msg="veeErrors" field="pass" />
-                  </b-form-group>
+                  </div>
                 </b-col>
                 <b-col md="6">
-                  <b-form-group label="Repita a nova senha" label-for="input-pass_confirmation">
+                  <div class="form-group">
+                    <label for="input-pass_confirmation">Repita a nova senha</label>
                     <b-form-input
                       id="input-pass_confirmation"
                       v-model="form.password_confirmation"
@@ -255,7 +270,7 @@
                       aria-describedby="error-pass_confirmation"
                     />
                     <field-error :msg="veeErrors" field="pass_confirmation" />
-                  </b-form-group>
+                  </div>
                 </b-col>
               </b-row>
               <form-submit :sending="is_sending" />
