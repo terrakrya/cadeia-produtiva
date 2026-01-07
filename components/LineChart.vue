@@ -65,16 +65,16 @@
               scope="row"
               tabindex="0"
               class="focusable-cell"
-              :aria-label="'Período: ' + item.label"
+              :aria-label="'Período: ' + (item.formattedLabel || item.label)"
             >
-              {{ item.label }}
+              {{ item.formattedLabel || item.label }}
             </th>
             <td 
               v-for="(value, colIndex) in item.values" 
               :key="colIndex"
               tabindex="0"
               class="focusable-cell"
-              :aria-label="item.label + ', ' + chartData.datasets[colIndex].label + ': ' + formatValue(value)"
+              :aria-label="(item.formattedLabel || item.label) + ', ' + chartData.datasets[colIndex].label + ': ' + formatValue(value)"
             >
               {{ formatValue(value) }}
             </td>
@@ -155,12 +155,16 @@ export default {
       
       if (!labels.length) return []
       
-      const items = labels.map((label, index) => ({
-        label,
-        // Mantém os valores originais de cada dataset para este índice
-        values: datasets.map(ds => ds.data[index]),
-        sortKey: this.parsePeriodLabel(label)
-      }))
+      const items = labels.map((label, index) => {
+        const sortKey = this.parsePeriodLabel(label)
+        return {
+          label,
+          // Mantém os valores originais de cada dataset para este índice
+          values: datasets.map(ds => ds.data[index]),
+          sortKey,
+          formattedLabel: this.getAccessibleLabel(sortKey, label)
+        }
+      })
       
       // Ordena por ano, depois mês, depois semana
       return items.sort((a, b) => {
@@ -280,7 +284,7 @@ export default {
 
     /**
      * Extrai ano, mês e semana de um label de período
-     * Suporta: "S1 - Jan/2025", "Semana 1 - 01/2025", "S1 01/2025"
+     * Suporta: "S1 - Jan/2025", "Semana 1 - 01/2025", "JAN/26 - Semana 1"
      */
     parsePeriodLabel(label) {
       const result = { year: 0, month: 0, week: 0 }
@@ -290,25 +294,75 @@ export default {
       const weekMatch = label.match(/[Ss](?:emana)?\s*(\d+)/i)
       if (weekMatch) result.week = parseInt(weekMatch[1], 10)
       
-      // Extrai ano (4 dígitos)
-      const yearMatch = label.match(/(\d{4})/)
-      if (yearMatch) result.year = parseInt(yearMatch[1], 10)
+      // Tenta formato MMM/YY (ex: JAN/26) vindo do backend
+      // Procura por 3 letras seguidas de / e 2 ou 4 dígitos
+      const monthYearMatch = label.match(/([a-z]{3})\/(\d{2,4})/i)
       
-      // Extrai mês - formato numérico (01/2025)
-      const monthNumMatch = label.match(/(\d{1,2})\/\d{4}/)
-      if (monthNumMatch) {
-        result.month = parseInt(monthNumMatch[1], 10)
-      } else {
-        // Formato texto (Jan, Fev, etc.)
+      if (monthYearMatch) {
+        const monthText = monthYearMatch[1].toLowerCase()
+        let yearStr = monthYearMatch[2]
+        
+        // Se for 2 dígitos, assume 20xx
+        if (yearStr.length === 2) {
+          yearStr = '20' + yearStr
+        }
+        
+        result.year = parseInt(yearStr, 10)
+        
         const monthNames = {
           jan: 1, fev: 2, mar: 3, abr: 4, mai: 5, jun: 6,
           jul: 7, ago: 8, set: 9, out: 10, nov: 11, dez: 12
         }
-        const monthTextMatch = label.toLowerCase().match(/(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/)
-        if (monthTextMatch) result.month = monthNames[monthTextMatch[1]] || 0
+        // Tenta mapear o mês abreviado
+        result.month = monthNames[monthText] || 0
+        
+      } else {
+        // Fallback: tenta extrair ano de 4 dígitos em qualquer lugar
+        const yearMatch = label.match(/(\d{4})/)
+        if (yearMatch) result.year = parseInt(yearMatch[1], 10)
+        
+        // Extrai mês - formato numérico (01/2025)
+        const monthNumMatch = label.match(/(\d{1,2})\/\d{4}/)
+        if (monthNumMatch) {
+          result.month = parseInt(monthNumMatch[1], 10)
+        } else {
+          // Formato texto (Jan, Fev, etc.)
+          const monthNames = {
+            jan: 1, fev: 2, mar: 3, abr: 4, mai: 5, jun: 6,
+            jul: 7, ago: 8, set: 9, out: 10, nov: 11, dez: 12
+          }
+          const monthTextMatch = label.toLowerCase().match(/(jan|fev|mar|abr|mai|jun|jul|ago|set|out|nov|dez)/)
+          if (monthTextMatch) result.month = monthNames[monthTextMatch[1]] || 0
+        }
       }
       
       return result
+    },
+
+    /**
+     * Cria um label descritivo e acessível para a tabela
+     */
+    getAccessibleLabel(parsed, originalLabel) {
+      if (!parsed.year) return originalLabel
+
+      const monthNames = [
+        '', 'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+        'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+      ]
+
+      const parts = []
+      if (parsed.week) parts.push(`Semana ${parsed.week}`)
+      
+      if (parsed.month && monthNames[parsed.month]) {
+        parts.push(monthNames[parsed.month])
+      }
+      
+      if (parsed.year) {
+        parts.push(parsed.year)
+      }
+      
+      // Ex: "Semana 1 de Janeiro de 2026"
+      return parts.length > 0 ? parts.join(' de ') : originalLabel
     }
   }
 }
