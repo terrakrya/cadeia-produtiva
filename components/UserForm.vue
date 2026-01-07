@@ -33,20 +33,22 @@
               "
               class="col-sm-6"
             >
-              <b-form-group label="Selecionar uma organização *" label-for="input-organization">
+              <div class="form-group">
+                <label for="input-organization">Selecionar uma organização *</label>
                 <b-form-select
                   id="input-organization"
                   v-model="form.organization"
                   class="form-control"
                   :options="organizationsOptions"
                 />
-              </b-form-group>
+              </div>
             </div>
           </div>
 
           <div class="form-row">
             <div class="col-md-4 col-sm-12">
-              <b-form-group label="Nome *" label-for="input-name">
+              <div class="form-group">
+                <label for="input-name">Nome *</label>
                 <b-form-input
                   id="input-name"
                   v-model="form.name"
@@ -56,30 +58,33 @@
                   aria-describedby="error-name"
                 />
                 <field-error :msg="veeErrors" field="name" />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="Gênero" label-for="input-gender">
+              <div class="form-group">
+                <label for="input-gender">Gênero</label>
                 <b-form-select
                   id="input-gender"
                   v-model="form.gender"
                   class="form-control"
                   :options="genero"
                 />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-md-2 col-sm-12">
-              <b-form-group label="Nascimento" label-for="input-birthDate">
+              <div class="form-group">
+                <label for="input-birthDate">Nascimento</label>
                 <b-form-input
                   id="input-birthDate"
                   v-model="form.birthDate"
                   v-mask="['##/##/####']"
                   placeholder="DD/MM/AAAA"
                 />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="E-mail *" label-for="input-email">
+              <div class="form-group">
+                <label for="input-email">E-mail *</label>
                 <b-form-input
                   id="input-email"
                   v-model="form.email"
@@ -89,13 +94,14 @@
                   aria-describedby="error-email"
                 />
                 <field-error :msg="veeErrors" field="email" />
-              </b-form-group>
+              </div>
             </div>
           </div>
 
           <div class="form-row">
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="Celular *" label-for="input-cellphone">
+              <div class="form-group">
+                <label for="input-cellphone">Celular *</label>
                 <b-form-input
                   id="input-cellphone"
                   v-model="form.cellphone"
@@ -106,10 +112,11 @@
                   aria-describedby="error-cellphone"
                 />
                 <field-error :msg="veeErrors" field="cellphone" />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="CPF *" label-for="input-cpf">
+              <div class="form-group">
+                <label for="input-cpf">CPF *</label>
                 <b-form-input
                   id="input-cpf"
                   v-model="form.cpf"
@@ -120,10 +127,11 @@
                   aria-describedby="error-cpf"
                 />
                 <field-error :msg="veeErrors" field="cpf" />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="Estado de Atuação *" label-for="input-uf">
+              <div class="form-group">
+                <label for="input-uf">Estado de Atuação *</label>
                 <b-form-select
                   id="input-uf"
                   v-model="form.uf"
@@ -136,10 +144,11 @@
                   <option :value="null" disabled>Selecione um Estado</option>
                 </b-form-select>
                 <field-error :msg="veeErrors" field="uf" />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-md-3 col-sm-12">
-              <b-form-group label="Município de Referência *" label-for="input-city">
+              <div class="form-group">
+                <label for="input-city">Município de Referência *</label>
                 <b-form-select
                   id="input-city"
                   v-model="form.city"
@@ -151,13 +160,14 @@
                 >
                 </b-form-select>
                 <field-error :msg="veeErrors" field="region" />
-              </b-form-group>
+              </div>
             </div>
           </div>
 
           <div v-if="showPasswordFields && isEditing()" class="form-row">
             <div class="col-md-6 col-sm-12">
-              <b-form-group label="Senha" label-for="input-password">
+              <div class="form-group">
+                <label for="input-password">Senha</label>
                 <b-form-input
                   id="input-password"
                   v-model="form.password"
@@ -167,10 +177,11 @@
                   aria-describedby="error-password"
                 />
                 <field-error :msg="veeErrors" field="password" />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-md-6 col-sm-12">
-              <b-form-group label="Confirmação de senha" label-for="input-password_confirmation">
+              <div class="form-group">
+                <label for="input-password_confirmation">Confirmação de senha</label>
                 <b-form-input
                   id="input-password_confirmation"
                   v-model="form.password_confirmation"
@@ -180,7 +191,7 @@
                   aria-describedby="error-password_confirmation"
                 />
                 <field-error :msg="veeErrors" field="password_confirmation" />
-              </b-form-group>
+              </div>
             </div>
           </div>
           <form-submit :sending="is_sending" />

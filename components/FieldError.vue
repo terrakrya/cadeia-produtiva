@@ -1,5 +1,6 @@
 <template>
   <span
+    :id="`error-${field}`"
     v-show="msg.has(field)"
     class="text-danger"
     role="alert"

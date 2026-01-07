@@ -4,8 +4,12 @@
       <dt>{{ label }}</dt>
       <dd>
         <b-row>
-          <b-col v-for="image in images" :key="image._id" md="3">
-            <CachedImage :value="image" thumb />
+          <b-col v-for="(image, index) in images" :key="image._id" md="3">
+            <CachedImage 
+              :value="image" 
+              thumb 
+              :alt="image.description || image.name || `${label} ${index + 1}`"
+            />
           </b-col>
         </b-row>
       </dd>

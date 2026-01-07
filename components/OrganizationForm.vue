@@ -11,28 +11,34 @@
         <b-form @submit.prevent="save">
           <div class="row">
             <div class="col-sm-5">
-              <b-form-group label="Nome *">
+              <div class="form-group">
+                <label for="input-name">Nome *</label>
                 <b-form-input
+                  id="input-name"
                   v-model="form.name"
                   v-validate="'required'"
                   name="name"
                 />
                 <field-error :msg="veeErrors" field="name" />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-sm-2">
-              <b-form-group label="Sigla *">
+              <div class="form-group">
+                <label for="input-sigla">Sigla *</label>
                 <b-form-input
+                  id="input-sigla"
                   v-model="form.sigla"
                   v-validate="'required'"
                   name="sigla"
                 />
                 <field-error :msg="veeErrors" field="sigla" />
-              </b-form-group>
+              </div>
             </div>
             <b-col sm="2">
-              <b-form-group label="Tipo *">
+              <div class="form-group">
+                <label for="input-type">Tipo *</label>
                 <b-form-select
+                  id="input-type"
                   v-model="form.type"
                   v-validate="'required'"
                   class="form-control"
@@ -40,28 +46,33 @@
                   :options="tiposOrganizacao"
                 />
                 <field-error :msg="veeErrors" field="type" />
-              </b-form-group>
+              </div>
             </b-col>
             <div class="col-sm-3">
-              <b-form-group label="CNPJ ">
+              <div class="form-group">
+                <label for="input-cnpj">CNPJ</label>
                 <b-form-input
+                  id="input-cnpj"
                   v-model="form.cnpj"
                   v-mask="['##.###.###/####-##']"
                 />
-              </b-form-group>
+              </div>
             </div>
           </div>
           <div class="row">
             <div class="col-sm-12">
-              <b-form-group label="Endereço ">
-                <b-form-input v-model="form.address" />
-              </b-form-group>
+              <div class="form-group">
+                <label for="input-address">Endereço</label>
+                <b-form-input id="input-address" v-model="form.address" />
+              </div>
             </div>
           </div>
           <div class="row">
             <b-col sm="4">
-              <b-form-group label="Estado">
+              <div class="form-group">
+                <label for="input-uf">Estado</label>
                 <b-form-select
+                  id="input-uf"
                   v-model="form.uf"
                   v-validate="'required'"
                   class="form-control"
@@ -70,96 +81,113 @@
                   @input="loadCities()"
                 />
                 <field-error :msg="veeErrors" field="uf" />
-              </b-form-group>
+              </div>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Município">
+              <div class="form-group">
+                <label for="input-county">Município</label>
                 <b-form-select
+                  id="input-county"
                   v-model="form.county"
                   class="form-control"
                   :options="cidades"
                   @input="loadPracas()"
                 />
-              </b-form-group>
+              </div>
             </b-col>
             <b-col sm="4">
-              <b-form-group label="Região imediata">
+              <div class="form-group">
+                <label for="input-square">Região imediata</label>
                 <input
+                  id="input-square"
                   v-model="form.square"
                   type="text"
                   readonly
                   class="form-control"
                   text-field="nome"
                 />
-              </b-form-group>
+              </div>
             </b-col>
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Território">
+              <div class="form-group">
+                <label for="input-territory">Território</label>
                 <b-form-select
+                  id="input-territory"
                   v-model="form.territory"
                   class="form-control"
                   :options="territorios"
                   value-field="nome"
                   text-field="nome"
                 />
-              </b-form-group>
+              </div>
             </b-col>
           </div>
           <div class="row">
             <div class="col-sm-3">
-              <b-form-group label="Telefone ">
+              <div class="form-group">
+                <label for="input-contact">Telefone</label>
                 <b-form-input
+                  id="input-contact"
                   v-model="form.contact"
                   v-mask="['(##) #####-####']"
                   name="contact"
                 />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-sm-3">
-              <b-form-group label="Site ">
-                <b-form-input v-model="form.site" name="Site" />
-              </b-form-group>
+              <div class="form-group">
+                <label for="input-site">Site</label>
+                <b-form-input id="input-site" v-model="form.site" name="Site" />
+              </div>
             </div>
             <div class="col-sm-3">
-              <b-form-group label="Rede social ">
+              <div class="form-group">
+                <label for="input-socialNetwork">Rede social</label>
                 <b-form-input
+                  id="input-socialNetwork"
                   v-model="form.socialNetwork"
                   name="socialNetwork"
                 />
-              </b-form-group>
+              </div>
             </div>
             <div class="col-sm-3">
-              <b-form-group label="E-mail *">
+              <div class="form-group">
+                <label for="input-email">E-mail *</label>
                 <b-form-input
+                  id="input-email"
                   v-model="form.email"
                   v-validate="'required'"
                   name="email"
                 />
                 <field-error :msg="veeErrors" field="email" />
-              </b-form-group>
+              </div>
             </div>
           </div>
           <div class="row">
             <b-col sm="6">
-              <b-form-group label="Posição comercial">
+              <div class="form-group">
+                <label for="input-chainLink">Posição comercial</label>
                 <b-form-select
+                  id="input-chainLink"
                   v-model="form.chainLink"
                   class="form-control"
                   name="chainLink"
                   :options="tiposOrganizacao"
                 />
-              </b-form-group>
+              </div>
             </b-col>
             <b-col sm="6">
-              <b-form-group label=" Atuação na cadeia de valor ">
+              <div class="form-group">
+                <label for="input-acting">Atuação na cadeia de valor</label>
                 <b-form-select
+                  id="input-acting"
                   v-model="form.acting"
                   class="form-control"
                   :options="tiposCadeiaValor"
                 />
-              </b-form-group>
+              </div>
             </b-col>
           </div>
           <div class="row">
@@ -196,9 +224,10 @@
               </b-form-group>
             </div>
             <div class="col-sm-12">
-              <b-form-group label="Comentários">
-                <b-form-textarea v-model="form.comments" />
-              </b-form-group>
+              <div class="form-group">
+                <label for="input-comments">Comentários</label>
+                <b-form-textarea id="input-comments" v-model="form.comments" />
+              </div>
             </div>
           </div>
           <form-submit :sending="is_sending" />

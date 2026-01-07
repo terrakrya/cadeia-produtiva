@@ -10,7 +10,11 @@
     >
       <template #option="option">
         <div class="select-item">
-          <img v-if="option.picture" :src="baseUrl + option.picture" />
+          <img 
+            v-if="option.picture" 
+            :src="baseUrl + option.picture" 
+            :alt="option.title"
+          />
           <div class="desc">
             <strong>{{ option.title }}</strong>
             <br />

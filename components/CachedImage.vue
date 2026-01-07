@@ -6,6 +6,7 @@
     :class="cssClass"
     :width="width"
     :rounded="thumb"
+    :alt="alt"
   />
 </template>
 
@@ -31,6 +32,10 @@ export default {
       default: null,
     },
     cssClass: {
+      type: String,
+      default: '',
+    },
+    alt: {
       type: String,
       default: '',
     },
