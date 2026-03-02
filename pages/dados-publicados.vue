@@ -109,10 +109,10 @@
 
             <!-- Botão para filtros avançados -->
             <div class="row">
-              <div class="col-12">
+              <div class="col-12 d-flex flex-wrap">
                 <b-button
                   variant="danger"
-                  class="btn btn-primary mb-2"
+                  class="btn btn-primary mb-2 mr-4"
                   @click="showAdvancedFilters = !showAdvancedFilters"
                 >
                   <b-icon
@@ -120,6 +120,14 @@
                   ></b-icon>
                   {{ showAdvancedFilters ? 'Ocultar' : 'Mostrar' }} Filtros
                   Avançados
+                </b-button>
+                <b-button
+                  variant="danger"
+                  class="btn btn-secondary mb-2"
+                  @click="applySafraAtual"
+                >
+                  <b-icon icon="calendar-check" class="mr-1"></b-icon>
+                  Safra Atual
                 </b-button>
               </div>
             </div>
@@ -535,16 +543,30 @@ export default {
         Município: item.city,
         'Região Castanheira': item.region || 'Não informado',
         Data: item.date,
-        [`Preço médio (${unit})`]:
-          Math.round(this.convertPrice(item.averagePrice) * 100) / 100,
-        [`Preço Mínimo (${unit})`]:
-          Math.round(this.convertPrice(item.minimumPrice) * 100) / 100,
-        [`Preço Máximo (${unit})`]:
-          Math.round(this.convertPrice(item.maximumPrice) * 100) / 100,
+        [`Preço médio (${unit})`]: this.formatBRL(
+          Math.round(this.convertPrice(item.averagePrice) * 100) / 100
+        ),
+        [`Preço Mínimo (${unit})`]: this.formatBRL(
+          Math.round(this.convertPrice(item.minimumPrice) * 100) / 100
+        ),
+        [`Preço Máximo (${unit})`]: this.formatBRL(
+          Math.round(this.convertPrice(item.maximumPrice) * 100) / 100
+        ),
       }))
 
       // Create worksheet from JSON data
-      const worksheet = XLSX.utils.json_to_sheet(exportData)
+      const worksheet = XLSX.utils.json_to_sheet(exportData, { cellDates: false })
+
+      // Force date column (column F, index 5) and price columns to text type
+      // to prevent Google Sheets from auto-interpreting values as dates
+      const range = XLSX.utils.decode_range(worksheet['!ref'])
+      for (let R = range.s.r + 1; R <= range.e.r; R++) {
+        const dateCellAddr = XLSX.utils.encode_cell({ r: R, c: 5 })
+        if (worksheet[dateCellAddr]) {
+          worksheet[dateCellAddr].t = 's'
+          worksheet[dateCellAddr].z = '@'
+        }
+      }
 
       // Define column widths so that the text is fully readable
       worksheet['!cols'] = [
@@ -578,6 +600,21 @@ export default {
       }
 
       return price || 0
+    },
+
+    formatBRL(value) {
+      return (value || 0).toLocaleString('pt-BR', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    },
+
+    applySafraAtual() {
+      const hoje = new Date()
+      const ano = hoje.getMonth() >= 9 ? hoje.getFullYear() : hoje.getFullYear() - 1
+      this.filters.dateFrom = `${ano}-10-01`
+      this.filters.dateTo = `${ano + 1}-09-30`
+      this.applyFilters()
     },
   },
 }
