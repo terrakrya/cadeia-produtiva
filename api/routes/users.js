@@ -359,6 +359,32 @@ router.put('/:id/profile', auth.authenticated, async (req, res) => {
   }
 })
 
+// força o fluxo de Primeiro Acesso ao zerar hash e salt do usuário
+router.put('/:id/reset-first-access', auth.globalManager, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id)
+
+    if (!user) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' })
+    }
+
+    if (String(user._id) === String(req.user.id)) {
+      return res.status(400).json({ message: 'Não é possível resetar a própria senha por este mecanismo.' })
+    }
+
+    user.hash = undefined
+    user.salt = undefined
+
+    await user.save()
+
+    return res.json({ message: 'Senha resetada com sucesso. O usuário deverá realizar o Primeiro Acesso novamente.' })
+  } catch (err) {
+    return res.status(422).json({
+      message: 'Ocorreu um erro ao resetar a senha do usuário: ' + err.message,
+    })
+  }
+})
+
 // exclui um usuário
 router.delete('/:id', auth.manager, (req, res) => {
   const query = { _id: req.params.id }

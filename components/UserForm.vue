@@ -200,6 +200,19 @@
             </div>
           </div>
           <form-submit :sending="is_sending" />
+          <div v-if="isEditing() && (isAdmin || isGlobalManager)" class="row mt-2">
+            <div class="col-sm-12 text-center">
+              <button
+                type="button"
+                class="btn btn-lg rounded-pill btn-outline-danger btn-block"
+                :disabled="is_resetting"
+                @click="resetFirstAccess"
+              >
+                <span v-if="is_resetting"><b-spinner small /> Redefinindo...</span>
+                <span v-else>Redefinir Senha</span>
+              </button>
+            </div>
+          </div>
         </b-form>
       </div>
     </div>
@@ -217,9 +230,11 @@ export default {
     return {
       estados: [],
       cidades: [{ value: '', text: 'Selecione a cidade' }],
+      municipalitiesByUf: {},
       regionMatchesByMunicipality: {},
       genero,
       loadingLocation: false,
+      is_resetting: false,
       show_password: false,
       tiposDeUsuarioPermitidos: [],
       organizationsOptions: [],
@@ -315,6 +330,7 @@ export default {
     async loadValidLocations() {
       this.loadingLocation = true
       this.estados = []
+      this.municipalitiesByUf = {}
       this.regionMatchesByMunicipality = {}
 
       try {
@@ -337,6 +353,11 @@ export default {
           .map((option) => option.uf)
           .sort((a, b) => a.localeCompare(b, 'pt-BR'))
 
+        this.municipalitiesByUf = options.reduce((acc, option) => {
+          acc[option.uf] = option.municipalities || []
+          return acc
+        }, {})
+
         this.regionMatchesByMunicipality = regionMatches.reduce((acc, item) => {
           const key = this.getMunicipalityKey(item.city, item.uf)
           acc[key] = item.regions || []
@@ -355,6 +376,7 @@ export default {
         }
       } catch (error) {
         this.estados = []
+        this.municipalitiesByUf = {}
         this.cidades = [{ value: '', text: 'Selecione a cidade' }]
         this.regionMatchesByMunicipality = {}
         this.form.region = ''
@@ -379,7 +401,9 @@ export default {
           regionId: existingData.regionId,
           password: '',
           password_confirmation: '',
-          cellphone: this.formatPhoneNumber(existingData.cellphone),
+          cellphone: existingData.cellphone
+            ? this.formatPhoneNumber(existingData.cellphone)
+            : '',
         }
       } catch (error) {
         this.showError(error)
@@ -503,19 +527,13 @@ export default {
       this.cidades = [{ value: '', text: 'Selecione a cidade' }]
 
       if (this.form.uf) {
+        const cities = this.municipalitiesByUf[this.form.uf] || []
         this.cidades = this.cidades.concat(
-          Object.keys(this.regionMatchesByMunicipality)
-            .map((key) => {
-              const [city, uf] = key.split('::')
-              return { city, uf }
-            })
-            .filter((item) => item.uf === String(this.form.uf).toUpperCase())
-            .map((item) => item.city)
-            .sort((a, b) => a.localeCompare(b, 'pt-BR'))
+          [...cities].sort((a, b) => a.localeCompare(b, 'pt-BR'))
         )
       }
 
-      if (this.form.city && this.cidades) {
+      if (this.form.city && this.cidades.length > 1) {
         if (!this.cidades.find((c) => c === this.form.city)) {
           this.form.city = ''
           this.form.region = ''
@@ -551,6 +569,27 @@ export default {
           'Município vinculado a múltiplas regiões. A primeira região disponível foi selecionada automaticamente.',
           'warning'
         )
+      }
+    },
+    async resetFirstAccess() {
+      const confirmed = window.confirm(
+        'Tem certeza que deseja redefinir a senha deste usuário?\n\nEle perderá o acesso atual e precisará criar uma nova senha pelo fluxo de Primeiro Acesso (usando o CPF).'
+      )
+      if (!confirmed) return
+
+      this.is_resetting = true
+      try {
+        const response = await this.$axios.$put(
+          `users/${this.$route.params.id}/reset-first-access`
+        )
+        this.notify(response.message || 'Senha resetada com sucesso.')
+      } catch (error) {
+        const message =
+          error.response?.data?.message ||
+          'Ocorreu um erro ao resetar a senha do usuário.'
+        this.notify(message, 'error')
+      } finally {
+        this.is_resetting = false
       }
     },
     changePassword() {

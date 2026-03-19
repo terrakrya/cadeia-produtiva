@@ -31,19 +31,6 @@ router.get('/', auth.globalManager, async (req, res) => {
   }
 })
 
-// Obter uma região por ID
-router.get('/:id', auth.authenticated, async (req, res) => {
-  try {
-    const region = await Region.findById(req.params.id).populate(populate(req))
-    if (!region) {
-      return res.status(404).send('Região não encontrada.')
-    }
-    return res.json(region.data())
-  } catch (err) {
-    res.status(422).send('Ocorreu um erro ao buscar a região: ' + err.message)
-  }
-})
-
 // Buscar municípios/UFs válidos para criação de usuários.
 // Quando organizationId é informado, considera somente espécies dos produtos da organização.
 router.get('/municipalities/valid', auth.manager, async (req, res) => {
@@ -154,6 +141,19 @@ router.get('/municipalities/valid', auth.manager, async (req, res) => {
     return res.status(422).json({
       message: `Ocorreu um erro ao carregar municípios válidos: ${err.message}`,
     })
+  }
+})
+
+// Obter uma região por ID (deve ficar APÓS rotas com path literal como /municipalities/valid)
+router.get('/:id', auth.authenticated, async (req, res) => {
+  try {
+    const region = await Region.findById(req.params.id).populate(populate(req))
+    if (!region) {
+      return res.status(404).send('Região não encontrada.')
+    }
+    return res.json(region.data())
+  } catch (err) {
+    res.status(422).send('Ocorreu um erro ao buscar a região: ' + err.message)
   }
 })
 
