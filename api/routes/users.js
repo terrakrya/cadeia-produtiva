@@ -6,6 +6,96 @@ const auth = require('../config/auth')
 const sendMail = require('../config/mail').sendMail
 const populate = require('../config/utils').populate
 const User = mongoose.model('User')
+const Region = mongoose.model('Region')
+const Organization = mongoose.model('Organization')
+
+const normalizeValue = (value = '') => String(value).trim().toLowerCase()
+
+const resolveUserRegionByLocation = async ({ organizationId, uf, city }) => {
+  const normalizedUf = String(uf || '').trim().toUpperCase()
+  const normalizedCity = String(city || '').trim()
+
+  if (!normalizedUf || !normalizedCity) {
+    return {
+      isValid: false,
+      message: 'UF e município são obrigatórios para vincular a região do usuário.',
+    }
+  }
+
+  const regionsQuery = {}
+
+  if (organizationId) {
+    if (!mongoose.Types.ObjectId.isValid(organizationId)) {
+      return { isValid: false, message: 'Organização inválida para vincular região.' }
+    }
+
+    const organization = await Organization.findById(organizationId)
+      .populate({
+        path: 'products',
+        select: 'specieProduct',
+        populate: {
+          path: 'specieProduct',
+          select: 'specie',
+        },
+      })
+      .lean()
+
+    if (!organization) {
+      return { isValid: false, message: 'Organização não encontrada.' }
+    }
+
+    const specieIds = [
+      ...new Set(
+        (organization.products || [])
+          .map((product) => product?.specieProduct?.specie)
+          .filter(Boolean)
+          .map((id) => id.toString())
+      ),
+    ]
+
+    if (specieIds.length === 0) {
+      return {
+        isValid: false,
+        message:
+          'A organização não possui produtos com espécies vinculadas a regiões.',
+      }
+    }
+
+    regionsQuery.specie = { $in: specieIds }
+  }
+
+  const regions = await Region.find(regionsQuery, {
+    name: 1,
+    specie: 1,
+    municipalities: 1,
+  }).lean()
+
+  const matchingRegions = regions.filter((region) =>
+    (region.municipalities || []).some(
+      (municipality) =>
+        normalizeValue(municipality.name) === normalizeValue(normalizedCity) &&
+        String(municipality.uf || '').trim().toUpperCase() === normalizedUf
+    )
+  )
+
+  if (!matchingRegions.length) {
+    return {
+      isValid: false,
+      message:
+        'Município não vinculado a nenhuma região válida para a organização selecionada.',
+    }
+  }
+
+  const selectedRegion = matchingRegions.sort((a, b) =>
+    a.name.localeCompare(b.name, 'pt-BR')
+  )[0]
+
+  return {
+    isValid: true,
+    regionId: selectedRegion._id,
+    regionName: selectedRegion.name,
+  }
+}
 
 // recupera a lista de usuários
 router.get('/', auth.authenticated, async (req, res) => {
@@ -134,6 +224,19 @@ router.post('/', auth.manager, async (req, res) => {
       user.organization = req.user.organization
     }
 
+    const regionResolution = await resolveUserRegionByLocation({
+      organizationId: user.organization,
+      uf: user.uf,
+      city: user.city,
+    })
+
+    if (!regionResolution.isValid) {
+      return res.status(400).json({ message: regionResolution.message })
+    }
+
+    user.region = regionResolution.regionName
+    user.regionId = regionResolution.regionId
+
     if (req.body.password) {
       user.setPassword(req.body.password)
     }
@@ -175,6 +278,19 @@ router.put('/:id', auth.authenticated, async (req, res) => {
           : req.body[field];
       }
     });
+
+    const regionResolution = await resolveUserRegionByLocation({
+      organizationId: user.organization,
+      uf: user.uf,
+      city: user.city,
+    })
+
+    if (!regionResolution.isValid) {
+      return res.status(400).json({ message: regionResolution.message })
+    }
+
+    user.region = regionResolution.regionName
+    user.regionId = regionResolution.regionId
 
     // Campos fixos (não alteráveis)
     user.currency = 'real';

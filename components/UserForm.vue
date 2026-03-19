@@ -40,6 +40,7 @@
                   v-model="form.organization"
                   class="form-control"
                   :options="organizationsOptions"
+                  @input="onOrganizationChange"
                 />
               </div>
             </div>
@@ -136,13 +137,16 @@
                   id="input-uf"
                   v-model="form.uf"
                   class="form-control"
-                  :options="estados.map((e) => e.uf)"
+                  :options="estados"
                   name="uf"
                   aria-describedby="error-uf"
                   @input="loadCities"
                 >
                   <option :value="null" disabled>Selecione um Estado</option>
                 </b-form-select>
+                <small v-if="loadingLocation" class="text-muted">
+                  Carregando estados e municípios válidos...
+                </small>
                 <field-error :msg="veeErrors" field="uf" />
               </div>
             </div>
@@ -156,7 +160,8 @@
                   :options="cidades"
                   name="city"
                   aria-describedby="error-region"
-                  @input="loadRegions()"
+                  :disabled="!form.uf || loadingLocation"
+                  @input="onCityChange"
                 >
                 </b-form-select>
                 <field-error :msg="veeErrors" field="region" />
@@ -203,9 +208,6 @@
 <script>
 import Breadcrumb from '@/components/Breadcrumb'
 import genero from '@/data/generos.json'
-import estados from '@/data/estados.json'
-import cidades from '@/data/cidades.json'
-import regioes from '@/data/regioes-castanheiras.json'
 
 export default {
   components: {
@@ -213,10 +215,11 @@ export default {
   },
   data() {
     return {
-      estados,
-      cidades,
-      regioes,
+      estados: [],
+      cidades: [{ value: '', text: 'Selecione a cidade' }],
+      regionMatchesByMunicipality: {},
       genero,
+      loadingLocation: false,
       show_password: false,
       tiposDeUsuarioPermitidos: [],
       organizationsOptions: [],
@@ -257,13 +260,43 @@ export default {
       })
     }
 
+    await this.list()
+
     if (this.isEditing()) {
-      this.edit(this.$route.params.id)
+      await this.edit(this.$route.params.id)
+    } else if (this.isManager) {
+      this.form.organization = this.currentUser.organization || ''
     }
 
-    await this.list()
+    await this.loadValidLocations()
+    this.loadCities()
+    this.resolveRegionForSelectedLocation()
   },
   methods: {
+    getEffectiveOrganizationId() {
+      if (this.isManager) {
+        return this.currentUser.organization || null
+      }
+
+      if (this.form.role === 'gestor-global') {
+        return null
+      }
+
+      return this.form.organization || null
+    },
+    getMunicipalityKey(city, uf) {
+      return `${String(city || '').trim().toLowerCase()}::${String(uf || '')
+        .trim()
+        .toUpperCase()}`
+    },
+    async onOrganizationChange() {
+      this.form.uf = null
+      this.form.city = ''
+      this.form.region = ''
+      this.form.regionId = null
+      this.cidades = [{ value: '', text: 'Selecione a cidade' }]
+      await this.loadValidLocations()
+    },
     async list() {
       try {
         const organizationsData = await this.$axios.$get('organizations')
@@ -279,31 +312,79 @@ export default {
         console.error('Erro ao carregar organização:', error)
       }
     },
-    async edit(id) {
-      this.is_loading = true;
+    async loadValidLocations() {
+      this.loadingLocation = true
+      this.estados = []
+      this.regionMatchesByMunicipality = {}
+
       try {
-        const response = await this.$axios.get(`users/${id}`);
-        const existingData = response.data;
-        
+        const organizationId = this.getEffectiveOrganizationId()
+        const params = {}
+
+        if (organizationId) {
+          params.organizationId = organizationId
+        }
+
+        const response = await this.$axios.$get('regions/municipalities/valid', {
+          params,
+        })
+        const options = Array.isArray(response.options) ? response.options : []
+        const regionMatches = Array.isArray(response.regionMatches)
+          ? response.regionMatches
+          : []
+
+        this.estados = options
+          .map((option) => option.uf)
+          .sort((a, b) => a.localeCompare(b, 'pt-BR'))
+
+        this.regionMatchesByMunicipality = regionMatches.reduce((acc, item) => {
+          const key = this.getMunicipalityKey(item.city, item.uf)
+          acc[key] = item.regions || []
+          return acc
+        }, {})
+
+        if (response.message) {
+          this.notify(response.message, 'warning')
+        }
+
+        if (this.form.uf && !this.estados.includes(this.form.uf)) {
+          this.form.uf = null
+          this.form.city = ''
+          this.form.region = ''
+          this.form.regionId = null
+        }
+      } catch (error) {
+        this.estados = []
+        this.cidades = [{ value: '', text: 'Selecione a cidade' }]
+        this.regionMatchesByMunicipality = {}
+        this.form.region = ''
+        this.form.regionId = null
+        const message =
+          error.response?.data?.message ||
+          'Erro ao carregar municípios válidos para a organização selecionada.'
+        this.notify(message, 'error')
+      } finally {
+        this.loadingLocation = false
+      }
+    },
+    async edit(id) {
+      this.is_loading = true
+      try {
+        const response = await this.$axios.get(`users/${id}`)
+        const existingData = response.data
+
         this.form = {
           ...this.form,
           ...existingData,
           regionId: existingData.regionId,
           password: '',
           password_confirmation: '',
-          cellphone: this.formatPhoneNumber(existingData.cellphone)
-        };
-        
-        if (existingData.uf) {
-          this.loadCities();
-        }
-        if (existingData.city) {
-          this.loadRegions();
+          cellphone: this.formatPhoneNumber(existingData.cellphone),
         }
       } catch (error) {
-        this.showError(error);
+        this.showError(error)
       } finally {
-        this.is_loading = false;
+        this.is_loading = false
       }
     },
     save() {
@@ -361,12 +442,12 @@ export default {
             isValid = false
           }
           // possui Region
-          else if (!this.form.region) {
+          else if (!this.form.region || !this.form.regionId) {
             this.veeErrors.items.push({
               id: 106,
               vmId: this.veeErrors.vmId,
               field: 'region',
-              msg: 'Município não vinculado a um Território.',
+              msg: 'Município não vinculado a uma região válida para a organização.',
               rule: 'required',
               scope: null,
             })
@@ -421,61 +502,55 @@ export default {
     loadCities() {
       this.cidades = [{ value: '', text: 'Selecione a cidade' }]
 
-      // filtra as cidades conforme a UF selecionada
       if (this.form.uf) {
-        this.cidades = this.cidades.concat(Object(cidades)[this.form.uf])
+        this.cidades = this.cidades.concat(
+          Object.keys(this.regionMatchesByMunicipality)
+            .map((key) => {
+              const [city, uf] = key.split('::')
+              return { city, uf }
+            })
+            .filter((item) => item.uf === String(this.form.uf).toUpperCase())
+            .map((item) => item.city)
+            .sort((a, b) => a.localeCompare(b, 'pt-BR'))
+        )
       }
 
-      // limpa a cidade digitada, caso não exista na lista
       if (this.form.city && this.cidades) {
         if (!this.cidades.find((c) => c === this.form.city)) {
           this.form.city = ''
-        }
-      }
-    },
-    loadRegions() {
-      const [regionName] = [
-        ...new Set(
-          regioes
-            .filter((item) => item.municipio == this.form.city)
-            .map((item) => item.regiaoCastanheira)
-        ),
-      ]
-
-      this.form.region = regionName
-      
-      if (regionName && this.form.uf && this.form.city) {
-        this.findRegionId(regionName, this.form.uf, this.form.city)
-      } else {
-        this.form.regionId = null
-      }
-    },
-    async findRegionId(regionName, uf, city) {
-      try {
-        const response = await this.$axios.$get('regions', {
-          params: {
-            name: regionName
-          }
-        })
-        
-        if (response && response.length > 0) {
-          const matchingRegion = response.find(region => 
-            region.municipalities && region.municipalities.some(municipality => 
-              municipality.name === city && municipality.uf === uf
-            )
-          )
-          
-          if (matchingRegion) {
-            this.form.regionId = matchingRegion._id
-          } else {
-            this.form.regionId = response[0]._id
-          }
-        } else {
+          this.form.region = ''
           this.form.regionId = null
         }
-      } catch (error) {
-        console.warn('Erro ao buscar regionId:', error)
+      }
+      this.resolveRegionForSelectedLocation()
+    },
+    onCityChange() {
+      this.resolveRegionForSelectedLocation()
+    },
+    resolveRegionForSelectedLocation() {
+      if (!this.form.uf || !this.form.city) {
+        this.form.region = ''
         this.form.regionId = null
+        return
+      }
+
+      const key = this.getMunicipalityKey(this.form.city, this.form.uf)
+      const regions = this.regionMatchesByMunicipality[key] || []
+
+      if (!regions.length) {
+        this.form.region = ''
+        this.form.regionId = null
+        return
+      }
+
+      this.form.region = regions[0].name
+      this.form.regionId = regions[0]._id
+
+      if (regions.length > 1) {
+        this.notify(
+          'Município vinculado a múltiplas regiões. A primeira região disponível foi selecionada automaticamente.',
+          'warning'
+        )
       }
     },
     changePassword() {
@@ -494,7 +569,7 @@ export default {
       }))
     },
     formatPhoneNumber(number) {
-      return number.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+      return number.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3')
     },
   },
 }

@@ -3,6 +3,11 @@ const router = require('express').Router()
 const auth = require('../config/auth')
 const populate = require('../config/utils').populate
 const Region = mongoose.model('Region')
+const User = mongoose.model('User')
+const Organization = mongoose.model('Organization')
+
+const normalizeMunicipalityKey = (name = '', uf = '') =>
+  `${String(name).trim().toLowerCase()}::${String(uf).trim().toLowerCase()}`
 
 // Listar todas as regiões (com filtros)
 router.get('/', auth.globalManager, async (req, res) => {
@@ -39,9 +44,143 @@ router.get('/:id', auth.authenticated, async (req, res) => {
   }
 })
 
+// Buscar municípios/UFs válidos para criação de usuários.
+// Quando organizationId é informado, considera somente espécies dos produtos da organização.
+router.get('/municipalities/valid', auth.manager, async (req, res) => {
+  try {
+    const { organizationId } = req.query
+    const regionsQuery = {}
+
+    if (organizationId) {
+      if (!mongoose.Types.ObjectId.isValid(organizationId)) {
+        return res.status(400).json({ message: 'organizationId inválido.' })
+      }
+
+      const organization = await Organization.findById(organizationId)
+        .populate({
+          path: 'products',
+          select: 'specieProduct',
+          populate: {
+            path: 'specieProduct',
+            select: 'specie',
+          },
+        })
+        .lean()
+
+      if (!organization) {
+        return res.status(404).json({ message: 'Organização não encontrada.' })
+      }
+
+      const specieIds = [
+        ...new Set(
+          (organization.products || [])
+            .map((product) => product?.specieProduct?.specie)
+            .filter(Boolean)
+            .map((id) => id.toString())
+        ),
+      ]
+
+      if (specieIds.length === 0) {
+        return res.json({
+          options: [],
+          message:
+            'A organização não possui produtos com espécies configuradas para regiões.',
+        })
+      }
+
+      regionsQuery.specie = { $in: specieIds }
+    }
+
+    const regions = await Region.find(regionsQuery, {
+      municipalities: 1,
+      specie: 1,
+      name: 1,
+    }).lean()
+
+    const municipalitiesByUf = new Map()
+    const municipalityRegionMap = new Map()
+
+    for (const region of regions) {
+      for (const municipality of region.municipalities || []) {
+        const uf = String(municipality.uf || '').trim().toUpperCase()
+        const city = String(municipality.name || '').trim()
+        if (!uf || !city) continue
+
+        if (!municipalitiesByUf.has(uf)) {
+          municipalitiesByUf.set(uf, new Set())
+        }
+        municipalitiesByUf.get(uf).add(city)
+
+        const mapKey = normalizeMunicipalityKey(city, uf)
+        if (!municipalityRegionMap.has(mapKey)) {
+          municipalityRegionMap.set(mapKey, [])
+        }
+        municipalityRegionMap.get(mapKey).push({
+          _id: region._id,
+          name: region.name,
+          specie: region.specie,
+        })
+      }
+    }
+
+    const options = [...municipalitiesByUf.entries()]
+      .sort(([ufA], [ufB]) => ufA.localeCompare(ufB, 'pt-BR'))
+      .map(([uf, municipalities]) => ({
+        uf,
+        municipalities: [...municipalities].sort((a, b) =>
+          a.localeCompare(b, 'pt-BR')
+        ),
+      }))
+
+    const regionMatches = [...municipalityRegionMap.entries()].map(
+      ([key, regionsByMunicipality]) => {
+        const [city, uf] = key.split('::')
+        return {
+          city,
+          uf: uf.toUpperCase(),
+          regions: regionsByMunicipality
+            .sort((a, b) => a.name.localeCompare(b.name, 'pt-BR'))
+            .map((region) => ({
+              _id: region._id,
+              name: region.name,
+              specie: region.specie,
+            })),
+        }
+      }
+    )
+
+    return res.json({ options, regionMatches })
+  } catch (err) {
+    return res.status(422).json({
+      message: `Ocorreu um erro ao carregar municípios válidos: ${err.message}`,
+    })
+  }
+})
+
 async function validateMunicipalityUniqueness(municipalities, specieId, excludeRegionId = null) {
   if (!municipalities || municipalities.length === 0) {
     return { isValid: true }
+  }
+
+  const duplicatesInPayload = new Set()
+  const seenMunicipalities = new Set()
+
+  for (const municipality of municipalities) {
+    const key = normalizeMunicipalityKey(municipality.name, municipality.uf)
+    if (seenMunicipalities.has(key)) {
+      duplicatesInPayload.add(`${municipality.name}/${municipality.uf}`)
+    } else {
+      seenMunicipalities.add(key)
+    }
+  }
+
+  if (duplicatesInPayload.size > 0) {
+    return {
+      isValid: false,
+      message: `Municípios duplicados na mesma região: ${[
+        ...duplicatesInPayload,
+      ].join(', ')}`,
+    }
   }
 
   // Buscar todas as regiões da mesma espécie (excluindo a região atual se for uma atualização)
@@ -58,8 +197,9 @@ async function validateMunicipalityUniqueness(municipalities, specieId, excludeR
   for (const municipality of municipalities) {
     for (const region of existingRegions) {
       const existingMunicipality = region.municipalities.find(
-        m => m.name.toLowerCase() === municipality.name.toLowerCase() && 
-             m.uf.toLowerCase() === municipality.uf.toLowerCase()
+        m =>
+          normalizeMunicipalityKey(m.name, m.uf) ===
+          normalizeMunicipalityKey(municipality.name, municipality.uf)
       )
       
       if (existingMunicipality) {
@@ -103,6 +243,11 @@ router.post('/', auth.globalManager, async (req, res) => {
     await newRegion.save()
     res.status(201).json(newRegion.data())
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({
+        error: 'Já existe uma região com este nome para a espécie informada.',
+      })
+    }
     res.status(422).send('Ocorreu um erro ao criar a região: ' + err.message)
   }
 })
@@ -133,8 +278,18 @@ router.put('/:id', auth.globalManager, async (req, res) => {
       return res.status(404).send('Região não encontrada.')
     }
 
+    await User.updateMany(
+      { regionId: updatedRegion._id },
+      { $set: { region: updatedRegion.name } }
+    )
+
     return res.json(updatedRegion.data())
   } catch (err) {
+    if (err.code === 11000) {
+      return res.status(400).json({
+        error: 'Já existe uma região com este nome para a espécie informada.',
+      })
+    }
     res.status(422).send('Ocorreu um erro ao atualizar a região: ' + err.message)
   }
 })
